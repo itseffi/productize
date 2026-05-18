@@ -435,7 +435,3 @@ npm run build
 npm run test:free
 npm run eval
 ```
-
-## License
-
-MIT.
