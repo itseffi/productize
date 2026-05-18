@@ -1,5 +1,4 @@
-# Productize
-
+![Productize](assets/productize.png)
 **Productize is an engineered distribution and runtime system for
 building, shipping, operating, and growing AI products inside your
 coding harness.**
