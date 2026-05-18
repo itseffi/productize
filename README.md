@@ -7,7 +7,7 @@ coding harness.**
 Three playbooks: **`/productize-0-1`** (raw idea → shipped product),
 **`/productize-operate`** (production, incidents, error budgets),
 **`/productize-grow`** (aha-moment → retention → PLG). Nine gates
-that gate every move. One meta-runner. 239 routed skills underneath.
+that gate every move. One meta-runner. 238 routed skills underneath.
 Five host adapters. One workflow runtime. MIT.
 
 Your AI coding agent — Codex, Claude Code, Cursor, OpenCode, Factory,
@@ -156,14 +156,14 @@ onboarding, API ergonomics, TTHW, error messages.
 
 ## Access surface
 
-Three playbooks. Nine gates. One meta-runner. 239 routed skills underneath.
+Three playbooks. Nine gates. One meta-runner. 238 routed skills underneath.
 
 | Layer | Entry points |
 |---|---|
 | **Playbooks** | `/productize-0-1` (build loop), `/productize-operate` (production), `/productize-grow` (PMF → scale) |
 | **Gates** | `thesis-review`, `product-review`, `design-review`, `eng-review`, `qa`, `release`, `docs`, `dx-review`, `comms-review` |
 | **Meta** | `/productize-autoplan` — runs every relevant gate in parallel, auto-applies safe decisions, surfaces only taste calls |
-| **Routed skills** | 239 skills called internally by the playbooks and gates |
+| **Routed skills** | 238 skills called internally by the playbooks and gates |
 
 You almost never call a routed skill directly. You enter at a playbook.
 The playbook walks the moves. The gates fire at decision points. The routed

@@ -884,9 +884,9 @@
       "use",
       "wants"
     ],
-    "use_when": "Use Productize Autoplan when the user wants Productize to inspect the current plan, build stage, release, or production decision and automatically select the relevant reviewers and gates in the right order.",
-    "do_not_use_when": "Do not use Productize Autoplan when the user has already named a specific reviewer or needs a tactical routed skill artifact. Run the named reviewer or routed skill directly unless routing across multiple gates is the actual task.",
-    "output_artifact": "Autoplan gate matrix with current stage, reviewer set, review order, needed artifacts, and exit criteria",
+    "use_when": "Use Productize Autoplan when the user wants Productize to inspect the current plan, build stage, release, or production decision and automatically select the relevant gates in the right order.",
+    "do_not_use_when": "Do not use Productize Autoplan when the user has already named a specific gate or needs a tactical routed skill artifact. Run the named gate or routed skill directly unless routing across multiple gates is the actual task.",
+    "output_artifact": "Autoplan gate matrix with current stage, gate set, review order, needed artifacts, and exit criteria",
     "routing_signals": [
       "productize-autoplan",
       "autoplan",
@@ -895,7 +895,7 @@
       "review-router",
       "gate-matrix",
       "review-order",
-      "all-relevant-reviewers",
+      "all-relevant-gates",
       "meta-runner",
       "productize",
       "operations",
@@ -904,17 +904,17 @@
       "use"
     ],
     "failure_modes": [
-      "Runs every reviewer by default instead of selecting only the gates made relevant by the current playbook stage, evidence, and blocked decision.",
-      "Produces a generic checklist without sequencing reviewers, identifying stale artifacts, or stating what each reviewer needs to inspect.",
+      "Runs every gate by default instead of selecting only the gates made relevant by the current playbook stage, evidence, and blocked decision.",
+      "Produces a generic checklist without sequencing gates, identifying stale artifacts, or stating what each gate needs to inspect.",
       "Uses autoplan as a substitute for the actual 0-1, operate, or grow playbook instead of returning gate calls that unblock the active loop."
     ],
     "examples": [
       {
-        "prompt": "Use $autoplan to inspect this implementation plan and tell me which Productize reviewers should run now, in what order, and what each gate needs.",
-        "expected_artifact": "Autoplan gate matrix with current stage, reviewer set, review order, needed artifacts, and exit criteria"
+        "prompt": "Use $autoplan to inspect this implementation plan and tell me which Productize gates should run now, in what order, and what each gate needs.",
+        "expected_artifact": "Autoplan gate matrix with current stage, gate set, review order, needed artifacts, and exit criteria"
       }
     ],
-    "framework_fit": "Productize Autoplan fits cross-gate coordination when the user does not want to manually choose between thesis, product, design, engineering, QA, release, docs, DX, and comms reviewers. It is a meta-runner for gate selection, not a product artifact generator.",
+    "framework_fit": "Productize Autoplan fits cross-gate coordination when the user does not want to manually choose between thesis, product, design, engineering, QA, release, docs, DX, and comms gates. It is a meta-runner for gate selection, not a product artifact generator.",
     "source_path": "skills/autoplan/SKILL.md",
     "template_path": "skills/autoplan/SKILL.md.tmpl",
     "skill_path": "skills/autoplan",

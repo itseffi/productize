@@ -1,23 +1,25 @@
 ---
 name: productize
 description: >-
-  Productize root skill for building and shipping products with an AI coding agent.
-  Routes work across founder discovery, research, positioning, finance, decision
-  making, requirements, design, metrics, AI-builder execution, code implementation,
-  verification, stakeholder narratives, growth, launch, and learning workflows. Use
-  when the user wants to build a product from zero, improve an existing product, or
-  needs product work that spans multiple lifecycle stages before code, launch, or
-  growth execution.
+  Productize root skill for building, shipping, operating, and growing AI products
+  inside a coding harness. Routes work across thesis framing, discovery, research,
+  positioning, finance, decision making, requirements, design, metrics,
+  AI-builder execution, code implementation, verification, stakeholder narratives,
+  growth, launch, operation, and learning workflows. Use when the user wants to
+  build a product from zero, improve an existing product, or needs product work
+  that spans multiple lifecycle stages before code, launch, operation, or growth
+  execution.
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl - do not edit directly -->
 <!-- Regenerate: npm run skills:generate -->
 
 # Productize
 
-Productize is the root product-building skill. It helps an AI coding agent decide
-what to build, produce the product artifacts, convert them into agent-ready
-implementation work, write or modify code through the host agent, verify the result,
-and set up the next learning loop.
+Productize is the root routing skill for the Productize system. It helps a coding
+harness decide which playbook, gate, or routed skill owns the current product job,
+produce the product artifacts, convert them into agent-ready implementation work,
+write or modify code through the host agent, verify the result, and set up the next
+learning loop.
 
 ## Productize Preamble
 
@@ -47,7 +49,7 @@ Artifact format policy:
 
 - Default to Markdown for short notes, repo-native documentation, changelog fragments, or artifacts where clean source diffs matter.
 - Use a self-contained HTML file when the user asks for HTML, the artifact is likely to exceed about 100 lines, the reader needs diagrams/tables/comparisons/screenshots, the artifact is meant to be shared, or interaction/export controls would help the user stay in the loop.
-- Route by product job first, then choose the format. Do not create a generic HTML workflow when a Productize playbook, reviewer, or routed skill owns the work.
+- Route by product job first, then choose the format. Do not create a generic HTML workflow when a Productize playbook, gate, or routed skill owns the work.
 - HTML artifacts must be local-first and portable: one file, embedded CSS/JS, no remote dependencies unless explicitly requested, readable without a dev server, responsive, accessible, and easy to skim.
 - Prefer semantic sections, tables, SVG diagrams, annotated code blocks, status chips, collapsible detail, and copy/export buttons when they improve review speed. Avoid decorative complexity that hides the decision.
 - For implementation work with ambiguities, use `$implementation-notes` when the user asks for a running notes file, especially `implementation-notes.html` or `implementation-notes.md`.
@@ -87,7 +89,7 @@ Use the smallest entry point that owns the cadence:
 - `/productize-operate`: production deploy; continuous operating loop that does not close.
 - `/productize-grow`: stable product with activation evidence; closes when the growth target is hit or the strategy pivots.
 
-**Reviewers / Gates**
+**Gates**
 
 - `thesis-review`
 - `product-review`
@@ -101,17 +103,17 @@ Use the smallest entry point that owns the cadence:
 
 **Meta-runner**
 
-- `/productize-autoplan`: detects the current gate and runs the relevant reviewers.
+- `/productize-autoplan`: detects the current gate and runs the relevant gates.
 
 **Routed Skills**
 
-- 239 Productize routed skills called internally by the three playbooks and nine reviewers/gates.
+- 238 Productize routed skills called internally by the three playbooks and nine gates.
 
 ## Routing Map
 
 | User intent | Route | Signals |
 |---|---|---|
-| I have an idea | Think | founder framing, opportunity, wedge |
+| I have an idea | Think | thesis framing, opportunity, wedge |
 | I need positioning/growth | Strategize / Growth | positioning, brand, PMF, AARRR, CAC/LTV |
 | I need a PRD/spec | Plan / Build With AI | PRDs, requirements, technical handoff, implementation plan |
 | I need research | Discover | JTBD, interviews, assumptions, ICP, insight synthesis |
@@ -151,7 +153,7 @@ Use the smallest entry point that owns the cadence:
 
 ## Intent Routes
 
-- **I have an idea**: use Think skills for founder framing, opportunity selection,
+- **I have an idea**: use Think skills for thesis framing, opportunity selection,
   wedge design, and early validation.
 - **I need positioning/growth**: use Strategize or Growth skills for market structure,
   positioning, brand, GTM, growth loops, retention, and PMF.

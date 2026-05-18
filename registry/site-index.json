@@ -4966,7 +4966,7 @@
         {
           "name": "autoplan",
           "title": "Productize Autoplan",
-          "output_artifact": "Autoplan gate matrix with current stage, reviewer set, review order, needed artifacts, and exit criteria"
+          "output_artifact": "Autoplan gate matrix with current stage, gate set, review order, needed artifacts, and exit criteria"
         },
         {
           "name": "bug-prioritization-against-work-in-progress",

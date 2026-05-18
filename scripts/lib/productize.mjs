@@ -442,7 +442,7 @@ Artifact format policy:
 
 - Default to Markdown for short notes, repo-native documentation, changelog fragments, or artifacts where clean source diffs matter.
 - Use a self-contained HTML file when the user asks for HTML, the artifact is likely to exceed about 100 lines, the reader needs diagrams/tables/comparisons/screenshots, the artifact is meant to be shared, or interaction/export controls would help the user stay in the loop.
-- Route by product job first, then choose the format. Do not create a generic HTML workflow when a Productize playbook, reviewer, or routed skill owns the work.
+- Route by product job first, then choose the format. Do not create a generic HTML workflow when a Productize playbook, gate, or routed skill owns the work.
 - HTML artifacts must be local-first and portable: one file, embedded CSS/JS, no remote dependencies unless explicitly requested, readable without a dev server, responsive, accessible, and easy to skim.
 - Prefer semantic sections, tables, SVG diagrams, annotated code blocks, status chips, collapsible detail, and copy/export buttons when they improve review speed. Avoid decorative complexity that hides the decision.
 - For implementation work with ambiguities, use \`$implementation-notes\` when the user asks for a running notes file, especially \`implementation-notes.html\` or \`implementation-notes.md\`.
@@ -476,6 +476,8 @@ Current skill metadata:
 
 export function renderRootRouting(skills = readAllSkills()) {
   const surfaceSkillNames = new Set([
+    "productize",
+    "0-1",
     "operate",
     "grow",
     "autoplan",
@@ -491,7 +493,7 @@ export function renderRootRouting(skills = readAllSkills()) {
   ]);
   const routedInternalCount = skills.filter((skill) => !surfaceSkillNames.has(skill.skillName)).length;
   const rows = [
-    ["I have an idea", "Think", "founder framing, opportunity, wedge"],
+    ["I have an idea", "Think", "thesis framing, opportunity, wedge"],
     ["I need positioning/growth", "Strategize / Growth", "positioning, brand, PMF, AARRR, CAC/LTV"],
     ["I need a PRD/spec", "Plan / Build With AI", "PRDs, requirements, technical handoff, implementation plan"],
     ["I need research", "Discover", "JTBD, interviews, assumptions, ICP, insight synthesis"],
@@ -516,7 +518,7 @@ Use the smallest entry point that owns the cadence:
 - \`/productize-operate\`: production deploy; continuous operating loop that does not close.
 - \`/productize-grow\`: stable product with activation evidence; closes when the growth target is hit or the strategy pivots.
 
-**Reviewers / Gates**
+**Gates**
 
 - \`thesis-review\`
 - \`product-review\`
@@ -530,11 +532,11 @@ Use the smallest entry point that owns the cadence:
 
 **Meta-runner**
 
-- \`/productize-autoplan\`: detects the current gate and runs the relevant reviewers.
+- \`/productize-autoplan\`: detects the current gate and runs the relevant gates.
 
 **Routed Skills**
 
-- ${routedInternalCount} Productize routed skills called internally by the three playbooks and nine reviewers/gates.
+- ${routedInternalCount} Productize routed skills called internally by the three playbooks and nine gates.
 
 ## Routing Map\n\n| User intent | Route | Signals |\n|---|---|---|\n${routing}\n\n## Lifecycle Index\n\n${counts}\n`;
 }
