@@ -1,5 +1,5 @@
 {
-  "name": "productize-agent-skills",
+  "name": "@productize/agent-skills",
   "version": "1.1.2",
   "description": "Productize skills and runtime for building, shipping, operating, and growing AI products inside coding harnesses.",
   "license": "MIT",
@@ -43,6 +43,7 @@
     "VERSION"
   ],
   "bin": {
+    "agent-skills": "setup",
     "productize": "setup",
     "productize-setup": "setup",
     "productize-config": "bin/productize-config",

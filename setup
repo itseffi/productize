@@ -2,7 +2,22 @@
 set -euo pipefail
 umask 077
 
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+resolve_script_dir() {
+  local source="${BASH_SOURCE[0]:-$0}"
+  while [ -L "$source" ]; do
+    local source_dir
+    source_dir="$(cd -P "$(dirname "$source")" && pwd)"
+    local target
+    target="$(readlink "$source")"
+    case "$target" in
+      /*) source="$target" ;;
+      *) source="$source_dir/$target" ;;
+    esac
+  done
+  cd -P "$(dirname "$source")" && pwd
+}
+
+ROOT_DIR="$(resolve_script_dir)"
 HOST="auto"
 TEAM=0
 SKILL_PREFIX=1

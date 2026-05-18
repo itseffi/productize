@@ -30,6 +30,13 @@ for the wrong product.
 Install Productize into the harness you use:
 
 ```sh
+npm install -g @productize/agent-skills
+productize --host auto
+```
+
+Or install from source:
+
+```sh
 git clone --single-branch --depth 1 https://github.com/itseffi/productize.git productize
 cd productize
 ./setup --host auto
