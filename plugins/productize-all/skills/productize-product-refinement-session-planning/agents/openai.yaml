@@ -1,0 +1,8 @@
+interface:
+  display_name: "Product refinement session planning"
+  short_description: "Product refinement session planning. Use when the user needs a product workflow for project management related to..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $productize-product-refinement-session-planning with my product context."
+
+policy:
+  allow_implicit_invocation: false

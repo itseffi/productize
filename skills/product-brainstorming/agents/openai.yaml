@@ -1,0 +1,8 @@
+interface:
+  display_name: "Product Brainstorming"
+  short_description: "Brainstorm product ideas, explore problem spaces, and challenge assumptions as a sharp thinking partner. Use when..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $product-brainstorming with my product context."
+
+policy:
+  allow_implicit_invocation: true

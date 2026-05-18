@@ -1,0 +1,53 @@
+{
+  "title": "PLG Growth Playbook",
+  "category": "Growth",
+  "lifecycle": "Growth",
+  "tags": [
+    "plg-growth-playbook",
+    "plg",
+    "product-led-growth",
+    "pql",
+    "activation",
+    "retention",
+    "growth-loops",
+    "lifecycle-triggers",
+    "pricing-packaging",
+    "cac-payback",
+    "growth-pod",
+    "aha-moment",
+    "growth",
+    "playbook"
+  ],
+  "use_when": "Use when a product-led B2B, SaaS, self-serve, or hybrid product needs an integrated growth diagnosis across bottleneck, best-fit segment, aha moment, loops, experiments, PQLs, lifecycle triggers, pricing/packaging, growth pod sprint plan, and sustainability.",
+  "do_not_use_when": "Do not use for narrow AARRR funnel diagnosis, standalone growth-loop design, pricing-only work, GTM motion comparison, or generic acquisition ideas that are not tied to activation, retention, CAC payback, expansion, or defensibility.",
+  "output_artifact": "PLG growth diagnosis with bottleneck, segment, aha path, loops, experiments, PQL definition, lifecycle triggers, pricing/packaging suggestions, growth pod sprint plan, and sustainability score",
+  "routing_signals": [
+    "plg",
+    "product-led-growth",
+    "pql",
+    "product-qualified-lead",
+    "aha-moment",
+    "lifecycle-triggers",
+    "growth-pod",
+    "pricing-packaging",
+    "free-tier",
+    "activation",
+    "retention",
+    "cac-payback",
+    "expansion",
+    "sustainable-growth"
+  ],
+  "framework_fit": "Best when the user needs one integrated PLG operating artifact rather than a narrow funnel, loop, pricing, or GTM-motion analysis.",
+  "failure_modes": [
+    "Optimizes for vanity signups instead of activation, retention, CAC payback, expansion, or defensibility.",
+    "Suggests channel tactics before checking aha moment, best-fit segment, retention, and product-native loops.",
+    "Defines PQLs or lifecycle triggers without observable behavior, firmographic fit, intent, and sales handoff rules.",
+    "Gates value too early without testing free limits, tier thresholds, and activation impact."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $plg-growth-playbook to diagnose our PLG motion. We have strong signups, weak activation, unclear PQL handoff, and pricing threshold questions.",
+      "expected_artifact": "PLG growth diagnosis with bottleneck, segment, aha path, loops, experiments, PQL definition, lifecycle triggers, pricing/packaging suggestions, growth pod sprint plan, and sustainability score"
+    }
+  ]
+}

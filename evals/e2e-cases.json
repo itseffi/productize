@@ -1,0 +1,111 @@
+[
+  {
+    "name": "runtime founder wedge route",
+    "command": [
+      "bin/productize-skill-router",
+      "Founder: I have a rough idea for a compliance copilot for small accounting firms. Help me choose a narrow beachhead, first customer segment, and riskiest assumption before we build."
+    ],
+    "must_contain": ["Discover"]
+  },
+  {
+    "name": "runtime PMF route",
+    "command": [
+      "bin/productize-skill-router",
+      "Founder: is this product-market fit or just early sales pull? We have enthusiastic pilots, weak retention cohorts, and unclear repeat usage."
+    ],
+    "must_contain": ["product-market-fit-cycle", "Growth"]
+  },
+  {
+    "name": "runtime AI builder route",
+    "command": [
+      "bin/productize-skill-router",
+      "AI builder: create an agent handoff for building a retrieval-based research assistant MVP. I need implementation plan, architecture risks, eval plan, verification, and coding-agent instructions."
+    ],
+    "must_contain": ["Build With AI"]
+  },
+  {
+    "name": "runtime support tickets route",
+    "command": [
+      "bin/productize-skill-router",
+      "Product manager: we have 400 support tickets about reporting exports and dashboard filters. Turn them into product themes and prioritized improvements."
+    ],
+    "must_contain": ["support-tickets-as-actionable-product-improvements", "Launch & Learn"]
+  },
+  {
+    "name": "runtime roadmap debate route",
+    "command": [
+      "bin/productize-skill-router",
+      "CPO: sales wants SSO, customers want dashboards, and engineering wants reliability work. Turn this roadmap debate into a decision memo with options, tradeoffs, and recommendation."
+    ],
+    "must_contain": ["roadmap-update"]
+  },
+  {
+    "name": "runtime data validation route",
+    "command": [
+      "bin/productize-skill-router",
+      "Product ops: dashboard metrics disagree with warehouse data. Define a reliable metrics review and data validation plan."
+    ],
+    "must_contain": ["validate-data", "Measure"]
+  },
+  {
+    "name": "runtime ab test route",
+    "command": [
+      "bin/productize-skill-router",
+      "PM: our checkout A/B test reached 22,000 users, conversion is up 3.1%, revenue guardrail is flat, and p-value is 0.03. Decide whether to ship, extend, or stop."
+    ],
+    "must_contain": ["ab-test-analysis", "Measure"]
+  },
+  {
+    "name": "runtime plg playbook route",
+    "command": [
+      "bin/productize-skill-router",
+      "Growth lead: build a PLG growth playbook for our B2B self-serve product. Diagnose bottleneck, aha path, growth loops, PQLs, lifecycle triggers, pricing thresholds, and growth pod sprint."
+    ],
+    "must_contain": ["plg-growth-playbook", "Growth"]
+  },
+  {
+    "name": "runtime strategic decision route",
+    "command": [
+      "bin/productize-skill-router",
+      "Product leader: run a strategic decision making quality review for a pivot choice. Check bounded rationality, System 1 and System 2, anchoring, framing, confirmation bias, base rates, and sunk cost."
+    ],
+    "must_contain": ["strategic-decision-making-quality-review", "Decision Making"]
+  },
+  {
+    "name": "runtime group decision route",
+    "command": [
+      "bin/productize-skill-router",
+      "CPO: design a group decision process for a roadmap committee and prevent groupthink, group polarization, conformity bias, authority bias, common information effect, and weak dissent."
+    ],
+    "must_contain": ["group-decision-making-quality-review", "Decision Making"]
+  },
+  {
+    "name": "runtime valuation route",
+    "command": [
+      "bin/productize-skill-router",
+      "Founder: what is this SaaS company worth and what should we pay? I need DCF, public comps, enterprise value, equity value, price per share, and sensitivities."
+    ],
+    "must_contain": ["valuation-and-deal-pricing", "Finance"]
+  },
+  {
+    "name": "runtime vc deal route",
+    "command": [
+      "bin/productize-skill-router",
+      "Founder: model this Series A term sheet with pre-money, post-money, cap table, dilution, option pool, convertible note, SAFE, and liquidation preference."
+    ],
+    "must_contain": ["venture-capital-deal-modeling", "Finance"]
+  },
+  {
+    "name": "runtime cost of capital route",
+    "command": [
+      "bin/productize-skill-router",
+      "Finance lead: estimate WACC with CAPM, beta, risk-free rate, market risk premium, debt cost, tax rate, and market value weights."
+    ],
+    "must_contain": ["risk-return-cost-of-capital", "Finance"]
+  },
+  {
+    "name": "update check emits version",
+    "command": ["bin/productize-update-check"],
+    "must_contain": ["version", "registry_present"]
+  }
+]

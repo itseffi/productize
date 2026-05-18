@@ -1,0 +1,8 @@
+interface:
+  display_name: "TDD"
+  short_description: "Test-driven development: write a failing test first, then minimal code. Use before implementing any feature or bugfix."
+  brand_color: "#334155"
+  default_prompt: "Use $productize-tdd with my product context."
+
+policy:
+  allow_implicit_invocation: true

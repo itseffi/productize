@@ -1,0 +1,8 @@
+interface:
+  display_name: "Innovative product ideas from structured brainstorming"
+  short_description: "Innovative product ideas from structured brainstorming. Use when the user needs a product workflow for ideation &..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $innovative-product-ideas-from-structured-brainstorming with my product context."
+
+policy:
+  allow_implicit_invocation: true

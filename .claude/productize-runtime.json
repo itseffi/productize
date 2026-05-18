@@ -1,0 +1,57 @@
+{
+  "generated": true,
+  "host": "claude",
+  "display_name": "Claude Code",
+  "adapter_source": "hosts/claude.mjs",
+  "generated_skill_path": ".claude/skills/{skill}",
+  "sidecars": [
+    {
+      "source": "bin/productize-artifact-log",
+      "install_name": "productize-artifact-log"
+    },
+    {
+      "source": "bin/productize-completion-status",
+      "install_name": "productize-completion-status"
+    },
+    {
+      "source": "bin/productize-config",
+      "install_name": "productize-config"
+    },
+    {
+      "source": "bin/productize-context-restore",
+      "install_name": "productize-context-restore"
+    },
+    {
+      "source": "bin/productize-context-save",
+      "install_name": "productize-context-save"
+    },
+    {
+      "source": "bin/productize-registry-search",
+      "install_name": "productize-registry-search"
+    },
+    {
+      "source": "bin/productize-routing.mjs",
+      "install_name": "productize-routing.mjs"
+    },
+    {
+      "source": "bin/productize-runtime.mjs",
+      "install_name": "productize-runtime.mjs"
+    },
+    {
+      "source": "bin/productize-session-log",
+      "install_name": "productize-session-log"
+    },
+    {
+      "source": "bin/productize-skill-router",
+      "install_name": "productize-skill-router"
+    },
+    {
+      "source": "bin/productize-update-check",
+      "install_name": "productize-update-check"
+    },
+    {
+      "source": "bin/productize-workflow",
+      "install_name": "productize-workflow"
+    }
+  ]
+}

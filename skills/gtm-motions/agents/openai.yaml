@@ -1,0 +1,8 @@
+interface:
+  display_name: "GTM Motions"
+  short_description: "GTM Motions. Use when selecting between PLG, sales-led, inbound, outbound, paid, community, partner, ABM, or hybrid..."
+  brand_color: "#C2410C"
+  default_prompt: "Use $gtm-motions with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Problem statement framing from conversation transcript"
+  short_description: "Problem statement framing from conversation transcript. Use when the user needs a product workflow for user research..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-problem-statement-framing-from-conversation-transcript with my product context."
+
+policy:
+  allow_implicit_invocation: true

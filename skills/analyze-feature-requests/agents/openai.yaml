@@ -1,0 +1,8 @@
+interface:
+  display_name: "Analyze Feature Requests"
+  short_description: "Analyze Feature Requests. Use when reviewing customer, sales, support, or stakeholder feature requests and turning..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $analyze-feature-requests with my product context."
+
+policy:
+  allow_implicit_invocation: true

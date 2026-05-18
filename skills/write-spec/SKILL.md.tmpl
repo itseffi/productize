@@ -1,0 +1,77 @@
+---
+name: write-spec
+description: >-
+  Write a feature spec or PRD from a problem statement or feature idea. Use when turning a vague
+  idea into a structured document, scoping goals and non-goals, defining success metrics and
+  acceptance criteria, or breaking a big ask into phases.
+---
+# Write Spec
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Write a feature specification or product requirements document.
+
+## Argument Hint
+
+`<feature or problem statement>`
+
+## Usage
+
+```text
+/write-spec $ARGUMENTS
+```
+
+## PM Skills Main Merge
+
+Load `references/pm-skills-main-merge.md` when the request mentions `create prd`, `8-section prd`, `feature spec`, `release planning`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.
+
+## Workflow
+
+### 1. Understand the Feature
+
+Accept a feature name, problem statement, user request, or vague idea.
+
+Ask conversationally for the most important missing context:
+- User problem and affected segment.
+- Success metrics.
+- Constraints, dependencies, deadlines.
+- Prior attempts or related solutions.
+
+### 2. Pull Context
+
+If connected, search project tracker, docs, research, design files, and meeting notes for related work, requirements, mockups, decisions, and dependencies.
+
+If tools are not connected, proceed from user-provided context and state assumptions.
+
+### 3. Generate PRD
+
+Include:
+- **Problem Statement**: 2-3 sentences with user, pain, frequency, and impact.
+- **Goals**: 3-5 measurable outcomes.
+- **Non-Goals**: 3-5 out-of-scope items with rationale.
+- **User Stories**: "As a [user], I want [capability], so that [benefit]."
+- **Requirements**: P0, P1, P2 with acceptance criteria.
+- **Success Metrics**: leading and lagging indicators with targets and measurement method.
+- **Open Questions**: tagged by owner and blocking status.
+- **Timeline Considerations**: hard deadlines, dependencies, phasing.
+
+### 4. Acceptance Criteria
+
+Use Given/When/Then or checklist format. Cover:
+- Happy path.
+- Error states.
+- Empty states.
+- Boundary conditions.
+- Negative cases.
+
+### 5. Scope Rules
+
+- Be opinionated about v1 scope.
+- If everything is P0, challenge it.
+- Require scope addition to come with scope removal or timeline extension.
+- Separate v1 from future considerations.
+- Keep requirements behavior-focused, not implementation-prescriptive unless necessary.
+
+## Output Rules
+
+Use clear markdown headers and tables where helpful. Keep the spec skimmable. Open questions must be genuinely unresolved.

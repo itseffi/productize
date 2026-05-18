@@ -1,0 +1,8 @@
+interface:
+  display_name: "Actionable user research decisions from project insights"
+  short_description: "Actionable user research decisions from project insights. Use when the user needs a product workflow for user..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $actionable-user-research-decisions-from-project-insights with my product context."
+
+policy:
+  allow_implicit_invocation: true

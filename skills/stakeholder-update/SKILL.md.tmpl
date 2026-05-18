@@ -1,0 +1,99 @@
+---
+name: stakeholder-update
+description: >-
+  Generate a stakeholder update tailored to audience and cadence. Use when writing weekly or
+  monthly status, announcing a launch, escalating a risk or blocker, or translating progress into
+  executive, engineering, partner, or customer-facing versions.
+---
+# Stakeholder Update
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Generate a stakeholder update tailored to audience, cadence, and channel.
+
+## Argument Hint
+
+`<update type and audience>`
+
+## Usage
+
+```text
+/stakeholder-update $ARGUMENTS
+```
+
+## Workflow
+
+### 1. Determine Type
+
+Identify whether this is:
+- Weekly status.
+- Monthly summary.
+- Launch announcement.
+- Ad-hoc escalation, pivot, or decision update.
+
+### 2. Determine Audience
+
+Adapt content to the audience:
+- Executives: brief, outcome-focused, strategic, risk-aware.
+- Engineering: technical context, owners, blockers, decisions.
+- Cross-functional partners: changes that affect them, asks, dependencies.
+- Customers: benefits, availability, timelines, no internal jargon.
+- Board: metrics, strategy, risks, concise.
+
+### 3. Pull Context
+
+If connected, use project tracker, chat, meeting notes, docs, and knowledge base to find:
+- Progress since last update.
+- Completed milestones.
+- At-risk or blocked items.
+- Decisions made or needed.
+- Upcoming milestones.
+
+If no tools are connected, ask for accomplishments, blockers, decisions, next steps, and asks.
+
+### 4. Draft the Update
+
+Use the right template:
+
+**Executives**
+- Status: Green, Yellow, or Red.
+- TL;DR.
+- Progress tied to goals.
+- Risks with mitigation.
+- Decisions needed and deadline.
+- Next milestones.
+
+**Engineering**
+- Shipped items with links if available.
+- In-progress items with owners.
+- Blockers.
+- Decisions made or needed.
+- Priority changes and rationale.
+
+**Cross-functional**
+- What is coming.
+- What is needed from them and by when.
+- Decisions that affect their team.
+- Where input is wanted.
+
+**Customers**
+- What is new and why it matters.
+- Coming soon.
+- Known issues and workarounds if customer-impacting.
+- Feedback channel.
+
+### 5. Risk and Decision Rules
+
+- Use Green only when genuinely on track.
+- Use Yellow at first meaningful risk.
+- Use Red when intervention is needed.
+- Every risk should include impact, likelihood, mitigation, owner, and ask.
+- Document important decisions with context, decision, consequences, and alternatives considered.
+
+## Output Rules
+
+- Lead with the conclusion.
+- Match length to audience attention.
+- Make asks specific.
+- If there is bad news, lead with it.
+- Avoid activity reporting when outcome reporting is possible.

@@ -1,0 +1,31 @@
+{
+  "name": "productize-all",
+  "version": "1.1.2",
+  "description": "All Productize product-management and AI-builder skills. Implicit invocation is disabled in this bundle to protect context budget.",
+  "author": {
+    "name": "Productize AI"
+  },
+  "license": "MIT",
+  "keywords": [
+    "product",
+    "product-management",
+    "agent-skills",
+    "ai-builders",
+    "all"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Productize All",
+    "shortDescription": "All Productize product-management and AI-builder skills. Implicit invocation is disabled in this",
+    "longDescription": "All Productize product-management and AI-builder skills. Implicit invocation is disabled in this bundle to protect context budget.",
+    "developerName": "Productize AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use an explicit Productize skill for this product task."
+    ],
+    "brandColor": "#1D4ED8"
+  }
+}

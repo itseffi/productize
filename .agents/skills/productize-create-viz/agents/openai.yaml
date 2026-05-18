@@ -1,0 +1,8 @@
+interface:
+  display_name: "Create Viz"
+  short_description: "Create publication-quality visualizations with Python. Use when turning query results or a DataFrame into a chart,..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-create-viz with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Reinforcing sequence from unstructured items"
+  short_description: "Reinforcing sequence from unstructured items. Use when the user needs a product workflow for project management..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $productize-reinforcing-sequence-from-unstructured-items with my product context."
+
+policy:
+  allow_implicit_invocation: false

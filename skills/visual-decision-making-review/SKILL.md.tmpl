@@ -1,0 +1,88 @@
+---
+name: visual-decision-making-review
+description: >-
+  Review how visuals, charts, diagrams, canvases, dashboards, or slides may shape a product
+  decision. Use when the user needs to identify visual bias, overconfidence, misleading
+  emphasis, graph validity issues, or decision stickiness caused by the visual artifact.
+---
+# Visual Decision Making Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill when the visual itself is part of the decision-making risk. This is not a
+chart-building skill. It reviews whether a visual artifact helps decision quality or creates
+false confidence, hidden emphasis, misleading comparisons, or sticky first impressions.
+
+Route to `data-visualization` when the user needs to choose chart types or create charts.
+Use this skill when the question is whether the visual will distort or improve a decision.
+
+## Decision-Making Principles
+
+- Visuals expand working memory and can turn implicit information into a shared decision format.
+- Repeated visual frameworks can improve pattern recognition and knowledge transfer.
+- Visuals also create decision risks: detail can imply relevance, polish can imply correctness,
+  formatting can hide weak evidence, and emphasized elements can blind the group to alternatives.
+- Original visuals can become sticky anchors, especially in meetings and executive reviews.
+- Cultural, language, and perception differences can change how a visual is interpreted.
+
+## Workflow
+
+1. Identify the decision the visual is meant to support.
+2. Identify the visual type and what it makes salient.
+3. Check whether the visual offloads complexity or oversimplifies the problem.
+4. Audit validity, scale, labeling, uncertainty, source, and construction errors.
+5. Identify emphasis, omissions, anchors, and overconfidence risks.
+6. Recommend visual changes and decision-process safeguards.
+
+## Output Contract
+
+Return:
+
+```markdown
+# Visual Decision Making Review
+
+## 1. Decision Context
+Decision:
+Audience:
+Visual artifact:
+Decision moment:
+
+## 2. What The Visual Makes Salient
+Main message:
+Highlighted elements:
+Hidden or de-emphasized elements:
+Likely first impression:
+
+## 3. Decision Value
+Working-memory support:
+Pattern recognition:
+Shared format:
+Knowledge transfer:
+
+## 4. Visual Decision Risks
+Relevance overconfidence:
+Formatting illusion:
+Validity / construction issues:
+Robustness / stickiness:
+Blind-sighting or emphasis risk:
+Cultural or interpretation risk:
+
+## 5. Corrections
+Visual changes:
+Evidence labels:
+Alternative views:
+Uncertainty or caveats:
+Meeting safeguards:
+
+## 6. Decision Recommendation
+Use as-is / revise / replace / supplement:
+Why:
+Next action:
+```
+
+## Failure Modes
+
+- Gives generic chart advice without analyzing decision impact.
+- Treats polished visuals as reliable without checking evidence and construction.
+- Fails to identify what the visual emphasizes and what it hides.
+- Omits decision-process safeguards such as alternative views, caveats, or private review.

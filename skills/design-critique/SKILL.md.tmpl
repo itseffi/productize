@@ -1,0 +1,151 @@
+---
+name: design-critique
+description: >-
+  Get structured design feedback on usability, hierarchy, and consistency. Use when asked to
+  review a design, critique a mockup, react to a screen, or provide feedback on a Figma link,
+  screenshot, or description from exploration through final polish.
+---
+# Design Critique
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Give structured design feedback across usability, hierarchy, consistency, accessibility, and polish.
+
+## Argument Hint
+
+`<Figma URL, screenshot, or description>`
+
+## Usage
+
+```text
+/design-critique $ARGUMENTS
+```
+
+## Inputs
+
+Accept:
+- Figma URL.
+- Screenshot.
+- File reference.
+- Live or local page URL.
+- Detailed design description.
+
+If a Figma URL, browser URL, or file is available and the relevant tool is connected, inspect the artifact directly. Otherwise ask the user for the minimum design context needed.
+
+Ask for:
+- What the design is.
+- Who it is for.
+- Stage: exploration, refinement, final polish, or handoff.
+- Optional focus: mobile, onboarding, checkout, navigation, visual polish, accessibility, or another specific area.
+
+## Critique Framework
+
+### 1. First Impression
+
+Assess the first two seconds:
+- What draws the eye first, and is that correct?
+- What is the emotional reaction?
+- Is the purpose immediately clear?
+
+### 2. Usability
+
+Check:
+- Whether users can accomplish the intended goal.
+- Navigation clarity.
+- Obviousness of interactive elements.
+- Step count and avoidable friction.
+- Error, empty, loading, and edge states if visible.
+
+### 3. Visual Hierarchy
+
+Check:
+- Reading order.
+- Emphasis and priority.
+- Typography scale and weight.
+- Whitespace and grouping.
+- CTA prominence.
+
+### 4. Consistency
+
+Check:
+- Design system alignment.
+- Spacing, color, radius, shadows, and typography consistency.
+- Reuse of patterns for similar interactions.
+- Naming and language consistency.
+
+### 5. Accessibility
+
+Do a practical pass:
+- Contrast risk.
+- Touch target size.
+- Text readability.
+- Form labels and instructions.
+- Keyboard and screen reader risks if interaction can be assessed.
+
+For a full WCAG audit, recommend `accessibility-review`.
+
+## Feedback Rules
+
+- Be specific: name the element and the issue.
+- Explain why the issue matters to the user or task.
+- Suggest an alternative, not just a criticism.
+- Include what works well.
+- Match feedback to design stage: early exploration gets directional feedback; final polish gets precise issues.
+- Avoid generic taste comments unless they connect to purpose, brand, or usability.
+
+## Output Format
+
+```markdown
+## Design Critique: [Design Name]
+
+### Overall Impression
+
+[1-2 sentence first reaction: what works and the biggest opportunity]
+
+### Usability
+
+| Finding | Severity | Recommendation |
+|---|---|---|
+| [Issue] | Critical/Moderate/Minor | [Fix] |
+
+### Visual Hierarchy
+
+- **What draws the eye first**: [Element] - [whether this is correct]
+- **Reading flow**: [How the eye moves through the layout]
+- **Emphasis**: [Whether the right elements are emphasized]
+
+### Consistency
+
+| Element | Issue | Recommendation |
+|---|---|---|
+| [Typography/spacing/color/component] | [Inconsistency] | [Fix] |
+
+### Accessibility
+
+- **Color contrast**: [Pass/fail/risk for key text]
+- **Touch targets**: [Adequate size?]
+- **Text readability**: [Font size, line height, density]
+- **Assistive tech risks**: [Keyboard or screen reader risks if visible]
+
+### What Works Well
+
+- [Positive observation 1]
+- [Positive observation 2]
+
+### Priority Recommendations
+
+1. **[Most impactful change]** - [Why and how]
+2. **[Second priority]** - [Why and how]
+3. **[Third priority]** - [Why and how]
+```
+
+## Connected Tools
+
+If a design tool is connected:
+- Pull the design directly and inspect components, tokens, typography, spacing, layers, and design-system consistency.
+
+If user feedback or research tools are connected:
+- Cross-reference critique against recent user feedback, usability findings, or support tickets.
+
+If browser tooling is connected:
+- Inspect live behavior, responsive layout, interaction states, focus order, and console errors.

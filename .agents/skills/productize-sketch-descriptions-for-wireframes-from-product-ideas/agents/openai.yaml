@@ -1,0 +1,8 @@
+interface:
+  display_name: "Sketch descriptions for wireframes from product ideas"
+  short_description: "Sketch descriptions for wireframes from product ideas. Use when the user needs a product workflow for design &..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $productize-sketch-descriptions-for-wireframes-from-product-ideas with my product context."
+
+policy:
+  allow_implicit_invocation: true

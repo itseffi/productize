@@ -1,0 +1,75 @@
+name: Productize Evals
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: productize-evals-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evals:
+    name: ${{ matrix.suite.label }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite:
+          - name: router
+            label: Router evals
+            command: npm run eval:router -- --report-dir .productize-evals/router
+            run_routes: "true"
+            run_smoke: "false"
+          - name: runtime-e2e
+            label: Runtime e2e evals
+            command: npm run eval:e2e -- --report-dir .productize-evals/runtime-e2e
+            run_routes: "false"
+            run_smoke: "true"
+          - name: llm-offline
+            label: Offline LLM eval harness
+            command: npm run eval:llm:offline -- --report-dir .productize-evals/llm-offline
+            run_routes: "false"
+            run_smoke: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm run build
+      - name: Run route regression tests
+        if: matrix.suite.run_routes == 'true'
+        run: npm run test:routes
+      - name: Run eval suite
+        run: ${{ matrix.suite.command }}
+      - name: Run install smoke test
+        if: matrix.suite.run_smoke == 'true'
+        run: npm run install:smoke
+      - name: Upload eval artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: productize-evals-${{ matrix.suite.name }}
+          path: .productize-evals/${{ matrix.suite.name }}/
+          if-no-files-found: warn
+          retention-days: 30
+
+  report:
+    name: Eval report
+    runs-on: ubuntu-latest
+    needs: evals
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: productize-evals-*
+          path: .productize-evals
+          merge-multiple: false
+      - name: Write eval summary
+        run: node scripts/report-eval-results.mjs .productize-evals | tee "$GITHUB_STEP_SUMMARY"

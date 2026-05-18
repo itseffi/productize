@@ -1,0 +1,44 @@
+{
+  "title": "Accessibility Review",
+  "category": "Design",
+  "tags": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "contrast",
+    "keyboard",
+    "screen-reader",
+    "accessibility-review",
+    "review",
+    "design",
+    "prototyping",
+    "run",
+    "audit"
+  ],
+  "lifecycle": "Design",
+  "use_when": "Run a WCAG 2.1 AA accessibility audit on a design or page. Use when asked to audit accessibility, check a11y, determine whether something is accessible, or review color contrast, keyboard navigation, touch target size, or screen reader behavior before handoff.",
+  "do_not_use_when": "Do not use Accessibility Review when the request is mainly metric diagnosis, pricing, GTM, or implementation planning without UX evidence; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Accessibility Review UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "accessibility-review",
+    "accessibility",
+    "review",
+    "design",
+    "prototyping",
+    "run",
+    "wcag",
+    "audit"
+  ],
+  "framework_fit": "Accessibility Review fits Design work in the Design lifecycle when the user needs Accessibility Review UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Accessibility Review UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats Accessibility Review as generic Design advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Accessibility Review when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $accessibility-review to turn this accessibility context into a decision-ready Accessibility Review UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "Accessibility Review UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

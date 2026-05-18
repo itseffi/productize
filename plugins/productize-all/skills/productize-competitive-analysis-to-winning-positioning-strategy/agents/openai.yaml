@@ -1,0 +1,8 @@
+interface:
+  display_name: "Competitive analysis to winning positioning strategy"
+  short_description: "Competitive analysis to winning positioning strategy. Use when the user needs a product workflow for product..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $productize-competitive-analysis-to-winning-positioning-strategy with my product context."
+
+policy:
+  allow_implicit_invocation: false

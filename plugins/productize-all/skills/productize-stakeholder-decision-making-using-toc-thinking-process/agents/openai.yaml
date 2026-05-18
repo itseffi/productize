@@ -1,0 +1,8 @@
+interface:
+  display_name: "Stakeholder decision-making using TOC thinking process"
+  short_description: "Stakeholder decision-making using TOC thinking process. Use when the user needs a product workflow for stakeholder..."
+  brand_color: "#7C2D12"
+  default_prompt: "Use $productize-stakeholder-decision-making-using-toc-thinking-process with my product context."
+
+policy:
+  allow_implicit_invocation: false

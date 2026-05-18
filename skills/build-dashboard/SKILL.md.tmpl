@@ -1,0 +1,93 @@
+---
+name: build-dashboard
+description: >-
+  Build an interactive HTML dashboard with charts, filters, and tables. Use when creating an
+  executive KPI overview, turning query results into a shareable report, building a monitoring
+  snapshot, or combining multiple charts and filters in one browser-openable file.
+---
+# Build Dashboard
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Build a browser-openable interactive HTML dashboard with KPI cards, charts, filters, tables, and professional styling.
+
+## Argument Hint
+
+`<description> [data source]`
+
+## Usage
+
+```text
+/build-dashboard <description of dashboard> [data source]
+```
+
+## Workflow
+
+### 1. Understand Requirements
+
+Determine:
+- Purpose: executive overview, operational monitoring, deep-dive analysis, team report.
+- Audience.
+- Key metrics.
+- Filter dimensions.
+- Data source: query, pasted data, CSV/XLSX, or sample data.
+
+### 2. Gather Data
+
+If warehouse, analytics, or spreadsheet tools are connected, query or parse the data and embed results as JSON.
+
+If only a description is provided, create realistic sample data and clearly label it as sample data.
+
+### 3. Design Layout
+
+Default pattern:
+- Header with title and filters.
+- 2-4 KPI cards.
+- 1-3 charts for trends and breakdowns.
+- Sortable detail table.
+- Footer with data date and source.
+
+Adapt layout to the content. Do not force a table if the data is already summarized.
+
+### 4. Build HTML
+
+Generate one HTML file with:
+- Semantic HTML.
+- Responsive CSS Grid or Flexbox.
+- KPI cards.
+- Chart containers.
+- Filter controls.
+- Sortable and paginated table if needed.
+- Embedded JSON data.
+- JavaScript class or module to handle filters, charts, KPIs, and table updates.
+
+Use Chart.js or another lightweight chart library. If the dashboard must work offline, vendor or inline the library. If using CDN, state that internet access is required.
+
+### 5. Add Interactivity
+
+Include:
+- Dropdown and date filters.
+- Shared filter state that updates all cards, charts, and tables.
+- Sortable table columns.
+- Tooltip formatting.
+- Number formatting for currency, percentage, and large numbers.
+
+### 6. Performance Rules
+
+- Under 1,000 rows: embed raw data.
+- 1,000-10,000 rows: embed data but pre-aggregate charts where useful.
+- 10,000-100,000 rows: embed aggregates and a table sample.
+- Over 100,000 rows: recommend BI tooling, pagination, or server-backed dashboard.
+
+Limit visible table rows and avoid rebuilding unnecessary DOM on filter changes.
+
+### 7. Verify
+
+Open the generated HTML in the browser when browser tooling is available. Check layout, console errors, filters, charts, and responsive behavior.
+
+## Output Rules
+
+- Save with a descriptive filename.
+- Include where the file was written.
+- Note whether data is real or sample.
+- Explain how to swap in real data if sample data was used.

@@ -1,0 +1,36 @@
+{
+  "title": "Stakeholder Brief Clarification and Problem Definition",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Align",
+  "tags": [
+    "stakeholder-brief-clarification-and-problem-definition",
+    "stakeholder",
+    "brief",
+    "clarification",
+    "problem",
+    "definition"
+  ],
+  "use_when": "Stakeholder Brief Clarification and Problem Definition. Use when the user needs a product workflow for stakeholder management related to stakeholder brief clarification and problem definition. Trigger terms: product-design, problem-framing, stakeholder-management, user-research, metrics.",
+  "do_not_use_when": "Do not use Stakeholder Brief Clarification and Problem Definition when the request is mainly technical implementation, analytics modeling, or UX critique; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Stakeholder Brief Clarification and Problem Definition stakeholder narrative with audience, message, risks, asks, and follow-up owner",
+  "routing_signals": [
+    "stakeholder-brief-clarification-and-problem-definition",
+    "stakeholder",
+    "brief",
+    "clarification",
+    "problem",
+    "definition"
+  ],
+  "framework_fit": "Stakeholder Brief Clarification and Problem Definition fits Stakeholder Communication work in the Align lifecycle when the user needs Stakeholder Brief Clarification and Problem Definition stakeholder narrative with audience, message, risks, asks, and follow-up owner and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Stakeholder Brief Clarification and Problem Definition stakeholder narrative with audience, message, risks, asks, and follow-up owner without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Stakeholder Brief Clarification and Problem Definition as generic Stakeholder Communication advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Stakeholder Brief Clarification and Problem Definition when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $stakeholder-brief-clarification-and-problem-definition to turn this stakeholder context into a decision-ready Stakeholder Brief Clarification and Problem Definition stakeholder narrative with audience, message, risks, asks, and follow-up owner.",
+      "expected_artifact": "Stakeholder Brief Clarification and Problem Definition stakeholder narrative with audience, message, risks, asks, and follow-up owner"
+    }
+  ]
+}

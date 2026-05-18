@@ -1,0 +1,161 @@
+[
+  {
+    "name": "founder churn and segment retention",
+    "mode": "existing-product",
+    "persona": "founder",
+    "stage": "early traction with retention risk",
+    "query": "Founder: our self-serve product has 40 paying customers, churn is rising after pricing changes, and enterprise retention looks better. Diagnose what changed and what we should do next.",
+    "expected_lifecycles": ["Growth", "Measure"],
+    "expected_any_skills": [
+      "churn-reduction-from-customer-data-and-exit-survey-analysis",
+      "aarrr-growth-diagnostics",
+      "metrics-review"
+    ]
+  },
+  {
+    "name": "pm support tickets to product improvements",
+    "mode": "existing-product",
+    "persona": "product manager",
+    "stage": "launched product feedback synthesis",
+    "query": "Product manager: we have 400 support tickets about reporting exports and dashboard filters. Turn them into product themes and prioritized improvements.",
+    "expected_lifecycles": ["Launch & Learn"],
+    "expected_top_skill": "support-tickets-as-actionable-product-improvements"
+  },
+  {
+    "name": "pm launched feature missed adoption",
+    "mode": "existing-product",
+    "persona": "product manager",
+    "stage": "post-launch adoption miss",
+    "query": "Product manager: the bulk invite feature launched but missed adoption goals. Analyze the results and recommend whether to iterate, rollback, or kill it.",
+    "expected_lifecycles": ["Launch & Learn", "Measure"],
+    "expected_any_skills": [
+      "feature-results-analysis-from-draft-to-final-report",
+      "post-launch-feedback-loop",
+      "post-launch-feedback-into-v2-improvements-synthesis"
+    ]
+  },
+  {
+    "name": "cpo roadmap debate decision memo",
+    "mode": "existing-product",
+    "persona": "CPO",
+    "stage": "roadmap prioritization",
+    "query": "CPO: sales wants SSO, customers want dashboards, and engineering wants reliability work. Turn this roadmap debate into a decision memo with options, tradeoffs, and recommendation.",
+    "expected_lifecycles": ["Strategize", "Plan", "Measure"],
+    "expected_any_skills": [
+      "roadmap-update",
+      "requirements-prioritization-with-p0-p1-p2-framework",
+      "trade-off-analysis-from-feature-priority-and-effort-data"
+    ]
+  },
+  {
+    "name": "pm confusing workflow design fixes",
+    "mode": "existing-product",
+    "persona": "product manager",
+    "stage": "usability regression",
+    "query": "PM: users say the workflow is confusing and completion dropped. Review the UX and produce concrete product/design fixes with success metrics.",
+    "expected_lifecycles": ["Design", "Measure"],
+    "expected_any_skills": [
+      "design-critique",
+      "ux-edge-cases-from-product-briefs",
+      "success-metrics-for-design-decisions"
+    ]
+  },
+  {
+    "name": "product ops metrics disagree with warehouse",
+    "mode": "existing-product",
+    "persona": "product ops",
+    "stage": "metrics reliability",
+    "query": "Product ops: dashboard metrics disagree with warehouse data. Define a reliable metrics review and data validation plan.",
+    "expected_lifecycles": ["Measure"],
+    "expected_any_skills": [
+      "validate-data",
+      "metrics-review",
+      "data-context-extractor"
+    ]
+  },
+  {
+    "name": "founder expand segment or deepen workflow",
+    "mode": "existing-product",
+    "persona": "founder",
+    "stage": "post-PMF expansion choice",
+    "query": "Founder: we found pull with agencies. Should we expand to in-house teams or deepen agency workflows?",
+    "expected_lifecycles": ["Strategize", "Growth"],
+    "expected_any_skills": [
+      "market-opportunity",
+      "product-market-fit-cycle",
+      "roadmap-update"
+    ]
+  },
+  {
+    "name": "pm ab test ship decision",
+    "mode": "existing-product",
+    "persona": "product manager",
+    "stage": "experiment readout",
+    "query": "PM: our checkout A/B test reached 22,000 users, conversion is up 3.1%, revenue guardrail is flat, and p-value is 0.03. Decide whether to ship, extend, or stop.",
+    "expected_lifecycles": ["Measure", "Launch & Learn"],
+    "expected_top_skill": "ab-test-analysis"
+  },
+  {
+    "name": "growth cohort retention diagnosis",
+    "mode": "existing-product",
+    "persona": "growth PM",
+    "stage": "retention diagnosis",
+    "query": "Growth PM: retention curves changed after onboarding v2. Compare signup cohorts, feature adoption, activation, and churn patterns before we pick growth bets.",
+    "expected_lifecycles": ["Measure", "Growth"],
+    "expected_top_skill": "cohort-analysis"
+  },
+  {
+    "name": "cpo north star metric selection",
+    "mode": "existing-product",
+    "persona": "CPO",
+    "stage": "product operating model",
+    "query": "CPO: we need a North Star Metric and supporting input metrics for our marketplace so product, growth, and sales stop optimizing separate dashboards.",
+    "expected_lifecycles": ["Measure"],
+    "expected_top_skill": "north-star-metric"
+  },
+  {
+    "name": "growth lead gtm motion choice",
+    "mode": "existing-product",
+    "persona": "growth lead",
+    "stage": "scale motion selection",
+    "query": "Growth lead: choose between PLG, sales-led, partner, community, inbound, outbound, and ABM motions for our mid-market security product.",
+    "expected_lifecycles": ["Growth"],
+    "expected_top_skill": "gtm-motions"
+  },
+  {
+    "name": "growth lead plg playbook diagnosis",
+    "mode": "existing-product",
+    "persona": "growth lead",
+    "stage": "PLG scale diagnosis",
+    "query": "Growth lead: build a PLG growth playbook for our B2B self-serve product. Diagnose the bottleneck, faster aha path, growth loops, PQL definition, behavior-triggered lifecycle messages, pricing thresholds, and the next growth pod sprint.",
+    "expected_lifecycles": ["Growth"],
+    "expected_top_skill": "plg-growth-playbook"
+  },
+  {
+    "name": "pm feature request triage",
+    "mode": "existing-product",
+    "persona": "product manager",
+    "stage": "backlog shaping",
+    "query": "PM: triage 180 customer feature requests from sales and support, cluster themes, judge strategic fit, and recommend what enters the backlog.",
+    "expected_lifecycles": ["Plan", "Discover"],
+    "expected_top_skill": "analyze-feature-requests"
+  },
+  {
+    "name": "ai builder qa scenarios from spec",
+    "mode": "existing-product",
+    "persona": "AI builder",
+    "stage": "pre-release verification",
+    "query": "AI builder: from this feature spec, create QA test scenarios with preconditions, happy paths, edge cases, expected outcomes, and a coverage matrix.",
+    "expected_lifecycles": ["Build With AI", "Launch & Learn"],
+    "expected_top_skill": "test-scenarios"
+  },
+  {
+    "name": "pm release notes from shipped tickets",
+    "mode": "existing-product",
+    "persona": "product manager",
+    "stage": "launch communication",
+    "query": "PM: turn these shipped tickets and changelog notes into customer-facing release notes organized by new features, improvements, and fixes.",
+    "expected_lifecycles": ["Launch & Learn", "Align"],
+    "expected_top_skill": "release-notes"
+  }
+]

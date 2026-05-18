@@ -1,0 +1,8 @@
+interface:
+  display_name: "Strategic moves from SWOT pairings"
+  short_description: "Strategic moves from SWOT pairings. Use when the user needs a product workflow for product strategy related to..."
+  brand_color: "#059669"
+  default_prompt: "Use $strategic-moves-from-swot-pairings with my product context."
+
+policy:
+  allow_implicit_invocation: true

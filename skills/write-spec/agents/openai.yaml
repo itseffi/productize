@@ -1,0 +1,8 @@
+interface:
+  display_name: "Write Spec"
+  short_description: "Write a feature spec or PRD from a problem statement or feature idea. Use when turning a vague idea into a..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $write-spec with my product context."
+
+policy:
+  allow_implicit_invocation: true

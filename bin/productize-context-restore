@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+import { latestContext } from "./productize-runtime.mjs";
+
+const context = latestContext();
+if (!context) {
+  console.error("No Productize context found.");
+  process.exit(1);
+}
+console.log(JSON.stringify(context, null, 2));

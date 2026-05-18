@@ -1,0 +1,8 @@
+interface:
+  display_name: "Design Handoff"
+  short_description: "Generate developer handoff specs from a design. Use when a design is ready for engineering and needs a spec sheet..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $productize-design-handoff with my product context."
+
+policy:
+  allow_implicit_invocation: true

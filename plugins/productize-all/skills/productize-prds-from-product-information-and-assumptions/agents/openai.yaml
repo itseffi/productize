@@ -1,0 +1,8 @@
+interface:
+  display_name: "PRDs from product information and assumptions"
+  short_description: "PRDs from product information and assumptions. Use when the user needs a product workflow for business analysis..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $productize-prds-from-product-information-and-assumptions with my product context."
+
+policy:
+  allow_implicit_invocation: false

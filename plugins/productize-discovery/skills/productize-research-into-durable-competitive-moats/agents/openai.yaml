@@ -1,0 +1,8 @@
+interface:
+  display_name: "Research into durable competitive moats"
+  short_description: "Research into durable competitive moats. Use when the user needs a product workflow for product strategy related to..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-research-into-durable-competitive-moats with my product context."
+
+policy:
+  allow_implicit_invocation: true

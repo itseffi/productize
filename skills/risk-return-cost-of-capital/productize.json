@@ -1,0 +1,53 @@
+{
+  "title": "Risk Return Cost Of Capital",
+  "category": "Finance",
+  "lifecycle": "Measure",
+  "tags": [
+    "risk-return-cost-of-capital",
+    "cost-of-capital",
+    "capm",
+    "wacc",
+    "beta",
+    "discount-rate",
+    "risk-free-rate",
+    "market-risk-premium",
+    "portfolio-risk",
+    "systematic-risk",
+    "risk",
+    "return",
+    "cost",
+    "capital"
+  ],
+  "use_when": "Use when estimating cost of equity, beta, CAPM, WACC inputs, expected return, volatility, diversification, or project-specific discount rates.",
+  "do_not_use_when": "Do not use for full valuation or deal pricing unless the main missing input is the discount rate or risk basis.",
+  "output_artifact": "Cost-of-capital analysis with risk basis, beta/CAPM/WACC inputs, calculation, interpretation, and warnings",
+  "routing_signals": [
+    "cost-of-capital",
+    "discount-rate",
+    "capm",
+    "wacc",
+    "cost-of-equity",
+    "beta",
+    "market-risk-premium",
+    "risk-free-rate",
+    "systematic-risk",
+    "project-specific-discount-rate",
+    "risk-return-cost-of-capital",
+    "risk",
+    "return",
+    "cost"
+  ],
+  "framework_fit": "Best when the key decision is what return or discount rate is appropriate for the cash-flow risk.",
+  "failure_modes": [
+    "Uses book values instead of market values for WACC weights.",
+    "Uses total volatility as priced risk for a diversified investor.",
+    "Uses a company beta for a project in a materially different business.",
+    "Mixes risk-free rate and market risk premium from inconsistent markets."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $risk-return-cost-of-capital to estimate WACC for this valuation and explain whether the project should use the company WACC.",
+      "expected_artifact": "Cost-of-capital analysis with risk basis, beta/CAPM/WACC inputs, calculation, interpretation, and warnings"
+    }
+  ]
+}

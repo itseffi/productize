@@ -1,0 +1,8 @@
+interface:
+  display_name: "Influence strategies from Cialdini's 7 principles"
+  short_description: "Influence strategies from Cialdini's 7 principles. Use when the user needs a product workflow for stakeholder..."
+  brand_color: "#0891B2"
+  default_prompt: "Use $productize-influence-strategies-from-cialdini-s-7-principles with my product context."
+
+policy:
+  allow_implicit_invocation: false

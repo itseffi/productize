@@ -1,0 +1,8 @@
+interface:
+  display_name: "Challenging meeting with stakeholders"
+  short_description: "Challenging meeting with stakeholders. Use when the user needs a product workflow for stakeholder management related..."
+  brand_color: "#0891B2"
+  default_prompt: "Use $productize-challenging-meeting-with-stakeholders with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,38 @@
+{
+  "title": "Post-launch feedback loop",
+  "category": "Discovery",
+  "lifecycle": "Launch & Learn",
+  "tags": [
+    "post-launch-feedback-loop",
+    "post",
+    "launch",
+    "feedback",
+    "loop",
+    "business",
+    "discovery"
+  ],
+  "use_when": "Post-launch feedback loop. Use when the user needs a product workflow for business analysis related to post-launch feedback loop. Trigger terms: pm, feedback-loop, iteration, post-launch, continuous-improvement, business-analysis.",
+  "do_not_use_when": "Do not use Post-launch feedback loop when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Post-launch feedback loop launch learning report with release evidence, feedback, decision, and next iteration",
+  "routing_signals": [
+    "post-launch-feedback-loop",
+    "post",
+    "launch",
+    "feedback",
+    "loop",
+    "business",
+    "discovery"
+  ],
+  "framework_fit": "Appropriate when a shipped product or feature needs post-launch feedback synthesis, iteration planning, and learning-loop decisions.",
+  "failure_modes": [
+    "Produces Post-launch feedback loop launch learning report with release evidence, feedback, decision, and next iteration without tying recommendations to the user's Launch & Learn stage, evidence, and decision pressure.",
+    "Treats Post-launch feedback loop as generic Discovery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Post-launch feedback loop when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $post-launch-feedback-loop to turn this post context into a decision-ready Post-launch feedback loop launch learning report with release evidence, feedback, decision, and next iteration.",
+      "expected_artifact": "Post-launch feedback loop launch learning report with release evidence, feedback, decision, and next iteration"
+    }
+  ]
+}

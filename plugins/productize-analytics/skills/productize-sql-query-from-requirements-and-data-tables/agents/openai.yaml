@@ -1,0 +1,8 @@
+interface:
+  display_name: "SQL query from requirements and data tables"
+  short_description: "SQL query from requirements and data tables. Use when the user needs a product workflow for business analysis..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-sql-query-from-requirements-and-data-tables with my product context."
+
+policy:
+  allow_implicit_invocation: true

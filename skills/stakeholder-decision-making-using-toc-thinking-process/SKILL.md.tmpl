@@ -1,0 +1,96 @@
+---
+name: stakeholder-decision-making-using-toc-thinking-process
+description: >-
+  Stakeholder decision-making using TOC thinking process. Use when the user needs a product
+  workflow for stakeholder management related to stakeholder decision-making using toc
+  thinking process. Trigger terms: decision-making, stakeholders, theory-of-constraints,
+  problem-solving, stakeholder-management.
+---
+# Stakeholder decision-making using TOC thinking process
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Stakeholder decision-making using TOC thinking process**.
+
+## Decision-Making Boundary
+
+Use this skill when the stakeholder decision problem is structured as a conflict, constraint,
+or cause-effect chain. It should improve stakeholder decision quality by surfacing assumptions,
+undesirable effects, root causes, and stakeholder concerns.
+
+Do not use it for broad strategic decision bias review, group decision process design, or
+role-identity mapping unless TOC conflict/root-cause logic is the requested method.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{PROBLEM_STATEMENT}}
+- {{STAKEHOLDER_INFO}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Stakeholder decision-making using TOC thinking process.
+Success metric:
+- Completes all required tasks and decision logic from the prompt instructions.
+- Output is specific, evidence-based, and actionable.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required analysis steps, sections, or validation logic.
+- Keep recommendations/outputs grounded in the input context; avoid generic filler.
+- Analyze `{{PROBLEM_STATEMENT}}` and `{{STAKEHOLDER_INFO}}` to support stakeholder decision-making using TOC thinking processes.
+- Identify and clearly state the core problem.
+- Apply Evaporating Cloud:
+- Define conflict.
+- Identify requirements.
+- Uncover assumptions.
+- Challenge assumptions.
+- Generate potential solutions.
+- Apply Effect-Cause-Effect:
+- Identify undesirable effects.
+- Trace effects to causes.
+- Identify root causes.
+- Produce actionable recommendations and explicitly connect them to stakeholder concerns/interests.
+
+FORMAT
+Return exactly this structure:
+
+<analysis>
+1. Problem Identification:
+   [Clearly state the core problem]
+
+2. Evaporating Cloud Analysis:
+   a. Conflict: [Describe the main conflict]
+   b. Requirements: [List the key requirements]
+   c. Assumptions: [Identify important assumptions]
+   d. Challenged Assumptions: [Explain how assumptions were challenged]
+   e. Potential Solutions: [List generated solutions]
+
+3. Effect-Cause-Effect Analysis:
+   a. Undesirable Effects: [List the main undesirable effects]
+   b. Causes: [Explain the causes linked to each effect]
+   c. Root Causes: [Identify the fundamental root causes]
+
+4. Recommendations:
+   [Provide specific, actionable recommendations based on your analysis]
+
+5. Stakeholder Considerations:
+   [Explain how your recommendations address stakeholder concerns and interests]
+</analysis>
+
+FAILURE
+- Any required section in `<analysis>` is missing or materially incomplete.
+- Evaporating Cloud or Effect-Cause-Effect steps are missing or not logically connected.
+- Recommendations are generic, non-actionable, or not tied to stakeholder considerations.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

@@ -1,0 +1,52 @@
+{
+  "title": "Group Decision Making Quality Review",
+  "category": "Decision Making",
+  "lifecycle": "Align",
+  "tags": [
+    "group-decision-making",
+    "groupthink",
+    "group-polarization",
+    "conformity-bias",
+    "authority-bias",
+    "common-information-effect",
+    "private-voting",
+    "devils-advocate",
+    "decision-meeting",
+    "group-decision-making-quality-review",
+    "group",
+    "decision",
+    "making",
+    "quality"
+  ],
+  "use_when": "Use when a product, strategy, roadmap, launch, investment, or operating decision will be made by a group and the user needs to prevent groupthink, polarization, conformity, authority bias, shared-information traps, or weak dissent.",
+  "do_not_use_when": "Do not use for a basic meeting agenda, stakeholder update, or personal decision review unless group decision-process quality is the central issue.",
+  "output_artifact": "Group decision-making quality review with risk audit, information plan, discussion process, voting rule, roles, and decision record",
+  "routing_signals": [
+    "group-decision-making",
+    "groupthink",
+    "group-polarization",
+    "conformity-bias",
+    "authority-bias",
+    "common-information-effect",
+    "private-voting",
+    "devil-s-advocate",
+    "silent-write",
+    "consensus-without-conflict",
+    "decision-meeting",
+    "group-decision-making-quality-review",
+    "group",
+    "decision"
+  ],
+  "framework_fit": "Best when the risk is not the decision content alone, but the social process by which a group reaches the decision.",
+  "failure_modes": [
+    "Produces Group decision-making quality review with risk audit, information plan, discussion process, voting rule, roles, and decision record without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Group Decision Making Quality Review as generic Decision Making advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Group Decision Making Quality Review when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $group-decision-making-quality-review for our exec roadmap meeting. Everyone seems aligned too quickly and I worry sales and engineering dissent is being suppressed.",
+      "expected_artifact": "Group decision-making quality review with risk audit, information plan, discussion process, voting rule, roles, and decision record"
+    }
+  ]
+}

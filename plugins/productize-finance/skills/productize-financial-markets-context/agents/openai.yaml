@@ -1,0 +1,8 @@
+interface:
+  display_name: "Financial Markets Context"
+  short_description: "Productize Finance context skill for market capitalization, market weights, index concentration, listed-firm trends,..."
+  brand_color: "#0369A1"
+  default_prompt: "Use $productize-financial-markets-context with my product context."
+
+policy:
+  allow_implicit_invocation: true

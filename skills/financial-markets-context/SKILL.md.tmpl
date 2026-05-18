@@ -1,0 +1,49 @@
+---
+name: financial-markets-context
+description: >-
+  Productize Finance context skill for market capitalization, market weights, index
+  concentration, listed-firm trends, public-company comparables, sector shifts, and
+  CAPM market-portfolio assumptions.
+---
+
+# Financial Markets Context
+
+{{PRODUCTIZE_PREAMBLE}}
+
+## Purpose
+
+Market context skill. Use it to interpret public-market facts, index concentration,
+listed-firm trends, market capitalization, comparable-company assumptions, sector
+shifts, and market portfolio assumptions in CAPM.
+
+## Core Formulas
+
+- `Market Cap_i = Share Price_i * Shares Outstanding_i`
+- `Weight_i = Market Cap_i / Total Market Cap`
+- `Index Weight_i = Market Cap_i / sum(Market Cap of All Index Constituents)`
+- `Global Weight_i = index weight * index share of country market * country share of world market`
+- `Change in Listings = Listings_End - Listings_Start`
+- `% Change = (End / Start - 1) * 100`
+- `CAGR = (Ending Value / Beginning Value)^(1 / Years) - 1`
+
+## Interpretation Rules
+
+- Fewer listed firms does not necessarily mean a smaller equity market.
+- Market capitalization can rise even if listings fall.
+- This can happen because public firms become larger, smaller firms delist, and mergers concentrate value.
+- Index concentration matters because the CAPM market portfolio is value-weighted.
+- Public comparables may be biased if the target is much smaller, less mature, less profitable, or in a different sector.
+- Sector composition changes over time, so historical index returns may reflect sector shifts, not only broad economic growth.
+
+## Required Validation
+
+- Warn if equal weighting is confused with value weighting.
+- Warn if index concentration is ignored.
+- Warn if public comparables are used for a startup without maturity adjustments.
+- Warn if global market assumptions use only one domestic index.
+- Warn if stale market weights are used.
+
+## Required Output
+
+Return Inputs, Assumptions, Formula used, Calculation, Result, Interpretation, and
+Warnings. Separate market fact, valuation implication, and comparability risk.

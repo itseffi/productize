@@ -1,0 +1,8 @@
+interface:
+  display_name: "Sprint Planning"
+  short_description: "Plan a sprint by scoping work, estimating capacity, setting goals, and drafting a sprint plan. Use when kicking off..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $productize-sprint-planning with my product context."
+
+policy:
+  allow_implicit_invocation: false

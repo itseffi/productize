@@ -1,0 +1,8 @@
+interface:
+  display_name: "Success metrics for design decisions"
+  short_description: "Success metrics for design decisions. Use when the user needs a product workflow for business analysis related to..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-success-metrics-for-design-decisions with my product context."
+
+policy:
+  allow_implicit_invocation: true

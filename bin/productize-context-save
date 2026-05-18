@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+import { saveContext } from "./productize-runtime.mjs";
+
+const summary = process.argv.slice(2).join(" ");
+if (!summary) {
+  console.error("Usage: productize-context-save <summary>");
+  process.exit(2);
+}
+console.log(saveContext(summary));

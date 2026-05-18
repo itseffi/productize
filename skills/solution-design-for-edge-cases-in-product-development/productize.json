@@ -1,0 +1,36 @@
+{
+  "title": "Solution design for edge cases in product development",
+  "category": "Design",
+  "lifecycle": "Design",
+  "tags": [
+    "solution-design-for-edge-cases-in-product-development",
+    "solution",
+    "design",
+    "edge",
+    "cases",
+    "development"
+  ],
+  "use_when": "Solution design for edge cases in product development. Use when the user needs a product workflow for design & prototyping related to solution design for edge cases in product development. Trigger terms: ux, edge-cases, product-design, tradeoffs.",
+  "do_not_use_when": "Do not use Solution design for edge cases in product development when the request is mainly metric diagnosis, pricing, GTM, or implementation planning without UX evidence; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Solution design for edge cases in product development UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "solution-design-for-edge-cases-in-product-development",
+    "solution",
+    "design",
+    "edge",
+    "cases",
+    "development"
+  ],
+  "framework_fit": "Solution design for edge cases in product development fits Design work in the Design lifecycle when the user needs Solution design for edge cases in product development UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Solution design for edge cases in product development UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats Solution design for edge cases in product development as generic Design advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Solution design for edge cases in product development when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $solution-design-for-edge-cases-in-product-development to turn this solution context into a decision-ready Solution design for edge cases in product development UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "Solution design for edge cases in product development UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

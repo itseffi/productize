@@ -1,0 +1,36 @@
+{
+  "title": "Actionable job stories from interview transcripts",
+  "category": "Discovery",
+  "lifecycle": "Discover",
+  "tags": [
+    "actionable-job-stories-from-interview-transcripts",
+    "actionable",
+    "job",
+    "stories",
+    "interview",
+    "transcripts"
+  ],
+  "use_when": "Actionable job stories from interview transcripts. Use when the user needs a product workflow for user research related to actionable job stories from interview transcripts. Trigger terms: user-research, jtbd, interviews.",
+  "do_not_use_when": "Do not use Actionable job stories from interview transcripts when the request is mainly delivery planning, analytics readout, or stakeholder communication; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Actionable job stories from interview transcripts research brief with evidence, insight clusters, assumptions, and next validation steps",
+  "routing_signals": [
+    "actionable-job-stories-from-interview-transcripts",
+    "actionable",
+    "job",
+    "stories",
+    "interview",
+    "transcripts"
+  ],
+  "framework_fit": "Actionable job stories from interview transcripts fits Discovery work in the Discover lifecycle when the user needs Actionable job stories from interview transcripts research brief with evidence, insight clusters, assumptions, and next validation steps and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Actionable job stories from interview transcripts research brief with evidence, insight clusters, assumptions, and next validation steps without tying recommendations to the user's Discover stage, evidence, and decision pressure.",
+    "Treats Actionable job stories from interview transcripts as generic Discovery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Actionable job stories from interview transcripts when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $actionable-job-stories-from-interview-transcripts to turn this actionable context into a decision-ready Actionable job stories from interview transcripts research brief with evidence, insight clusters, assumptions, and next validation steps.",
+      "expected_artifact": "Actionable job stories from interview transcripts research brief with evidence, insight clusters, assumptions, and next validation steps"
+    }
+  ]
+}

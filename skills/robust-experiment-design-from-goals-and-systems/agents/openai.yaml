@@ -1,0 +1,8 @@
+interface:
+  display_name: "Robust experiment design from goals and systems"
+  short_description: "Robust experiment design from goals and systems. Use when the user needs a product workflow for user research..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $robust-experiment-design-from-goals-and-systems with my product context."
+
+policy:
+  allow_implicit_invocation: true

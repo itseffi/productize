@@ -1,0 +1,72 @@
+---
+name: competitive-analysis-to-winning-positioning-strategy
+description: >-
+  Competitive analysis to winning positioning strategy. Use when the user needs a product
+  workflow for product strategy related to competitive analysis to winning positioning
+  strategy. Trigger terms: positioning, competition, product-marketing, differentiation.
+---
+# Competitive analysis to winning positioning strategy
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Competitive analysis to winning positioning strategy**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{COMPETITIVE_ANALYSIS}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Competitive analysis to winning positioning strategy.
+Success metric:
+- Produces a data-backed positioning strategy grounded in competitive analysis.
+- Identifies 3–5 clear differentiators with customer-relevant rationale.
+- Outputs a concise, compelling value proposition and the reasoning behind it.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only `{{COMPETITIVE_ANALYSIS}}`; if data is missing, state assumptions explicitly.
+- Identify 3–5 differentiators grounded in the competitive analysis.
+- For each differentiator, explain customer value and competitive significance.
+- Define a clear target audience and market position based on evidence.
+- Value proposition must answer “why choose us” without introducing unsupported claims.
+
+FORMAT
+Return exactly this structure:
+
+<differentiators>
+1. [Differentiator] - [Why it matters to customers] - [Evidence from analysis]
+2. [Differentiator] - [Why it matters to customers] - [Evidence from analysis]
+3. [Differentiator] - [Why it matters to customers] - [Evidence from analysis]
+[Optional 4th/5th differentiator]
+</differentiators>
+
+<positioning_strategy>
+[Target audience, market position, and how differentiators map to customer needs and gaps]
+</positioning_strategy>
+
+<unique_value_proposition>
+[Concise statement answering why choose us]
+</unique_value_proposition>
+
+<rationale>
+[Explain reasoning with explicit references to competitive analysis]
+</rationale>
+
+FAILURE
+- Any required section/tag in `FORMAT` is missing, malformed, or incomplete.
+- Fewer than 3 or more than 5 differentiators are provided.
+- Positioning or value proposition is not grounded in provided analysis.
+- Rationale lacks evidence references.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

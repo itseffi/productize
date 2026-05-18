@@ -1,0 +1,40 @@
+---
+name: design-review
+description: >-
+  Design gate for UX quality, visual hierarchy, interaction states, accessibility,
+  responsive behavior, design-system fit, and handoff readiness. Use before build
+  or after implementation when product experience quality is at risk.
+---
+# Design Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this gate to decide whether the experience is coherent enough to build, ship,
+or keep iterating. It is broader than a design critique because it owns the gate
+decision and downstream handoff.
+
+## Artifact Format
+
+Use Markdown for short design findings. Use self-contained HTML when the review
+needs side-by-side variants, responsive mockups, screenshots, accessibility notes,
+state maps, or a visual fix board that design, eng, and QA can scan together.
+
+## Route Internally
+
+- `$design-critique`
+- `$frontend-design`
+- `$design-handoff`
+- `$accessibility-review`
+- `$ux-edge-cases-from-product-briefs`
+- `$success-metrics-for-design-decisions`
+- `$structured-json-descriptions-from-ui-screenshots`
+
+## Required Output
+
+Return:
+
+1. **Experience Readout**: hierarchy, flow, states, accessibility, responsiveness, and design-system fit.
+2. **Blocking Issues**: problems that prevent build, QA, release, or learning.
+3. **Fixes**: concrete design or implementation changes with acceptance checks.
+4. **Decision**: approve, revise, split, or retest.
+5. **Handoff**: what eng, QA, docs, or comms needs from the design gate.

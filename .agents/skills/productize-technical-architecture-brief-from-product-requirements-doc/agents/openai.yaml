@@ -1,0 +1,8 @@
+interface:
+  display_name: "AI Execution architecture brief from product requirements doc"
+  short_description: "Technical architecture brief from product requirements doc. Use when the user needs a product workflow for technical..."
+  brand_color: "#334155"
+  default_prompt: "Use $productize-technical-architecture-brief-from-product-requirements-doc with my product context."
+
+policy:
+  allow_implicit_invocation: true

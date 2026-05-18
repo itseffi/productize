@@ -1,0 +1,8 @@
+interface:
+  display_name: "Venture Capital Deal Modeling"
+  short_description: "Productize Finance engine for startup valuation, VC method, pre-money, post-money, ownership, burn, runway, cap..."
+  brand_color: "#0369A1"
+  default_prompt: "Use $productize-venture-capital-deal-modeling with my product context."
+
+policy:
+  allow_implicit_invocation: true

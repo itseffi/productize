@@ -1,0 +1,8 @@
+interface:
+  display_name: "Skimmable writing transformation"
+  short_description: "Skimmable writing transformation. Use when the user needs a product workflow for presentation & communication..."
+  brand_color: "#0891B2"
+  default_prompt: "Use $productize-skimmable-writing-transformation with my product context."
+
+policy:
+  allow_implicit_invocation: false

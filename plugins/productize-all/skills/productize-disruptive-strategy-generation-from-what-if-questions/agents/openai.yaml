@@ -1,0 +1,8 @@
+interface:
+  display_name: "Disruptive strategy generation from what-if questions"
+  short_description: "Disruptive strategy generation from what-if questions. Use when the user needs a product workflow for product..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $productize-disruptive-strategy-generation-from-what-if-questions with my product context."
+
+policy:
+  allow_implicit_invocation: false

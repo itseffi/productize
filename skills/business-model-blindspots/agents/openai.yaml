@@ -1,0 +1,8 @@
+interface:
+  display_name: "Business Model Blindspots"
+  short_description: "Audit hidden assumptions and cognitive barriers in a business model. Use when a founder, executive, strategist, or..."
+  brand_color: "#9333EA"
+  default_prompt: "Use $business-model-blindspots with my product context."
+
+policy:
+  allow_implicit_invocation: true

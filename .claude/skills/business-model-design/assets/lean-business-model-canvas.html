@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lean Business Model Canvas</title>
+  <style>
+    :root {
+      --border: #1f2937;
+      --muted: #6b7280;
+      --paper: #fff;
+      --ink: #111827;
+      --line: 2px solid var(--border);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      color: var(--ink);
+      font: 13px/1.35 Arial, Helvetica, sans-serif;
+    }
+    main {
+      width: min(1280px, calc(100vw - 32px));
+      margin: 16px auto;
+      background: var(--paper);
+      border: var(--line);
+      padding: 18px;
+      min-height: 760px;
+    }
+    header {
+      display: grid;
+      grid-template-columns: 1fr repeat(3, minmax(120px, 180px));
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .meta {
+      border-bottom: 1px solid var(--border);
+      min-height: 34px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .canvas {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: 1fr 1fr 0.72fr;
+      border: var(--line);
+      min-height: 650px;
+    }
+    section {
+      padding: 14px;
+      border-right: var(--line);
+      border-bottom: var(--line);
+      overflow-wrap: anywhere;
+    }
+    .segments,
+    .revenue { border-right: 0; }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .hint { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+    .content { white-space: pre-wrap; }
+    .problem,
+    .uvp,
+    .segments {
+      display: flex;
+      flex-direction: column;
+    }
+    .subfield { margin-top: auto; }
+    .subfield h2 { font-size: 13px; }
+    .problem { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+    .solution { grid-column: 3 / span 2; grid-row: 1; }
+    .metrics { grid-column: 3 / span 2; grid-row: 2; }
+    .uvp { grid-column: 5 / span 2; grid-row: 1 / span 2; }
+    .advantage { grid-column: 7 / span 2; grid-row: 1; }
+    .channels { grid-column: 7 / span 2; grid-row: 2; }
+    .segments { grid-column: 9 / span 2; grid-row: 1 / span 2; }
+    .cost { grid-column: 1 / span 5; grid-row: 3; border-bottom: 0; }
+    .revenue { grid-column: 6 / span 5; grid-row: 3; border-bottom: 0; }
+    .order {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .order div {
+      border: 1px solid #d1d5db;
+      padding: 6px;
+      min-height: 36px;
+    }
+    @media print {
+      body { background: white; }
+      main { width: 100%; margin: 0; border: 0; min-height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Lean Business Model Canvas</h1>
+      <div class="meta">Business / concept<br>{{BUSINESS_NAME}}</div>
+      <div class="meta">Date<br>{{DATE}}</div>
+      <div class="meta">Version<br>{{VERSION}}</div>
+    </header>
+    <div class="canvas">
+      <section class="problem">
+        <h2>Problem</h2>
+        <div class="hint">Top 1-3 problems.</div>
+        <div class="content">{{PROBLEM}}</div>
+        <div class="subfield">
+          <h2>Existing Alternatives</h2>
+          <div class="hint">How these problems are solved today.</div>
+          <div class="content">{{EXISTING_ALTERNATIVES}}</div>
+        </div>
+      </section>
+      <section class="solution">
+        <h2>Solution</h2>
+        <div class="hint">Possible solution for each problem.</div>
+        <div class="content">{{SOLUTION}}</div>
+      </section>
+      <section class="uvp">
+        <h2>Unique Value Proposition</h2>
+        <div class="hint">Single, clear reason to care and pay attention.</div>
+        <div class="content">{{UNIQUE_VALUE_PROPOSITION}}</div>
+        <div class="subfield">
+          <h2>High-Level Concept</h2>
+          <div class="hint">X-for-Y analogy or category shorthand.</div>
+          <div class="content">{{HIGH_LEVEL_CONCEPT}}</div>
+        </div>
+      </section>
+      <section class="advantage">
+        <h2>Unfair Advantage</h2>
+        <div class="hint">Something that cannot easily be bought or copied.</div>
+        <div class="content">{{UNFAIR_ADVANTAGE}}</div>
+      </section>
+      <section class="segments">
+        <h2>Customer Segments</h2>
+        <div class="hint">Target customers and users.</div>
+        <div class="content">{{CUSTOMER_SEGMENTS}}</div>
+        <div class="subfield">
+          <h2>Early Adopters</h2>
+          <div class="hint">Characteristics of ideal first customers.</div>
+          <div class="content">{{EARLY_ADOPTERS}}</div>
+        </div>
+      </section>
+      <section class="metrics">
+        <h2>Key Metrics</h2>
+        <div class="hint">Numbers that show how the business is doing.</div>
+        <div class="content">{{KEY_METRICS}}</div>
+      </section>
+      <section class="channels">
+        <h2>Channels</h2>
+        <div class="hint">Inbound or outbound path to customers.</div>
+        <div class="content">{{CHANNELS}}</div>
+      </section>
+      <section class="cost">
+        <h2>Cost Structure</h2>
+        <div class="hint">Fixed and variable costs.</div>
+        <div class="content">{{COST_STRUCTURE}}</div>
+      </section>
+      <section class="revenue">
+        <h2>Revenue Streams</h2>
+        <div class="hint">Sources of revenue.</div>
+        <div class="content">{{REVENUE_STREAMS}}</div>
+      </section>
+    </div>
+    <div class="order" aria-label="Recommended fill order">
+      <div>1. Problem</div>
+      <div>2. Customer Segments</div>
+      <div>3. Unique Value Proposition</div>
+      <div>4. Solution</div>
+      <div>5. Channels</div>
+      <div>6. Revenue Streams</div>
+      <div>7. Cost Structure</div>
+      <div>8. Key Metrics</div>
+      <div>9. Unfair Advantage</div>
+    </div>
+  </main>
+</body>
+</html>

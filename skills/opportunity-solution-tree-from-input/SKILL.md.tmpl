@@ -1,0 +1,130 @@
+---
+name: opportunity-solution-tree-from-input
+description: >-
+  Opportunity Solution Tree from input. Use when the user needs a product workflow for user
+  research related to opportunity solution tree from input. Trigger terms: user-research, ost,
+  continuous-discovery.
+---
+# Opportunity Solution Tree from input
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Opportunity Solution Tree from input**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- `{{business_outcome}}`: The business outcome the OST must support.
+- `{{journey_nodes_as_list}}`: Ordered list of journey moments (for example: `["Add to calendar", "Edit calendar", "Review calendar"]`).
+- `{{interview_transcripts_or_story_snippets}}`: Interview material with speaker labels and timestamps when available.
+- `{{constraints_or_principles}}` (optional): Guardrails, principles, or constraints to respect.
+</provided_inputs>
+
+GOAL
+Transform interview evidence into a Teresa Torres-aligned Opportunity Solution Tree with distinct, properly nested opportunity nodes by journey moment.
+Success metric:
+- Output includes all required parts (A-E) with complete, internally consistent references.
+- Opportunity nodes are user-need statements (not solutions), evidence-linked, and structurally valid.
+- Prioritization is computable and traceable to interview evidence and `{{business_outcome}}`.
+
+CONSTRAINTS
+- Use only provided inputs; if data is missing or ambiguous, state assumptions in Part E.
+- Phrase opportunities from the end-user perspective.
+- Assign each opportunity to exactly one primary moment from `{{journey_nodes_as_list}}`; if needed, list secondary moments in `alt_moments`.
+- Enforce sibling distinctness: if two siblings cannot be pursued independently, merge or reframe.
+- Enforce parent-child logic: solving a child must partially solve its parent.
+- Remove generic parents that have only one specific child.
+- Collapse duplicates into the clearest phrasing and preserve traceability.
+- Keep opportunities specific when supported by quotes; keep general opportunities only when they organize multiple specific children.
+- Include only opportunity nodes in the OST (no solutions).
+- Preserve short supporting quotes and avoid introducing new facts not present in inputs.
+- Use stable IDs and ensure all references resolve (`parent_id`, `duplicates_of`, `traceability`).
+
+FORMAT
+Return all sections below in this exact order.
+
+Part A - Opportunity Inventory (Markdown Table)
+- Include both parent and leaf opportunities.
+- Use exactly these columns:
+`| id | moment | opportunity_reframed (user-need) | parent_id | duplicates_of | representative_quotes | frequency_count | confidence (low/med/high) | alt_moments | notes/reframe_rationale |`
+- `duplicates_of` is blank unless collapsed into another ID.
+
+Part B - Structured OST (Strict JSON in `<ost_json>` tags)
+- Output must be wrapped exactly as:
+`<ost_json>`
+`{ ... }`
+`</ost_json>`
+- JSON schema:
+```json
+{
+  "outcome": "{{business_outcome}}",
+  "moments": [
+    {
+      "moment": "<journey moment>",
+      "tree": [
+        {
+          "id": "A0",
+          "title": "<user need>",
+          "type": "opportunity",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "traceability": {
+    "A0": {
+      "quotes": ["..."],
+      "frequency_count": 1,
+      "confidence": "low"
+    }
+  }
+}
+```
+- Every node must include `id`, `title`, `type`, `children`.
+- `type` must always be `"opportunity"`.
+- Top-level moments must come from `{{journey_nodes_as_list}}`.
+- JSON must be valid and parseable.
+
+Part C - Markdown Tree View (Human-readable)
+- For each moment, render an indented opportunity tree:
+`## <moment>`
+`- <parent opportunity>`
+`  - <child opportunity>`
+`    - <grandchild opportunity>`
+- Include opportunities only (no solutions).
+
+Part D - Prioritized Leaf Backlog (Markdown Table)
+- Include only leaf opportunities.
+- Use exactly these columns:
+`| id | moment | leaf_opportunity | impact (1-5) | frequency (1-5) | alignment_to_outcome (1-5) | priority_score | rationale |`
+- Compute `priority_score = impact * frequency * alignment_to_outcome`.
+
+Part E - Assumptions & Open Questions
+- Include:
+- Uncertainties in placement/reframing.
+- Potential missing siblings to test in future interviews.
+- Ambiguities or contradictory evidence in quotes.
+- Any hypotheses not supported by current interview evidence.
+
+FAILURE
+- Any required part (A-E), required table column, or required JSON field is missing.
+- JSON is malformed, non-parseable, or violates required schema/rules.
+- Output includes solutions inside the OST opportunity tree.
+- Opportunities are generic/overlapping and fail distinctness or parent-child logic.
+- Claims are not traceable to interview evidence.
+- IDs or references are inconsistent/unresolved.
+- Priority scores are missing or incorrectly computed.
+- Assumptions/ambiguities exist but are not explicitly listed in Part E.
+
+## PM Skills Main Merge
+
+Load `references/pm-skills-main-merge.md` when the request mentions `opportunity solution tree`, `ost`, `continuous discovery`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.

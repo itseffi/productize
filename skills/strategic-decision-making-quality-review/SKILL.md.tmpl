@@ -1,0 +1,108 @@
+---
+name: strategic-decision-making-quality-review
+description: >-
+  Review the quality of a strategic product, innovation, or operating decision. Use when
+  the user needs a decision-making artifact that separates facts, assumptions, alternatives,
+  bias risks, evidence gaps, and decision safeguards before choosing.
+---
+# Strategic Decision Making Quality Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill when the work is explicitly about improving a decision, not producing a
+generic strategy memo. It is for strategic product, innovation, market-entry, roadmap,
+investment, pivot, kill/continue, or executive operating decisions.
+
+Do not use this skill when the user needs only a personal gut check, a decision-rights
+RACI/DAVCI map, an A/B test readout, a narrow pre-mortem, or a stakeholder narrative.
+Route those to the narrower Productize skill.
+
+## Decision-Making Principles
+
+- Treat decisions as experiments with incomplete information and often only one execution chance.
+- Separate rational-choice assumptions from real decision-maker constraints: bounded rationality,
+  imperfect information, overload, satisficing, unstable preferences, and future uncertainty.
+- Identify when System 1 intuition is helpful pattern recognition and when it is unreliable.
+- Use System 2 deliberately for irreversible, high-stakes, unfamiliar, or multi-factor decisions.
+- Identify the decision context before applying tools: VUCA, noisy/dynamic innovation,
+  stable market, time-sensitive, group-influenced, or politically loaded.
+- Review common decision traps: base-rate neglect, representativeness, availability,
+  anchoring, framing, confirmation, sunk cost, status quo, optimism, loss/risk aversion,
+  and escalation of commitment.
+- Improve decision quality with opposite-case reasoning, alternative hypotheses, stress tests,
+  root-cause analysis, disconfirming evidence, base rates, explicit thresholds, and review loops.
+
+## Workflow
+
+1. Define the decision, owner, stakes, reversibility, deadline, and required artifact.
+2. Separate facts, assumptions, unknowns, constraints, and subjective thresholds.
+3. Identify candidate options and the implicit anchor or default option.
+4. Audit bias and heuristic risks in the current framing.
+5. Add base rates, counter-evidence, alternative hypotheses, and root-cause checks.
+6. Create decision criteria and thresholds before recommending.
+7. Recommend, defer, test, or ask for a blocking input.
+8. Record what would change the decision later.
+
+## Output Contract
+
+Return:
+
+```markdown
+# Strategic Decision Making Quality Review
+
+## 1. Decision Frame
+Decision:
+Decision owner:
+Deadline:
+Stakes:
+Reversibility:
+Context type:
+
+## 2. Known / Assumed / Missing / Risky
+Known facts:
+Assumptions:
+Missing evidence:
+Risky leaps:
+
+## 3. Options And Default Anchor
+Option A:
+Option B:
+Option C:
+Current default or anchor:
+Why the default may be sticky:
+
+## 4. Decision Trap Audit
+Base-rate neglect:
+Representativeness:
+Availability:
+Anchoring:
+Framing / loss-gain presentation:
+Confirmation:
+Sunk cost / escalation:
+Status quo:
+Optimism:
+Loss or risk aversion:
+
+## 5. Decision Safeguards
+Opposite case:
+Alternative hypotheses:
+Disconfirming evidence to seek:
+Root-cause check:
+Thresholds before deciding:
+Decision review date:
+
+## 6. Recommendation
+Recommend / ask / defer / test:
+Rationale:
+Confidence:
+What would change this decision:
+Next action:
+```
+
+## Failure Modes
+
+- Produces a generic strategy recommendation without auditing decision process quality.
+- Treats the user's first framing as neutral rather than checking anchors, losses, defaults,
+  and missing alternatives.
+- Lists biases without connecting them to the specific decision and safeguards.
+- Recommends before separating known facts, assumptions, missing evidence, and risky leaps.

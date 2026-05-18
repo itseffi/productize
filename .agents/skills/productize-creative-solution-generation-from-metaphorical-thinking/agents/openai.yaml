@@ -1,0 +1,8 @@
+interface:
+  display_name: "Creative solution generation from metaphorical thinking"
+  short_description: "Creative solution generation from metaphorical thinking. Use when the user needs a product workflow for ideation &..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-creative-solution-generation-from-metaphorical-thinking with my product context."
+
+policy:
+  allow_implicit_invocation: true

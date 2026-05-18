@@ -1,0 +1,41 @@
+---
+name: autoplan
+description: >-
+  Productize autoplan meta-runner. Use when the user wants the relevant Productize
+  reviewers and gates selected automatically for the current playbook stage, plan,
+  implementation slice, release, or production decision.
+---
+# Productize Autoplan
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this meta-runner to detect the current gate and run the relevant reviewers. It
+does not replace `$0-1`, `$operate`, or `$grow`; it coordinates their reviewers.
+
+## Artifact Format
+
+If autoplan selects multiple gates or the output is meant for human review, prefer
+a self-contained HTML gate matrix with reviewer status, stale evidence, required
+artifacts, blockers, and next decisions. Use Markdown for a short route call.
+
+## Gate Detection
+
+- New bet, wedge, positioning, pricing, or scope: `$thesis-review` + `$product-review`
+- UX, UI, prototype, handoff, accessibility, or design system: `$design-review`
+- Architecture, data flow, implementation plan, technical risk, or build readiness: `$eng-review`
+- Testability, acceptance checks, evals, or production defects: `$qa`
+- Deploy, ship, changelog, versioning, rollback, or launch readiness: `$release`
+- README, docs, guides, API docs, migration notes, or support docs: `$docs`
+- API, CLI, SDK, integration, examples, or developer onboarding: `$dx-review`
+- Executive update, customer announcement, stakeholder narrative, or launch comms: `$comms-review`
+- Running implementation notes, spec deviations, build-time tradeoffs, or open questions: `$implementation-notes`
+
+## Required Output
+
+Return:
+
+1. **Current Gate**: playbook stage, evidence available, and what decision is blocked.
+2. **Reviewer Set**: reviewers/gates to run now, skipped gates, and why.
+3. **Review Order**: sequence, dependencies, and stale artifacts to refresh.
+4. **Artifacts Needed**: source docs, diffs, screenshots, metrics, traces, or examples each reviewer needs.
+5. **Exit Criteria**: what must be clear before the playbook can continue.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Stakeholder Risk Review for a Feature or PRD"
+  short_description: "Stakeholder Risk Review for a Feature or PRD. Use when the user needs a product workflow for stakeholder management..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $productize-stakeholder-risk-review-for-a-feature-or-prd with my product context."
+
+policy:
+  allow_implicit_invocation: true

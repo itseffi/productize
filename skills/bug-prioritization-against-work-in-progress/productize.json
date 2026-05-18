@@ -1,0 +1,36 @@
+{
+  "title": "Bug prioritization against work in progress",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "bug-prioritization-against-work-in-progress",
+    "bug",
+    "prioritization",
+    "against",
+    "work",
+    "progress"
+  ],
+  "use_when": "Bug prioritization against work in progress. Use when the user needs a product workflow for decision making related to bug prioritization against work in progress. Trigger terms: pm, decision-making, prioritization, bugs, triage.",
+  "do_not_use_when": "Do not use Bug prioritization against work in progress when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Bug prioritization against work in progress delivery brief with scope, requirements, priorities, risks, and acceptance criteria",
+  "routing_signals": [
+    "bug-prioritization-against-work-in-progress",
+    "bug",
+    "prioritization",
+    "against",
+    "work",
+    "progress"
+  ],
+  "framework_fit": "Bug prioritization against work in progress fits Delivery work in the Plan lifecycle when the user needs Bug prioritization against work in progress delivery brief with scope, requirements, priorities, risks, and acceptance criteria and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Bug prioritization against work in progress delivery brief with scope, requirements, priorities, risks, and acceptance criteria without tying recommendations to the user's Plan stage, evidence, and decision pressure.",
+    "Treats Bug prioritization against work in progress as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Bug prioritization against work in progress when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $bug-prioritization-against-work-in-progress to turn this bug context into a decision-ready Bug prioritization against work in progress delivery brief with scope, requirements, priorities, risks, and acceptance criteria.",
+      "expected_artifact": "Bug prioritization against work in progress delivery brief with scope, requirements, priorities, risks, and acceptance criteria"
+    }
+  ]
+}

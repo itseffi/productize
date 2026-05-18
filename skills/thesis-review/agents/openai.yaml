@@ -1,0 +1,8 @@
+interface:
+  display_name: "Thesis Review"
+  short_description: "Product thesis gate for new bets, capability scope, wedge, market, positioning, pricing, and kill-or-continue..."
+  brand_color: "#059669"
+  default_prompt: "Use $thesis-review with my product context."
+
+policy:
+  allow_implicit_invocation: true

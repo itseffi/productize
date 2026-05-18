@@ -1,0 +1,8 @@
+interface:
+  display_name: "Support tickets as actionable product improvements"
+  short_description: "Support tickets as actionable product improvements. Use when the user needs a product workflow for business analysis..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-support-tickets-as-actionable-product-improvements with my product context."
+
+policy:
+  allow_implicit_invocation: true

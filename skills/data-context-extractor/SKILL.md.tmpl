@@ -1,0 +1,126 @@
+---
+name: data-context-extractor
+description: >-
+  Generate or improve a company-specific data analysis skill by extracting tribal knowledge from
+  analysts. Use to bootstrap warehouse context, document schemas and metrics, or update an
+  existing data skill with tables, terminology, filters, and query patterns.
+---
+# Data Context Extractor
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Create or improve a company-specific data analysis skill by extracting warehouse knowledge from analysts.
+
+## Modes
+
+### Bootstrap Mode
+
+Use when the user wants a new data context skill for a warehouse.
+
+Triggers include:
+- "Create a data context skill"
+- "Set up data analysis for our warehouse"
+- "Help me create a skill for our database"
+- "Generate a data skill for [company]"
+
+### Iteration Mode
+
+Use when the user has an existing skill and wants to add context.
+
+Triggers include:
+- "Add context about [domain]"
+- "The skill needs more info about [topic]"
+- "Update the data skill with [metrics/tables/terminology]"
+- "Improve the [domain] reference"
+
+## Bootstrap Workflow
+
+### 1. Identify Warehouse
+
+Ask what warehouse is used: BigQuery, Snowflake, PostgreSQL/Redshift, Databricks, or another system. Check available MCP or connector tools before assuming.
+
+### 2. Explore Schema
+
+Use connected data tools to:
+- List datasets, schemas, or databases.
+- Identify the 3-5 most queried tables.
+- Pull schema details for key tables.
+
+If tools are not connected, ask the analyst for schema exports, table samples, or representative queries.
+
+### 3. Extract Tribal Knowledge
+
+Ask conversationally:
+- Entity disambiguation: what do "user", "customer", "account", and "organization" mean here?
+- Primary identifiers: what IDs matter, and which are stable?
+- Key metrics: top 2-3 metrics, exact formulas, tables, time windows, caveats.
+- Data hygiene: filters that must always be applied.
+- Gotchas: timezone issues, null behavior, snapshots vs current state, misleading column names.
+
+### 4. Generate Skill
+
+Create:
+
+```text
+[company]-data-analyst/
+├── SKILL.md
+└── references/
+    ├── entities.md
+    ├── metrics.md
+    ├── tables/
+    │   ├── [domain].md
+    │   └── ...
+    └── dashboards.json
+```
+
+The generated SKILL.md should include:
+- Frontmatter with name and description.
+- When to use the skill.
+- Warehouse dialect notes. Load `references/sql-dialects.md` and include only the matching warehouse section.
+- Knowledge base navigation.
+- Query safety and validation rules.
+- Instructions to load only relevant reference files.
+
+Use `references/skill-template.md` as the starting structure for the generated `SKILL.md`. Remove unused sections and replace every placeholder before delivery.
+
+If unsure what "good" looks like, load `references/example-generated-skill.md` as a fictional quality example. Do not copy ShopCo-specific details into real customer skills.
+
+### 5. Package Skill
+
+When the user wants a distributable archive, run the bundled packager:
+
+```bash
+python scripts/package_data_skill.py /path/to/[company]-data-analyst /path/to/output-dir
+```
+
+The script validates the generated skill and writes a `.skill` zip archive that can be shared or installed elsewhere.
+
+## Iteration Workflow
+
+1. Locate or ask for the existing skill folder or zip.
+2. Read SKILL.md and references to understand current coverage.
+3. Ask what domain, metric, table, or terminology is missing.
+4. Explore relevant tables or ask targeted analyst questions.
+5. Add or update the relevant reference file.
+6. Update SKILL.md navigation.
+7. Repackage with `scripts/package_data_skill.py` when the user needs a distributable archive, or summarize changed files when they only need local edits.
+
+## Reference Standards
+
+Table docs include location, description, primary key, update frequency, key columns, relationships, sample queries, and gotchas.
+
+Metric docs include name, definition, formula, source tables, filters, caveats, and examples.
+
+Entity docs include definition, primary table, ID fields, relationships, standard filters, and terminology notes.
+
+Use `references/domain-template.md` when creating domain reference files under `references/tables/`.
+
+## Quality Checklist
+
+- SKILL.md has valid name and description.
+- Entity definitions are unambiguous.
+- Metric formulas are exact.
+- Standard exclusions are documented.
+- SQL dialect is named.
+- Each domain has sample queries.
+- Reference files are linked from SKILL.md.

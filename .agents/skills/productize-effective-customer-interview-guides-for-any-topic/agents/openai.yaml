@@ -1,0 +1,8 @@
+interface:
+  display_name: "Effective customer interview guides for any topic"
+  short_description: "Effective customer interview guides for any topic. Use when the user needs a product workflow for user research..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-effective-customer-interview-guides-for-any-topic with my product context."
+
+policy:
+  allow_implicit_invocation: true

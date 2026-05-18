@@ -1,0 +1,8 @@
+interface:
+  display_name: "Group Decision Making Quality Review"
+  short_description: "Review and design a group decision-making process for product, strategy, roadmap, launch, or operating decisions...."
+  brand_color: "#7C2D12"
+  default_prompt: "Use $productize-group-decision-making-quality-review with my product context."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,53 @@
+{
+  "title": "Role Identity Decision Making Map",
+  "category": "Decision Making",
+  "lifecycle": "Align",
+  "tags": [
+    "role-identity",
+    "decision-making",
+    "logic-of-appropriateness",
+    "organizational-identity",
+    "social-categorization",
+    "in-group",
+    "out-group",
+    "role-pressure",
+    "cross-functional-teams",
+    "innovation-resistance",
+    "role-identity-decision-making-map",
+    "role",
+    "identity",
+    "decision"
+  ],
+  "use_when": "Use when a product, innovation, roadmap, transformation, or strategic decision is shaped by role expectations, hierarchy, function, organizational identity, in-group/out-group dynamics, or cross-functional role conflict.",
+  "do_not_use_when": "Do not use for a generic power-interest stakeholder map, hidden-agenda speculation, or group meeting process unless role identity and social categorization are central to the decision.",
+  "output_artifact": "Role identity decision-making map with stakeholder roles, logic of appropriateness, social context risks, decision impact, and process adjustments",
+  "routing_signals": [
+    "role-identity",
+    "logic-of-appropriateness",
+    "organizational-identity",
+    "social-categorization",
+    "in-group",
+    "out-group",
+    "role-pressure",
+    "wearing-hats",
+    "cross-functional-decision",
+    "innovation-resistance",
+    "this-is-how-we-have-always-done-it",
+    "role-identity-decision-making-map",
+    "role",
+    "identity"
+  ],
+  "framework_fit": "Best when the decision is blocked or distorted by role expectations, identity protection, organizational self-image, or social categorization.",
+  "failure_modes": [
+    "Maps only power and interest while missing role identity.",
+    "Speculates about hidden motives without grounding in observable role context.",
+    "Fails to identify in-group/out-group effects and organizational identity constraints.",
+    "Omits concrete process adjustments to improve the decision."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $role-identity-decision-making-map to understand why engineering, sales, and legal keep interpreting the same roadmap decision differently.",
+      "expected_artifact": "Role identity decision-making map with stakeholder roles, logic of appropriateness, social context risks, decision impact, and process adjustments"
+    }
+  ]
+}

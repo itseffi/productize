@@ -1,0 +1,8 @@
+interface:
+  display_name: "Design System"
+  short_description: "Audit, document, or extend a design system. Use when checking for naming inconsistencies or hardcoded values across..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $design-system with my product context."
+
+policy:
+  allow_implicit_invocation: true

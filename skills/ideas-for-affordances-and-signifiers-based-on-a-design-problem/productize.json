@@ -1,0 +1,36 @@
+{
+  "title": "Ideas for affordances and signifiers based on a design problem",
+  "category": "Design",
+  "lifecycle": "Design",
+  "tags": [
+    "ideas-for-affordances-and-signifiers-based-on-a-design-problem",
+    "ideas",
+    "affordances",
+    "signifiers",
+    "design",
+    "problem"
+  ],
+  "use_when": "Ideas for affordances and signifiers based on a design problem. Use when the user needs a product workflow for design & prototyping related to ideas for affordances and signifiers based on a design problem. Trigger terms: ux, interaction-design, affordances, usability.",
+  "do_not_use_when": "Do not use Ideas for affordances and signifiers based on a design problem when the request is mainly metric diagnosis, pricing, GTM, or implementation planning without UX evidence; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Ideas for affordances and signifiers based on a design problem UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "ideas-for-affordances-and-signifiers-based-on-a-design-problem",
+    "ideas",
+    "affordances",
+    "signifiers",
+    "design",
+    "problem"
+  ],
+  "framework_fit": "Ideas for affordances and signifiers based on a design problem fits Design work in the Design lifecycle when the user needs Ideas for affordances and signifiers based on a design problem UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Ideas for affordances and signifiers based on a design problem UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats Ideas for affordances and signifiers based on a design problem as generic Design advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Ideas for affordances and signifiers based on a design problem when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $ideas-for-affordances-and-signifiers-based-on-a-design-problem to turn this ideas context into a decision-ready Ideas for affordances and signifiers based on a design problem UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "Ideas for affordances and signifiers based on a design problem UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

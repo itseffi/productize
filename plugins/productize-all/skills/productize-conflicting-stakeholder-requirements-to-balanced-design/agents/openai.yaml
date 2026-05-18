@@ -1,0 +1,8 @@
+interface:
+  display_name: "Conflicting stakeholder requirements to balanced design approach"
+  short_description: "Conflicting stakeholder requirements to balanced design approach. Use when the user needs a product workflow for..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $productize-conflicting-stakeholder-requirements-to-balanced-design with my product context."
+
+policy:
+  allow_implicit_invocation: false

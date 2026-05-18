@@ -1,0 +1,8 @@
+interface:
+  display_name: "Product feature impact sizing from metrics and usage data"
+  short_description: "Product feature impact sizing from metrics and usage data. Use when the user needs a product workflow for business..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $product-feature-impact-sizing-from-metrics-and-usage-data with my product context."
+
+policy:
+  allow_implicit_invocation: true

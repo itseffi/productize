@@ -1,0 +1,28 @@
+[
+  {
+    "name": "cpo qbr board update",
+    "mode": "existing-product",
+    "persona": "CPO",
+    "stage": "executive operating cadence",
+    "query": "CPO: we need a QBR board update on product health, roadmap tradeoffs, customer risks, and the decisions we need.",
+    "expected_lifecycles": ["Align"],
+    "expected_any_skills": [
+      "stakeholder-update",
+      "slide-decks-from-problem-statements-and-context",
+      "strategic-presentation-planning-from-topic-audience-and-time"
+    ]
+  },
+  {
+    "name": "product leader stakeholder risk around roadmap change",
+    "mode": "existing-product",
+    "persona": "product leader",
+    "stage": "stakeholder alignment",
+    "query": "Product leader: we are cutting two roadmap items after new retention data. Prepare the stakeholder narrative, risks, objections, and decision owner map.",
+    "expected_lifecycles": ["Align"],
+    "expected_any_skills": [
+      "stakeholder-risk-review-for-a-feature-or-prd",
+      "stakeholder-power-interest-and-influence-map",
+      "stakeholder-update"
+    ]
+  }
+]

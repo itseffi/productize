@@ -1,0 +1,34 @@
+{
+  "title": "Product simplification via Via Negativa analysis",
+  "category": "Strategy",
+  "lifecycle": "Think",
+  "tags": [
+    "product-simplification-via-via-negativa-analysis",
+    "simplification",
+    "via",
+    "negativa",
+    "business"
+  ],
+  "use_when": "Product simplification via Via Negativa analysis. Use when the user needs a product workflow for business analysis related to product simplification via via negativa analysis. Trigger terms: pm, business-analysis, simplification, via-negativa, strategy.",
+  "do_not_use_when": "Do not use Product simplification via Via Negativa analysis when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Product simplification via Via Negativa analysis decision-framing brief with issue tree, assumptions, options, and recommended next step",
+  "routing_signals": [
+    "product-simplification-via-via-negativa-analysis",
+    "simplification",
+    "via",
+    "negativa",
+    "business"
+  ],
+  "framework_fit": "Product simplification via Via Negativa analysis fits Strategy work in the Think lifecycle when the user needs Product simplification via Via Negativa analysis decision-framing brief with issue tree, assumptions, options, and recommended next step and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Product simplification via Via Negativa analysis decision-framing brief with issue tree, assumptions, options, and recommended next step without tying recommendations to the user's Think stage, evidence, and decision pressure.",
+    "Treats Product simplification via Via Negativa analysis as generic Strategy advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Product simplification via Via Negativa analysis when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $product-simplification-via-via-negativa-analysis to turn this simplification context into a decision-ready Product simplification via Via Negativa analysis decision-framing brief with issue tree, assumptions, options, and recommended next step.",
+      "expected_artifact": "Product simplification via Via Negativa analysis decision-framing brief with issue tree, assumptions, options, and recommended next step"
+    }
+  ]
+}

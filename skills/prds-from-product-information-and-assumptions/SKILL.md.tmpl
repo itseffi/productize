@@ -1,0 +1,117 @@
+---
+name: prds-from-product-information-and-assumptions
+description: >-
+  PRDs from product information and assumptions. Use when the user needs a product workflow
+  for business analysis related to prds from product information and assumptions. Trigger
+  terms: pm, business-analysis, prd, requirements, documentation, impact-sizing.
+---
+# PRDs from product information and assumptions
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **PRDs from product information and assumptions**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{PRD_KNOWN_INFORMATION}}
+</provided_inputs>
+
+GOAL
+Draft a complete PRD from `PRD_KNOWN_INFORMATION`, using explicit assumptions where information is missing.
+Success metric:
+- Covers all required PRD sections in actionable detail.
+- Includes clear metrics and impact sizing logic with transparent assumptions.
+- Produces focused follow-up questions for critical unknowns.
+- Follows the required output structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Use the exact PRD heading/table structure specified in `FORMAT`.
+- Start from known information, then extend with clearly labeled assumptions.
+- Keep language precise, unambiguous, and implementation-oriented for design/engineering stakeholders.
+- Ensure metrics are measurable and prioritization logic is explicit.
+- Keep non-goals and risks explicit to reduce scope ambiguity.
+- Use markdown-friendly structure inside the PRD for readability.
+- Output follow-up questions only for meaningful unknowns that affect decision quality.
+
+FORMAT
+Return exactly this structure:
+
+<PRD>
+# [Product Name]
+
+## About
+[High-level overview of the product and goal.]
+
+## Market Insights
+[Market context, competitors, trends, and target users.]
+
+## Problem
+[Core user problem, pain points, and why existing solutions are insufficient.]
+
+## Solution
+[Proposed AI product solution and how it addresses the problem.]
+
+## Feature Prioritization
+| Feature | Reach | Impact | Confidence | Effort | RICE Score | Priority |
+|---------|-------|--------|------------|--------|------------|----------|
+|  |  |  |  |  |  |  |
+|  |  |  |  |  |  |  |
+|  |  |  |  |  |  |  |
+
+## Requirements
+**Functional Requirements:**
+- FR1:
+- FR2:
+- FR3:
+
+**AI/ML Model Requirements:**
+- MR1:
+- MR2:
+- MR3:
+
+**Non-Functional Requirements:**
+- NFR1:
+- NFR2:
+- NFR3:
+
+## Challenges
+[Key product, technical, data, and go-to-market challenges.]
+
+## Positioning
+| Use Case | Target User | Key Benefit | Differentiator |
+|----------|-------------|-------------|----------------|
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+
+## Metrics
+[Success metrics and north star metric.]
+
+## Rollout Plan
+- **Stakeholders & Communication**
+  - [Stakeholder groups and communication plan]
+
+- **Roll-out Strategy**
+  - [Launch phases, gating criteria, and post-GA plan]
+</PRD>
+<QUESTIONS>
+[Follow-up questions for major assumptions, missing information, or high-risk unknowns]
+</QUESTIONS>
+
+FAILURE
+- Any required section/table/list item pattern from `FORMAT` is missing or materially incomplete.
+- Metrics/prioritization are vague, unquantified, or unsupported.
+- Content is generic or not grounded in provided inputs.
+- Required output schema (`<PRD>`, `<QUESTIONS>`) is missing or malformed.
+- Major unknowns, dependencies, or assumption-sensitive decisions are not captured in `<QUESTIONS>`.

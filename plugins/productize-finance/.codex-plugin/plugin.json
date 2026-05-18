@@ -1,0 +1,31 @@
+{
+  "name": "productize-finance",
+  "version": "1.1.2",
+  "description": "Valuation, DCF, NPV, IRR, WACC, CAPM, capital structure, startup financing, cap tables, dilution, deal pricing, and market context.",
+  "author": {
+    "name": "Productize AI"
+  },
+  "license": "MIT",
+  "keywords": [
+    "product",
+    "product-management",
+    "agent-skills",
+    "ai-builders",
+    "finance"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Productize Finance",
+    "shortDescription": "Valuation, DCF, NPV, IRR, WACC, CAPM, capital structure, startup financing, cap tables, dilution",
+    "longDescription": "Valuation, DCF, NPV, IRR, WACC, CAPM, capital structure, startup financing, cap tables, dilution, deal pricing, and market context.",
+    "developerName": "Productize AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use a Productize Finance skill for this task."
+    ],
+    "brandColor": "#0369A1"
+  }
+}

@@ -1,0 +1,108 @@
+---
+name: innovative-idea-generation-from-project-parameters-and
+description: >-
+  Innovative idea generation from project parameters and constraints. Use when the user needs
+  a product workflow for ideation & creativity related to innovative idea generation from
+  project parameters and constraints. Trigger terms: creativity, idea-generation, constraints,
+  product-management, osborn-checklist.
+---
+# Innovative idea generation from project parameters and constraints
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Innovative idea generation from project parameters and constraints**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{PROJECT_TYPE}}
+- {{GOALS}}
+- {{BUDGET}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: "Innovative idea generation from project parameters and constraints".
+Success metric:
+- Produces concrete, non-generic ideas that fit project type, goals, and budget.
+- Uses structured creativity analysis (including Osborn checklist) to move beyond obvious solutions.
+- Final ideas are immediately actionable with clear execution steps.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only `{{PROJECT_TYPE}}`, `{{GOALS}}`, and `{{BUDGET}}`; if details are missing, state assumptions explicitly.
+- Provide exactly 5 banal ideas to avoid and explain why each is weak.
+- Define problem context including timeframe, target audience, and situation.
+- Break down problem into objective, constraints, measurable success criteria, challenges, and deeper considerations.
+- Analyze each chunk with explicit link to goals and budget feasibility.
+- Include both creator and consumer perspectives.
+- Apply Osborn checklist categories with project-relevant outputs:
+  - other uses, adaptations, modifications, magnification, minification, substitutions, rearrangements, reversals, combinations.
+- Final ideas must be actionable for an individual, feasible under budget, and include step-by-step instructions plus application context.
+
+FORMAT
+Return exactly this structure:
+
+<creativity_analysis>
+<banal_ideas>
+1. [Banal idea] - [Why to avoid]
+2. [Banal idea] - [Why to avoid]
+3. [Banal idea] - [Why to avoid]
+4. [Banal idea] - [Why to avoid]
+5. [Banal idea] - [Why to avoid]
+</banal_ideas>
+
+<problem_definition>
+[Clearly define the problem or situation]
+</problem_definition>
+
+<problem_breakdown>
+[Break down the problem into key aspects]
+</problem_breakdown>
+
+<chunk_analysis>
+[Provide in-depth analysis of each problem chunk]
+</chunk_analysis>
+
+<perspectives>
+[Describe creator and consumer perspectives]
+</perspectives>
+
+<osborn_checklist>
+- Other uses: [Ideas]
+- Adaptations: [Ideas]
+- Modifications: [Ideas]
+- Magnification: [Ideas]
+- Minification: [Ideas]
+- Substitutions: [Ideas]
+- Rearrangements: [Ideas]
+- Reversals: [Ideas]
+- Combinations: [Ideas]
+</osborn_checklist>
+
+<final_ideas>
+1. [Idea title]
+   - Specific guidance: [What to do]
+   - Steps: [Step-by-step]
+   - Where/how to apply: [Context/channel/tool]
+   - Budget fit: [How it stays within budget]
+[Repeat for additional ideas]
+</final_ideas>
+</creativity_analysis>
+
+FAILURE
+- Any required section/tag in `FORMAT` is missing, malformed, or incomplete.
+- `banal_ideas` does not contain exactly 5 items.
+- One or more Osborn checklist categories are missing.
+- Final ideas are not actionable step-by-step or are not aligned to budget/goals.
+- Output is generic or repeats cliché ideas without meaningful differentiation.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

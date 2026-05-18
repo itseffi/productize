@@ -1,0 +1,34 @@
+{
+  "title": "Detailed project plans from project briefs",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "detailed-project-plans-from-project-briefs",
+    "detailed",
+    "project",
+    "plans",
+    "briefs"
+  ],
+  "use_when": "Detailed project plans from project briefs. Use when the user needs a product workflow for project management related to detailed project plans from project briefs. Trigger terms: planning, scheduling, risk-management, execution.",
+  "do_not_use_when": "Do not use Detailed project plans from project briefs when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Detailed project plans from project briefs delivery brief with scope, requirements, priorities, risks, and acceptance criteria",
+  "routing_signals": [
+    "detailed-project-plans-from-project-briefs",
+    "detailed",
+    "project",
+    "plans",
+    "briefs"
+  ],
+  "framework_fit": "Detailed project plans from project briefs fits Delivery work in the Plan lifecycle when the user needs Detailed project plans from project briefs delivery brief with scope, requirements, priorities, risks, and acceptance criteria and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Detailed project plans from project briefs delivery brief with scope, requirements, priorities, risks, and acceptance criteria without tying recommendations to the user's Plan stage, evidence, and decision pressure.",
+    "Treats Detailed project plans from project briefs as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Detailed project plans from project briefs when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $detailed-project-plans-from-project-briefs to turn this detailed context into a decision-ready Detailed project plans from project briefs delivery brief with scope, requirements, priorities, risks, and acceptance criteria.",
+      "expected_artifact": "Detailed project plans from project briefs delivery brief with scope, requirements, priorities, risks, and acceptance criteria"
+    }
+  ]
+}

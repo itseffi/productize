@@ -1,0 +1,53 @@
+{
+  "title": "Prioritization Frameworks",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "prioritization-frameworks",
+    "prioritization",
+    "rice",
+    "ice",
+    "kano",
+    "moscow",
+    "opportunity-score",
+    "framework-selection",
+    "frameworks",
+    "decision",
+    "making",
+    "use",
+    "selecting",
+    "delivery"
+  ],
+  "use_when": "Use when selecting or comparing prioritization frameworks such as RICE, ICE, Kano, MoSCoW, Opportunity Score, cost of delay, or impact-effort.",
+  "do_not_use_when": "Do not use when the user already chose a framework and needs the actual ranked backlog, or when the work is only P0/P1/P2 requirements classification.",
+  "output_artifact": "Prioritization framework recommendation with scoring template and decision rationale",
+  "routing_signals": [
+    "prioritization-frameworks",
+    "prioritization",
+    "rice",
+    "ice",
+    "kano",
+    "moscow",
+    "opportunity-score",
+    "framework-selection",
+    "when",
+    "selecting",
+    "comparing",
+    "frameworks",
+    "such",
+    "opportunity"
+  ],
+  "framework_fit": "Best when the team needs the right prioritization method for the decision context before scoring work.",
+  "failure_modes": [
+    "Produces Prioritization framework recommendation with scoring template and decision rationale without tying recommendations to the user's Plan stage, evidence, and decision pressure.",
+    "Treats Prioritization Frameworks as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Prioritization Frameworks when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $prioritization-frameworks to turn this prioritization context into a decision-ready Prioritization framework recommendation with scoring template and decision rationale.",
+      "expected_artifact": "Prioritization framework recommendation with scoring template and decision rationale"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-execution/skills/prioritization-frameworks/SKILL.md"
+}

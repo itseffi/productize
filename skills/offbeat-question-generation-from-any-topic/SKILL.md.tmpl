@@ -1,0 +1,69 @@
+---
+name: offbeat-question-generation-from-any-topic
+description: >-
+  Offbeat question generation from any topic. Use when the user needs a product workflow for
+  ideation & creativity related to offbeat question generation from any topic. Trigger terms:
+  creativity, brainstorming, questions, perspective-shifting.
+---
+# Offbeat question generation from any topic
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Offbeat question generation from any topic**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{TOPIC}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: "Offbeat question generation from any topic".
+Success metric:
+- Produces playful, imaginative, and topic-relevant offbeat questions.
+- Includes at least 3 offbeat "why" questions and at least 2 offbeat questions in other forms.
+- Questions show variety (comparisons, hypotheticals, absurd twists) rather than minor rewrites.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only `{{TOPIC}}`; if topic scope is ambiguous, state assumptions explicitly.
+- Generate at least 3 offbeat `why` questions tied to the topic.
+- Generate at least 2 additional offbeat questions in non-`why` formats (for example: `what if`, `how come`, or other playful forms).
+- Keep questions imaginative and thought-provoking while staying topic-relevant.
+- Avoid repetitive templates and near-duplicate wording.
+
+FORMAT
+Return exactly this structure:
+
+<offbeat_questions>
+<why_questions>
+1. [Your first "why" question]
+2. [Your second "why" question]
+3. [Your third "why" question]
+[Add more if you generate more than 3]
+</why_questions>
+
+<other_questions>
+1. [Your first other offbeat question]
+2. [Your second other offbeat question]
+[Add more if you generate more than 2]
+</other_questions>
+</offbeat_questions>
+
+FAILURE
+- Any required section/tag in `FORMAT` is missing, malformed, or incomplete.
+- Fewer than 3 `why` questions are provided.
+- Fewer than 2 `other_questions` are provided.
+- `other_questions` are all `why` questions.
+- Questions are repetitive or generic with no clear offbeat angle.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

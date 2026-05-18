@@ -1,0 +1,97 @@
+---
+name: strategic-crux-diagnosis-and-strategy-design
+description: >-
+  Strategic crux diagnosis and strategy design. Use when the user needs a product workflow for
+  product strategy related to strategic crux diagnosis and strategy design. Trigger terms:
+  strategy, decision-making, prioritization, product, leadership.
+---
+# Strategic crux diagnosis and strategy design
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Strategic crux diagnosis and strategy design**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{CONTEXT_SCOPE}}
+- {{CURRENT_STATE}}
+- {{DESIRED_FUTURE}}
+- {{TIME_HORIZON}}
+- {{CUSTOMERS_JTBD}}
+- {{UVP_TODAY}}
+- {{COMPETITIVE_LANDSCAPE}}
+- {{KEY_CONSTRAINTS}}
+- {{ASSETS_STRENGTHS}}
+- {{RISKS_NON_NEGOTIABLES}}
+- {{USER_INSIGHTS}}
+- {{UNIT_ECONOMICS}}
+- {{STAKEHOLDERS_DECISION_RIGHTS}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Strategic crux diagnosis and strategy design.
+Success metric:
+- Identifies the strategic crux with evidence-backed rationale.
+- Proposes a leveraged strategy with explicit trade-offs and testable milestones.
+- Provides a concrete execution plan with experiments, metrics, and risks.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs; if critical items are missing, ask up to 6 concise clarification questions first.
+- Separate facts, assumptions, and inferences; label disconfirming evidence and uncertainties.
+- Identify the crux and choose a leveraged strategy with explicit trade-offs.
+- Provide options table, chosen strategy, 12–18 week moves, experiments, metrics, risks, and resources.
+- If constraints make the goal infeasible, propose renegotiations with quantified trade-offs.
+
+FORMAT
+Return exactly this structure:
+
+1) Executive Summary (<=200 words)
+
+2) Strategic Narrative
+
+3) Evidence Pack
+
+4) Crux Definition
+
+5) Options & Trade-offs
+| Option | Core Bet | Expected Impact (with math) | Cost (money/teams) | Time-to-First-Signal | Risks | Reversibility | Why It Might Fail |
+
+6) Chosen Strategy (Leverage Thesis)
+
+7) Strategic Moves (12–18 weeks)
+| Move | Owner | Start | End | Dependencies | Weekly Leading Indicator | Target | Risk & Mitigation |
+
+8) Experiments to Prove/Disprove
+
+9) Metrics & Monitoring
+
+10) Risks, Preconditions, and Constraint Renegotiations
+
+11) Resource Plan
+
+12) Decision Log & Next Checkpoint
+
+Appendices (tables)
+1. Assumptions -> Tests Map: | Assumption | Test/Experiment | When | Owner | Decision Rule |
+2. Roadmap (Quarter): | Week | Move | Deliverable | Confidence |
+3. Stakeholder Map: | Stakeholder | Interest/Influence | What They Need to See |
+
+FAILURE
+- Any required section/table in `FORMAT` is missing, malformed, or incomplete.
+- Crux is not explicitly defined or not tied to evidence.
+- Options table is missing or lacks required columns.
+- Moves lack owners, timeline, or leading indicators.
+- Experiments lack hypothesis/metrics or stop/scale rules.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

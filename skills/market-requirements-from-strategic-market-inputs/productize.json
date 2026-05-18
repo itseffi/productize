@@ -1,0 +1,34 @@
+{
+  "title": "Market requirements from strategic market inputs",
+  "category": "Discovery",
+  "lifecycle": "Strategize",
+  "tags": [
+    "market-requirements-from-strategic-market-inputs",
+    "market",
+    "requirements",
+    "strategic",
+    "inputs"
+  ],
+  "use_when": "Market requirements from strategic market inputs. Use when the user needs a product workflow for product strategy related to market requirements from strategic market inputs. Trigger terms: product-management, market-research, strategy, MRD.",
+  "do_not_use_when": "Do not use Market requirements from strategic market inputs when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Market requirements from strategic market inputs strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "market-requirements-from-strategic-market-inputs",
+    "market",
+    "requirements",
+    "strategic",
+    "inputs"
+  ],
+  "framework_fit": "Market requirements from strategic market inputs fits Discovery work in the Strategize lifecycle when the user needs Market requirements from strategic market inputs strategy memo with choices, tradeoffs, risks, and recommended next move and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Market requirements from strategic market inputs strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Market requirements from strategic market inputs as generic Discovery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Market requirements from strategic market inputs when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $market-requirements-from-strategic-market-inputs to turn this market context into a decision-ready Market requirements from strategic market inputs strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Market requirements from strategic market inputs strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ]
+}

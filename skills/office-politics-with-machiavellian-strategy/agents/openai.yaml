@@ -1,0 +1,8 @@
+interface:
+  display_name: "Office politics with Machiavellian strategy"
+  short_description: "Office politics with Machiavellian strategy. Use when the user needs a product workflow for stakeholder management..."
+  brand_color: "#0891B2"
+  default_prompt: "Use $office-politics-with-machiavellian-strategy with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,34 @@
+{
+  "title": "Strategy-to-execution bridge for UX decisions",
+  "category": "Strategy",
+  "lifecycle": "Strategize",
+  "tags": [
+    "strategy-to-execution-bridge-for-ux-decisions",
+    "execution",
+    "bridge",
+    "decisions",
+    "use"
+  ],
+  "use_when": "Strategy-to-execution bridge for UX decisions. Use when the user needs a product workflow for product strategy related to strategy-to-execution bridge for ux decisions. Trigger terms: ux, product-strategy, execution, roadmapping.",
+  "do_not_use_when": "Do not use Strategy-to-execution bridge for UX decisions when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Strategy-to-execution bridge for UX decisions strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "strategy-to-execution-bridge-for-ux-decisions",
+    "execution",
+    "bridge",
+    "decisions",
+    "use"
+  ],
+  "framework_fit": "Strategy-to-execution bridge for UX decisions fits Strategy work in the Strategize lifecycle when the user needs Strategy-to-execution bridge for UX decisions strategy memo with choices, tradeoffs, risks, and recommended next move and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Strategy-to-execution bridge for UX decisions strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Strategy-to-execution bridge for UX decisions as generic Strategy advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Strategy-to-execution bridge for UX decisions when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $strategy-to-execution-bridge-for-ux-decisions to turn this execution context into a decision-ready Strategy-to-execution bridge for UX decisions strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Strategy-to-execution bridge for UX decisions strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ]
+}

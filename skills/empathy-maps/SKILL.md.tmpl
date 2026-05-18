@@ -1,0 +1,116 @@
+---
+name: empathy-maps
+description: >-
+  Empathy maps. Use when the user needs a product workflow for user research related to
+  empathy maps. Trigger terms: user-research, empathy-map, personas.
+---
+# Empathy maps
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Empathy maps**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{AUDIENCE}}
+- {{TOPIC}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Empathy maps.
+Success metric:
+- Completes all required tasks and decision logic from the prompt instructions.
+- Output is specific, evidence-based, and actionable.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required analysis steps, sections, or validation logic.
+- Keep recommendations/outputs grounded in the input context; avoid generic filler.
+- Build a detailed empathy map for `{{AUDIENCE}}` in relation to `{{TOPIC}}`.
+- Include all eight categories:
+- Thinks
+- Feels
+- Says
+- Does
+- Sees
+- Hears
+- Pains
+- Goals
+- For each category, provide 3-5 numbered insights that are specific, non-redundant, and behaviorally meaningful.
+- Prioritize depth over surface-level statements, including motivations, fears, desires, social influences, and decision drivers where relevant.
+- End with a concise summary of key takeaways and implications.
+
+FORMAT
+Return exactly this structure:
+
+<empathy_map>
+<thinks>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</thinks>
+
+<feels>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</feels>
+
+<says>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</says>
+
+<does>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</does>
+
+<sees>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</sees>
+
+<hears>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</hears>
+
+<pains>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</pains>
+
+<goals>
+1. [Insight]
+2. [Insight]
+3. [Insight]
+</goals>
+
+<summary>
+[Brief key-takeaways and implications]
+</summary>
+</empathy_map>
+
+FAILURE
+- `<empathy_map>` wrapper or any required category/summary tag is missing or malformed.
+- Any category has fewer than 3 insights.
+- Insights are generic, repetitive across categories, or not tied to `{{AUDIENCE}}` and `{{TOPIC}}`.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

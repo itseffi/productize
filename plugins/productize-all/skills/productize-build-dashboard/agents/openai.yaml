@@ -1,0 +1,8 @@
+interface:
+  display_name: "Build Dashboard"
+  short_description: "Build an interactive HTML dashboard with charts, filters, and tables. Use when creating an executive KPI overview,..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-build-dashboard with my product context."
+
+policy:
+  allow_implicit_invocation: false

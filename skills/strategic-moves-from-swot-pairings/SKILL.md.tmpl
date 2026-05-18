@@ -1,0 +1,104 @@
+---
+name: strategic-moves-from-swot-pairings
+description: >-
+  Strategic moves from SWOT pairings. Use when the user needs a product workflow for product
+  strategy related to strategic moves from swot pairings. Trigger terms: strategy, swot,
+  decision-making, structured-thinking.
+---
+# Strategic moves from SWOT pairings
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Strategic moves from SWOT pairings**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{SWOT_CONTEXT}}
+- {{SWOT_STRENGTHS}}
+- {{SWOT_WEAKNESSES}}
+- {{SWOT_OPPORTUNITIES}}
+- {{SWOT_THREATS}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Strategic moves from SWOT pairings.
+Success metric:
+- Produces strategic move patterns for all 6 SWOT pairings.
+- Includes a combination matrix and 3–7 unifying strategic themes.
+- Keeps patterns general (not hyper-specific tactics) unless explicitly requested.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided SWOT inputs; if context is missing, ask a short set of clarification questions first.
+- Generate patterns for all 6 SWOT pairings.
+- Provide 5–10 patterns per pairing, each with an optional trigger and a risk/assumption note.
+- Include a combination matrix and 3–7 strategic themes.
+- Keep output general unless the user explicitly requests company-specific tactics.
+
+FORMAT
+Return exactly this structure:
+
+<clarifying_questions>
+[If needed: ask up to 6 concise questions to obtain missing context and SWOT lists]
+</clarifying_questions>
+
+<swot_pairings>
+<so_growth_leverage>
+1. [Pattern] - Trigger: [If/then] - Risk/Assumption: [Note]
+...
+</so_growth_leverage>
+
+<st_defensive_advantage>
+1. [Pattern] - Trigger: [If/then] - Risk/Assumption: [Note]
+...
+</st_defensive_advantage>
+
+<wo_capability_building>
+1. [Pattern] - Trigger: [If/then] - Risk/Assumption: [Note]
+...
+</wo_capability_building>
+
+<wt_protective_actions>
+1. [Pattern] - Trigger: [If/then] - Risk/Assumption: [Note]
+...
+</wt_protective_actions>
+
+<sw_focus_tradeoffs>
+1. [Pattern] - Trigger: [If/then] - Risk/Assumption: [Note]
+...
+</sw_focus_tradeoffs>
+
+<ot_market_shaping>
+1. [Pattern] - Trigger: [If/then] - Risk/Assumption: [Note]
+...
+</ot_market_shaping>
+</swot_pairings>
+
+<combination_matrix>
+[Lightweight matching rules across SWOT items]
+</combination_matrix>
+
+<strategic_themes>
+1. [Theme]
+2. [Theme]
+3. [Theme]
+[Up to 7 themes]
+</strategic_themes>
+
+FAILURE
+- Any required section/tag in `FORMAT` is missing, malformed, or incomplete.
+- Any SWOT pairing has fewer than 5 or more than 10 patterns.
+- Combination matrix or strategic themes are missing.
+- Patterns are overly tactic-specific without request.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

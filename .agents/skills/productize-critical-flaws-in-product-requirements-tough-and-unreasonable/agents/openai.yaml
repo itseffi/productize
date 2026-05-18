@@ -1,0 +1,8 @@
+interface:
+  display_name: "Critical flaws in product requirements (tough and unreasonable product executive)"
+  short_description: "Critical flaws in product requirements (tough and unreasonable product executive). Use when the user needs a product..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $productize-critical-flaws-in-product-requirements-tough-and-unreasonable with my product context."
+
+policy:
+  allow_implicit_invocation: true

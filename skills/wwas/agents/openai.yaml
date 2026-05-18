@@ -1,0 +1,8 @@
+interface:
+  display_name: "Why-What-Acceptance"
+  short_description: "Why-What-Acceptance. Use when writing backlog items in Why-What-Acceptance format, breaking features into..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $wwas with my product context."
+
+policy:
+  allow_implicit_invocation: true

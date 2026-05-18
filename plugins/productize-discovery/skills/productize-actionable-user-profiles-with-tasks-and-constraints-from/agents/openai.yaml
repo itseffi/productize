@@ -1,0 +1,8 @@
+interface:
+  display_name: "Actionable user profiles with tasks and constraints from shallow personas"
+  short_description: "Actionable user profiles with tasks and constraints from shallow personas. Use when the user needs a product..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-actionable-user-profiles-with-tasks-and-constraints-from with my product context."
+
+policy:
+  allow_implicit_invocation: true

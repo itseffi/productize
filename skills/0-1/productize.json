@@ -1,0 +1,52 @@
+{
+  "title": "0-1 Product Build Loop",
+  "category": "Venture / 0-1",
+  "lifecycle": "Think",
+  "tags": [
+    "0-1",
+    "zero-to-one",
+    "new-product",
+    "founder",
+    "playbook",
+    "entry-point",
+    "build-loop",
+    "capability",
+    "evals",
+    "ship",
+    "build",
+    "loop",
+    "venture",
+    "productize"
+  ],
+  "use_when": "Use as the main Productize entry point when a founder, product leader, PM, or AI builder wants to go from raw idea, messy opportunity, or new product bet to a working first product slice through capability scoping, app setup, eval design, eval runs, failure analysis, and fixes.",
+  "do_not_use_when": "Do not use 0-1 Product Build Loop for isolated PRD drafting, standalone growth diagnosis, finance valuation, stakeholder narrative, or post-launch metric readout when the user is not trying to create or materially reshape a product capability.",
+  "output_artifact": "0-1 product build brief with capability scope, curated data, app setup, eval matrix, behavior analysis, fixes, ship gate, and next learning loop",
+  "routing_signals": [
+    "0-1",
+    "zero-to-one",
+    "raw-idea",
+    "build-a-product",
+    "first-product",
+    "first-version",
+    "new-product",
+    "mvp",
+    "prototype",
+    "capability-eval-loop",
+    "scope-capability",
+    "design-evals",
+    "run-evals",
+    "apply-fixes"
+  ],
+  "framework_fit": "0-1 Product Build Loop fits new-product work when the user needs the product, app, eval, and fix loop managed together rather than a linear strategy-to-handoff process. It is the outer orchestrator for building a first product slice and can reuse Productize's narrower discovery, strategy, design, delivery, AI execution, analytics, launch, and verification skills.",
+  "failure_modes": [
+    "Treats 0-1 as a linear idea-to-PRD handoff instead of running the capability, application, eval, behavior-analysis, and fix loop until the product slice is demonstrably useful.",
+    "Scopes a product idea without defining the first testable capability, the curated data or evidence needed, the eval matrix, and the ship or repeat threshold.",
+    "Hands off to implementation before app setup, eval design, instrumentation, test scenarios, and verification criteria are clear enough for an AI coding agent to build safely."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $0-1 to turn this raw AI workflow idea into the first product slice: scope the capability, curate the data, set up the app, design evals, run them, analyze failures, apply fixes, and decide whether to ship or repeat.",
+      "expected_artifact": "0-1 product build brief with capability scope, curated data, app setup, eval matrix, behavior analysis, fixes, ship gate, and next learning loop"
+    }
+  ]
+}

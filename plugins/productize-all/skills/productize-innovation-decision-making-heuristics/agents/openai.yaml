@@ -1,0 +1,8 @@
+interface:
+  display_name: "Innovation Decision Making Heuristics"
+  short_description: "Design tailored decision-making heuristics for uncertain innovation work. Use when the user needs simple decision..."
+  brand_color: "#7C2D12"
+  default_prompt: "Use $productize-innovation-decision-making-heuristics with my product context."
+
+policy:
+  allow_implicit_invocation: false

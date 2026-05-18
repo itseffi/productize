@@ -1,0 +1,8 @@
+interface:
+  display_name: "Design Critique"
+  short_description: "Get structured design feedback on usability, hierarchy, and consistency. Use when asked to review a design, critique..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $productize-design-critique with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Product design analysis from context and screenshots"
+  short_description: "Product design analysis from context and screenshots. Use when the user needs a product workflow for design &..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $product-design-analysis-from-context-and-screenshots with my product context."
+
+policy:
+  allow_implicit_invocation: true

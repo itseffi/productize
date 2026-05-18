@@ -1,0 +1,77 @@
+---
+name: executive-decks-from-quick-dirty-test-analysis
+description: >-
+  Executive decks from Quick Dirty Test analysis. Use when the user needs a product workflow
+  for presentation & communication related to executive decks from quick dirty test analysis.
+  Trigger terms: executive-communication, decision-support, hypothesis-testing, risk-analysis,
+  quick-dirty-test.
+---
+# Executive decks from Quick Dirty Test analysis
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Executive decks from Quick Dirty Test analysis**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{SLIDE_DECK_CONTEXT}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Executive decks from Quick Dirty Test analysis.
+Success metric:
+- Identifies critical assumptions and failure modes that executives would scrutinize.
+- Provides risk-dimensioning analyses and decision-driving questions.
+- Includes an executive-ready summary with practical deck-improvement recommendations.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only `{{SLIDE_DECK_CONTEXT}}`; if information is missing, state assumptions explicitly.
+- Apply Quick Dirty Test logic:
+  - What must be true for the hypothesis/investment to succeed?
+  - How could the investment fail or "blow up"?
+- Prioritize items that materially affect executive go/no-go decisions.
+- Keep outputs concise, evidence-oriented, and directly usable for deck revisions.
+
+FORMAT
+Return exactly this structure:
+
+<qdt_analysis>
+<key_assumptions>
+[List the key assumptions here, one per line]
+</key_assumptions>
+
+<potential_risks>
+[List the potential risks or ways the investment could fail, one per line]
+</potential_risks>
+
+<necessary_analyses>
+[List the analyses needed to support or reject the investment, one per line]
+</necessary_analyses>
+
+<key_questions>
+[List the key questions to dimension the risks, one per line]
+</key_questions>
+</qdt_analysis>
+
+<summary>
+[Brief findings summary and recommendations to strengthen the executive deck]
+</summary>
+
+FAILURE
+- `<qdt_analysis>` or `<summary>` is missing, malformed, or incomplete.
+- Any required subsection in `<qdt_analysis>` is missing.
+- Analysis is not executive-decision oriented (missing investment belief/failure logic).
+- Recommendations are generic and not actionable for deck improvement.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

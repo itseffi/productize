@@ -1,0 +1,164 @@
+---
+name: eng-review
+description: >-
+  Engineering gate for architecture, data flow, system boundaries, implementation
+  risk, test strategy, performance, security, observability, and build readiness.
+  Use before or after implementation when technical execution can block shipping.
+---
+# Eng Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this gate to decide whether the technical plan or implementation is coherent,
+testable, maintainable, and safe enough for the next playbook move.
+
+Eng Review is the execution gate. It should read like a strong engineering manager
+reviewing whether a plan can actually ship, be tested, be operated, and be changed
+later without surprising the team.
+
+## Artifact Format
+
+Use Markdown for concise technical findings. Use self-contained HTML when the
+review needs architecture diagrams, data-flow maps, risk heatmaps, annotated code
+snippets, sequence diagrams, or a shareable PR/implementation explainer. If
+implementation ambiguities must be preserved while coding, call
+`$implementation-notes` and keep the requested notes file current.
+
+## Pre-Review Audit
+
+Before reviewing:
+
+1. Read the product plan, relevant code, architecture docs, tests, TODOs, and
+   prior gate outputs.
+2. Detect the platform, runtime, data stores, external services, test framework,
+   and deployment path when a repo exists.
+3. Mark stale diagrams, stale plans, stale tests, or review outputs that predate
+   the current code or product scope.
+4. Identify whether the review is plan-mode, diff-mode, post-fix, or release-gate
+   support.
+5. If the plan touches 8+ files or creates 2+ new classes/services/modules, run a
+   scope-reduction challenge before deep review.
+
+## Scope Challenge
+
+Ask:
+
+- What is the smallest implementation that proves the product outcome?
+- What existing code, component, data model, or service can be reused?
+- What can be a follow-up PR or later loop?
+- What architecture decision becomes expensive to reverse?
+- What would make a competent engineer unable to ship a useful slice in two weeks?
+
+## Review Passes
+
+### 1. Architecture And Data Flow
+
+Trace the actual path through the system:
+
+- entry point
+- authentication/authorization
+- input validation
+- state changes
+- persistence
+- async/background work
+- external calls
+- output/rendering
+- error handling
+- observability
+
+Include an ASCII diagram for non-trivial flows:
+
+```text
+User/Input -> Boundary -> Service/Model -> Data Store -> Output
+                 |             |
+              errors       logs/metrics
+```
+
+Flag hidden coupling, cyclic dependencies, unclear ownership, migration risk, and
+state transitions that are not explicit.
+
+### 2. Code Quality And Maintainability
+
+- Is the abstraction necessary or premature?
+- Are names, boundaries, and contracts guessable?
+- Does the plan follow existing repo patterns?
+- Are edge cases handled where they occur, not patched downstream?
+- Is there any metadata churn or unrelated refactor risk?
+
+### 3. Test Strategy
+
+Detect existing test infrastructure first. Then require:
+
+- unit tests for pure logic and edge conditions
+- integration tests for contracts/data flow
+- regression tests for changed behavior that could break existing users
+- eval tests for AI/prompt/model behavior
+- e2e tests only for critical paths or high-risk flows
+
+If the review identifies a regression, add a regression test requirement. Do not
+treat regression coverage as optional.
+
+### 4. Failure Modes And Rescue Paths
+
+List realistic production failures:
+
+| Flow | Failure mode | User impact | Detection | Recovery |
+|---|---|---|---|---|
+
+Cover timeouts, nil/empty values, permissions, stale state, duplicate submission,
+partial writes, race conditions, retries, idempotency, and rollback.
+
+### 5. Security, Privacy, And Data Integrity
+
+- Does the change expose sensitive data?
+- Are permissions checked at the right boundary?
+- Are inputs trusted too early?
+- Are audit logs or consent requirements needed?
+- Does rollback leave data in a coherent state?
+
+### 6. Performance And Operability
+
+- What is the expected load or data size?
+- What query, render, or model-call path could get slow?
+- What metric, trace, log, or alert would reveal trouble?
+- Can support/debugging reconstruct what happened three weeks later?
+
+### 7. Parallelization And Sequencing
+
+When implementation is non-trivial, propose slices with disjoint write scopes and
+dependencies. Do not parallelize work that shares fragile files or unresolved
+interfaces.
+
+## Decision Protocol
+
+For each engineering issue:
+
+- State the risk and evidence.
+- Recommend revise, split, spike, test, instrument, or block.
+- If a decision affects architecture, scope, or test burden, handle it separately.
+- If the fix is obvious and local, state the fix and continue.
+- Never approve with hidden unresolved engineering decisions.
+
+## Route Internally
+
+- `$technical-architecture-brief-from-product-requirements-doc`
+- `$backend-design`
+- `$spec-writing`
+- `$engineering-problem-solving-and-solution-structuring`
+- `$tdd`
+- `$systematic-debugging`
+- `$verification`
+- `$implementation-notes`
+
+## Required Output
+
+Return:
+
+1. **Architecture Readout**: boundaries, data flow, dependencies, state, and failure modes.
+2. **Execution Risks**: complexity, coupling, migration risk, security, performance, and observability gaps.
+3. **Diagrams**: architecture/data-flow/state diagrams when the flow is non-trivial.
+4. **Test Strategy**: unit, integration, regression, e2e, eval, and verification coverage needed.
+5. **Failure Mode Register**: failure, impact, detection, and recovery.
+6. **Decision**: approve, revise, split, spike, or block.
+7. **Handoff**: QA, release, docs, DX, or product gate needs.
+8. **Completion Summary**: status, confidence, stale artifacts, unresolved decisions, and accepted technical risks.

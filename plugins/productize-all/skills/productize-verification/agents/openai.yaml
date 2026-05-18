@@ -1,0 +1,8 @@
+interface:
+  display_name: "Verification"
+  short_description: "Verify before claiming completion. No claims without fresh verification evidence. Use before marking work done."
+  brand_color: "#334155"
+  default_prompt: "Use $productize-verification with my product context."
+
+policy:
+  allow_implicit_invocation: false

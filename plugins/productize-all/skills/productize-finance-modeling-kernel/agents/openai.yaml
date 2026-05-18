@@ -1,0 +1,8 @@
+interface:
+  display_name: "Finance Modeling Kernel"
+  short_description: "Shared Productize Finance calculation and validation kernel for exact formulas, input normalization, assumption..."
+  brand_color: "#0369A1"
+  default_prompt: "Use $productize-finance-modeling-kernel with my product context."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,45 @@
+{
+  "title": "AARRR Growth Diagnostics",
+  "category": "Growth",
+  "tags": [
+    "marketing-strategy",
+    "growth",
+    "aarrr",
+    "pirate-metrics",
+    "cac",
+    "ltv",
+    "activation",
+    "retention",
+    "referral",
+    "aarrr-growth-diagnostics",
+    "diagnostics",
+    "marketing",
+    "diagnose",
+    "startup"
+  ],
+  "lifecycle": "Growth",
+  "use_when": "Diagnose product or startup growth using AARRR pirate metrics, CAC, LTV, channel performance, activation, retention, referral, revenue, and growth engine fit. Use for funnel leakage, growth bottlenecks, SaaS conversion, and go-to-market growth analysis.",
+  "do_not_use_when": "Do not use AARRR Growth Diagnostics when the request is mainly generic marketing copy, product discovery, or finance valuation; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "AARRR growth diagnosis and prioritized growth action plan",
+  "routing_signals": [
+    "aarrr-growth-diagnostics",
+    "aarrr",
+    "growth",
+    "diagnostics",
+    "marketing",
+    "diagnose",
+    "startup"
+  ],
+  "framework_fit": "Appropriate when the user needs to find growth bottlenecks across acquisition, activation, retention, referral, revenue, CAC/LTV, or channel performance.",
+  "failure_modes": [
+    "Produces AARRR growth diagnosis and prioritized growth action plan without tying recommendations to the user's Growth stage, evidence, and decision pressure.",
+    "Treats AARRR Growth Diagnostics as generic Growth advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from AARRR Growth Diagnostics when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $aarrr-growth-diagnostics to turn this aarrr context into a decision-ready AARRR growth diagnosis and prioritized growth action plan.",
+      "expected_artifact": "AARRR growth diagnosis and prioritized growth action plan"
+    }
+  ]
+}

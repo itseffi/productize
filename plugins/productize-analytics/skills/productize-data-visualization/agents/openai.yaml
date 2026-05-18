@@ -1,0 +1,8 @@
+interface:
+  display_name: "Data Visualization"
+  short_description: "Create effective data visualizations with Python using matplotlib, seaborn, and plotly. Use when choosing chart..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-data-visualization with my product context."
+
+policy:
+  allow_implicit_invocation: false

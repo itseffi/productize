@@ -1,0 +1,8 @@
+interface:
+  display_name: "Role Identity Decision Making Map"
+  short_description: "Map how role identity, organizational identity, in-group/out-group dynamics, and role expectations shape a product..."
+  brand_color: "#7C2D12"
+  default_prompt: "Use $productize-role-identity-decision-making-map with my product context."
+
+policy:
+  allow_implicit_invocation: true

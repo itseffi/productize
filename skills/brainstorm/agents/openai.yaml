@@ -1,0 +1,8 @@
+interface:
+  display_name: "Brainstorm"
+  short_description: "Brainstorm a product topic with a sharp, opinionated thinking partner. Use for problem exploration, opportunity..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $brainstorm with my product context."
+
+policy:
+  allow_implicit_invocation: true

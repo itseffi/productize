@@ -1,0 +1,53 @@
+{
+  "title": "A/B Test Analysis",
+  "category": "Analytics",
+  "lifecycle": "Measure",
+  "tags": [
+    "ab-test-analysis",
+    "ab-testing",
+    "experiments",
+    "statistics",
+    "ship-decision",
+    "confidence",
+    "sample-size",
+    "launch-and-learn",
+    "test",
+    "data",
+    "reporting",
+    "use",
+    "evaluating",
+    "results"
+  ],
+  "use_when": "Use when evaluating A/B test results, checking statistical significance, validating sample size, reading confidence intervals, or deciding whether to ship, extend, or stop an experiment.",
+  "do_not_use_when": "Do not use for general product health, qualitative launch feedback, or exploratory analysis without an experiment design and variant result data.",
+  "output_artifact": "A/B test decision memo with statistical readout and ship, extend, or stop recommendation",
+  "routing_signals": [
+    "ab-test-analysis",
+    "ab-testing",
+    "experiments",
+    "statistics",
+    "ship-decision",
+    "confidence",
+    "sample-size",
+    "when",
+    "evaluating",
+    "test",
+    "results",
+    "checking",
+    "statistical",
+    "significance"
+  ],
+  "framework_fit": "Best for completed or in-flight controlled experiments where the product team needs a decision tied to significance, power, effect size, sample quality, and business risk.",
+  "failure_modes": [
+    "Produces A/B test decision memo with statistical readout and ship, extend, or stop recommendation without tying recommendations to the user's Measure stage, evidence, and decision pressure.",
+    "Treats A/B Test Analysis as generic Analytics advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from A/B Test Analysis when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $ab-test-analysis to turn this ab-testing context into a decision-ready A/B test decision memo with statistical readout and ship, extend, or stop recommendation.",
+      "expected_artifact": "A/B test decision memo with statistical readout and ship, extend, or stop recommendation"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-data-analytics/skills/ab-test-analysis/SKILL.md"
+}

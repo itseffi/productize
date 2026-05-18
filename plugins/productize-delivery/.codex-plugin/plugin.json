@@ -1,0 +1,31 @@
+{
+  "name": "productize-delivery",
+  "version": "1.1.2",
+  "description": "PRDs, requirements, backlog items, sprint plans, QA scenarios, launch readiness, release notes, and execution planning.",
+  "author": {
+    "name": "Productize AI"
+  },
+  "license": "MIT",
+  "keywords": [
+    "product",
+    "product-management",
+    "agent-skills",
+    "ai-builders",
+    "delivery"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Productize Delivery",
+    "shortDescription": "PRDs, requirements, backlog items, sprint plans, QA scenarios, launch readiness, release notes, ",
+    "longDescription": "PRDs, requirements, backlog items, sprint plans, QA scenarios, launch readiness, release notes, and execution planning.",
+    "developerName": "Productize AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use a Productize Delivery skill for this task."
+    ],
+    "brandColor": "#4F46E5"
+  }
+}

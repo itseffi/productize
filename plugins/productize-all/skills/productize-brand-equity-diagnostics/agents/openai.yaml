@@ -1,0 +1,8 @@
+interface:
+  display_name: "Brand Equity Diagnostics"
+  short_description: "Diagnose brand health and brand equity using awareness, familiarity, associations, and Brand Asset Valuator..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $productize-brand-equity-diagnostics with my product context."
+
+policy:
+  allow_implicit_invocation: false

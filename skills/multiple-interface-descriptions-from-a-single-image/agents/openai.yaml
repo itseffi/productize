@@ -1,0 +1,8 @@
+interface:
+  display_name: "Multiple interface descriptions from a single image"
+  short_description: "Multiple interface descriptions from a single image. Use when the user needs a product workflow for design &..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $multiple-interface-descriptions-from-a-single-image with my product context."
+
+policy:
+  allow_implicit_invocation: true

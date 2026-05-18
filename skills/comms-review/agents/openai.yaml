@@ -1,0 +1,8 @@
+interface:
+  display_name: "Comms Review"
+  short_description: "Communications gate for stakeholder narrative, executive updates, customer announcements, launch messaging, risk..."
+  brand_color: "#0891B2"
+  default_prompt: "Use $comms-review with my product context."
+
+policy:
+  allow_implicit_invocation: true

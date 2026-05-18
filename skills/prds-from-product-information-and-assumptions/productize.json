@@ -1,0 +1,36 @@
+{
+  "title": "PRDs from product information and assumptions",
+  "category": "Delivery",
+  "lifecycle": "Discover",
+  "tags": [
+    "prds-from-product-information-and-assumptions",
+    "prds",
+    "information",
+    "assumptions",
+    "business",
+    "delivery"
+  ],
+  "use_when": "PRDs from product information and assumptions. Use when the user needs a product workflow for business analysis related to prds from product information and assumptions. Trigger terms: pm, business-analysis, prd, requirements, documentation, impact-sizing.",
+  "do_not_use_when": "Do not use PRDs from product information and assumptions when the request is mainly delivery planning, analytics readout, or stakeholder communication; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "PRDs from product information and assumptions research brief with evidence, insight clusters, assumptions, and next validation steps",
+  "routing_signals": [
+    "prds-from-product-information-and-assumptions",
+    "prds",
+    "information",
+    "assumptions",
+    "business",
+    "delivery"
+  ],
+  "framework_fit": "PRDs from product information and assumptions fits Delivery work in the Discover lifecycle when the user needs PRDs from product information and assumptions research brief with evidence, insight clusters, assumptions, and next validation steps and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces PRDs from product information and assumptions research brief with evidence, insight clusters, assumptions, and next validation steps without tying recommendations to the user's Discover stage, evidence, and decision pressure.",
+    "Treats PRDs from product information and assumptions as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from PRDs from product information and assumptions when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $prds-from-product-information-and-assumptions to turn this prds context into a decision-ready PRDs from product information and assumptions research brief with evidence, insight clusters, assumptions, and next validation steps.",
+      "expected_artifact": "PRDs from product information and assumptions research brief with evidence, insight clusters, assumptions, and next validation steps"
+    }
+  ]
+}

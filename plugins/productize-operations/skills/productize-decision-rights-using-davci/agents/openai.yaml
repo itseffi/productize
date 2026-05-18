@@ -1,0 +1,8 @@
+interface:
+  display_name: "Decision rights using DAVCI"
+  short_description: "Decision rights using DAVCI. Use when the user needs a product workflow for stakeholder management related to..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $productize-decision-rights-using-davci with my product context."
+
+policy:
+  allow_implicit_invocation: true

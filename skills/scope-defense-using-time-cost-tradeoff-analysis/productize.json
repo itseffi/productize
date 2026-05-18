@@ -1,0 +1,36 @@
+{
+  "title": "Scope defense using time-cost tradeoff analysis",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "scope-defense-using-time-cost-tradeoff-analysis",
+    "scope",
+    "defense",
+    "time",
+    "cost",
+    "tradeoff"
+  ],
+  "use_when": "Scope defense using time-cost tradeoff analysis. Use when the user needs a product workflow for project management related to scope defense using time-cost tradeoff analysis. Trigger terms: scope-management, prioritization, product-design, stakeholder-management.",
+  "do_not_use_when": "Do not use Scope defense using time-cost tradeoff analysis when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Scope defense using time-cost tradeoff analysis delivery brief with scope, requirements, priorities, risks, and acceptance criteria",
+  "routing_signals": [
+    "scope-defense-using-time-cost-tradeoff-analysis",
+    "scope",
+    "defense",
+    "time",
+    "cost",
+    "tradeoff"
+  ],
+  "framework_fit": "Scope defense using time-cost tradeoff analysis fits Delivery work in the Plan lifecycle when the user needs Scope defense using time-cost tradeoff analysis delivery brief with scope, requirements, priorities, risks, and acceptance criteria and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Scope defense using time-cost tradeoff analysis delivery brief with scope, requirements, priorities, risks, and acceptance criteria without tying recommendations to the user's Plan stage, evidence, and decision pressure.",
+    "Treats Scope defense using time-cost tradeoff analysis as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Scope defense using time-cost tradeoff analysis when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $scope-defense-using-time-cost-tradeoff-analysis to turn this scope context into a decision-ready Scope defense using time-cost tradeoff analysis delivery brief with scope, requirements, priorities, risks, and acceptance criteria.",
+      "expected_artifact": "Scope defense using time-cost tradeoff analysis delivery brief with scope, requirements, priorities, risks, and acceptance criteria"
+    }
+  ]
+}

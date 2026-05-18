@@ -1,0 +1,54 @@
+---
+name: capital-structure-financing
+description: >-
+  Productize Finance engine for debt versus equity financing, leverage, enterprise
+  value, equity value, WACC, APV, tax shields, bonds, credit spreads, IPOs, SEOs,
+  covenants, warrants, and financing side effects.
+---
+
+# Capital Structure Financing
+
+{{PRODUCTIZE_PREAMBLE}}
+
+## Purpose
+
+Financing and capital-structure skill. Use it to compare debt versus equity financing,
+model leverage, estimate WACC, perform APV valuation, value bonds, analyze tax
+shields, and connect financing decisions to firm value.
+
+## Core Formulas
+
+- `Assets = Liabilities + Equity`
+- `Enterprise Value = Equity + Debt + Preferred Stock + Noncontrolling Interest - Cash - Nonoperating Assets`
+- `Equity Value = Enterprise Value - Net Debt`
+- `Debt-to-Equity = D / E`
+- `Debt-to-Value = D / (D + E)`
+- `DFL = EBIT / (EBIT - Interest)`
+- `WACC = E/(D+E) * r_E + D/(D+E) * (1 - T_c) * r_D`
+- `V_L = V_U + PV(Tax Shields)`
+- `PV(Tax Shields) = T_c * D` for fixed perpetual debt discounted at cost of debt.
+- `APV = NPV_unlevered + PV(Tax Shields) - PV(Expected Distress Costs) - Issuance Costs`
+- `Bond Price = sum(Coupon_t / (1 + y)^t) + Face Value / (1 + y)^N`
+- `Credit Spread = Yield on Risky Debt - Matched Risk-Free Yield`
+
+## Financing Instruments
+
+Common stock, preferred stock, warrants, bank loans, revolving credit lines, term
+loans, corporate bonds, convertible debt, senior debt, subordinated debt, IPOs, and
+SEOs.
+
+## Required Validation
+
+- Use market values for WACC weights.
+- Warn if company WACC is applied to a different-risk project.
+- Warn if debt is assumed risk-free when credit risk is material.
+- Warn if tax shields are counted twice.
+- Warn if financing cash flows are included in FCF and WACC also includes financing.
+- Warn if APV and WACC assumptions are mixed incorrectly.
+- Use APV when debt follows a fixed schedule.
+- Use WACC when the firm maintains a target leverage ratio.
+
+## Required Output
+
+Return Inputs, Assumptions, Formula used, Calculation, Result, Interpretation, and
+Warnings. State whether the analysis is WACC-consistent or APV-consistent.

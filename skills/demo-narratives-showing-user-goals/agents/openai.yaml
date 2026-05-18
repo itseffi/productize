@@ -1,0 +1,8 @@
+interface:
+  display_name: "Demo narratives showing user goals"
+  short_description: "Demo narratives showing user goals. Use when the user needs a product workflow for stakeholder management related to..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $demo-narratives-showing-user-goals with my product context."
+
+policy:
+  allow_implicit_invocation: true

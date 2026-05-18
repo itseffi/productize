@@ -1,0 +1,36 @@
+{
+  "title": "Map power dynamics before meetings",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Align",
+  "tags": [
+    "map-power-dynamics-before-meetings",
+    "map",
+    "power",
+    "dynamics",
+    "before",
+    "meetings"
+  ],
+  "use_when": "Map power dynamics before meetings. Use when the user needs a product workflow for stakeholder management related to map power dynamics before meetings. Trigger terms: stakeholders, power-dynamics, meetings, communication.",
+  "do_not_use_when": "Do not use Map power dynamics before meetings when the request is mainly technical implementation, analytics modeling, or UX critique; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Map power dynamics before meetings stakeholder narrative with audience, message, risks, asks, and follow-up owner",
+  "routing_signals": [
+    "map-power-dynamics-before-meetings",
+    "map",
+    "power",
+    "dynamics",
+    "before",
+    "meetings"
+  ],
+  "framework_fit": "Map power dynamics before meetings fits Stakeholder Communication work in the Align lifecycle when the user needs Map power dynamics before meetings stakeholder narrative with audience, message, risks, asks, and follow-up owner and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Map power dynamics before meetings stakeholder narrative with audience, message, risks, asks, and follow-up owner without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Map power dynamics before meetings as generic Stakeholder Communication advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Map power dynamics before meetings when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $map-power-dynamics-before-meetings to turn this map context into a decision-ready Map power dynamics before meetings stakeholder narrative with audience, message, risks, asks, and follow-up owner.",
+      "expected_artifact": "Map power dynamics before meetings stakeholder narrative with audience, message, risks, asks, and follow-up owner"
+    }
+  ]
+}

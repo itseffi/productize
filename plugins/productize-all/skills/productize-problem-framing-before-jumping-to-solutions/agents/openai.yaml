@@ -1,0 +1,8 @@
+interface:
+  display_name: "Problem framing before jumping to solutions"
+  short_description: "Problem framing before jumping to solutions. Use when the user needs a product workflow for user research related to..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-problem-framing-before-jumping-to-solutions with my product context."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,36 @@
+{
+  "title": "Pyramid structure optimization from complex text",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Align",
+  "tags": [
+    "pyramid-structure-optimization-from-complex-text",
+    "pyramid",
+    "structure",
+    "optimization",
+    "complex",
+    "text"
+  ],
+  "use_when": "Pyramid structure optimization from complex text. Use when the user needs a product workflow for presentation & communication related to pyramid structure optimization from complex text. Trigger terms: writing, storytelling, presentations, structured-thinking.",
+  "do_not_use_when": "Do not use Pyramid structure optimization from complex text when the request is mainly technical implementation, analytics modeling, or UX critique; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Pyramid structure optimization from complex text stakeholder narrative with audience, message, risks, asks, and follow-up owner",
+  "routing_signals": [
+    "pyramid-structure-optimization-from-complex-text",
+    "pyramid",
+    "structure",
+    "optimization",
+    "complex",
+    "text"
+  ],
+  "framework_fit": "Pyramid structure optimization from complex text fits Stakeholder Communication work in the Align lifecycle when the user needs Pyramid structure optimization from complex text stakeholder narrative with audience, message, risks, asks, and follow-up owner and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Pyramid structure optimization from complex text stakeholder narrative with audience, message, risks, asks, and follow-up owner without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Pyramid structure optimization from complex text as generic Stakeholder Communication advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Pyramid structure optimization from complex text when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $pyramid-structure-optimization-from-complex-text to turn this pyramid context into a decision-ready Pyramid structure optimization from complex text stakeholder narrative with audience, message, risks, asks, and follow-up owner.",
+      "expected_artifact": "Pyramid structure optimization from complex text stakeholder narrative with audience, message, risks, asks, and follow-up owner"
+    }
+  ]
+}

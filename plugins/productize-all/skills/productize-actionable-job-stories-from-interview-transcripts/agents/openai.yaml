@@ -1,0 +1,8 @@
+interface:
+  display_name: "Actionable job stories from interview transcripts"
+  short_description: "Actionable job stories from interview transcripts. Use when the user needs a product workflow for user research..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-actionable-job-stories-from-interview-transcripts with my product context."
+
+policy:
+  allow_implicit_invocation: false

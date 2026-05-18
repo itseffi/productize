@@ -1,0 +1,8 @@
+interface:
+  display_name: "SQL Queries"
+  short_description: "Write correct, performant SQL across major data warehouse dialects including Snowflake, BigQuery, Databricks,..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $sql-queries with my product context."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,74 @@
+---
+name: solution-anti-patterns-from-customer-problem-analysis
+description: >-
+  Solution anti-patterns from customer problem analysis. Use when the user needs a product
+  workflow for decision making related to solution anti-patterns from customer problem
+  analysis. Trigger terms: pm, decision-making, critical-thinking, anti-patterns.
+---
+# Solution anti-patterns from customer problem analysis
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Solution anti-patterns from customer problem analysis**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{CUSTOMER_NOTES}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Solution anti-patterns from customer problem analysis.
+Success metric:
+- Produces exactly 3 plausible but fundamentally flawed solutions derived from the customer problem context.
+- Each flawed solution is clearly mapped to why it fails (or worsens outcomes) with concrete evidence from inputs.
+- Output follows the required schema exactly.
+
+CONSTRAINTS
+- Use only `{{CUSTOMER_NOTES}}`; if details are missing, state assumptions explicitly.
+- Analyze first, then propose flawed solutions; do not skip analysis steps.
+- Keep flaws subtle and realistic (not absurd/comedic), and tie them to customer context.
+- Ensure each flawed solution is implementable on the surface but strategically wrong.
+- Cover short-term and long-term consequences, stakeholder impacts, and implementation constraints.
+
+FORMAT
+Return exactly this structure:
+
+<problem_analysis>
+1. Notes breakdown: [Key points, assumptions, implicit needs]
+2. Core problems: [Primary problems to address]
+3. Stakeholders: [Stakeholder -> interests]
+4. Failure-prone areas: [Where solutions can go wrong]
+5. Consequences: [Short-term and long-term consequences to watch]
+6. Constraints: [Resource and implementation constraints]
+7. Flawed-approach brainstorm: [Candidate anti-pattern directions]
+</problem_analysis>
+
+<bad_solutions>
+1. [Brief description of flawed solution 1]
+2. [Brief description of flawed solution 2]
+3. [Brief description of flawed solution 3]
+</bad_solutions>
+
+<explanations>
+1. [Why solution 1 is a poor choice: misread need, hidden downside, likely failure mode, consequence]
+2. [Why solution 2 is a poor choice: misread need, hidden downside, likely failure mode, consequence]
+3. [Why solution 3 is a poor choice: misread need, hidden downside, likely failure mode, consequence]
+</explanations>
+
+FAILURE
+- Any required section in `FORMAT` is missing, malformed, or incomplete.
+- Not exactly 3 flawed solutions.
+- Explanations do not map 1:1 to the listed solutions.
+- Claims are generic or not grounded in provided inputs.
+- Flaws are absurd/comedic instead of plausible and subtle.
+- Assumptions are used but not explicitly stated.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Defining the niche from user input"
+  short_description: "Defining the niche from user input. Use when the user needs a product workflow for business analysis related to..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-defining-the-niche-from-user-input with my product context."
+
+policy:
+  allow_implicit_invocation: true

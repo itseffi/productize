@@ -1,0 +1,8 @@
+interface:
+  display_name: "Prototype creation from image descriptions and app info"
+  short_description: "Prototype creation from image descriptions and app info. Use when the user needs a product workflow for design &..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $prototype-creation-from-image-descriptions-and-app-info with my product context."
+
+policy:
+  allow_implicit_invocation: true

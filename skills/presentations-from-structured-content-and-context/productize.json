@@ -1,0 +1,40 @@
+{
+  "title": "Presentations from structured content and context",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Align",
+  "tags": [
+    "presentations-from-structured-content-and-context",
+    "presentations",
+    "structured",
+    "content",
+    "context",
+    "presentation",
+    "communication",
+    "stakeholder"
+  ],
+  "use_when": "Presentations from structured content and context. Use when the user needs a product workflow for presentation & communication related to presentations from structured content and context. Trigger terms: presentations, storytelling, product-management, communication.",
+  "do_not_use_when": "Do not use Presentations from structured content and context when the request is mainly technical implementation, analytics modeling, or UX critique; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Presentations from structured content and context stakeholder narrative with audience, message, risks, asks, and follow-up owner",
+  "routing_signals": [
+    "presentations-from-structured-content-and-context",
+    "presentations",
+    "structured",
+    "content",
+    "context",
+    "presentation",
+    "communication",
+    "stakeholder"
+  ],
+  "framework_fit": "Presentations from structured content and context fits Stakeholder Communication work in the Align lifecycle when the user needs Presentations from structured content and context stakeholder narrative with audience, message, risks, asks, and follow-up owner and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Presentations from structured content and context stakeholder narrative with audience, message, risks, asks, and follow-up owner without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Presentations from structured content and context as generic Stakeholder Communication advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Presentations from structured content and context when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $presentations-from-structured-content-and-context to turn this presentations context into a decision-ready Presentations from structured content and context stakeholder narrative with audience, message, risks, asks, and follow-up owner.",
+      "expected_artifact": "Presentations from structured content and context stakeholder narrative with audience, message, risks, asks, and follow-up owner"
+    }
+  ]
+}

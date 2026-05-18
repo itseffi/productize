@@ -1,0 +1,8 @@
+interface:
+  display_name: "Valuation And Deal Pricing"
+  short_description: "Main Productize Finance orchestrator for company valuation, project valuation, enterprise value, equity value, price..."
+  brand_color: "#0369A1"
+  default_prompt: "Use $productize-valuation-and-deal-pricing with my product context."
+
+policy:
+  allow_implicit_invocation: false

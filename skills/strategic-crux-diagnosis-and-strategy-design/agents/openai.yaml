@@ -1,0 +1,8 @@
+interface:
+  display_name: "Strategic crux diagnosis and strategy design"
+  short_description: "Strategic crux diagnosis and strategy design. Use when the user needs a product workflow for product strategy..."
+  brand_color: "#059669"
+  default_prompt: "Use $strategic-crux-diagnosis-and-strategy-design with my product context."
+
+policy:
+  allow_implicit_invocation: true

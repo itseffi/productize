@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+import { recordCompletionStatus } from "./productize-runtime.mjs";
+
+const [status, ...summaryParts] = process.argv.slice(2);
+const summary = summaryParts.join(" ");
+
+if (!status || !summary) {
+  console.error("Usage: productize-completion-status <completed|blocked|deferred|needs-review> <summary>");
+  process.exit(2);
+}
+
+try {
+  console.log(recordCompletionStatus(status, summary));
+} catch (error) {
+  console.error(error.message);
+  process.exit(2);
+}

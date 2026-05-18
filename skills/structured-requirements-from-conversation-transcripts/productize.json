@@ -1,0 +1,38 @@
+{
+  "title": "Structured requirements from conversation transcripts",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "structured-requirements-from-conversation-transcripts",
+    "structured",
+    "requirements",
+    "conversation",
+    "transcripts",
+    "business",
+    "delivery"
+  ],
+  "use_when": "Structured requirements from conversation transcripts. Use when the user needs a product workflow for business analysis related to structured requirements from conversation transcripts. Trigger terms: pm, business-analysis, requirements, analysis, transcripts.",
+  "do_not_use_when": "Do not use Structured requirements from conversation transcripts when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Structured requirements from conversation transcripts delivery brief with scope, requirements, priorities, risks, and acceptance criteria",
+  "routing_signals": [
+    "structured-requirements-from-conversation-transcripts",
+    "structured",
+    "requirements",
+    "conversation",
+    "transcripts",
+    "business",
+    "delivery"
+  ],
+  "framework_fit": "Appropriate when sales calls, discovery notes, meetings, or design-review transcripts need to become requirements, PRD input, acceptance criteria, or delivery scope.",
+  "failure_modes": [
+    "Produces Structured requirements from conversation transcripts delivery brief with scope, requirements, priorities, risks, and acceptance criteria without tying recommendations to the user's Plan stage, evidence, and decision pressure.",
+    "Treats Structured requirements from conversation transcripts as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Structured requirements from conversation transcripts when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $structured-requirements-from-conversation-transcripts to turn this structured context into a decision-ready Structured requirements from conversation transcripts delivery brief with scope, requirements, priorities, risks, and acceptance criteria.",
+      "expected_artifact": "Structured requirements from conversation transcripts delivery brief with scope, requirements, priorities, risks, and acceptance criteria"
+    }
+  ]
+}

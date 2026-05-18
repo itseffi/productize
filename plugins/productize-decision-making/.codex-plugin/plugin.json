@@ -1,0 +1,31 @@
+{
+  "name": "productize-decision-making",
+  "version": "1.1.2",
+  "description": "Strategic decision quality, bias and heuristic review, visual decision support, group decision process, role identity, and decision records.",
+  "author": {
+    "name": "Productize AI"
+  },
+  "license": "MIT",
+  "keywords": [
+    "product",
+    "product-management",
+    "agent-skills",
+    "ai-builders",
+    "decision-making"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Productize Decision Making",
+    "shortDescription": "Strategic decision quality, bias and heuristic review, visual decision support, group decision p",
+    "longDescription": "Strategic decision quality, bias and heuristic review, visual decision support, group decision process, role identity, and decision records.",
+    "developerName": "Productize AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use a Productize Decision Making skill for this task."
+    ],
+    "brandColor": "#7C2D12"
+  }
+}

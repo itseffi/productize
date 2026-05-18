@@ -1,0 +1,51 @@
+{
+  "title": "North Star Metric",
+  "category": "Analytics",
+  "lifecycle": "Measure",
+  "tags": [
+    "north-star-metric",
+    "north-star",
+    "input-metrics",
+    "metrics-constellation",
+    "product-health",
+    "business-game",
+    "north",
+    "star",
+    "metric",
+    "data",
+    "reporting",
+    "analytics"
+  ],
+  "use_when": "Use when choosing or revising a North Star Metric, defining input metrics, aligning teams around product value, or deciding what the product should measure.",
+  "do_not_use_when": "Do not use for broad strategy, vanity KPI lists, dashboard visualization, or metric troubleshooting after a specific metric has already been chosen.",
+  "output_artifact": "North Star metric definition with input metrics, validation criteria, and instrumentation notes",
+  "routing_signals": [
+    "north-star-metric",
+    "north-star",
+    "input-metrics",
+    "metrics-constellation",
+    "product-health",
+    "business-game",
+    "when",
+    "choosing",
+    "revising",
+    "north",
+    "star",
+    "metric",
+    "defining",
+    "input"
+  ],
+  "framework_fit": "Best when the team needs one value-aligned metric plus controllable input metrics that connect user value to business outcomes.",
+  "failure_modes": [
+    "Produces North Star metric definition with input metrics, validation criteria, and instrumentation notes without tying recommendations to the user's Measure stage, evidence, and decision pressure.",
+    "Treats North Star Metric as generic Analytics advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from North Star Metric when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $north-star-metric to turn this north-star context into a decision-ready North Star metric definition with input metrics, validation criteria, and instrumentation notes.",
+      "expected_artifact": "North Star metric definition with input metrics, validation criteria, and instrumentation notes"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-marketing-growth/skills/north-star-metric/SKILL.md"
+}

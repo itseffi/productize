@@ -1,0 +1,50 @@
+{
+  "title": "Productize Grow",
+  "category": "Growth",
+  "lifecycle": "Growth",
+  "tags": [
+    "grow",
+    "playbook",
+    "entry-point",
+    "growth",
+    "activation",
+    "retention",
+    "growth-loop",
+    "gtm",
+    "experiment-cadence",
+    "productize",
+    "stable",
+    "evidence"
+  ],
+  "use_when": "Use Productize Grow when a product has a working core, activation evidence, and a concrete growth target or bottleneck that needs diagnosis, growth-loop design, lifecycle triggers, GTM choices, pricing, or retention experiments.",
+  "do_not_use_when": "Do not use Productize Grow for a raw product idea, unvalidated capability, or production health issue without a growth target. Route raw bets to 0-1 and live-product monitoring or incidents to Productize Operate.",
+  "output_artifact": "Growth playbook with activation evidence, bottleneck diagnosis, experiment cadence, gate calls, and closure condition",
+  "routing_signals": [
+    "productize-grow",
+    "growth-target",
+    "activation-evidence",
+    "growth-bottleneck",
+    "growth-loop",
+    "retention",
+    "lifecycle-triggers",
+    "gtm",
+    "pql",
+    "product-led-growth",
+    "grow",
+    "productize",
+    "growth",
+    "playbook"
+  ],
+  "framework_fit": "Productize Grow fits post-activation growth work where the team needs a repeatable experiment cadence, not a new product build loop or one-time launch check. It routes to growth skills and calls product, QA, docs, release, and comms gates when experiments touch the product surface.",
+  "failure_modes": [
+    "Starts growth experiments before the product has activation evidence, causing channel and messaging work to mask a weak core product.",
+    "Treats growth as generic marketing activity instead of tying each experiment to a bottleneck, loop, lifecycle trigger, metric threshold, and stop rule.",
+    "Skips product, QA, release, docs, or comms gates when growth changes alter onboarding, pricing, lifecycle messages, or production behavior."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $grow to diagnose our activation plateau, choose a growth loop, design the next experiment cadence, and call the right product and comms gates.",
+      "expected_artifact": "Growth playbook with activation evidence, bottleneck diagnosis, experiment cadence, gate calls, and closure condition"
+    }
+  ]
+}

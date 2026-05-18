@@ -1,0 +1,109 @@
+---
+name: stakeholder-power-interest-and-influence-map
+description: >-
+  Stakeholder Power–Interest & Influence Map. Use when the user needs a product workflow for
+  stakeholder management related to stakeholder power–interest & influence map. Trigger terms:
+  stakeholder-management, influence, internal-politics, communication.
+---
+# Stakeholder Power–Interest & Influence Map
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Stakeholder Power–Interest & Influence Map**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- [No explicit variables declared; use provided context.]
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: "Stakeholder Power–Interest & Influence Map".
+Success metric:
+- Completes all required tasks and decision logic from the prompt instructions.
+- Output is specific, evidence-based, and actionable.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required analysis steps, sections, or validation logic.
+- Keep recommendations/outputs grounded in the input context; avoid generic filler.
+- Build a stakeholder strategy output from initiative context and stakeholder details.
+- If critical stakeholder context is missing, ask exactly 3 targeted questions; if still unclear, state assumptions and proceed.
+- Produce:
+- A Power-Interest 2x2 matrix with named stakeholders per quadrant.
+- An Influence Pyramid (Top/Middle/Base) including informal power roles (gatekeepers, super-connectors, executive assistants where relevant).
+- High-power stakeholder profiles covering goals/metrics, concerns/risks, preferred comms style, and political risks.
+- Decision-making profile covering role identity, expected role behavior, likely information filters, in-group/out-group dynamics, and susceptibility to role pressure when relevant.
+- A tailored engagement plan per high-power stakeholder (cadence/channel, format/owner, key message, quick win, fallback).
+- A plan to inform/mobilize high-interest low-power stakeholders.
+- Success signals/metrics and top 3 prioritized political pitfalls with mitigations.
+
+FORMAT
+Return exactly this structure:
+
+Power-Interest Matrix
+| Quadrant | Stakeholders |
+| --- | --- |
+| High Power / High Interest | [names] |
+| High Power / Low Interest | [names] |
+| Low Power / High Interest | [names] |
+| Low Power / Low Interest | [names] |
+
+Influence Pyramid
+- Top: [names + rationale]
+- Middle: [names + rationale]
+- Base: [names + rationale]
+
+High-Power Profiles
+| Stakeholder | Goals & Success Metrics | Likely Concerns/Risks | Role Identity / Expected Behavior | Preferred Communication Style | Political Risks for Me |
+| --- | --- | --- | --- | --- | --- |
+| [row] | [row] | [row] | [row] | [row] | [row] |
+
+Decision-Making Influence Risks
+- Role pressure: [who may decide from role expectation rather than evidence]
+- In-group / out-group effects: [groups and likely interpretation gap]
+- Authority or conformity risk: [risk and mitigation]
+- Common-information risk: [shared info that may crowd out unique evidence]
+
+Engagement Plan
+| Stakeholder | Cadence & Channel | Format | Owner | Key Message | Quick Win | Fallback |
+| --- | --- | --- | --- | --- | --- | --- |
+| [row] | [row] | [row] | [row] | [row] | [row] | [row] |
+
+Advocacy Plan (High-Interest / Low-Power)
+- [how to inform]
+- [how to mobilize advocacy]
+
+Success Signals & Metrics
+- [signal/metric]
+
+Risks & Mitigations
+1. [pitfall + mitigation]
+2. [pitfall + mitigation]
+3. [pitfall + mitigation]
+
+Assumptions
+- [assumption or "None"]
+
+FAILURE
+- Any required section/table is missing or materially incomplete.
+- High-power stakeholders are not profiled and mapped to tailored engagement actions.
+- Informal influence is ignored or unsupported.
+- Role identity, in-group/out-group effects, or group decision influence risks are ignored when relevant.
+- Top 3 political pitfalls and mitigations are missing, unprioritized, or generic.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.
+
+## PM Skills Main Merge
+
+Load `references/pm-skills-main-merge.md` when the request mentions `power interest grid`, `stakeholder communication plan`, `raci`, `escalation path`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.

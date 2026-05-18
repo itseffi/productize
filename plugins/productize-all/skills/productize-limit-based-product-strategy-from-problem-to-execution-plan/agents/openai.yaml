@@ -1,0 +1,8 @@
+interface:
+  display_name: "Limit-based product strategy from problem to execution plan"
+  short_description: "Limit-based product strategy from problem to execution plan. Use when the user needs a product workflow for product..."
+  brand_color: "#059669"
+  default_prompt: "Use $productize-limit-based-product-strategy-from-problem-to-execution-plan with my product context."
+
+policy:
+  allow_implicit_invocation: false

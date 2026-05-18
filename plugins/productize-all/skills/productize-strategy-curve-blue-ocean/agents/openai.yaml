@@ -1,0 +1,8 @@
+interface:
+  display_name: "Strategy Curve and Blue Ocean"
+  short_description: "Apply strategy curve and blue ocean analysis to compare an offer against competitors, identify factors of..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $productize-strategy-curve-blue-ocean with my product context."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,48 @@
+{
+  "title": "Spec Writing",
+  "category": "AI Execution",
+  "tags": [
+    "technical-spec",
+    "implementation-spec",
+    "acceptance-criteria",
+    "interfaces",
+    "verification",
+    "requirements",
+    "spec-writing",
+    "spec",
+    "writing",
+    "technical",
+    "convert",
+    "approved",
+    "prd",
+    "clear"
+  ],
+  "lifecycle": "Build With AI",
+  "use_when": "Convert an approved PRD or clear requirements into an implementation-ready technical spec with scope, interfaces, and acceptance criteria.",
+  "do_not_use_when": "Do not use Spec Writing when the request is mainly market strategy, research synthesis, finance modeling, or executive communication; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Implementation-ready technical spec with interfaces, acceptance criteria, and verification plan",
+  "routing_signals": [
+    "spec-writing",
+    "spec",
+    "writing",
+    "technical",
+    "convert",
+    "approved",
+    "prd",
+    "clear",
+    "requirements",
+    "execution"
+  ],
+  "framework_fit": "Appropriate when approved product requirements need to become an agent-ready or engineer-ready technical spec with scope, interfaces, risks, acceptance criteria, and verification.",
+  "failure_modes": [
+    "Produces Implementation-ready technical spec with interfaces, acceptance criteria, and verification plan without tying recommendations to the user's Build With AI stage, evidence, and decision pressure.",
+    "Treats Spec Writing as generic AI Execution advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Spec Writing when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $spec-writing to turn this spec context into a decision-ready Implementation-ready technical spec with interfaces, acceptance criteria, and verification plan.",
+      "expected_artifact": "Implementation-ready technical spec with interfaces, acceptance criteria, and verification plan"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+[
+  {
+    "name": "founder 0-to-1 routing contract",
+    "prompt": "Use $productize. Founder: I have a rough idea for a compliance copilot for small accounting firms. Help me choose a narrow beachhead and riskiest validation step before building.",
+    "must_contain": ["Route", "Evidence", "assumption", "Next action"],
+    "rubric": [
+      {
+        "name": "beachhead and validation artifact",
+        "must_contain": ["beachhead", "validation"],
+        "weight": 2
+      },
+      {
+        "name": "does not jump into build mode",
+        "must_not_contain": ["build the full product", "start coding"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "pm transcript to PRD routing contract",
+    "prompt": "Use $productize. Product manager: I have a messy transcript from sales calls and design reviews. Turn it into a v0 PRD and acceptance criteria.",
+    "must_contain": ["Route", "PRD", "requirements", "Next action"],
+    "rubric": [
+      {
+        "name": "captures delivery artifact",
+        "must_contain": ["acceptance criteria", "requirements"],
+        "weight": 2
+      },
+      {
+        "name": "flags evidence gaps from transcript",
+        "any_contain": ["unknown", "missing", "assumption", "open question"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "cpo board narrative routing contract",
+    "prompt": "Use $productize. CPO: board meeting next week. Build a narrative around PMF evidence, roadmap tradeoffs, risks, and the decision we need.",
+    "must_contain": ["Route", "narrative", "risk", "Next action"],
+    "rubric": [
+      {
+        "name": "board narrative includes decision ask",
+        "any_contain": ["decision we need", "decision ask", "board ask", "approval"],
+        "weight": 2
+      },
+      {
+        "name": "ties narrative to PMF and roadmap tradeoffs",
+        "must_contain": ["PMF", "tradeoff"],
+        "weight": 2
+      }
+    ]
+  },
+  {
+    "name": "ai builder handoff routing contract",
+    "prompt": "Use $productize. AI builder: create an agent handoff for a retrieval-based research assistant MVP with evals and verification.",
+    "must_contain": ["Route", "handoff", "verification", "Next action"],
+    "rubric": [
+      {
+        "name": "handoff is implementation-ready",
+        "must_contain": ["evals", "verification"],
+        "weight": 2
+      },
+      {
+        "name": "mentions architecture or retrieval risk",
+        "any_contain": ["architecture", "retrieval", "risk", "failure mode"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "existing product support synthesis routing contract",
+    "prompt": "Use $productize. Product manager: we have 400 support tickets about reporting exports and dashboard filters. Turn them into product themes and prioritized improvements.",
+    "must_contain": ["Route", "support", "prioritized", "Next action"],
+    "rubric": [
+      {
+        "name": "support synthesis includes themes and triage",
+        "must_contain": ["themes", "prioritized"],
+        "weight": 2
+      },
+      {
+        "name": "requires evidence from ticket volume or severity",
+        "any_contain": ["volume", "severity", "frequency", "evidence"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "existing product roadmap debate routing contract",
+    "prompt": "Use $productize. CPO: sales wants SSO, customers want dashboards, and engineering wants reliability work. Turn this roadmap debate into a decision memo.",
+    "must_contain": ["Route", "tradeoff", "recommendation", "Next action"],
+    "rubric": [
+      {
+        "name": "decision memo compares the three competing bets",
+        "must_contain": ["SSO", "dashboards", "reliability"],
+        "weight": 2
+      },
+      {
+        "name": "recommends an owner or decision maker",
+        "any_contain": ["owner", "decision maker", "DRI", "accountable"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "existing product metric reliability routing contract",
+    "prompt": "Use $productize. Product ops: dashboard metrics disagree with warehouse data. Define a reliable metrics review and data validation plan.",
+    "must_contain": ["Route", "metrics", "validation", "Next action"],
+    "rubric": [
+      {
+        "name": "metrics artifact includes source reconciliation",
+        "any_contain": ["source of truth", "warehouse", "reconcile", "lineage"],
+        "weight": 2
+      },
+      {
+        "name": "includes data quality checks",
+        "any_contain": ["quality check", "validation check", "freshness", "completeness"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "finance valuation routing contract",
+    "prompt": "Use $productize. Founder: what is this SaaS company worth, what should we pay, and what ownership should we receive? I need DCF, public comps, enterprise value, equity value, price per share, and sensitivities.",
+    "must_contain": ["Route", "valuation", "assumption", "Warnings"],
+    "rubric": [
+      {
+        "name": "valuation artifact includes method and bridge",
+        "must_contain": ["DCF", "enterprise value", "equity value"],
+        "weight": 2
+      },
+      {
+        "name": "warns about valuation assumptions",
+        "any_contain": ["WACC", "terminal value", "market values", "sensitivity"],
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "name": "finance vc deal routing contract",
+    "prompt": "Use $productize. Founder: model this Series A with pre-money, post-money, cap table, dilution, option pool, convertible note, SAFE, and liquidation preference.",
+    "must_contain": ["Route", "cap table", "dilution", "Warnings"],
+    "rubric": [
+      {
+        "name": "VC deal artifact includes financing definitions",
+        "must_contain": ["pre-money", "post-money", "option pool"],
+        "weight": 2
+      },
+      {
+        "name": "models terms beyond ownership percentage",
+        "must_contain": ["liquidation preference", "SAFE"],
+        "weight": 2
+      }
+    ]
+  }
+]

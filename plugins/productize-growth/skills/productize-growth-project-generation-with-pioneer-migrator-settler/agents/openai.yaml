@@ -1,0 +1,8 @@
+interface:
+  display_name: "Growth project generation with Pioneer-Migrator-Settler framework"
+  short_description: "Growth project generation with Pioneer-Migrator-Settler framework. Use when the user needs a product workflow for..."
+  brand_color: "#C2410C"
+  default_prompt: "Use $productize-growth-project-generation-with-pioneer-migrator-settler with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,117 @@
+---
+name: netmba-competitor-analysis
+description: >-
+  NETMBA competitor analysis. Use when the user needs a product workflow for product strategy
+  related to netmba competitor analysis. Trigger terms: strategy, competition, porter,
+  competitor-analysis.
+---
+# NETMBA competitor analysis
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **NETMBA competitor analysis**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{OUR_COMPANY_BUSINESS_UNIT}}
+- {{FOCAL_COMPETITORS}}
+- {{GEOGRAPHY_SEGMENT}}
+- {{TIME_HORIZON}}
+- {{PROVIDED_DATA_AND_CONSTRAINTS}}
+- {{DESIRED_DEPTH}}  # Brief | Standard | Deep
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: NETMBA competitor analysis.
+Success metric:
+- Produces a rigorous competitor analysis using Objectives, Current Strategy, Assumptions, and Capabilities.
+- Converts analysis into ranked likely moves and actionable counter-moves.
+- Keeps key claims auditable with explicit source tags and confidence levels.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs; if key fields are missing, state assumptions explicitly.
+- Use Porter/NETMBA competitor model components explicitly:
+  - Objectives, Current Strategy, Assumptions, Capabilities.
+- Separate facts from inferences; mark inferred claims with `(Inference)` and source tags `[S#]` when indirectly supported.
+- Quantify where possible; use ranges if exact values are unavailable.
+- Add confidence level (`High/Med/Low`) with one-line justification in major sections.
+- Keep all key claims auditable via `Evidence Pack` source tags.
+- Use exact section headers from `FORMAT`; do not add extra sections.
+- Depth handling:
+  - `Brief`: cap around 600 words total.
+  - `Standard`: normal detail.
+  - `Deep`: expanded sub-bullets and richer tables.
+- Include required tables:
+  - Capabilities Heatmap,
+  - Likely Moves Matrix,
+  - Counter-Moves Plan.
+
+FORMAT
+Return exactly this structure:
+
+1. Executive Snapshot (<=120 words)
+
+2. Objectives (Future Goals)
+
+3. Current Strategy
+
+4. Assumptions
+
+5. Capabilities (Resources & Weaknesses)
+
+Capabilities Heatmap
+| Capability | Rating (High/Medium/Low) | Evidence/Notes |
+| --- | --- | --- |
+| R&D |  |  |
+| Cost position |  |  |
+| Brand |  |  |
+| Data assets |  |  |
+| Channel strength |  |  |
+| Supply chain |  |  |
+| Regulatory savvy |  |  |
+| Hiring velocity |  |  |
+
+6. Likely Moves & Response Profile
+
+Likely Moves Matrix
+| Move | Likelihood (1-5) | Impact (1-5) | Earliest timing | Leading indicators |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+7. Implications for Us
+
+Counter-Moves Plan
+| Our move | Objective | Dependency | Owner | T-minus signals |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+8. Evidence Pack
+- [S1] [Source title] ([Date])
+- [S2] [Source title] ([Date])
+
+9. Unknowns & Validation Plan
+
+10. Appendix
+- KPI table: [price levels, feature parity, share estimates, CAC/LTV clues if available]
+- Timeline of notable moves (last 12-24 months)
+
+FAILURE
+- Any required section header/table from `FORMAT` is missing, malformed, or materially incomplete.
+- One or more core model components (Objectives/Current Strategy/Assumptions/Capabilities) lacks concrete, testable claims.
+- Likely moves are not logically connected to the four core model components.
+- Key claims lack `[S#]` references to `Evidence Pack`.
+- Confidence levels are missing in major sections.
+- `DESIRED_DEPTH=Brief` output is materially overlong.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Capital Structure Financing"
+  short_description: "Productize Finance engine for debt versus equity financing, leverage, enterprise value, equity value, WACC, APV, tax..."
+  brand_color: "#0369A1"
+  default_prompt: "Use $capital-structure-financing with my product context."
+
+policy:
+  allow_implicit_invocation: true

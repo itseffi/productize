@@ -1,0 +1,52 @@
+{
+  "title": "Design Review",
+  "category": "Design",
+  "lifecycle": "Design",
+  "tags": [
+    "design-review",
+    "reviewer",
+    "gate",
+    "entry-point",
+    "ux",
+    "visual-hierarchy",
+    "accessibility",
+    "responsive",
+    "handoff",
+    "design",
+    "review",
+    "quality",
+    "visual",
+    "hierarchy"
+  ],
+  "use_when": "Use Design Review when a product flow, mockup, implemented UI, design handoff, or experience change needs a gate decision on usability, hierarchy, states, accessibility, responsiveness, and design-system fit.",
+  "do_not_use_when": "Do not use Design Review for market thesis, requirements scope, backend architecture, QA execution, release mechanics, documentation, DX, or stakeholder messaging unless the core risk is product experience quality.",
+  "output_artifact": "Design review with experience readout, blocking issues, fixes, decision, and handoff",
+  "routing_signals": [
+    "design-review",
+    "design-gate",
+    "visual-qa",
+    "ux-review",
+    "experience-review",
+    "accessibility",
+    "responsive-behavior",
+    "design-handoff",
+    "ui-polish",
+    "design",
+    "review",
+    "gate",
+    "quality",
+    "visual"
+  ],
+  "framework_fit": "Design Review fits the product-experience gate before build, after implementation, or before release when visual hierarchy, interaction quality, accessibility, responsive behavior, and handoff clarity can make or break the product outcome.",
+  "failure_modes": [
+    "Reviews only surface aesthetics while missing interaction states, accessibility, responsive behavior, edge cases, and downstream handoff requirements.",
+    "Approves design work without concrete acceptance checks that engineering and QA can verify in the implemented product.",
+    "Reopens product strategy or architecture questions instead of escalating them to thesis, product, or engineering gates when design evidence exposes them."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $design-review to evaluate this implemented UI for hierarchy, states, accessibility, responsive behavior, and handoff blockers before release.",
+      "expected_artifact": "Design review with experience readout, blocking issues, fixes, decision, and handoff"
+    }
+  ]
+}

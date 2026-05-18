@@ -1,0 +1,136 @@
+---
+name: pmf-review
+description: >-
+  Product-market fit gate between the 0-1 build loop and the grow playbook.
+  Use to decide whether evidence supports PMF, signal-but-not-PMF, or no-PMF,
+  and to route to grow, iterate, or pivot/kill.
+---
+# PMF Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this gate at the handoff from `$0-1` Move 7 (Ship + Learn) to `$grow`. It
+decides whether the evidence supports product-market fit, only a partial signal,
+or no fit at all, and routes the next playbook move accordingly.
+
+This is not a metrics dashboard. It is a forced decision: **PMF**,
+**signal-but-not-PMF**, or **no-PMF** — followed by an explicit route to grow,
+another 0-1 lap, or pivot/kill.
+
+## Pre-Review Audit
+
+Before judging fit:
+
+1. Read shipped behavior, prior 0-1 artifacts, eval results, retention data,
+   user interviews, support tickets, NPS, and any churn diagnostics.
+2. Identify the cohort being judged. PMF is segment-specific; do not aggregate
+   the beachhead with tourist cohorts.
+3. Separate **demand-side evidence** (pull, retention, word-of-mouth) from
+   **supply-side activity** (signups, demos, content reach).
+4. Flag stale artifacts: any retention curve, survey, or cohort that predates
+   the last material product change is stale.
+5. Name the blocked decision in one sentence: "Should we move to `$grow`, run
+   another 0-1 lap, or pivot/kill?"
+
+## Mode Selection
+
+Choose one mode and state why:
+
+- **PMF**: super-user cohort, flat retention curve, organic pull, and survey
+  signal all align. Route to `$grow`.
+- **Signal-But-Not-PMF**: a real user pocket loves it, but retention bends or
+  super-user cohort is too narrow to grow on. Route to another `$0-1` lap with
+  a sharpened wedge.
+- **No-PMF**: retention decays, no super-users, no organic pull. Route to
+  `$thesis-review` for pivot/kill decision.
+- **Too-Early**: insufficient evidence to call any of the above; specify the
+  minimum data the next lap must produce.
+
+## Review Passes
+
+### 1. Sean Ellis Super-User Test
+
+- Of users who experienced the core capability ≥2 times in the last 2 weeks,
+  what percent would be "very disappointed" if they could no longer use it?
+- If ≥40% → strong PMF signal; if 25-40% → signal-but-not-PMF; if <25% → no-PMF.
+- If survey data is missing, identify the cheapest path to collect it before
+  ruling.
+
+### 2. Retention Curve
+
+- Does the retention curve **flatten** at a non-trivial baseline, or does it
+  **decay** to zero?
+- Compare super-user cohort retention to overall cohort retention. PMF lives
+  in the super-user curve, not the average.
+- Flag if the retention window is too short to call shape (e.g., 2 weeks for
+  a monthly-use product).
+
+### 3. Super-User Cohort
+
+- Who are the super-users? Name the segment, job, and trigger.
+- Does the super-user segment match the original beachhead, or has the wedge
+  moved?
+- Is the super-user pocket large enough to grow on, or is it a niche that caps
+  the bet?
+
+### 4. Organic Pull
+
+- Word-of-mouth signal: do users invite, recommend, or refer without prompting?
+- Inbound demand: are leads asking for the product without acquisition spend?
+- Switching pressure: do super-users describe a "before/after" change in
+  workflow?
+
+### 5. Friction And Churn
+
+- What stops non-super-users from becoming super-users? Onboarding, value
+  clarity, missing capability, or segment mismatch?
+- What causes super-users to churn when they do?
+- Distinguish **wrong-fit churn** (segment mismatch) from **product churn**
+  (fixable in the next lap).
+
+### 6. Counter-Evidence
+
+- What would change a PMF call to no-PMF? List the disconfirming signals.
+- What would change a no-PMF call to PMF? List the missing evidence.
+- If both lists are short, the data is too thin to call; mark Too-Early.
+
+## Decision Protocol
+
+For each substantive signal:
+
+- State the signal and its source (cohort, survey, retention window, interview).
+- Name the cohort it applies to. Do not generalize across segments.
+- Offer the smallest decision the signal supports.
+- If the signal is mixed, hold the call and specify the next test.
+
+Never declare PMF on activity metrics alone (signups, demos, reach). PMF
+requires demand-side pull.
+
+## Route Internally
+
+- `$product-market-fit-cycle`
+- `$aarrr-growth-diagnostics`
+- `$cohort-analysis`
+- `$churn-reduction-from-customer-data-and-exit-survey-analysis`
+- `$ideal-customer-profile-icp-representative-for-x-product`
+- `$beachhead-segment`
+- `$post-launch-feedback-loop`
+- `$metric-drops-diagnosis-with-rigorous-stepwise-decomposition`
+
+## Required Output
+
+Return:
+
+1. **Cohort Under Review**: segment, size, time window, and product version.
+2. **Evidence Map**: super-user survey result, retention curve shape, organic
+   pull signals, churn pattern. Mark stale and missing data.
+3. **Mode**: PMF, Signal-But-Not-PMF, No-PMF, or Too-Early. State why.
+4. **Super-User Definition**: who, what trigger, what value, segment match to
+   original beachhead.
+5. **Counter-Evidence**: signals that would flip the call.
+6. **Decision**: route to `$grow`, another `$0-1` lap (with sharpened wedge),
+   or `$thesis-review` for pivot/kill.
+7. **Next Gate**: which reviewer fires next; what data the next lap must
+   produce if the call is Too-Early.
+8. **Completion Summary**: status, confidence, unresolved decisions, and what
+   would change your mind.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Proto-persona profiles from user research and market data"
+  short_description: "Proto-persona profiles from user research and market data. Use when the user needs a product workflow for user..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $proto-persona-profiles-from-user-research-and-market-data with my product context."
+
+policy:
+  allow_implicit_invocation: true

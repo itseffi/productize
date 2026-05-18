@@ -1,0 +1,8 @@
+interface:
+  display_name: "Productize"
+  short_description: "Productize root skill for building and shipping products with an AI coding agent. Routes work across founder..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $productize to route this product work."
+
+policy:
+  allow_implicit_invocation: true

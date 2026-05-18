@@ -1,0 +1,53 @@
+{
+  "title": "Pricing Strategy",
+  "category": "Business Model",
+  "lifecycle": "Strategize",
+  "tags": [
+    "pricing-strategy",
+    "pricing",
+    "packaging",
+    "willingness-to-pay",
+    "price-elasticity",
+    "freemium",
+    "tiers",
+    "growth",
+    "use",
+    "setting",
+    "price",
+    "changing",
+    "comparing",
+    "business"
+  ],
+  "use_when": "Use when setting price, changing packaging, comparing pricing models, evaluating freemium versus paid, or designing pricing experiments.",
+  "do_not_use_when": "Do not use Pricing Strategy when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Pricing strategy brief with model, package logic, willingness-to-pay assumptions, and validation plan",
+  "routing_signals": [
+    "pricing-strategy",
+    "pricing",
+    "packaging",
+    "willingness-to-pay",
+    "price-elasticity",
+    "freemium",
+    "tiers",
+    "when",
+    "setting",
+    "price",
+    "changing",
+    "comparing",
+    "models",
+    "evaluating"
+  ],
+  "framework_fit": "Best when customer value, buyer willingness to pay, competitive pricing, packaging, and adoption risk need to be weighed together.",
+  "failure_modes": [
+    "Produces Pricing strategy brief with model, package logic, willingness-to-pay assumptions, and validation plan without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Pricing Strategy as generic Business Model advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Pricing Strategy when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $pricing-strategy to turn this pricing context into a decision-ready Pricing strategy brief with model, package logic, willingness-to-pay assumptions, and validation plan.",
+      "expected_artifact": "Pricing strategy brief with model, package logic, willingness-to-pay assumptions, and validation plan"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-product-strategy/skills/pricing-strategy/SKILL.md"
+}

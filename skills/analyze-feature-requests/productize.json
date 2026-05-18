@@ -1,0 +1,52 @@
+{
+  "title": "Analyze Feature Requests",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "analyze-feature-requests",
+    "feature-requests",
+    "backlog",
+    "triage",
+    "customer-requests",
+    "prioritization",
+    "themes",
+    "discover",
+    "analyze",
+    "feature",
+    "requests",
+    "use",
+    "delivery"
+  ],
+  "use_when": "Use when reviewing customer, sales, support, or stakeholder feature requests and turning them into prioritized product decisions.",
+  "do_not_use_when": "Do not use for raw support-ticket insight mining, detailed PRD writing, or general feature prioritization without request evidence.",
+  "output_artifact": "Feature-request triage report with themes, strategic fit, effort/risk, and backlog recommendations",
+  "routing_signals": [
+    "analyze-feature-requests",
+    "feature-requests",
+    "backlog",
+    "triage",
+    "customer-requests",
+    "prioritization",
+    "themes",
+    "when",
+    "reviewing",
+    "customer",
+    "sales",
+    "support",
+    "stakeholder",
+    "feature"
+  ],
+  "framework_fit": "Best for existing products where many requests need to be clustered, interpreted, and converted into backlog recommendations.",
+  "failure_modes": [
+    "Produces Feature-request triage report with themes, strategic fit, effort/risk, and backlog recommendations without tying recommendations to the user's Plan stage, evidence, and decision pressure.",
+    "Treats Analyze Feature Requests as generic Delivery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Analyze Feature Requests when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $analyze-feature-requests to turn this feature-requests context into a decision-ready Feature-request triage report with themes, strategic fit, effort/risk, and backlog recommendations.",
+      "expected_artifact": "Feature-request triage report with themes, strategic fit, effort/risk, and backlog recommendations"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-product-discovery/skills/analyze-feature-requests/SKILL.md"
+}

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Realistic JTBD interview transcripts"
+  short_description: "Realistic JTBD interview transcripts. Use when the user needs a product workflow for user research related to..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $realistic-jtbd-interview-transcripts with my product context."
+
+policy:
+  allow_implicit_invocation: true

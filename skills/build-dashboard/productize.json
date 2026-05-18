@@ -1,0 +1,46 @@
+{
+  "title": "Build Dashboard",
+  "category": "Analytics",
+  "tags": [
+    "dashboard",
+    "html",
+    "chartjs",
+    "kpi",
+    "filters",
+    "tables",
+    "build-dashboard",
+    "build",
+    "data",
+    "reporting",
+    "interactive",
+    "analytics",
+    "charts"
+  ],
+  "lifecycle": "Design",
+  "use_when": "Build an interactive HTML dashboard with charts, filters, and tables. Use when creating an executive KPI overview, turning query results into a shareable report, building a monitoring snapshot, or combining multiple charts and filters in one browser-openable file.",
+  "do_not_use_when": "Do not use Build Dashboard when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Build Dashboard UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "build-dashboard",
+    "build",
+    "dashboard",
+    "data",
+    "reporting",
+    "interactive",
+    "html",
+    "analytics",
+    "charts"
+  ],
+  "framework_fit": "Build Dashboard fits Analytics work in the Design lifecycle when the user needs Build Dashboard UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Build Dashboard UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats Build Dashboard as generic Analytics advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Build Dashboard when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $build-dashboard to turn this build context into a decision-ready Build Dashboard UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "Build Dashboard UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

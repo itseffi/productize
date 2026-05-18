@@ -1,0 +1,174 @@
+---
+name: actionable-user-profiles-with-tasks-and-constraints-from
+description: >-
+  Actionable user profiles with tasks and constraints from shallow personas. Use when the user
+  needs a product workflow for user research related to actionable user profiles with tasks
+  and constraints from shallow personas. Trigger terms: user-research, personas, ux.
+---
+# Actionable user profiles with tasks and constraints from shallow personas
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Actionable user profiles with tasks and constraints from shallow personas**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{EXISTING_PERSONA}}
+- {{AVAILABLE_USER_DATA}}
+- {{PRODUCT_CONTEXT}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Actionable user profiles with tasks and constraints from shallow personas.
+Success metric:
+- Completes all required tasks and decision logic from the prompt instructions.
+- Output is specific, evidence-based, and actionable.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required analysis steps, sections, or validation logic.
+- Keep recommendations/outputs grounded in the input context; avoid generic filler.
+- Transform `{{EXISTING_PERSONA}}` into an actionable user profile using `{{AVAILABLE_USER_DATA}}` and `{{PRODUCT_CONTEXT}}`.
+- Replace vague persona language with specific, observable details:
+- Concrete tasks and success outcomes.
+- Jobs-to-be-done (functional, emotional, social).
+- Capabilities, constraints, and behavioral patterns.
+- Grounded contextual scenarios.
+- Design implications directly tied to profile evidence.
+- Explicit research gaps and validation plan for missing/uncertain assumptions.
+- Keep all claims evidence-linked; state assumptions when data is incomplete.
+
+FORMAT
+Return exactly this structure:
+
+<actionable_user_profile>
+<profile_summary>
+**Role:** [Specific job title and organizational context]
+**Core Responsibility:** [What they're accountable for]
+**Primary Goal:** [What success looks like in their role]
+</profile_summary>
+
+<jobs_to_be_done>
+<functional_jobs>
+[List 5-7 specific tasks they need to accomplish related to this product:
+- Example: "Create quarterly budget forecast for leadership review"
+- Example: "Onboard new team members to project workflows within first week"]
+</functional_jobs>
+
+<emotional_jobs>
+[List 3-5 emotional needs:
+- Example: "Feel confident in decisions without analysis paralysis"
+- Example: "Avoid embarrassment from missing important details"]
+</emotional_jobs>
+
+<social_jobs>
+[List 2-3 social needs:
+- Example: "Be seen as data-driven and strategic by leadership"
+- Example: "Maintain credibility with engineering team"]
+</social_jobs>
+</jobs_to_be_done>
+
+<user_capabilities>
+**Technical Sophistication:**
+[Describe their comfort with technology, tools they know, learning curve tolerance]
+
+**Domain Expertise:**
+[Describe their knowledge of the problem domain, industry experience, specialized skills]
+
+**Decision Authority:**
+[Describe what they can decide independently vs. what requires approval]
+
+**Time Availability:**
+[Describe their time constraints, competing priorities, typical workflow rhythm]
+
+**Resources:**
+[Describe what tools, data, people, budget they have access to]
+</user_capabilities>
+
+<constraints>
+**Organizational Constraints:**
+[List policies, processes, approval chains that limit their options]
+
+**Technical Constraints:**
+[List system limitations, integrations, legacy tools they must work with]
+
+**Knowledge Constraints:**
+[List gaps in their knowledge, areas where they need guidance]
+
+**Time Constraints:**
+[List deadlines, recurring obligations, busy periods]
+
+**Resource Constraints:**
+[List limitations in budget, headcount, tools, data access]
+</constraints>
+
+<behavioral_patterns>
+**How They Currently Solve This Problem:**
+[Describe their current workflow, tools used, workarounds, pain points]
+
+**Decision-Making Style:**
+[Describe how they evaluate options, what evidence they trust, risk tolerance]
+
+**Collaboration Patterns:**
+[Describe who they work with, communication preferences, meeting cadence]
+
+**Learning Preferences:**
+[Describe how they prefer to learn new tools, documentation vs. experimentation]
+</behavioral_patterns>
+
+<contextual_scenarios>
+<scenario_1>
+**Situation:** [Specific context: when, where, why]
+**Goal:** [What they're trying to accomplish]
+**Constraints:** [What's limiting them]
+**Current Approach:** [How they do it now]
+**Pain Points:** [What goes wrong or feels hard]
+**Success Criteria:** [What "good" looks like]
+</scenario_1>
+
+<scenario_2>
+[Repeat structure for 2-3 total scenarios covering different use cases]
+</scenario_2>
+</contextual_scenarios>
+
+<design_implications>
+[List 5-7 specific design implications from this user profile:
+- "Must support quick, interrupted workflows due to frequent context-switching"
+- "Should provide confidence-building validation since users fear making errors"
+- "Must integrate with Slack since that's where they live all day"]
+</design_implications>
+
+<research_gaps>
+[List specific things you don't know but should validate with real users:
+- "How do they currently handle X scenario?"
+- "What's their tolerance for Y type of complexity?"
+- "How often do they encounter Z situation?"]
+</research_gaps>
+
+<validation_plan>
+[Describe how to validate this profile with real users:
+- Proposed research methods
+- Key questions to ask
+- Behaviors to observe
+- Success signals that profile is accurate]
+</validation_plan>
+</actionable_user_profile>
+
+FAILURE
+- Any required section in `<actionable_user_profile>` is missing or materially incomplete.
+- Profile remains generic/buzzword-heavy and not actionable for design decisions.
+- Jobs, constraints, scenarios, or implications are not grounded in available data.
+- Research gaps/validation plan are missing or non-specific.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

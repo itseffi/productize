@@ -1,0 +1,8 @@
+interface:
+  display_name: "Feature results analysis from draft to final report"
+  short_description: "Feature results analysis from draft to final report. Use when the user needs a product workflow for business..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $feature-results-analysis-from-draft-to-final-report with my product context."
+
+policy:
+  allow_implicit_invocation: true

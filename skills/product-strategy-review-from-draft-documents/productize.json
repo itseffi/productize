@@ -1,0 +1,38 @@
+{
+  "title": "Product strategy review from draft documents",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Strategize",
+  "tags": [
+    "product-strategy-review-from-draft-documents",
+    "review",
+    "draft",
+    "documents",
+    "use",
+    "stakeholder",
+    "communication"
+  ],
+  "use_when": "Product strategy review from draft documents. Use when the user needs a product workflow for product strategy related to product strategy review from draft documents. Trigger terms: product-management, strategy, stakeholder-management, communication.",
+  "do_not_use_when": "Do not use Product strategy review from draft documents when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Product strategy review from draft documents strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "product-strategy-review-from-draft-documents",
+    "review",
+    "draft",
+    "documents",
+    "use",
+    "stakeholder",
+    "communication"
+  ],
+  "framework_fit": "Product strategy review from draft documents fits Stakeholder Communication work in the Strategize lifecycle when the user needs Product strategy review from draft documents strategy memo with choices, tradeoffs, risks, and recommended next move and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Product strategy review from draft documents strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Product strategy review from draft documents as generic Stakeholder Communication advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Product strategy review from draft documents when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $product-strategy-review-from-draft-documents to turn this review context into a decision-ready Product strategy review from draft documents strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Product strategy review from draft documents strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ]
+}

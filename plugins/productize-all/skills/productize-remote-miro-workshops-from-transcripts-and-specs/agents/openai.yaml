@@ -1,0 +1,8 @@
+interface:
+  display_name: "Remote Miro workshops from transcripts and specs"
+  short_description: "Remote Miro workshops from transcripts and specs. Use when the user needs a product workflow for stakeholder..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $productize-remote-miro-workshops-from-transcripts-and-specs with my product context."
+
+policy:
+  allow_implicit_invocation: false

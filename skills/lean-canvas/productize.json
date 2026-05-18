@@ -1,0 +1,52 @@
+{
+  "title": "Lean Canvas",
+  "category": "Business Model",
+  "lifecycle": "Think",
+  "tags": [
+    "lean-canvas",
+    "startup",
+    "problem-solution",
+    "uvp",
+    "riskiest-assumptions",
+    "strategize",
+    "lean",
+    "canvas",
+    "business",
+    "model",
+    "innovation",
+    "use",
+    "turning"
+  ],
+  "use_when": "Use when turning a startup idea or early product concept into a Lean Canvas with hypotheses and validation priorities.",
+  "do_not_use_when": "Do not use Lean Canvas when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Lean Canvas with problem, solution, UVP, metrics, channels, revenue, costs, and risk priorities",
+  "routing_signals": [
+    "lean-canvas",
+    "startup",
+    "problem-solution",
+    "uvp",
+    "riskiest-assumptions",
+    "when",
+    "turning",
+    "idea",
+    "early",
+    "product",
+    "concept",
+    "into",
+    "lean",
+    "canvas"
+  ],
+  "framework_fit": "Best for 0-to-1 products where problem, segment, unfair advantage, channels, and revenue are still assumptions.",
+  "failure_modes": [
+    "Produces Lean Canvas with problem, solution, UVP, metrics, channels, revenue, costs, and risk priorities without tying recommendations to the user's Think stage, evidence, and decision pressure.",
+    "Treats Lean Canvas as generic Business Model advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Lean Canvas when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $lean-canvas to turn this startup context into a decision-ready Lean Canvas with problem, solution, UVP, metrics, channels, revenue, costs, and risk priorities.",
+      "expected_artifact": "Lean Canvas with problem, solution, UVP, metrics, channels, revenue, costs, and risk priorities"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-product-strategy/skills/lean-canvas/SKILL.md"
+}

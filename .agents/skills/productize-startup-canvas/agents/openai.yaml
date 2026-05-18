@@ -1,0 +1,8 @@
+interface:
+  display_name: "Startup Canvas"
+  short_description: "Startup Canvas. Use when evaluating a startup concept or new product that needs product strategy and business model..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-startup-canvas with my product context."
+
+policy:
+  allow_implicit_invocation: true

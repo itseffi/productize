@@ -1,0 +1,121 @@
+---
+name: proto-persona-profiles-from-user-research-and-market-data
+description: >-
+  Proto-persona profiles from user research and market data. Use when the user needs a product
+  workflow for user research related to proto-persona profiles from user research and market
+  data. Trigger terms: user-research, personas, ux.
+---
+# Proto-persona profiles from user research and market data
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Proto-persona profiles from user research and market data**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- `{{USER_RESEARCH}}`: Interview notes, quotes, observations, transcripts.
+- `{{MARKET_DATA}}`: Segment size, competitors, market trends.
+- `{{BEHAVIORAL_INSIGHTS}}`: Analytics, JTBD signals, usage patterns.
+- `{{DEMOGRAPHICS}}`: Age, location, income, education, and related profile context.
+- `{{CONSTRAINTS}}` (optional): Industry, region, compliance, accessibility constraints.
+- `{{PREFERENCES}}` (optional): `tone`, `depth` (`brief|standard|deep`), `number_of_personas` (default `1`).
+</provided_inputs>
+
+GOAL
+Synthesize mixed research inputs into concise, evidence-linked proto-persona profile(s) ready for early product decisions and validation.
+Success metric:
+- Persona profiles are internally consistent and clearly distinguish evidence from assumptions.
+- Each profile includes confidence, explicit unknowns, and prioritized probing questions.
+- Output follows required markdown canvas structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs; if data is missing, write `TBD` and cover it in Probing Questions.
+- Extract concrete signals first (quotes, facts, metrics), then synthesize into pains/goals/behaviors.
+- Clearly mark each claim as evidence-based or assumption with confidence (`High|Med|Low`).
+- Use bracketed source tags (for example: `[UR#3]`, `[GA]`, `[MD]`) wherever evidence is cited.
+- Avoid demographic stereotyping; unsupported demographics must be `TBD` or explicit assumptions.
+- Ensure behaviors are observable and distinct from goals.
+- If `number_of_personas > 1`, output distinct personas.
+- Output markdown only; no JSON, XML, or HTML.
+- Keep each persona under 400 words unless `depth = deep`.
+
+FORMAT
+- Return one markdown code block per persona.
+- Inside each code block, render exactly this structure:
+
+```markdown
+# Proto Persona: {{Alliterative Name}}
+
+## Bio & Demographics
+- Age: {{x-y}}, Location: {{region/city}}, Education: {{...}}
+- Role/Status: {{job title or life stage}}
+- Income/Spending Power: {{range or TBD}}
+- Household/Partner Status: {{...}}
+- Digital/Channel Habits: {{top channels/devices}}
+- Leisure & Interests: {{...}}
+- Notable Constraints: {{time, budget, compliance, accessibility}}
+
+## Representative Quotes
+- "{{quote}}" - [{{source tag}}]
+- "{{quote}}" - [{{source tag}}]
+- "{{quote}}" - [{{source tag}}]
+
+## Pains
+- {{pain statement}} [evidence|assumption, {{confidence}}, {{source|TBD}}]
+- {{...}}
+
+## What They're Trying to Accomplish (Behaviors & JTBD)
+- {{job story or observed behavior}} [evidence|assumption, {{confidence}}, {{source|TBD}}]
+- {{...}}
+
+## Goals
+- {{goal}} [evidence|assumption, {{confidence}}, {{source|TBD}}]
+- {{...}}
+
+## Attitudes & Influences
+- **Decision-Making Authority:** {{buyer|user|champion|blocker|none}} [{{confidence}}]
+- **Decision Influencers:** {{roles/peers/communities}} [{{confidence}}]
+- **Beliefs & Attitudes:** {{heuristics, risk posture, trust signals}} [{{confidence}}]
+
+## Purchasing & Adoption Signals (Optional)
+- Triggers: {{events that start the search}}
+- Selection Criteria: {{top 3 decision criteria}}
+- Objections: {{anticipated blockers}}
+- Success Metrics: {{how they judge value}}
+
+## Accessibility & Inclusion (Optional)
+- Considerations: {{access, language, bandwidth, cognitive load}}
+
+## Evidence & Confidence Summary
+- Evidence Sources: {{list with counts, e.g., UR:6, GA:1, MD:2}}
+- Assumptions: {{key assumptions}}
+- Overall Confidence: {{High|Med|Low}} - {{1-2 sentence rationale}}
+
+## Probing Questions (Prioritized)
+1. {{highest-value unknown}}
+2. {{next unknown}}
+3. {{next unknown}}
+```
+
+FAILURE
+- Output is not markdown code block(s), or required persona section headings are missing.
+- `number_of_personas > 1` is requested but personas are not distinct or separated.
+- Quotes/sources do not support key pains, goals, or JTBD claims.
+- Claims are untagged (missing evidence/assumption + confidence + source markers).
+- `TBD`/low-confidence gaps are not reflected in prioritized probing questions.
+- Content exceeds 400 words per persona when `depth` is not `deep`.
+- Output includes JSON/XML/HTML or generic filler not grounded in provided inputs.
+
+## PM Skills Main Merge
+
+Load `references/pm-skills-main-merge.md` when the request mentions `user personas`, `proto persona`, `persona from research`, `segment profiles`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.

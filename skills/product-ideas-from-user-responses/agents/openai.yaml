@@ -1,0 +1,8 @@
+interface:
+  display_name: "Product ideas from user responses"
+  short_description: "Product ideas from user responses. Use when turning user answers, pain descriptions, workflow notes, or..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $product-ideas-from-user-responses with my product context."
+
+policy:
+  allow_implicit_invocation: true

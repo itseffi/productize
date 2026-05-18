@@ -1,0 +1,8 @@
+interface:
+  display_name: "Churn reduction from customer data and exit survey analysis"
+  short_description: "Churn reduction from customer data and exit survey analysis. Use when the user needs a product workflow for business..."
+  brand_color: "#C2410C"
+  default_prompt: "Use $churn-reduction-from-customer-data-and-exit-survey-analysis with my product context."
+
+policy:
+  allow_implicit_invocation: true

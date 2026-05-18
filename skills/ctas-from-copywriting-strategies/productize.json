@@ -1,0 +1,38 @@
+{
+  "title": "CTAs from copywriting strategies",
+  "category": "Marketing",
+  "lifecycle": "Design",
+  "tags": [
+    "ctas-from-copywriting-strategies",
+    "ctas",
+    "copywriting",
+    "strategies",
+    "design",
+    "prototyping",
+    "marketing"
+  ],
+  "use_when": "CTAs from copywriting strategies. Use when the user needs a product workflow for design & prototyping related to ctas from copywriting strategies. Trigger terms: pm, marketing, cta.",
+  "do_not_use_when": "Do not use CTAs from copywriting strategies when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "CTAs from copywriting strategies UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "ctas-from-copywriting-strategies",
+    "ctas",
+    "copywriting",
+    "strategies",
+    "design",
+    "prototyping",
+    "marketing"
+  ],
+  "framework_fit": "CTAs from copywriting strategies fits Marketing work in the Design lifecycle when the user needs CTAs from copywriting strategies UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces CTAs from copywriting strategies UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats CTAs from copywriting strategies as generic Marketing advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from CTAs from copywriting strategies when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $ctas-from-copywriting-strategies to turn this ctas context into a decision-ready CTAs from copywriting strategies UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "CTAs from copywriting strategies UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

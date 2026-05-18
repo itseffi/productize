@@ -1,0 +1,52 @@
+{
+  "title": "Venture Capital Deal Modeling",
+  "category": "Finance",
+  "lifecycle": "Strategize",
+  "tags": [
+    "venture-capital-deal-modeling",
+    "vc-method",
+    "startup-valuation",
+    "pre-money",
+    "post-money",
+    "cap-table",
+    "dilution",
+    "convertible-notes",
+    "safe",
+    "option-pool",
+    "preferred-stock",
+    "liquidation-preference",
+    "runway",
+    "venture"
+  ],
+  "use_when": "Use when valuing a startup, calculating pre-money/post-money, ownership, shares, dilution, burn/runway, cap tables, convertible notes, SAFEs, option pools, preferred stock payoffs, or term-sheet economics.",
+  "do_not_use_when": "Do not use for mature-company DCF, public comparables, bond math, or generic capital structure unless startup financing instruments drive the decision.",
+  "output_artifact": "VC deal model with valuation, ownership, dilution, cap table, instrument treatment, payoff logic, recommendation, and warnings",
+  "routing_signals": [
+    "vc-deal",
+    "startup-valuation",
+    "pre-money",
+    "post-money",
+    "cap-table",
+    "dilution",
+    "convertible-note",
+    "safe",
+    "option-pool",
+    "preferred-stock",
+    "liquidation-preference",
+    "term-sheet",
+    "runway",
+    "burn-rate"
+  ],
+  "framework_fit": "Best when startup deal economics, share counts, dilution, and investor/founder terms are central.",
+  "failure_modes": [
+    "Produces VC deal model with valuation, ownership, dilution, cap table, instrument treatment, payoff logic, recommendation, and warnings without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Venture Capital Deal Modeling as generic Finance advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Venture Capital Deal Modeling when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $venture-capital-deal-modeling to model a Series A with a pre-money valuation, option pool increase, convertible note, and 1x non-participating preferred.",
+      "expected_artifact": "VC deal model with valuation, ownership, dilution, cap table, instrument treatment, payoff logic, recommendation, and warnings"
+    }
+  ]
+}

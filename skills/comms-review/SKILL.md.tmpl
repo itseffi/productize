@@ -1,0 +1,39 @@
+---
+name: comms-review
+description: >-
+  Communications gate for stakeholder narrative, executive updates, customer
+  announcements, launch messaging, risk framing, asks, and alignment moments.
+  Use before external-facing or leadership-facing product communication.
+---
+# Comms Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this gate when product work needs to be understood, approved, adopted, or acted
+on by people outside the immediate build loop.
+
+## Artifact Format
+
+Use Markdown for short update copy. Use self-contained HTML when the communication
+artifact needs audience-specific tabs, proof-point tables, risk framing, launch
+message variants, executive-friendly visuals, or a shareable stakeholder explainer.
+
+## Route Internally
+
+- `$stakeholder-update`
+- `$executive-and-update-review`
+- `$message-framing-and-comms-plan-designer`
+- `$presentations-from-structured-content-and-context`
+- `$slide-decks-from-problem-statements-and-context`
+- `$demo-narratives-showing-user-goals`
+- `$release-notes`
+
+## Required Output
+
+Return:
+
+1. **Audience Map**: audience, decision, concern, desired action, and evidence standard.
+2. **Message Readout**: narrative, value, risks, tradeoffs, asks, and proof points.
+3. **Misalignment Risks**: likely objections, confusion, missing context, and sensitive claims.
+4. **Decision**: approve, revise, split audiences, delay, or escalate.
+5. **Handoff**: release, docs, product, thesis, or growth follow-up.

@@ -1,0 +1,36 @@
+{
+  "title": "Meeting summaries from meeting transcript (IDEAS framework)",
+  "category": "Operations",
+  "lifecycle": "Align",
+  "tags": [
+    "meeting-summaries-from-meeting-transcript-ideas-framework",
+    "meeting",
+    "summaries",
+    "transcript",
+    "ideas",
+    "framework"
+  ],
+  "use_when": "Meeting summaries from meeting transcript (IDEAS framework). Use when the user needs a product workflow for presentation & communication related to meeting summaries from meeting transcript (ideas framework). Trigger terms: meetings, summarization, frameworks, note-taking.",
+  "do_not_use_when": "Do not use Meeting summaries from meeting transcript (IDEAS framework) when the request is mainly technical implementation, analytics modeling, or UX critique; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Meeting summaries from meeting transcript (IDEAS framework) stakeholder narrative with audience, message, risks, asks, and follow-up owner",
+  "routing_signals": [
+    "meeting-summaries-from-meeting-transcript-ideas-framework",
+    "meeting",
+    "summaries",
+    "transcript",
+    "ideas",
+    "framework"
+  ],
+  "framework_fit": "Meeting summaries from meeting transcript (IDEAS framework) fits Operations work in the Align lifecycle when the user needs Meeting summaries from meeting transcript (IDEAS framework) stakeholder narrative with audience, message, risks, asks, and follow-up owner and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Meeting summaries from meeting transcript (IDEAS framework) stakeholder narrative with audience, message, risks, asks, and follow-up owner without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Meeting summaries from meeting transcript (IDEAS framework) as generic Operations advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Meeting summaries from meeting transcript (IDEAS framework) when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $meeting-summaries-from-meeting-transcript-ideas-framework to turn this meeting context into a decision-ready Meeting summaries from meeting transcript (IDEAS framework) stakeholder narrative with audience, message, risks, asks, and follow-up owner.",
+      "expected_artifact": "Meeting summaries from meeting transcript (IDEAS framework) stakeholder narrative with audience, message, risks, asks, and follow-up owner"
+    }
+  ]
+}

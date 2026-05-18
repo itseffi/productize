@@ -1,0 +1,8 @@
+interface:
+  display_name: "Growth strategy synthesis from user inputs"
+  short_description: "Growth strategy synthesis from user inputs. Use when the user needs a product workflow for product strategy related..."
+  brand_color: "#C2410C"
+  default_prompt: "Use $growth-strategy-synthesis-from-user-inputs with my product context."
+
+policy:
+  allow_implicit_invocation: true

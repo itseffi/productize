@@ -1,0 +1,85 @@
+---
+name: sql-query-from-requirements-and-data-tables
+description: >-
+  SQL query from requirements and data tables. Use when the user needs a product workflow for
+  business analysis related to sql query from requirements and data tables. Trigger terms: pm,
+  sql, analytics, data, business-analysis.
+---
+# SQL query from requirements and data tables
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **SQL query from requirements and data tables**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{DATA_TABLES_OVERVIEW}}
+- {{QUERY_CRAFTING_REQUIREMENTS}}
+</provided_inputs>
+
+GOAL
+Produce a correct, performant, and maintainable SQL query from `DATA_TABLES_OVERVIEW` and `QUERY_CRAFTING_REQUIREMENTS`.
+Success metric:
+- SQL satisfies requirements and uses valid joins/filters/aggregations.
+- Query is optimized for readability and execution efficiency.
+- Major logic choices and assumptions are clearly explained.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required SQL design steps:
+  - relevant table joins,
+  - filter conditions,
+  - aggregations/calculations,
+  - subqueries/CTEs where helpful.
+- Prefer explicit selected columns (avoid `SELECT *` unless explicitly required).
+- Use meaningful aliases and readable formatting.
+- Add concise inline comments only for non-obvious logic.
+- Include assumptions when schema or requirements are ambiguous.
+- If requirements are under-specified, produce best-effort SQL and state what data/constraints would finalize it.
+- Default policy for ambiguities (apply unless `QUERY_CRAFTING_REQUIREMENTS` explicitly overrides):
+  - **Top-5 rule:** return exactly 5 rows per month using `ROW_NUMBER()` with deterministic tie-break (`ORDER BY net_revenue_usd DESC, category ASC`).
+  - **Multi-category revenue attribution:** allocate order revenue proportionally by category share of item extended value (`quantity * unit_price`) within each order; do not attribute full order revenue to every category.
+  - **Payment-attempt attribution by category:** attribute payment attempts/failures to each category touched by an order (order-category level attribution), and explicitly disclose that summed category-level counts can exceed overall totals.
+  - **Payment time scope:** when reporting period filters are defined for orders, filter payment attempts to the same period using `payments.attempted_at` unless explicitly instructed otherwise.
+- SQL must be executable with standard ASCII SQL syntax:
+  - Use `'single quotes'` for string literals.
+  - Use `--` for line comments.
+  - Do not use typographic quotes/dashes or other smart punctuation.
+- Keep explanation plain text (no unusual control characters, copy artifacts, or decorative bullets).
+- If metrics are attributed to multiple categories (for multi-category orders), explicitly state that totals across categories may exceed overall order/payment totals.
+
+FORMAT
+Return exactly this structure:
+
+<sql_query>
+-- SQL query with formatting and comments
+</sql_query>
+<query_explanation>
+- Join strategy and why each join type is used
+- Filter logic and business-rule mapping
+- Aggregations/calculations rationale
+- Performance considerations (indexes, cardinality, scan reduction, CTE/subquery choices)
+- Assumptions and known limitations
+</query_explanation>
+
+FAILURE
+- Missing `<sql_query>` or `<query_explanation>` section.
+- SQL does not match stated requirements.
+- Uses `SELECT *` without explicit requirement.
+- Join/filter/aggregation logic is unclear or unsupported in explanation.
+- SQL contains non-ASCII smart punctuation that breaks execution (e.g., `‘ ’`, `“ ”`, `–`).
+- Explanation contains copy artifacts or unreadable formatting.
+- Output violates default ambiguity policies (top-5 cardinality, revenue attribution, payment attribution, or payment time scope) without explicit requirement override.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

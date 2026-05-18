@@ -1,0 +1,8 @@
+interface:
+  display_name: "Difficult Conversation Script (5-Step Framework)"
+  short_description: "Difficult Conversation Script (5-Step Framework). Use when the user needs a product workflow for stakeholder..."
+  brand_color: "#0891B2"
+  default_prompt: "Use $productize-difficult-conversation-script-5-step-framework with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Monetization Strategy"
+  short_description: "Monetization Strategy. Use when deciding how a product should make money, comparing revenue models, or exploring..."
+  brand_color: "#9333EA"
+  default_prompt: "Use $productize-monetization-strategy with my product context."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Sustainable Business Model"
+  short_description: "Design or redesign a business model for sustainability. Use when a company, founder, innovation team, or strategist..."
+  brand_color: "#9333EA"
+  default_prompt: "Use $sustainable-business-model with my product context."
+
+policy:
+  allow_implicit_invocation: true

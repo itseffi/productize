@@ -1,0 +1,8 @@
+interface:
+  display_name: "DX Review"
+  short_description: "Developer experience gate for APIs, CLIs, SDKs, docs, examples, onboarding, error messages, setup paths, integration..."
+  brand_color: "#334155"
+  default_prompt: "Use $productize-dx-review with my product context."
+
+policy:
+  allow_implicit_invocation: true

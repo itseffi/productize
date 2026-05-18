@@ -1,0 +1,8 @@
+interface:
+  display_name: "Value chain mapping from end-user needs to core value generators"
+  short_description: "Value chain mapping from end-user needs to core value generators. Use when the user needs a product workflow for..."
+  brand_color: "#059669"
+  default_prompt: "Use $productize-value-chain-mapping-from-end-user-needs-to-core-value with my product context."
+
+policy:
+  allow_implicit_invocation: false

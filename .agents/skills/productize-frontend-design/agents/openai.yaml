@@ -1,0 +1,8 @@
+interface:
+  display_name: "Frontend Design"
+  short_description: "Design implementation-ready frontend solutions with UX intent, component structure, responsive behavior,..."
+  brand_color: "#DB2777"
+  default_prompt: "Use $productize-frontend-design with my product context."
+
+policy:
+  allow_implicit_invocation: true

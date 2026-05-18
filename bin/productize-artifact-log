@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+import path from "node:path";
+import { appendJsonl, ensureStateDir } from "./productize-runtime.mjs";
+
+const [artifactType, ...rest] = process.argv.slice(2);
+if (!artifactType || !rest.length) {
+  console.error("Usage: productize-artifact-log <artifact-type> <summary>");
+  process.exit(2);
+}
+const file = path.join(ensureStateDir(), "artifact-log.jsonl");
+appendJsonl(file, { artifact_type: artifactType, summary: rest.join(" ") });
+console.log(file);

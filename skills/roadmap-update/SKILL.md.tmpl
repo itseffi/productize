@@ -1,0 +1,73 @@
+---
+name: roadmap-update
+description: >-
+  Update, create, or reprioritize a product roadmap. Use when adding an initiative, deciding
+  what moves to make room, shifting priorities after new information, moving timelines after a
+  dependency slip, or building a Now/Next/Later view.
+---
+# Roadmap Update
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Update, create, or reprioritize a product roadmap.
+
+## Argument Hint
+
+`<update description>`
+
+## Usage
+
+```text
+/roadmap-update $ARGUMENTS
+```
+
+## Workflow
+
+### 1. Understand Current State
+
+If a project tracker is connected, pull roadmap items, status, owners, target dates, overdue work, at-risk items, and recently completed work.
+
+If no tracker is connected, ask the user to paste or describe the roadmap in any format.
+
+### 2. Determine Operation
+
+Identify the requested operation:
+
+- **Add item**: gather name, description, priority, effort, timeframe, owner, dependencies, and what moves to make room.
+- **Update status**: not started, in progress, at risk, blocked, completed, cut. For at-risk or blocked, capture blocker and mitigation.
+- **Reprioritize**: ask what changed, apply a framework if useful, and show before/after.
+- **Move timeline**: ask why, identify downstream impacts, and flag hard-deadline risks.
+- **Create roadmap**: ask timeframe, format, goals, themes, and initiative list.
+
+### 3. Choose Format
+
+Use the format that fits the audience:
+- Now / Next / Later for broad communication.
+- Quarterly themes for strategy alignment.
+- OKR-aligned roadmap for metric-backed planning.
+- Timeline view for execution planning with dependencies.
+
+### 4. Generate Roadmap Summary
+
+Include:
+- Status overview: counts in progress, completed, at risk, blocked.
+- Roadmap items grouped by timeframe or theme.
+- Risks and dependencies with owners and need-by dates.
+- Changes this update: added, removed, reprioritized, timeline shifts, status changes.
+
+Use tables where helpful.
+
+### 5. Prioritization Tools
+
+Use only when they clarify tradeoffs:
+- RICE: Reach x Impact x Confidence / Effort.
+- MoSCoW: Must, Should, Could, Won't.
+- ICE: Impact x Confidence x Ease.
+- Value vs Effort: quick wins, big bets, fill-ins, avoid.
+
+## Rules
+
+- Roadmaps are capacity-constrained. When adding something, ask what comes off or moves.
+- Surface dependency risk early.
+- Communicate changes by naming what changed, why, what tradeoff was made, and who is affected.
+- Do not create false precision for work that is still directional.

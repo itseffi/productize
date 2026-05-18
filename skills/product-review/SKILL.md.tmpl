@@ -1,0 +1,131 @@
+---
+name: product-review
+description: >-
+  Product gate for PM-quality scope, requirements, user value, acceptance criteria,
+  priorities, metrics, and ship/learn decisions. Use when a plan needs product
+  judgment before design, engineering, QA, release, or growth work proceeds.
+---
+# Product Review
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this gate when the question is whether the product plan is coherent and
+decision-ready: right user, right problem, clear scope, usable acceptance criteria,
+metrics, non-goals, and learning loop.
+
+Product Review is the PM-quality gate. It does not reopen the whole thesis unless
+the requirements reveal a thesis contradiction. It turns product intent into a
+plan a designer, engineer, QA tester, release owner, docs owner, or comms owner can
+act on without guessing.
+
+## Artifact Format
+
+Use Markdown for compact scope calls. Use self-contained HTML when the product
+review includes a long acceptance matrix, multi-stakeholder tradeoffs, flow/state
+coverage, downstream gate readiness, or a shareable product decision report.
+Prefer tables, status chips, and collapsible detail over long prose.
+
+## Pre-Review Audit
+
+Before reviewing:
+
+1. Read the source artifact: PRD, plan, transcript, ticket, design, diff, research,
+   metrics, or user request.
+2. Identify the active playbook stage: `$0-1`, `$operate`, or `$grow`.
+3. Find prior gates and mark stale ones if the plan changed since they ran.
+4. Name the product decision being gated: scope approval, spec readiness, ship
+   readiness, growth experiment approval, or learning-loop decision.
+5. If the artifact is missing, build the smallest product brief from available
+   context before reviewing it.
+
+## Review Passes
+
+### 1. User, Job, And Outcome
+
+- Is the user/persona specific enough?
+- Is the job or pain observable?
+- Does the feature solve a user outcome, not just satisfy an internal request?
+- What user behavior should change if this works?
+
+### 2. Scope And Non-Goals
+
+- What is P0 and must ship together?
+- What can be split into a follow-up?
+- What is explicitly not in scope?
+- Does the scope match the evidence standard and timeline?
+
+### 3. Requirements Quality
+
+Check every major requirement for:
+
+- user trigger and entry point
+- happy path
+- empty/loading/error/permission states
+- edge cases and abuse cases
+- data dependencies
+- owner and open decision
+- acceptance criterion
+
+### 4. Prioritization And Tradeoffs
+
+Use P0/P1/P2 or must/should/could, but include the tradeoff:
+
+| Item | Priority | Why | Risk if cut | Risk if kept |
+|---|---|---|---|---|
+
+If more than one stakeholder goal competes, surface the decision instead of hiding
+it in a blended scope.
+
+### 5. Metrics And Learning
+
+- What metric or qualitative signal proves this helped?
+- What instrumentation is required?
+- What is the expected learning loop after release?
+- What threshold triggers iterate, rollback, grow, or new `$0-1` work?
+
+### 6. Downstream Readiness
+
+Check whether each downstream owner can proceed:
+
+| Gate | Needs | Status |
+|---|---|---|
+| Design | flows, states, UX constraints | clear / unclear / not needed |
+| Eng | contracts, data flow, dependencies | clear / unclear / not needed |
+| QA | acceptance criteria, scenarios | clear / unclear / not needed |
+| Release | rollout, risk, monitoring | clear / unclear / not needed |
+| Docs | changed behavior, audience | clear / unclear / not needed |
+| DX | developer path, examples | clear / unclear / not needed |
+| Comms | audience, message, proof | clear / unclear / not needed |
+
+## Decision Protocol
+
+For each product issue:
+
+- Name the product risk, not just the missing section.
+- Recommend a fix: revise, split, validate, defer, or stop.
+- Ask or record one decision at a time when scope, priority, or acceptance changes.
+- Do not bury unresolved product choices in TODOs; list them as blockers or
+  accepted risks.
+
+## Route Internally
+
+- `$prds-from-product-information-and-assumptions`
+- `$structured-requirements-from-conversation-transcripts`
+- `$acceptance-criteria-for-ui`
+- `$requirements-prioritization-with-p0-p1-p2-framework`
+- `$roadmap-update`
+- `$feature-impact-models-from-kpis-and-assumptions`
+- `$metrics-review`
+
+## Required Output
+
+Return:
+
+1. **Product Judgment**: what is clear, unclear, over-scoped, or under-specified.
+2. **Requirement Risks**: missing user flows, acceptance criteria, metrics, dependencies, and non-goals.
+3. **Priority Call**: P0/P1/P2 or must/should/could with cut/keep tradeoffs.
+4. **Acceptance Matrix**: scenarios, states, metrics, and instrumentation required.
+5. **Downstream Readiness**: design, eng, QA, release, docs, DX, and comms status.
+6. **Decision**: approve, revise, split, validate, or stop.
+7. **Handoff**: next reviewer/gate and the artifact it needs.
+8. **Completion Summary**: status, confidence, unresolved decisions, and accepted product risks.

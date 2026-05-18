@@ -1,0 +1,38 @@
+{
+  "title": "Product feature impact sizing from metrics and usage data",
+  "category": "Analytics",
+  "lifecycle": "Measure",
+  "tags": [
+    "product-feature-impact-sizing-from-metrics-and-usage-data",
+    "feature",
+    "impact",
+    "sizing",
+    "metrics",
+    "usage",
+    "data"
+  ],
+  "use_when": "Product feature impact sizing from metrics and usage data. Use when the user needs a product workflow for business analysis related to product feature impact sizing from metrics and usage data. Trigger terms: pm, business-analysis, impact-sizing, metrics, analytics.",
+  "do_not_use_when": "Do not use Product feature impact sizing from metrics and usage data when the request is mainly early ideation, qualitative research, or roadmap writing without metrics; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Product feature impact sizing from metrics and usage data analytics diagnosis with metric readout, caveats, decision, and next instrumented step",
+  "routing_signals": [
+    "product-feature-impact-sizing-from-metrics-and-usage-data",
+    "feature",
+    "impact",
+    "sizing",
+    "metrics",
+    "usage",
+    "data"
+  ],
+  "framework_fit": "Product feature impact sizing from metrics and usage data fits Analytics work in the Measure lifecycle when the user needs Product feature impact sizing from metrics and usage data analytics diagnosis with metric readout, caveats, decision, and next instrumented step and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Product feature impact sizing from metrics and usage data analytics diagnosis with metric readout, caveats, decision, and next instrumented step without tying recommendations to the user's Measure stage, evidence, and decision pressure.",
+    "Treats Product feature impact sizing from metrics and usage data as generic Analytics advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Product feature impact sizing from metrics and usage data when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $product-feature-impact-sizing-from-metrics-and-usage-data to turn this feature context into a decision-ready Product feature impact sizing from metrics and usage data analytics diagnosis with metric readout, caveats, decision, and next instrumented step.",
+      "expected_artifact": "Product feature impact sizing from metrics and usage data analytics diagnosis with metric readout, caveats, decision, and next instrumented step"
+    }
+  ]
+}

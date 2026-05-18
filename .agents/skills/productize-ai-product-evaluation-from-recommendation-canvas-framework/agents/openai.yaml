@@ -1,0 +1,8 @@
+interface:
+  display_name: "AI product evaluation from Recommendation Canvas framework"
+  short_description: "AI product evaluation from Recommendation Canvas framework. Use when the user needs a product workflow for decision..."
+  brand_color: "#059669"
+  default_prompt: "Use $productize-ai-product-evaluation-from-recommendation-canvas-framework with my product context."
+
+policy:
+  allow_implicit_invocation: true

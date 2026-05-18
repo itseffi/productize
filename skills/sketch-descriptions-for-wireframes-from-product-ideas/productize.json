@@ -1,0 +1,38 @@
+{
+  "title": "Sketch descriptions for wireframes from product ideas",
+  "category": "Design",
+  "lifecycle": "Design",
+  "tags": [
+    "sketch-descriptions-for-wireframes-from-product-ideas",
+    "sketch",
+    "descriptions",
+    "wireframes",
+    "ideas",
+    "design",
+    "prototyping"
+  ],
+  "use_when": "Sketch descriptions for wireframes from product ideas. Use when the user needs a product workflow for design & prototyping related to sketch descriptions for wireframes from product ideas. Trigger terms: pm, ux, flows, design, prototyping, wireframes.",
+  "do_not_use_when": "Do not use Sketch descriptions for wireframes from product ideas when the request is mainly metric diagnosis, pricing, GTM, or implementation planning without UX evidence; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Sketch descriptions for wireframes from product ideas UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "sketch-descriptions-for-wireframes-from-product-ideas",
+    "sketch",
+    "descriptions",
+    "wireframes",
+    "ideas",
+    "design",
+    "prototyping"
+  ],
+  "framework_fit": "Sketch descriptions for wireframes from product ideas fits Design work in the Design lifecycle when the user needs Sketch descriptions for wireframes from product ideas UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Sketch descriptions for wireframes from product ideas UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats Sketch descriptions for wireframes from product ideas as generic Design advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Sketch descriptions for wireframes from product ideas when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $sketch-descriptions-for-wireframes-from-product-ideas to turn this sketch context into a decision-ready Sketch descriptions for wireframes from product ideas UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "Sketch descriptions for wireframes from product ideas UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "title": "SQL query from requirements and data tables",
+  "category": "Analytics",
+  "lifecycle": "Design",
+  "tags": [
+    "sql-query-from-requirements-and-data-tables",
+    "sql",
+    "query",
+    "requirements",
+    "data",
+    "tables"
+  ],
+  "use_when": "SQL query from requirements and data tables. Use when the user needs a product workflow for business analysis related to sql query from requirements and data tables. Trigger terms: pm, sql, analytics, data, business-analysis.",
+  "do_not_use_when": "Do not use SQL query from requirements and data tables when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "SQL query from requirements and data tables UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "sql-query-from-requirements-and-data-tables",
+    "sql",
+    "query",
+    "requirements",
+    "data",
+    "tables"
+  ],
+  "framework_fit": "SQL query from requirements and data tables fits Analytics work in the Design lifecycle when the user needs SQL query from requirements and data tables UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces SQL query from requirements and data tables UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats SQL query from requirements and data tables as generic Analytics advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from SQL query from requirements and data tables when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $sql-query-from-requirements-and-data-tables to turn this sql context into a decision-ready SQL query from requirements and data tables UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "SQL query from requirements and data tables UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

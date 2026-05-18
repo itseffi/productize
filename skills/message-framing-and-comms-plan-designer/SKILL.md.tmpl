@@ -1,0 +1,89 @@
+---
+name: message-framing-and-comms-plan-designer
+description: >-
+  Message Framing & Comms Plan Designer. Use when the user needs a product workflow for
+  stakeholder management related to message framing & comms plan designer. Trigger terms:
+  communication, executive-communication, messaging, stakeholder-management.
+---
+# Message Framing & Comms Plan Designer
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Message Framing & Comms Plan Designer**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- [No explicit variables declared; use provided context.]
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: Message Framing & Comms Plan Designer.
+Success metric:
+- Completes all required tasks and decision logic from the prompt instructions.
+- Output is specific, evidence-based, and actionable.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required analysis steps, sections, or validation logic.
+- Keep recommendations/outputs grounded in the input context; avoid generic filler.
+- Use provided facts, audience, goal, and writing sample to design a message framing and communication plan.
+- Provide 2-3 viable framing options, each with a one-line rationale tied to credibility, logic, and audience emotion.
+- Produce two concise drafts in the user's natural tone:
+- `ICs` draft with context, changes, actions, and timeline (`<=180` words).
+- `Execs` draft with BLUF, risks/asks, and decision needed (`<=120` words).
+- Include a strong subject/headline and two Slack snippets (announcement + reminder).
+- Provide a mini comms plan with channel sequence, owner, timing, emphasis, and CTA.
+- Include a `What to Omit` noise-reduction list and exactly 3 success signals.
+
+FORMAT
+Return exactly this structure:
+
+Frames & Rationale
+- [Frame 1]: [one-line rationale]
+- [Frame 2]: [one-line rationale]
+- [Frame 3 if used]: [one-line rationale]
+
+Draft for ICs
+Subject/Headline: [text]
+[ICs draft <=180 words]
+Slack snippet (announcement): [text]
+Slack snippet (reminder): [text]
+
+Draft for Execs
+Subject/Headline: [text]
+[Execs draft <=120 words]
+Slack snippet (announcement): [text]
+Slack snippet (reminder): [text]
+
+Mini Comms Plan
+| Step | Channel | Owner | Timing | Emphasis | CTA |
+| --- | --- | --- | --- | --- | --- |
+| [row] | [row] | [row] | [row] | [row] | [row] |
+
+What to Omit
+- [item]
+
+Success Signals
+1. [signal]
+2. [signal]
+3. [signal]
+
+FAILURE
+- Any required section is missing or materially incomplete.
+- ICs draft exceeds 180 words or Execs draft exceeds 120 words.
+- Missing subject/headline or missing either Slack snippet type (announcement/reminder).
+- Comms plan table is missing required columns or sequence logic.
+- Success Signals are not exactly three measurable indicators.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

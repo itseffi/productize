@@ -1,0 +1,8 @@
+interface:
+  display_name: "Positioning statements from competitive analysis and value proposition"
+  short_description: "Positioning statements from competitive analysis and value proposition. Use when the user needs a product workflow..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $productize-positioning-statements-from-competitive-analysis-and-value with my product context."
+
+policy:
+  allow_implicit_invocation: false

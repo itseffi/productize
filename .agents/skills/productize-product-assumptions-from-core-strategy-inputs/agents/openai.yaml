@@ -1,0 +1,8 @@
+interface:
+  display_name: "Product assumptions from core strategy inputs"
+  short_description: "Product assumptions from core strategy inputs. Use when the user needs a product workflow for user research related..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-product-assumptions-from-core-strategy-inputs with my product context."
+
+policy:
+  allow_implicit_invocation: true

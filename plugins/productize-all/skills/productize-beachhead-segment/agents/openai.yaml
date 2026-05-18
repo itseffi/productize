@@ -1,0 +1,8 @@
+interface:
+  display_name: "Beachhead Segment"
+  short_description: "Beachhead Segment. Use when choosing the first market segment, entry wedge, launch audience, early ICP, or 0-to-1..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-beachhead-segment with my product context."
+
+policy:
+  allow_implicit_invocation: false

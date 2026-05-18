@@ -1,0 +1,8 @@
+interface:
+  display_name: "Market requirements from strategic market inputs"
+  short_description: "Market requirements from strategic market inputs. Use when the user needs a product workflow for product strategy..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-market-requirements-from-strategic-market-inputs with my product context."
+
+policy:
+  allow_implicit_invocation: true

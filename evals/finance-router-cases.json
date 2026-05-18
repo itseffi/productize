@@ -1,0 +1,65 @@
+[
+  {
+    "name": "valuation deal pricing orchestrator",
+    "mode": "finance",
+    "persona": "founder",
+    "stage": "fundraise and acquisition discussion",
+    "query": "Founder: what is this B2B SaaS company worth, what should we pay, and what ownership should we receive? I need DCF, public comps, enterprise value, equity value, price per share, and sensitivities.",
+    "expected_lifecycles": ["Strategize"],
+    "expected_top_skill": "valuation-and-deal-pricing"
+  },
+  {
+    "name": "managerial finance project dcf",
+    "mode": "finance",
+    "persona": "product leader",
+    "stage": "capital allocation",
+    "query": "Product leader: evaluate this project NPV with initial investment, free cash flows, terminal value, IRR, payback, and whether growth creates value.",
+    "expected_lifecycles": ["Measure"],
+    "expected_top_skill": "managerial-finance-dcf"
+  },
+  {
+    "name": "risk return cost of capital",
+    "mode": "finance",
+    "persona": "finance lead",
+    "stage": "valuation input selection",
+    "query": "Finance lead: estimate the project-specific discount rate using beta, CAPM, market risk premium, risk-free rate, cost of equity, debt cost, and WACC.",
+    "expected_lifecycles": ["Measure"],
+    "expected_top_skill": "risk-return-cost-of-capital"
+  },
+  {
+    "name": "capital structure financing",
+    "mode": "finance",
+    "persona": "CFO",
+    "stage": "financing decision",
+    "query": "CFO: compare debt versus equity financing for this acquisition, model leverage, WACC, APV, tax shields, bond yield, credit spread, and financing side effects.",
+    "expected_lifecycles": ["Strategize"],
+    "expected_top_skill": "capital-structure-financing"
+  },
+  {
+    "name": "venture capital deal modeling",
+    "mode": "finance",
+    "persona": "founder",
+    "stage": "Series A term sheet",
+    "query": "Founder: model a VC deal with pre-money, post-money, cap table, dilution, option pool shuffle, convertible note, SAFE, preferred stock, liquidation preference, burn, runway, and term sheet economics.",
+    "expected_lifecycles": ["Strategize"],
+    "expected_top_skill": "venture-capital-deal-modeling"
+  },
+  {
+    "name": "financial markets context",
+    "mode": "finance",
+    "persona": "strategy lead",
+    "stage": "market-context review",
+    "query": "Strategy lead: explain whether these public comparables are valid. Check market cap, index weight, index concentration, listed firm trends, sector shifts, and CAPM market portfolio assumptions.",
+    "expected_lifecycles": ["Measure"],
+    "expected_top_skill": "financial-markets-context"
+  },
+  {
+    "name": "finance kernel validation",
+    "mode": "finance",
+    "persona": "analyst",
+    "stage": "model QA",
+    "query": "Analyst: validate this finance formula and calculation engine before we use it. Check exact formulas, units, cash-flow dates, r greater than g, and finance guardrails.",
+    "expected_lifecycles": ["Measure"],
+    "expected_top_skill": "finance-modeling-kernel"
+  }
+]

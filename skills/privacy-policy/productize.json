@@ -1,0 +1,53 @@
+{
+  "title": "Privacy Policy",
+  "category": "Operations",
+  "lifecycle": "Launch & Learn",
+  "tags": [
+    "privacy-policy",
+    "data-collection",
+    "gdpr",
+    "compliance",
+    "launch-readiness",
+    "legal-review",
+    "privacy",
+    "policy",
+    "stakeholder",
+    "management",
+    "use",
+    "drafting",
+    "operations",
+    "updating"
+  ],
+  "use_when": "Use when drafting or updating a privacy policy for a product, launch, website, app, or customer-facing workflow.",
+  "do_not_use_when": "Do not use as legal advice, for final compliance sign-off, or when regulatory obligations must be determined by counsel.",
+  "output_artifact": "Privacy policy draft for legal review with data practices, assumptions, and compliance flags",
+  "routing_signals": [
+    "privacy-policy",
+    "data-collection",
+    "gdpr",
+    "compliance",
+    "launch-readiness",
+    "legal-review",
+    "when",
+    "drafting",
+    "updating",
+    "privacy",
+    "policy",
+    "product",
+    "launch",
+    "website"
+  ],
+  "framework_fit": "Best for producing a clear product/data collection draft that a legal reviewer can validate before launch.",
+  "failure_modes": [
+    "Produces Privacy policy draft for legal review with data practices, assumptions, and compliance flags without tying recommendations to the user's Launch & Learn stage, evidence, and decision pressure.",
+    "Treats Privacy Policy as generic Operations advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Privacy Policy when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $privacy-policy to turn this data-collection context into a decision-ready Privacy policy draft for legal review with data practices, assumptions, and compliance flags.",
+      "expected_artifact": "Privacy policy draft for legal review with data practices, assumptions, and compliance flags"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-toolkit/skills/privacy-policy/SKILL.md"
+}

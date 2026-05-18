@@ -1,0 +1,53 @@
+---
+name: risk-return-cost-of-capital
+description: >-
+  Productize Finance engine for expected return, volatility, diversification, beta,
+  CAPM, excess-return regression, unlevering/relevering beta, WACC inputs, and
+  project-specific cost of capital.
+---
+
+# Risk Return Cost Of Capital
+
+{{PRODUCTIZE_PREAMBLE}}
+
+## Purpose
+
+Discount-rate and risk skill. Use it for cost of equity, beta, WACC inputs, expected
+returns, volatility, diversification, and selecting a project-specific discount rate.
+
+## Core Formulas
+
+- `r_{t+1} = (P_{t+1} - P_t + Div_{t+1}) / P_t`
+- `E[R] = sum(p_i * R_i)`
+- `Var(R) = sum(p_i * (R_i - E[R])^2)`
+- `SD(R) = sqrt(Var(R))`
+- `E[R_p] = sum(x_i * E[R_i])`
+- `Var(R_p) = sum_i sum_j x_i * x_j * Cov(R_i, R_j)`
+- `rho_ij = Cov(R_i, R_j) / (sigma_i * sigma_j)`
+- `beta_i = Cov(R_i, R_M) / Var(R_M)`
+- `r_i = r_f + beta_i * (E[R_M] - r_f)`
+- `WACC = E/(D+E) * r_E + D/(D+E) * (1 - T_c) * r_D`
+
+## Required Functions
+
+Use `$finance-modeling-kernel` for realized return, expected return, variance,
+standard deviation, historical average return, portfolio expected return, portfolio
+variance, covariance, correlation, beta, CAPM cost of equity, regression beta,
+unlevered beta, relevered beta, and WACC.
+
+## Required Validation
+
+- Use long-term government bond rates for valuation risk-free rates.
+- Use short-term risk-free rates for short-term performance measurement.
+- Use excess returns when estimating beta by regression.
+- Use market values for debt and equity in WACC.
+- Warn if book-value weights are used.
+- Warn if beta is estimated from too little data.
+- Warn if a company beta is used for a different-risk project.
+- Warn if total volatility is treated as priced risk for a diversified investor.
+- Warn if the market risk premium and risk-free rate come from inconsistent markets.
+
+## Required Output
+
+Return Inputs, Assumptions, Formula used, Calculation, Result, Interpretation, and
+Warnings. State the risk basis and why the discount rate matches the cash flows.

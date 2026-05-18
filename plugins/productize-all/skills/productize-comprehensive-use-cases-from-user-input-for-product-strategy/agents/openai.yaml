@@ -1,0 +1,8 @@
+interface:
+  display_name: "Comprehensive use cases from user input for product strategy"
+  short_description: "Comprehensive use cases from user input for product strategy. Use when the user needs a product workflow for user..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $productize-comprehensive-use-cases-from-user-input-for-product-strategy with my product context."
+
+policy:
+  allow_implicit_invocation: false

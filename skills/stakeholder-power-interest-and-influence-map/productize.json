@@ -1,0 +1,51 @@
+{
+  "title": "Stakeholder Power–Interest & Influence Map",
+  "category": "Decision Making",
+  "lifecycle": "Align",
+  "tags": [
+    "stakeholder-power-interest-and-influence-map",
+    "stakeholder",
+    "power",
+    "interest",
+    "influence",
+    "map",
+    "power-interest-grid",
+    "stakeholder-communication-plan",
+    "raci",
+    "escalation-path"
+  ],
+  "use_when": "Use when a decision depends on stakeholder power, influence, role expectations, informal authority, political risks, or decision support across stakeholders.",
+  "do_not_use_when": "Do not use when role identity, organizational identity, or in-group/out-group dynamics are the central issue; use role-identity-decision-making-map.",
+  "output_artifact": "Stakeholder decision influence map with power-interest matrix, influence pyramid, role identity risks, engagement plan, and mitigations",
+  "routing_signals": [
+    "stakeholder-power-interest-and-influence-map",
+    "stakeholder",
+    "power",
+    "interest",
+    "influence",
+    "map",
+    "power-interest-grid",
+    "stakeholder-communication-plan",
+    "raci",
+    "escalation-path",
+    "role-expectations",
+    "informal-authority",
+    "political-risks",
+    "or-decision-support-across-stakeholders"
+  ],
+  "framework_fit": "Best when the product work is explicitly about decision making and the requested method fits Stakeholder Power–Interest & Influence Map.",
+  "failure_modes": [
+    "Produces Stakeholder decision influence map with power-interest matrix, influence pyramid, role identity risks, engagement plan, and mitigations without tying recommendations to the user's Align stage, evidence, and decision pressure.",
+    "Treats Stakeholder Power–Interest & Influence Map as generic Decision Making advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Stakeholder Power–Interest & Influence Map when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $stakeholder-power-interest-and-influence-map to map who can influence the pricing-change decision, their power, role expectations, political risks, and engagement plan.",
+      "expected_artifact": "Stakeholder decision influence map with power-interest matrix, influence pyramid, role identity risks, engagement plan, and mitigations"
+    }
+  ],
+  "references": [
+    "references/pm-skills-main-merge.md"
+  ]
+}

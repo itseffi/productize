@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+import { printRoutes, recordRoutingDecision, route } from "./productize-runtime.mjs";
+
+const query = process.argv.slice(2).join(" ");
+if (!query) {
+  console.error("Usage: productize-skill-router <user request>");
+  process.exit(2);
+}
+const routes = route(query, Number(process.env.PRODUCTIZE_ROUTE_LIMIT || 5));
+recordRoutingDecision(query, routes, "skill-router");
+printRoutes(routes);

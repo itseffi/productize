@@ -1,0 +1,52 @@
+{
+  "title": "Comms Review",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Align",
+  "tags": [
+    "comms-review",
+    "reviewer",
+    "gate",
+    "entry-point",
+    "communications",
+    "stakeholder-narrative",
+    "executive-update",
+    "launch-message",
+    "alignment",
+    "comms",
+    "review",
+    "stakeholder",
+    "communication",
+    "narrative"
+  ],
+  "use_when": "Use Comms Review before leadership-facing, customer-facing, partner-facing, or cross-functional product communication when the narrative, evidence, risks, asks, and audience-specific alignment need review.",
+  "do_not_use_when": "Do not use Comms Review to decide the product thesis, rewrite requirements, critique UI, review engineering, execute QA, coordinate release mechanics, update docs, or audit DX unless communication risk is the blocker.",
+  "output_artifact": "Comms review with audience map, message readout, misalignment risks, decision, and handoff",
+  "routing_signals": [
+    "comms-review",
+    "communications-gate",
+    "stakeholder-narrative",
+    "executive-update",
+    "customer-announcement",
+    "launch-message",
+    "alignment",
+    "audience-map",
+    "message-review",
+    "comms",
+    "review",
+    "stakeholder",
+    "communication",
+    "communications"
+  ],
+  "framework_fit": "Comms Review fits external-facing and leadership-facing moments where the product story must translate evidence, risk, tradeoffs, and asks into audience-specific communication that supports adoption or decision making.",
+  "failure_modes": [
+    "Produces polished messaging without checking audience incentives, likely objections, evidence standard, decision ask, and sensitive claims.",
+    "Treats comms as a substitute for unresolved thesis, product, design, engineering, QA, release, docs, or DX work instead of calling those gates.",
+    "Uses one message for all stakeholders when executives, customers, partners, support, and internal teams need different framing and proof points."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $comms-review to review this launch message and executive update for audience fit, evidence, risks, asks, and alignment blockers.",
+      "expected_artifact": "Comms review with audience map, message readout, misalignment risks, decision, and handoff"
+    }
+  ]
+}

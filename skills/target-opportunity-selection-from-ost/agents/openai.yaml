@@ -1,0 +1,8 @@
+interface:
+  display_name: "Target opportunity selection from OST"
+  short_description: "Target opportunity selection from OST. Use when the user needs a product workflow for decision making related to..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $target-opportunity-selection-from-ost with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,261 @@
+#!/usr/bin/env bash
+set -euo pipefail
+umask 077
+
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+HOST="auto"
+TEAM=0
+SKILL_PREFIX=1
+PREFIX_FLAG_SET=0
+PREFIX_FLAG="--prefix"
+MODE="symlink"
+MODE_FLAG_SET=0
+FORCE=0
+DEST=""
+MARKETPLACE=""
+QUIET=0
+DRY_RUN=0
+
+usage() {
+  cat <<'USAGE'
+Usage: ./setup [--host auto|codex|claude|cursor|opencode|factory|all] [--team] [--prefix|--no-prefix] [--mode symlink|copy] [--force] [--dest PATH] [--marketplace PATH] [--dry-run] [-q|--quiet]
+
+Generates Productize canonical and host-specific skills, validates registry and
+plugin outputs, installs host skills, and optionally bootstraps team instructions.
+
+Defaults:
+  --host auto     Detect installed hosts from PATH. Falls back to Codex if none are found.
+  --prefix       Use namespaced Productize skill names unless a saved preference says otherwise.
+  --mode symlink Use symlinks on Unix-like systems; Windows defaults to copy.
+USAGE
+}
+
+log() {
+  if [ "$QUIET" -eq 0 ]; then
+    echo "$@"
+  fi
+}
+
+warn() {
+  if [ "$QUIET" -eq 0 ]; then
+    echo "warning: $*" >&2
+  fi
+}
+
+fail() {
+  echo "Productize setup failed: $*" >&2
+  exit 1
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --host) HOST="${2:-}"; shift 2 ;;
+    --host=*) HOST="${1#--host=}"; shift ;;
+    --team) TEAM=1; shift ;;
+    --prefix) SKILL_PREFIX=1; PREFIX_FLAG_SET=1; shift ;;
+    --no-prefix) SKILL_PREFIX=0; PREFIX_FLAG_SET=1; shift ;;
+    --mode) MODE="${2:-}"; MODE_FLAG_SET=1; shift 2 ;;
+    --mode=*) MODE="${1#--mode=}"; MODE_FLAG_SET=1; shift ;;
+    --force) FORCE=1; shift ;;
+    --dest) DEST="${2:-}"; shift 2 ;;
+    --dest=*) DEST="${1#--dest=}"; shift ;;
+    --marketplace) MARKETPLACE="${2:-}"; shift 2 ;;
+    --marketplace=*) MARKETPLACE="${1#--marketplace=}"; shift ;;
+    --dry-run) DRY_RUN=1; shift ;;
+    -q|--quiet) QUIET=1; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "Unknown option: $1" >&2; usage; exit 2 ;;
+  esac
+done
+
+case "$HOST" in
+  auto|codex|claude|cursor|opencode|factory|all) ;;
+  *) echo "Unknown --host value: $HOST" >&2; usage; exit 2 ;;
+esac
+
+case "$MODE" in
+  symlink|copy) ;;
+  *) echo "Unknown --mode value: $MODE" >&2; usage; exit 2 ;;
+esac
+
+OS_NAME="$(uname -s 2>/dev/null || echo unknown)"
+IS_WINDOWS=0
+case "$OS_NAME" in
+  MINGW*|MSYS*|CYGWIN*|Windows_NT) IS_WINDOWS=1 ;;
+esac
+
+if [ "$IS_WINDOWS" -eq 1 ] && [ "$MODE" = "symlink" ]; then
+  if [ "$MODE_FLAG_SET" -eq 1 ] && [ "${PRODUCTIZE_ALLOW_WINDOWS_SYMLINK:-0}" != "1" ]; then
+    fail "Windows symlink installs require developer/admin symlink support. Use --mode copy or set PRODUCTIZE_ALLOW_WINDOWS_SYMLINK=1."
+  fi
+  MODE="copy"
+fi
+
+check_dependencies() {
+  command -v node >/dev/null 2>&1 || fail "Node.js 20+ is required. Install Node.js: https://nodejs.org/"
+  node -e 'const major = Number(process.versions.node.split(".")[0]); process.exit(major >= 20 ? 0 : 1)' \
+    || fail "Node.js 20+ is required. Found: $(node -v 2>/dev/null || echo unknown)"
+
+  if ! command -v npm >/dev/null 2>&1; then
+    warn "npm was not found on PATH. setup can run with node, but CI/build commands expect npm."
+  fi
+
+  for required in package.json scripts/gen-skill-docs.mjs scripts/index-skills.mjs scripts/build-plugins.mjs scripts/validate-skills.mjs scripts/setup-host.mjs hosts/index.mjs bin/productize-config; do
+    [ -e "$ROOT_DIR/$required" ] || fail "missing required repository file: $required"
+  done
+}
+
+save_prefix_preference() {
+  local value="$1"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    return 0
+  fi
+  PRODUCTIZE_SETUP_RUNNING=1 node "$ROOT_DIR/bin/productize-config" set skill_prefix "$value" >/dev/null 2>&1 || true
+}
+
+resolve_prefix_preference() {
+  local saved=""
+  if [ "$PREFIX_FLAG_SET" -eq 0 ]; then
+    saved="$(PRODUCTIZE_SETUP_RUNNING=1 node "$ROOT_DIR/bin/productize-config" get skill_prefix 2>/dev/null || true)"
+    if [ "$saved" = "true" ]; then
+      SKILL_PREFIX=1
+    elif [ "$saved" = "false" ]; then
+      SKILL_PREFIX=0
+    else
+      if [ "$QUIET" -eq 0 ] && [ -t 0 ]; then
+        echo ""
+        echo "Skill naming: how should Productize skills appear?"
+        echo ""
+        echo "  1) Namespaced: /productize-prd, /productize-growth-loops"
+        echo "     Recommended when running multiple skill packs."
+        echo ""
+        echo "  2) Short names: /prd, /growth-loops"
+        echo "     Use only if Productize is your primary skill pack."
+        echo ""
+        printf "Choice [1/2] (default: 1, auto-selects in 10s): "
+        read -t 10 -r prefix_choice </dev/tty 2>/dev/null || prefix_choice=""
+        case "$prefix_choice" in
+          2) SKILL_PREFIX=0 ;;
+          *) SKILL_PREFIX=1 ;;
+        esac
+      else
+        SKILL_PREFIX=1
+      fi
+      save_prefix_preference "$([ "$SKILL_PREFIX" -eq 1 ] && echo true || echo false)"
+    fi
+  else
+    save_prefix_preference "$([ "$SKILL_PREFIX" -eq 1 ] && echo true || echo false)"
+  fi
+
+  if [ "$SKILL_PREFIX" -eq 1 ]; then
+    PREFIX_FLAG="--prefix"
+  else
+    PREFIX_FLAG="--no-prefix"
+  fi
+}
+
+host_command_present() {
+  case "$1" in
+    codex) command -v codex >/dev/null 2>&1 ;;
+    claude) command -v claude >/dev/null 2>&1 ;;
+    cursor) command -v cursor >/dev/null 2>&1 || command -v cursor-agent >/dev/null 2>&1 ;;
+    opencode) command -v opencode >/dev/null 2>&1 ;;
+    factory) command -v droid >/dev/null 2>&1 || command -v factory >/dev/null 2>&1 ;;
+    *) return 1 ;;
+  esac
+}
+
+resolve_hosts() {
+  HOSTS_TO_INSTALL=()
+  if [ "$HOST" = "all" ]; then
+    HOSTS_TO_INSTALL=(codex claude cursor opencode factory)
+  elif [ "$HOST" = "auto" ]; then
+    for candidate in codex claude cursor opencode factory; do
+      if host_command_present "$candidate"; then
+        HOSTS_TO_INSTALL+=("$candidate")
+      fi
+    done
+    if [ "${#HOSTS_TO_INSTALL[@]}" -eq 0 ]; then
+      HOSTS_TO_INSTALL=(codex)
+      warn "no supported host command found on PATH; defaulting to Codex file install"
+    fi
+  else
+    HOSTS_TO_INSTALL=("$HOST")
+    if ! host_command_present "$HOST"; then
+      warn "$HOST command was not found on PATH; setup will install files but cannot verify the host app is installed"
+    fi
+  fi
+}
+
+migrate_direct_codex_install() {
+  local codex_productize="$HOME/.codex/skills/productize"
+  [ -d "$codex_productize" ] || return 0
+  [ -L "$codex_productize" ] && return 0
+
+  local resolved_codex_productize
+  resolved_codex_productize="$(cd "$codex_productize" && pwd -P)"
+  [ "$resolved_codex_productize" = "$ROOT_DIR" ] || return 0
+
+  local migrated_dir="$HOME/.productize/repos/productize"
+  if [ -e "$migrated_dir" ] && [ "$(cd "$migrated_dir" 2>/dev/null && pwd -P || true)" != "$ROOT_DIR" ]; then
+    fail "direct Codex install detected at $codex_productize, but $migrated_dir already exists. Move one aside and rerun setup."
+  fi
+
+  mkdir -p "$(dirname "$migrated_dir")"
+  log "Migrating direct Codex install to $migrated_dir to avoid duplicate skill discovery..."
+  mv "$ROOT_DIR" "$migrated_dir"
+  ROOT_DIR="$migrated_dir"
+  cd "$ROOT_DIR"
+}
+
+check_dependencies
+migrate_direct_codex_install
+cd "$ROOT_DIR"
+resolve_prefix_preference
+resolve_hosts
+
+if [ "$DRY_RUN" -eq 1 ]; then
+  log "DRY RUN: Productize setup"
+  log "Hosts: ${HOSTS_TO_INSTALL[*]}"
+  log "Mode: $MODE"
+  log "Skill prefix: $([ "$SKILL_PREFIX" -eq 1 ] && echo productize-prefixed || echo flat)"
+  if [ -n "$DEST" ]; then log "Destination: $DEST"; fi
+  if [ -n "$MARKETPLACE" ]; then log "Marketplace: $MARKETPLACE"; fi
+  exit 0
+fi
+
+node scripts/normalize-skills.mjs
+node scripts/gen-skill-docs.mjs --host all --quiet
+node scripts/index-skills.mjs
+node scripts/build-plugins.mjs
+node scripts/build-site-index.mjs
+node scripts/validate-skills.mjs
+
+install_host() {
+  local selected_host="$1"
+  local args=(scripts/setup-host.mjs --host "$selected_host" --mode "$MODE" "$PREFIX_FLAG")
+  if [ "$FORCE" -eq 1 ]; then
+    args+=(--force)
+  fi
+  if [ -n "$DEST" ]; then
+    local selected_dest="$DEST"
+    if [ "${#HOSTS_TO_INSTALL[@]}" -gt 1 ]; then
+      selected_dest="${DEST%/}/$selected_host/skills"
+    fi
+    args+=(--dest "$selected_dest")
+  fi
+  if [ -n "$MARKETPLACE" ] && [ "$selected_host" = "codex" ]; then
+    args+=(--marketplace "$MARKETPLACE")
+  fi
+  node "${args[@]}"
+}
+
+for selected_host in "${HOSTS_TO_INSTALL[@]}"; do
+  install_host "$selected_host"
+done
+
+if [ "$TEAM" -eq 1 ]; then
+  node bin/productize-team-init --mode optional
+fi
+
+echo "Productize setup complete."

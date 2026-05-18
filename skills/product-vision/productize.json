@@ -1,0 +1,53 @@
+{
+  "title": "Product Vision",
+  "category": "Stakeholder Communication",
+  "lifecycle": "Strategize",
+  "tags": [
+    "product-vision",
+    "vision",
+    "north-star",
+    "alignment",
+    "narrative",
+    "product-direction",
+    "align",
+    "use",
+    "defining",
+    "sharpening",
+    "stress",
+    "testing",
+    "needs",
+    "stakeholder"
+  ],
+  "use_when": "Use when defining, sharpening, or stress-testing a product vision that needs to motivate teams and align stakeholders.",
+  "do_not_use_when": "Do not use for detailed PRDs, roadmap sequencing, or brand taglines without product direction decisions.",
+  "output_artifact": "Product Vision strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "product-vision",
+    "vision",
+    "north-star",
+    "alignment",
+    "narrative",
+    "product-direction",
+    "when",
+    "defining",
+    "sharpening",
+    "stress",
+    "testing",
+    "product",
+    "that",
+    "needs"
+  ],
+  "framework_fit": "Best when a product team needs a crisp future-state statement that guides decisions and stakeholder communication.",
+  "failure_modes": [
+    "Produces Product Vision strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Product Vision as generic Stakeholder Communication advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Product Vision when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $product-vision to turn this vision context into a decision-ready Product Vision strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Product Vision strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-product-strategy/skills/product-vision/SKILL.md"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "productize-ai-execution",
+  "version": "1.1.2",
+  "description": "AI-builder handoff, technical specs, architecture briefs, verification, TDD, debugging, and agent-ready implementation planning.",
+  "author": {
+    "name": "Productize AI"
+  },
+  "license": "MIT",
+  "keywords": [
+    "product",
+    "product-management",
+    "agent-skills",
+    "ai-builders",
+    "ai-execution"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Productize AI Execution",
+    "shortDescription": "AI-builder handoff, technical specs, architecture briefs, verification, TDD, debugging, and agen",
+    "longDescription": "AI-builder handoff, technical specs, architecture briefs, verification, TDD, debugging, and agent-ready implementation planning.",
+    "developerName": "Productize AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use a Productize AI Execution skill for this task."
+    ],
+    "brandColor": "#334155"
+  }
+}

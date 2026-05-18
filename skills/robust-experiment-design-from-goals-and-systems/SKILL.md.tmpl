@@ -1,0 +1,90 @@
+---
+name: robust-experiment-design-from-goals-and-systems
+description: >-
+  Robust experiment design from goals and systems. Use when the user needs a product workflow
+  for user research related to robust experiment design from goals and systems. Trigger terms:
+  user-research, experiments, validation.
+---
+# Robust experiment design from goals and systems
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Robust experiment design from goals and systems**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- `{{GOAL}}`: Outcome to achieve or measure.
+- `{{SYSTEM}}`: Context/environment where goal is pursued.
+- `{{EXPERIMENT_TEMPLATE}}` (optional): Required template for experiment design output.
+</provided_inputs>
+
+GOAL
+Design a robust, factor-based experiment program that tests what drives the target goal within the specified system.
+Success metric:
+- Key causal factors are identified and explained.
+- Each factor has a testable experiment design with rigorous controls and measurement.
+- If a template is provided, the final design is adapted to that template without losing rigor.
+
+CONSTRAINTS
+- Use only provided inputs; if missing/ambiguous details exist, state explicit assumptions.
+- First decompose the goal/system into influential factors before proposing experiments.
+- For each factor, define one concrete experiment including:
+- Hypothesis
+- Independent variable(s)
+- Dependent variable(s)
+- Control and experimental groups (or justified alternative when groups are not applicable)
+- Measurement method(s) and success metric(s)
+- Confounding variables and mitigation controls
+- Ensure experiments are specific, feasible, and directly linked to `{{GOAL}}`.
+- If `{{EXPERIMENT_TEMPLATE}}` is provided, produce an adapted version that maps identified factors/experiments into that structure.
+- Avoid generic methods and unsupported claims.
+
+FORMAT
+Return exactly this structure:
+
+<experiment_design>
+
+<factor_breakdown>
+[Numbered list of key factors, each with a brief explanation of why it may influence the goal in this system.]
+</factor_breakdown>
+
+<experiment_program>
+[For each factor, include:
+- Factor
+- Hypothesis
+- Independent variable(s)
+- Dependent variable(s)
+- Control group / baseline
+- Experimental group(s) / treatment(s)
+- Measurement method and timeline
+- Confounding variables and control plan
+- Expected decision rule (what result confirms/refutes hypothesis)]
+</experiment_program>
+
+<template_design>
+[If `{{EXPERIMENT_TEMPLATE}}` is provided, present the adapted experiment design using that template; otherwise write `No template provided.`]
+</template_design>
+
+<assumptions>
+[List explicit assumptions made due to unclear or missing inputs; write `None.` if no assumptions were required.]
+</assumptions>
+
+</experiment_design>
+
+FAILURE
+- Output misses required top-level tags or required experiment fields.
+- Factors are generic, not tied to `{{GOAL}}`/`{{SYSTEM}}`, or missing rationale.
+- Experiments lack testability (unclear variables, no control/baseline, no measurable outcomes).
+- Confounders are ignored or not controlled.
+- Template is provided but not used in `<template_design>`.
+- Assumptions are needed but not explicitly listed.

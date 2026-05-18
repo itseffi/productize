@@ -1,0 +1,30 @@
+name: Productize Version Gate
+
+on:
+  pull_request:
+    paths:
+      - "VERSION"
+      - "CHANGELOG.md"
+      - "RELEASE.md"
+      - "UPGRADE.md"
+      - "package.json"
+      - "registry/**"
+      - "plugins/**/.codex-plugin/plugin.json"
+  workflow_dispatch:
+
+concurrency:
+  group: productize-version-gate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm run repo:hygiene
+      - run: npm run release:check
+      - run: npm run upgrade:check
+      - run: npm run release:dry-run -- --skip-build --skip-tests --skip-evals --skip-smoke

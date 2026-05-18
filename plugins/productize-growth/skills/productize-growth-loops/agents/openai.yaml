@@ -1,0 +1,8 @@
+interface:
+  display_name: "Growth Loops"
+  short_description: "Growth Loops. Use when designing product-led growth loops, referral loops, collaboration loops, usage loops, or..."
+  brand_color: "#C2410C"
+  default_prompt: "Use $productize-growth-loops with my product context."
+
+policy:
+  allow_implicit_invocation: true

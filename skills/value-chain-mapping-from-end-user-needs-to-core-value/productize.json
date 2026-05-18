@@ -1,0 +1,38 @@
+{
+  "title": "Value chain mapping from end-user needs to core value generators",
+  "category": "Strategy",
+  "lifecycle": "Strategize",
+  "tags": [
+    "value-chain-mapping-from-end-user-needs-to-core-value",
+    "value",
+    "chain",
+    "mapping",
+    "end",
+    "needs",
+    "core"
+  ],
+  "use_when": "Value chain mapping from end-user needs to core value generators. Use when the user needs a product workflow for product strategy related to value chain mapping from end-user needs to core value generators. Trigger terms: strategy, value-chain, business-model, structured-thinking.",
+  "do_not_use_when": "Do not use Value chain mapping from end-user needs to core value generators when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Value chain mapping from end-user needs to core value generators strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "value-chain-mapping-from-end-user-needs-to-core-value",
+    "value",
+    "chain",
+    "mapping",
+    "end",
+    "needs",
+    "core"
+  ],
+  "framework_fit": "Value chain mapping from end-user needs to core value generators fits Strategy work in the Strategize lifecycle when the user needs Value chain mapping from end-user needs to core value generators strategy memo with choices, tradeoffs, risks, and recommended next move and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Value chain mapping from end-user needs to core value generators strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Value chain mapping from end-user needs to core value generators as generic Strategy advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Value chain mapping from end-user needs to core value generators when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $value-chain-mapping-from-end-user-needs-to-core-value to turn this value context into a decision-ready Value chain mapping from end-user needs to core value generators strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Value chain mapping from end-user needs to core value generators strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "productize-operations",
+  "version": "1.1.2",
+  "description": "Product operating cadence, governance, decision rights, meeting systems, policies, team workflows, and reusable product rituals.",
+  "author": {
+    "name": "Productize AI"
+  },
+  "license": "MIT",
+  "keywords": [
+    "product",
+    "product-management",
+    "agent-skills",
+    "ai-builders",
+    "operations"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Productize Operations",
+    "shortDescription": "Product operating cadence, governance, decision rights, meeting systems, policies, team workflow",
+    "longDescription": "Product operating cadence, governance, decision rights, meeting systems, policies, team workflows, and reusable product rituals.",
+    "developerName": "Productize AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use a Productize Operations skill for this task."
+    ],
+    "brandColor": "#7C3AED"
+  }
+}

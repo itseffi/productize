@@ -1,0 +1,8 @@
+interface:
+  display_name: "Detailed project plans from project briefs"
+  short_description: "Detailed project plans from project briefs. Use when the user needs a product workflow for project management..."
+  brand_color: "#4F46E5"
+  default_prompt: "Use $productize-detailed-project-plans-from-project-briefs with my product context."
+
+policy:
+  allow_implicit_invocation: true

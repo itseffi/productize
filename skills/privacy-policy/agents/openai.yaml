@@ -1,0 +1,8 @@
+interface:
+  display_name: "Privacy Policy"
+  short_description: "Privacy Policy. Use when drafting or updating a privacy policy for a product, launch, website, app, or..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $privacy-policy with my product context."
+
+policy:
+  allow_implicit_invocation: true

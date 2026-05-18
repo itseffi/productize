@@ -1,0 +1,8 @@
+interface:
+  display_name: "Draft NDA"
+  short_description: "Draft NDA. Use when drafting a confidentiality or NDA document for partnership, customer, vendor, hiring, or product..."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $productize-draft-nda with my product context."
+
+policy:
+  allow_implicit_invocation: true

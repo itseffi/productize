@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Platform Business Model Canvas</title>
+  <style>
+    :root {
+      --paper: #fff;
+      --page: #f3f4f6;
+      --grey: #d5d6d8;
+      --rail: #8d9095;
+      --label: #959ba2;
+      --white: #fff;
+      --green: #c7df17;
+      --cyan: #49c9d3;
+      --orange: #ffb31d;
+      --red: #ff6a60;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page);
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--label);
+    }
+    main {
+      width: min(760px, calc(100vw - 28px));
+      aspect-ratio: 0.714;
+      margin: 14px auto;
+      background: var(--paper);
+      border: 1px solid #b7b9bd;
+      display: grid;
+      grid-template-columns: 1fr 92px;
+      overflow: hidden;
+      transform: rotate(90deg);
+      transform-origin: center center;
+    }
+    .map {
+      position: relative;
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .surface {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 91%;
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        linear-gradient(to right, transparent calc(50% - 8px), var(--white) calc(50% - 8px), var(--white) calc(50% + 8px), transparent calc(50% + 8px)),
+        linear-gradient(to bottom, transparent calc(50% - 8px), var(--white) calc(50% - 8px), var(--white) calc(50% + 8px), transparent calc(50% + 8px)),
+        radial-gradient(circle, transparent 0 42%, rgba(255,255,255,0.9) 42.2% 42.7%, transparent 43%),
+        var(--grey);
+    }
+    .surface::before {
+      content: "";
+      position: absolute;
+      inset: 33%;
+      border-radius: 50%;
+      background: var(--paper);
+      z-index: 3;
+    }
+    .surface::after {
+      content: "";
+      position: absolute;
+      inset: 27%;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          from -84deg,
+          var(--cyan) 0 70deg,
+          transparent 70deg 93deg,
+          var(--orange) 93deg 163deg,
+          transparent 163deg 186deg,
+          var(--red) 186deg 256deg,
+          transparent 256deg 279deg,
+          var(--green) 279deg 349deg,
+          transparent 349deg 360deg
+        );
+      mask: radial-gradient(circle, transparent 0 63%, #000 64% 69%, transparent 70%);
+      -webkit-mask: radial-gradient(circle, transparent 0 63%, #000 64% 69%, transparent 70%);
+      z-index: 4;
+    }
+    .cut {
+      position: absolute;
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      background: var(--paper);
+      z-index: 2;
+    }
+    .cut.tl { left: 8.5%; top: 15%; }
+    .cut.tr { right: 8.5%; top: 15%; }
+    .cut.bl { left: 8.5%; bottom: 15%; }
+    .cut.br { right: 8.5%; bottom: 15%; }
+    .stakeholder-label {
+      position: absolute;
+      z-index: 6;
+      color: var(--label);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      letter-spacing: 0;
+    }
+    .producers-label { left: 7.5%; top: 6.5%; }
+    .owner-label { right: 7.5%; top: 6.5%; }
+    .consumers-label { left: 7.5%; bottom: 6.5%; }
+    .partners-label { right: 7.5%; bottom: 6.5%; }
+    .axis-label {
+      position: absolute;
+      left: 50%;
+      z-index: 7;
+      color: #8f969d;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transform: translateX(-50%) rotate(-90deg);
+      transform-origin: center;
+      letter-spacing: 0;
+    }
+    .key-components { top: 50%; }
+    .transactions { top: 61.5%; }
+    .value-props { top: 73.5%; }
+
+    /* Hidden fill anchors. Agents can replace these placeholders for custom filled outputs. */
+    .fill {
+      position: absolute;
+      width: 22%;
+      min-height: 80px;
+      color: transparent;
+      font-size: 10px;
+      line-height: 1.25;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      z-index: 8;
+    }
+    .fill.producers { left: 16%; top: 17%; }
+    .fill.owner { right: 16%; top: 17%; }
+    .fill.consumers { left: 16%; bottom: 17%; }
+    .fill.partners { right: 16%; bottom: 17%; }
+
+    .side {
+      background: var(--rail);
+      color: var(--paper);
+      display: grid;
+      grid-template-rows: 118px 1fr 192px 88px;
+      gap: 8px;
+      padding: 9px;
+      overflow: hidden;
+    }
+    .date-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    .date-box,
+    .operation {
+      background: var(--paper);
+      color: #6f747b;
+      border: 1px solid #d8dade;
+      font-size: 9px;
+      line-height: 1.1;
+      overflow: hidden;
+    }
+    .date-box {
+      padding: 6px 4px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .operation {
+      padding: 8px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .date-box strong,
+    .operation strong {
+      display: block;
+      color: #8f969d;
+      text-transform: uppercase;
+      font-size: 8px;
+      margin-bottom: 6px;
+    }
+    .title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      justify-self: center;
+      align-self: center;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .credit {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      color: #f5f6f7;
+      font-size: 9px;
+      line-height: 1.2;
+      align-self: end;
+    }
+    @media print {
+      body { background: white; }
+      main {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="map">
+      <div class="surface" aria-hidden="true"></div>
+      <div class="cut tl" aria-hidden="true"></div>
+      <div class="cut tr" aria-hidden="true"></div>
+      <div class="cut bl" aria-hidden="true"></div>
+      <div class="cut br" aria-hidden="true"></div>
+
+      <div class="stakeholder-label producers-label">Producers</div>
+      <div class="stakeholder-label owner-label">Owner</div>
+      <div class="stakeholder-label consumers-label">Consumers</div>
+      <div class="stakeholder-label partners-label">Partners</div>
+
+      <div class="axis-label key-components">Key Platform Components</div>
+      <div class="axis-label transactions">Transactions</div>
+      <div class="axis-label value-props">Value Propositions</div>
+
+      <div class="fill producers">{{PRODUCERS}}</div>
+      <div class="fill owner">{{OWNER}}</div>
+      <div class="fill consumers">{{CONSUMERS}}</div>
+      <div class="fill partners">{{PARTNERS}}</div>
+    </div>
+
+    <aside class="side">
+      <div class="date-row">
+        <div class="date-box"><strong>Created by</strong>{{CREATED_BY}}</div>
+        <div class="date-box"><strong>Version / Date</strong>{{VERSION_DATE}}</div>
+      </div>
+      <div class="operation"><strong>Operation / Business Model</strong>{{OPERATION_DESCRIPTION}}</div>
+      <div class="title">Platform Business Model Canvas</div>
+      <div class="credit">Clean editable template</div>
+    </aside>
+  </main>
+</body>
+</html>

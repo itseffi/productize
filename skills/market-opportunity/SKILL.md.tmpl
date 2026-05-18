@@ -1,0 +1,166 @@
+---
+name: market-opportunity
+description: >-
+  Identify, compare, and choose market opportunities for a venture, product, technology,
+  or innovation. Use when a founder, entrepreneur, product team, or innovator is
+  choosing which market to enter, picking a primary customer segment, evaluating whether
+  a technology has better use cases, deciding whether to pivot, comparing growth
+  options, framing a venture for investors, or asking variants of "which market should I
+  target", "is this the right opportunity", "where should I focus", "should I pivot",
+  or "what else could this be used for". Produces filled-in opportunity canvases for the
+  Market Opportunity Set, Attractiveness Map, Focus Portfolio Map, and Focus Strategy.
+  Default to this skill when the question is where to play rather than how to
+  play.
+---
+# Market Opportunity
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Create the complete four-part market opportunity artifact set for choosing where a
+venture, technology, product, or innovation should play.
+
+Use neutral terms such as `canvas`, `opportunity artifact`, `strategy surface`, or the
+artifact names below.
+
+## Argument Hint
+
+`<venture, technology, product, opportunity set, or blank-template request>`
+
+## Usage
+
+```text
+/market-opportunity $ARGUMENTS
+```
+
+## Required Artifacts
+
+For any complete request, create all four artifacts unless the user explicitly asks for
+only one:
+
+1. **Opportunity Overview Canvas**: the three-part overview with opportunity set,
+   attractiveness map, and focus portfolio map.
+2. **Opportunity Set Builder**: abilities -> applications -> customers -> market
+   opportunities.
+3. **Attractiveness Evaluator**: potential and challenge ratings for each market
+   opportunity.
+4. **Focus Portfolio Planner**: primary market opportunity, backup options, growth
+   options, and pursue/keep/store decisions.
+
+Load `references/canonical-canvases.md` before creating blank templates, filled
+templates, printable layouts, or tables. It defines the exact fields and structure.
+
+Load `references/rating-and-decision-rules.md` before rating opportunities,
+classifying map zones, or recommending primary, backup, and growth options.
+
+Load `references/output-formats.md` when the user asks for Markdown, HTML, PDF,
+slides, visual canvases, or printable templates.
+
+## Workflow
+
+### 1. Establish the Input Mode
+
+Determine whether the user wants:
+
+- **Blank canvas set**: empty structured artifacts for a team to fill in.
+- **Filled canvas set**: completed artifacts from a venture/product/technology idea.
+- **Opportunity review**: critique or improve an existing opportunity set.
+- **Strategy decision**: choose the primary opportunity and portfolio options.
+- **Printable artifact**: create visual HTML/PDF/slide-ready canvases.
+
+If context is missing, ask only for the smallest useful missing piece:
+
+- The venture, product, technology, or core ability.
+- Candidate applications.
+- Candidate customer groups.
+- Existing evidence for demand, market size, economics, implementation, timing, and risks.
+
+### 2. Generate the Market Opportunity Set
+
+Identify the venture's core abilities or technological elements first. Describe them
+independent of the envisioned product.
+
+Then generate combinations:
+
+```text
+market opportunity = application + customer segment
+```
+
+Segment customers precisely. Avoid broad labels like "enterprises" or "consumers"
+unless the user has no better information.
+
+### 3. Evaluate Attractiveness
+
+For each market opportunity, rate:
+
+- **Potential**
+  - Compelling reason to buy.
+  - Market volume.
+  - Economic viability.
+- **Challenge**
+  - Implementation obstacles.
+  - Time to revenue.
+  - External risks.
+
+Use the four-level rating scale:
+
+```text
+Low / Mid / High / Super High
+```
+
+Then place each opportunity on the attractiveness map:
+
+- **Gold Mine**
+- **Quick Win**
+- **Moon Shot**
+- **Questionable**
+
+### 4. Design the Focus Portfolio
+
+Choose one **Primary Market Opportunity** based on attractiveness and strategic fit.
+
+For other attractive opportunities, assess relatedness to the primary opportunity:
+
+- **Product relatedness**: shared technological competences, required resources,
+  and necessary networks.
+- **Market relatedness**: shared customer values and benefits, sales channels, and
+  word-of-mouth paths.
+
+Classify each option:
+
+- **Growth Option**: attractive and useful for creating additional value.
+- **Backup Option**: attractive and does not share major risks with the primary path.
+- **Storage**: documented but not worth active preservation now.
+
+Make one of three action decisions for each option:
+
+- Pursue now.
+- Keep open.
+- Place in storage.
+
+The final strategy must keep at least one credible backup option and one credible
+growth option open unless the available evidence makes that impossible. If impossible,
+say what evidence or opportunity generation is missing.
+
+### 5. Tie Strategy to Execution
+
+For completed strategy outputs, include implications for:
+
+- Product and technology modularity.
+- IP and defensibility.
+- Hiring and capability development.
+- Stakeholder and investor alignment.
+- Brand and market communication.
+- Experiments, assumptions, and learning loops.
+- Business Model Canvas, Value Proposition Canvas, and Lean Startup integration when
+  the user asks for execution planning.
+
+## Output Rules
+
+- Preserve the canonical field names and rating scales from the reference files.
+- Do not collapse the framework into SWOT, generic market sizing, or a feature
+  prioritization matrix.
+- Be explicit about assumptions and evidence gaps.
+- Use tables for editable outputs.
+- For visual outputs, use the same four-artifact structure and neutral artifact titles.
+- Do not copy long passages from source PDFs. Use the exact operational labels and
+  schemas, with original wording for explanations and recommendations.

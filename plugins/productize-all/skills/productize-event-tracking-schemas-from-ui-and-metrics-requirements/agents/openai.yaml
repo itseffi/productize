@@ -1,0 +1,8 @@
+interface:
+  display_name: "Event tracking schemas from UI and metrics requirements"
+  short_description: "Event tracking schemas from UI and metrics requirements. Use when the user needs a product workflow for business..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-event-tracking-schemas-from-ui-and-metrics-requirements with my product context."
+
+policy:
+  allow_implicit_invocation: false

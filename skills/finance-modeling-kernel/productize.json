@@ -1,0 +1,52 @@
+{
+  "title": "Finance Modeling Kernel",
+  "category": "Finance",
+  "lifecycle": "Measure",
+  "tags": [
+    "finance-modeling-kernel",
+    "finance-formulas",
+    "validation",
+    "dcf",
+    "npv",
+    "wacc",
+    "capm",
+    "vc-method",
+    "cap-table",
+    "preferred-stock",
+    "option-pools",
+    "market-context",
+    "finance",
+    "modeling"
+  ],
+  "use_when": "Use when any Productize Finance skill needs exact formulas, input normalization, assumption checks, result validation, units, warnings, or reusable calculation functions.",
+  "do_not_use_when": "Do not use as the user-facing valuation artifact when the user needs a decision, recommendation, or deal memo; route those requests to valuation-and-deal-pricing or the relevant finance engine.",
+  "output_artifact": "Validated finance calculation with inputs, assumptions, formula, calculation, result, interpretation, and warnings",
+  "routing_signals": [
+    "finance-formula",
+    "finance-calculation-engine",
+    "validate-finance-math",
+    "exact-formula",
+    "units-check",
+    "cash-flows-at-different-dates",
+    "finance-guardrails",
+    "finance-modeling-kernel",
+    "finance",
+    "modeling",
+    "kernel",
+    "shared",
+    "productize"
+  ],
+  "framework_fit": "Best as the shared math and validation layer underneath valuation, DCF, WACC, capital-structure, VC deal, and market-context work.",
+  "failure_modes": [
+    "Lets a finance skill use a formula without checking preconditions such as r greater than g or positive denominator.",
+    "Compares cash flows at different dates without discounting or compounding.",
+    "Returns a number without units, timing, assumptions, or warnings.",
+    "Treats IRR, payback, or multiples as final truth instead of supporting evidence."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $finance-modeling-kernel to validate this DCF calculation and flag formula issues before we use it in a valuation memo.",
+      "expected_artifact": "Validated finance calculation with inputs, assumptions, formula, calculation, result, interpretation, and warnings"
+    }
+  ]
+}

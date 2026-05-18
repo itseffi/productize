@@ -1,0 +1,34 @@
+{
+  "title": "Task-specific product strategy design",
+  "category": "Strategy",
+  "lifecycle": "Strategize",
+  "tags": [
+    "task-specific-product-strategy-design",
+    "task",
+    "specific",
+    "design",
+    "use"
+  ],
+  "use_when": "Task-specific product strategy design. Use when the user needs a product workflow for product strategy related to task-specific product strategy design. Trigger terms: product-management, strategy, prd, leadership, execution.",
+  "do_not_use_when": "Do not use Task-specific product strategy design when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Task-specific product strategy design strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "task-specific-product-strategy-design",
+    "task",
+    "specific",
+    "design",
+    "use"
+  ],
+  "framework_fit": "Task-specific product strategy design fits Strategy work in the Strategize lifecycle when the user needs Task-specific product strategy design strategy memo with choices, tradeoffs, risks, and recommended next move and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Task-specific product strategy design strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Task-specific product strategy design as generic Strategy advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Task-specific product strategy design when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $task-specific-product-strategy-design to turn this task context into a decision-ready Task-specific product strategy design strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Task-specific product strategy design strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ]
+}

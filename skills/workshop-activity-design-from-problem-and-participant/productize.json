@@ -1,0 +1,36 @@
+{
+  "title": "Workshop activity design from problem and participant parameters",
+  "category": "Operations",
+  "lifecycle": "Design",
+  "tags": [
+    "workshop-activity-design-from-problem-and-participant",
+    "workshop",
+    "activity",
+    "design",
+    "problem",
+    "participant"
+  ],
+  "use_when": "Workshop activity design from problem and participant parameters. Use when the user needs a product workflow for design & prototyping related to workshop activity design from problem and participant parameters. Trigger terms: workshops, facilitation, brainstorming, product, ux.",
+  "do_not_use_when": "Do not use Workshop activity design from problem and participant parameters when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Workshop activity design from problem and participant parameters UX/design review with findings, constraints, fixes, and acceptance checks",
+  "routing_signals": [
+    "workshop-activity-design-from-problem-and-participant",
+    "workshop",
+    "activity",
+    "design",
+    "problem",
+    "participant"
+  ],
+  "framework_fit": "Workshop activity design from problem and participant parameters fits Operations work in the Design lifecycle when the user needs Workshop activity design from problem and participant parameters UX/design review with findings, constraints, fixes, and acceptance checks and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Workshop activity design from problem and participant parameters UX/design review with findings, constraints, fixes, and acceptance checks without tying recommendations to the user's Design stage, evidence, and decision pressure.",
+    "Treats Workshop activity design from problem and participant parameters as generic Operations advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Workshop activity design from problem and participant parameters when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $workshop-activity-design-from-problem-and-participant to turn this workshop context into a decision-ready Workshop activity design from problem and participant parameters UX/design review with findings, constraints, fixes, and acceptance checks.",
+      "expected_artifact": "Workshop activity design from problem and participant parameters UX/design review with findings, constraints, fixes, and acceptance checks"
+    }
+  ]
+}

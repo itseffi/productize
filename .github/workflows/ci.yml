@@ -1,0 +1,25 @@
+name: Productize Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lane:
+          - unit
+          - finance
+          - setup-host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm run repo:hygiene
+      - run: npm run build
+      - run: npm run test:${{ matrix.lane }}

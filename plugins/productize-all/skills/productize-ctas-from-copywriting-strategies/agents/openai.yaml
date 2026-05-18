@@ -1,0 +1,8 @@
+interface:
+  display_name: "CTAs from copywriting strategies"
+  short_description: "CTAs from copywriting strategies. Use when the user needs a product workflow for design & prototyping related to..."
+  brand_color: "#EA580C"
+  default_prompt: "Use $productize-ctas-from-copywriting-strategies with my product context."
+
+policy:
+  allow_implicit_invocation: false

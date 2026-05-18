@@ -1,0 +1,77 @@
+---
+name: ctas-from-copywriting-strategies
+description: >-
+  CTAs from copywriting strategies. Use when the user needs a product workflow for design &
+  prototyping related to ctas from copywriting strategies. Trigger terms: pm, marketing, cta.
+---
+# CTAs from copywriting strategies
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **CTAs from copywriting strategies**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{PRODUCT}}
+</provided_inputs>
+
+GOAL
+Generate 12 high-quality CTA options for `PRODUCT`, organized by 4 copywriting strategies.
+Success metric:
+- Exactly 12 CTAs are provided (3 per strategy).
+- Every CTA follows length constraints and includes character count.
+- CTA wording is specific to `PRODUCT` and non-duplicative.
+
+CONSTRAINTS
+- Use only `PRODUCT` as input context.
+- Create exactly 12 unique CTAs: 3 for each strategy.
+- Use these strategy groups exactly:
+  - Match the feeling
+  - Actionable next step
+  - Handle the objection
+  - Make it specific
+- Each CTA must be 6-35 characters (including spaces).
+- Target average CTA length around 25 characters across all 12.
+- Keep wording product-specific and action-oriented; avoid generic placeholders.
+- Include character count after every CTA.
+
+FORMAT
+Return exactly this structure:
+
+<output>
+1. Match the feeling  
+   a. [CTA] (XX characters)  
+   b. [CTA] (XX characters)  
+   c. [CTA] (XX characters)  
+
+2. Actionable next step  
+   a. [CTA] (XX characters)  
+   b. [CTA] (XX characters)  
+   c. [CTA] (XX characters)  
+
+3. Handle the objection  
+   a. [CTA] (XX characters)  
+   b. [CTA] (XX characters)  
+   c. [CTA] (XX characters)  
+
+4. Make it specific  
+   a. [CTA] (XX characters)  
+   b. [CTA] (XX characters)  
+   c. [CTA] (XX characters)  
+</output>
+
+FAILURE
+- Not exactly 12 CTAs, or not exactly 3 per strategy group.
+- Any CTA is outside 6-35 characters, or character counts are missing/incorrect.
+- CTAs are repetitive, generic, or not tailored to `PRODUCT`.
+- Required output schema/order is missing or malformed.

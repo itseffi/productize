@@ -1,0 +1,52 @@
+{
+  "title": "Product Review",
+  "category": "Delivery",
+  "lifecycle": "Plan",
+  "tags": [
+    "product-review",
+    "reviewer",
+    "gate",
+    "entry-point",
+    "product-gate",
+    "requirements",
+    "scope",
+    "acceptance-criteria",
+    "product-judgment",
+    "review",
+    "delivery",
+    "quality",
+    "value",
+    "acceptance"
+  ],
+  "use_when": "Use Product Review when a product plan, PRD, feature scope, acceptance criteria, or learning loop needs product judgment before design, engineering, QA, release, or growth work proceeds.",
+  "do_not_use_when": "Do not use Product Review for market-thesis challenge, visual design critique, architecture review, QA execution, release mechanics, documentation sync, DX audit, or external comms review; route to those gates directly.",
+  "output_artifact": "Product review with product judgment, requirement risks, priority call, decision, and handoff",
+  "routing_signals": [
+    "product-review",
+    "product-gate",
+    "pm-review",
+    "requirements-review",
+    "scope-review",
+    "acceptance-criteria",
+    "product-judgment",
+    "feature-scope",
+    "prd-review",
+    "review",
+    "delivery",
+    "gate",
+    "quality",
+    "scope"
+  ],
+  "framework_fit": "Product Review fits the product-management gate inside 0-1, operate, and grow: it checks that scope, user value, requirements, priorities, metrics, and acceptance criteria are coherent before specialist reviewers or builders proceed.",
+  "failure_modes": [
+    "Acts like a strategy review and reopens the market thesis instead of judging whether the product scope and requirements are ready for the next gate.",
+    "Approves a plan without testable acceptance criteria, explicit non-goals, metric intent, and a clear split between must-have and optional work.",
+    "Duplicates design, engineering, QA, release, docs, DX, or comms review instead of calling those gates when the issue belongs there."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $product-review to check this PRD scope, requirements, acceptance criteria, metrics, and next gate before engineering starts.",
+      "expected_artifact": "Product review with product judgment, requirement risks, priority call, decision, and handoff"
+    }
+  ]
+}

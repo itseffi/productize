@@ -1,0 +1,144 @@
+---
+name: release
+description: >-
+  Release gate for ship readiness, deployment decision, changelog needs, rollback
+  risk, versioning, launch coordination, and post-release learning. Use when work
+  is moving from build or QA toward production.
+---
+# Release
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this gate to decide whether to ship, hold, split, rollback, or prepare a launch
+sequence. Release owns coordination across QA, docs, comms, and operating handoff.
+
+Release is the go/no-go workflow. It does not mean "write release notes." It checks
+whether the change is safe, reviewed, tested, documented, communicable, observable,
+and reversible enough to reach production.
+
+## Artifact Format
+
+Use Markdown for a small release call. Use self-contained HTML when the release
+decision needs a readiness dashboard, gate matrix, rollout/rollback visualization,
+scope completion audit, verification evidence, or a shareable ship/hold artifact.
+If implementation notes exist, include them as release evidence and flag stale or
+unresolved entries.
+
+## Pre-Flight
+
+1. Detect platform, branch/base, deployment path, release artifact, and current
+   production state when a repo exists.
+2. Read the plan, diff, changelog, tests, QA evidence, prior gates, TODOs, and docs.
+3. Identify changed user surfaces, data migrations, config/env changes, API/SDK
+   changes, pricing/comms changes, and operational risks.
+4. Mark stale gate outputs if the commit/scope changed since they ran.
+5. Name the release decision: ship, hold, split, stage, rollback, or hotfix.
+
+## Review Readiness Dashboard
+
+Produce a dashboard before deciding:
+
+| Gate | Status | Evidence | Required? | Stale? |
+|---|---|---|---|---|
+| Thesis | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| Product | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| Design | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| Eng | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| QA | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| Docs | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| DX | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+| Comms | clear / missing / stale / not needed | artifact | yes/no | yes/no |
+
+Missing required gates block release unless the user explicitly accepts the risk.
+
+## Release Workflow
+
+### 1. Merge/Base Freshness
+
+- Confirm whether the work is based on the intended release branch.
+- If the base changed, state whether tests/QA need to be rerun.
+- Do not hide merge conflicts, dependency changes, or drift from prior reviews.
+
+### 2. Test And Eval Evidence
+
+- Summarize test commands, eval suites, browser/manual QA, and coverage gaps.
+- Classify failures as in-scope, pre-existing, environment, flaky, or unknown.
+- In-scope failures block unless explicitly accepted with rollback/mitigation.
+
+### 3. Scope Completion Audit
+
+Cross-reference the plan against what changed:
+
+| Planned item | Evidence in diff/release | Status |
+|---|---|---|
+
+Classify items as implemented, intentionally deferred, missing, or no longer
+relevant. Missing P0 items block release.
+
+### 4. Scope Drift Detection
+
+- What changed beyond the plan?
+- Does the drift add product, design, engineering, QA, docs, DX, or comms risk?
+- Should the release split?
+
+### 5. Rollout And Rollback
+
+Require:
+
+- deployment steps
+- migration/feature flag posture
+- monitoring and alerting
+- rollback/revert path
+- owner during and after release
+- customer/support impact
+
+### 6. Docs, DX, And Comms
+
+- Docs gate is required when behavior, setup, API, migration, or support guidance changes.
+- DX gate is required when developers integrate, install, migrate, or debug the change.
+- Comms gate is required for customer-facing, stakeholder-facing, pricing, or launch messages.
+
+### 7. Post-Release Operate Handoff
+
+Define the first operate-loop check:
+
+- metric or signal
+- support/feedback watch
+- review time
+- owner
+- trigger for rollback, fix, growth, or new `$0-1` loop
+
+## Decision Protocol
+
+Use release decisions precisely:
+
+- **Ship**: all required gates clear and rollback/monitoring are acceptable.
+- **Conditional ship**: risks are known, owner accepts them, and rollback/monitoring are explicit.
+- **Hold**: missing required evidence or unresolved P0/P1 risk.
+- **Split**: safe subset can ship while risky scope waits.
+- **Stage**: ship behind flag, cohort, or internal-only rollout.
+- **Rollback/hotfix**: production behavior is already harmful.
+
+## Route Internally
+
+- `$pre-mortem`
+- `$release-notes`
+- `$post-launch-feedback-loop`
+- `$metrics-review`
+- `$verification`
+- `$qa`
+- `$docs`
+- `$comms-review`
+- `$implementation-notes`
+
+## Required Output
+
+Return:
+
+1. **Release Scope**: changes, affected users, dependencies, and version/changelog needs.
+2. **Readiness Evidence**: tests, QA result, known risks, rollback path, and monitoring.
+3. **Review Readiness Dashboard**: gate status, evidence, required/missing/stale calls.
+4. **Completion Audit**: planned items, implemented evidence, missing work, and drift.
+5. **Rollout Plan**: deploy, monitor, rollback, support, and owner.
+6. **Decision**: ship, conditional ship, hold, split, rollback, hotfix, or stage.
+7. **Post-Release Loop**: owner, metric, feedback path, review time, and next operate/grow trigger.

@@ -1,0 +1,34 @@
+{
+  "title": "Strategy Kernel extraction from context",
+  "category": "Strategy",
+  "lifecycle": "Strategize",
+  "tags": [
+    "strategy-kernel-extraction-from-context",
+    "kernel",
+    "extraction",
+    "context",
+    "use"
+  ],
+  "use_when": "Strategy Kernel extraction from context. Use when the user needs a product workflow for product strategy related to strategy kernel extraction from context. Trigger terms: strategy, product-management, diagnosis, context.",
+  "do_not_use_when": "Do not use Strategy Kernel extraction from context when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Strategy Kernel extraction from context strategy memo with choices, tradeoffs, risks, and recommended next move",
+  "routing_signals": [
+    "strategy-kernel-extraction-from-context",
+    "kernel",
+    "extraction",
+    "context",
+    "use"
+  ],
+  "framework_fit": "Strategy Kernel extraction from context fits Strategy work in the Strategize lifecycle when the user needs Strategy Kernel extraction from context strategy memo with choices, tradeoffs, risks, and recommended next move and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Strategy Kernel extraction from context strategy memo with choices, tradeoffs, risks, and recommended next move without tying recommendations to the user's Strategize stage, evidence, and decision pressure.",
+    "Treats Strategy Kernel extraction from context as generic Strategy advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Strategy Kernel extraction from context when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $strategy-kernel-extraction-from-context to turn this kernel context into a decision-ready Strategy Kernel extraction from context strategy memo with choices, tradeoffs, risks, and recommended next move.",
+      "expected_artifact": "Strategy Kernel extraction from context strategy memo with choices, tradeoffs, risks, and recommended next move"
+    }
+  ]
+}

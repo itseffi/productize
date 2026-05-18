@@ -1,0 +1,38 @@
+{
+  "title": "Actionable user profiles with tasks and constraints from shallow personas",
+  "category": "Discovery",
+  "lifecycle": "Discover",
+  "tags": [
+    "actionable-user-profiles-with-tasks-and-constraints-from",
+    "actionable",
+    "profiles",
+    "tasks",
+    "constraints",
+    "shallow",
+    "personas"
+  ],
+  "use_when": "Actionable user profiles with tasks and constraints from shallow personas. Use when the user needs a product workflow for user research related to actionable user profiles with tasks and constraints from shallow personas. Trigger terms: user-research, personas, ux.",
+  "do_not_use_when": "Do not use Actionable user profiles with tasks and constraints from shallow personas when the request is mainly delivery planning, analytics readout, or stakeholder communication; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Actionable user profiles with tasks and constraints from shallow personas research brief with evidence, insight clusters, assumptions, and next validation steps",
+  "routing_signals": [
+    "actionable-user-profiles-with-tasks-and-constraints-from",
+    "actionable",
+    "profiles",
+    "tasks",
+    "constraints",
+    "shallow",
+    "personas"
+  ],
+  "framework_fit": "Actionable user profiles with tasks and constraints from shallow personas fits Discovery work in the Discover lifecycle when the user needs Actionable user profiles with tasks and constraints from shallow personas research brief with evidence, insight clusters, assumptions, and next validation steps and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Actionable user profiles with tasks and constraints from shallow personas research brief with evidence, insight clusters, assumptions, and next validation steps without tying recommendations to the user's Discover stage, evidence, and decision pressure.",
+    "Treats Actionable user profiles with tasks and constraints from shallow personas as generic Discovery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Actionable user profiles with tasks and constraints from shallow personas when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $actionable-user-profiles-with-tasks-and-constraints-from to turn this actionable context into a decision-ready Actionable user profiles with tasks and constraints from shallow personas research brief with evidence, insight clusters, assumptions, and next validation steps.",
+      "expected_artifact": "Actionable user profiles with tasks and constraints from shallow personas research brief with evidence, insight clusters, assumptions, and next validation steps"
+    }
+  ]
+}

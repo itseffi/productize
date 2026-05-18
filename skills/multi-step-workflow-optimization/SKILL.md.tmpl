@@ -1,0 +1,145 @@
+---
+name: multi-step-workflow-optimization
+description: >-
+  Multi-step workflow optimization. Use when the user needs a product workflow for design &
+  prototyping related to multi-step workflow optimization. Trigger terms: ux, workflow,
+  friction, funnels, optimization.
+---
+# Multi-step workflow optimization
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **Multi-step workflow optimization**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{CURRENT_WORKFLOW}}
+- {{USER_ANALYTICS}}
+- {{DROP_OFF_DATA}}
+- {{USER_FEEDBACK}}
+- {{BUSINESS_CONSTRAINTS}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: "Multi-step workflow optimization".
+Success metric:
+- Produces a full current-state workflow diagnosis with per-step friction and necessity classification.
+- Proposes a lower-friction workflow that improves completion/time while preserving required safeguards.
+- Includes a measurable validation plan (A/B or staged rollout) and post-launch iteration logic.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs; if data is missing, state assumptions explicitly.
+- Analyze the current workflow end-to-end before proposing changes.
+- Provide per-step diagnosis including purpose, required inputs, validation, completion/time, errors, friction type, and necessity.
+- Identify top friction points across redundancy, repetition, validation friction, progress clarity, save/resume, cognitive load, technical friction, and emotional friction.
+- Propose optimizations that reduce steps/time/drop-off while preserving required legal, security, and quality checkpoints.
+- Keep recommendations specific, testable, and measurable against baseline metrics.
+- Include experimentation and rollout plan with success criteria, rollback conditions, and post-launch monitoring.
+- If exact metrics are unavailable, provide directional estimates and clearly mark them as assumptions.
+
+FORMAT
+Return exactly this structure:
+
+<workflow_optimization>
+<executive_summary>
+**Current State:**
+- Total steps: [X]
+- Average completion rate: [Y%]
+- Average time to complete: [Z minutes]
+- Primary drop-off point: [Step N - why]
+
+**Proposed State:**
+- Total steps: [X - reduced by N]
+- Expected completion rate: [Y + N%]
+- Expected time to complete: [Z - N minutes]
+- Key improvements: [3-5 bullet points]
+
+**Expected Impact:**
+- [Metric]: [Current → Target]
+- [Metric]: [Current → Target]
+- [Business impact]: [e.g., "10% increase in signups = $X additional revenue/month"]
+</executive_summary>
+
+<current_workflow_analysis>
+**Overall Metrics:**
+- Steps: [Total count]
+- Completion Rate: [X% - what percent of users who start actually finish]
+- Average Time: [Minutes/seconds]
+- Median Time: [If significantly different from average, indicates confusion for some users]
+- Abandonment Rate: [100 - completion rate]
+
+**Drop-off Analysis:**
+- Step 1: [Name] - [Y% complete this step] - [W% abandon]
+- Step 2: [Name] - [Y% complete] - [W% abandon] ⚠️ [High drop-off? Why?]
+- Step 3: [Name] - [Y% complete] - [W% abandon]
+- [Continue for all steps]
+
+**Top 3 Friction Points:**
+1. [Step/Issue]: [X% abandon] - [Why this is painful]
+2. [Step/Issue]: [Y% abandon] - [Why this is painful]
+3. [Step/Issue]: [Z% abandon] - [Why this is painful]
+
+**Detailed Step Analysis:**
+
+For each step, provide:
+
+**Step 1: [Name]**
+- **What user does:** [Actions required - e.g., "Enter name, email, phone number"]
+- **Why step exists:** [Purpose - e.g., "Account creation requires contact info"]
+- **Inputs required:** [List of fields]
+  - [Field]: [Required/Optional] - [Source of data - user memory, lookup, calculation]
+- **Validation:** [What's checked - e.g., "Email format, phone number format"]
+- **Completion rate:** [X%] - [Y% drop off at this step]
+- **Average time:** [Z seconds]
+- **Common errors:** [What goes wrong - e.g., "15% of users enter invalid email format"]
+- **Friction type:** [Redundant/Complex/Unclear/Tedious/Unnecessary]
+- **Problem statement:** [What makes this step difficult or annoying]
+- **Necessity:** ✅ Required (cannot remove) / ⚠️ Required but could be improved / ❌ Unnecessary (can remove or defer)
+
+**Step 2: [Name]**
+[Same detailed structure]
+
+[Continue for all steps]
+
+</current_workflow_analysis>
+
+<optimization_strategies>
+[Describe which of the strategies above you are applying to this workflow, and how.]
+</optimization_strategies>
+
+<optimized_workflow>
+[Describe the new, optimized workflow step-by-step, including which steps were removed, combined, or deferred, and the expected impact on metrics.]
+</optimized_workflow>
+
+<what_we_keep>
+[List the critical checkpoints, validations, and safeguards you are intentionally preserving, and why they remain necessary.]
+</what_we_keep>
+
+<testing_plan>
+[Outline the A/B test or rollout approach you will use to validate the improved workflow.]
+</testing_plan>
+
+<monitoring_and_iteration>
+[Describe how you will monitor post-launch performance and iterate based on data and feedback.]
+</monitoring_and_iteration>
+</workflow_optimization>
+
+FAILURE
+- Any required section/tag from `FORMAT` is missing, malformed, or materially incomplete.
+- Current workflow analysis lacks per-step necessity or friction classification.
+- Proposed optimizations remove required safeguards without justification.
+- Testing plan lacks control/variant definition or clear decision criteria.
+- Monitoring plan lacks actionable metrics or iteration logic.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

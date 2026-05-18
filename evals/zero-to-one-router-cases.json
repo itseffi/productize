@@ -1,0 +1,89 @@
+[
+  {
+    "name": "0-1 product build loop orchestrator",
+    "mode": "zero-to-one",
+    "persona": "AI builder",
+    "stage": "0-to-1 build loop",
+    "query": "Use productize-0-1 to build the first version of a new AI workflow product: scope capability, curate data, set up the application, design evals, run evals, analyze behavior and error patterns, and apply fixes.",
+    "expected_lifecycles": ["Think"],
+    "expected_top_skill": "0-1"
+  },
+  {
+    "name": "founder 0-to-1 wedge from rough idea",
+    "mode": "zero-to-one",
+    "persona": "founder",
+    "stage": "0-to-1 idea",
+    "query": "Founder: I have a rough idea for a compliance copilot for small accounting firms. Help me choose a narrow beachhead, first customer segment, and riskiest assumption before we build.",
+    "expected_lifecycles": ["Discover", "Strategize", "Think"],
+    "expected_any_skills": [
+      "beachhead-segment",
+      "market-opportunity",
+      "ideal-customer-profile-icp-representative-for-x-product",
+      "defining-the-niche-from-user-input",
+      "risky-assumption-prioritization-for-rapid-validation"
+    ]
+  },
+  {
+    "name": "founder discovery synthesis from interviews",
+    "mode": "zero-to-one",
+    "persona": "founder",
+    "stage": "0-to-1 validation",
+    "query": "Founder: I have 8 interview transcripts from clinic admins about scheduling no-shows. Create JTBD job stories and identify the riskiest MVP assumptions.",
+    "expected_lifecycles": ["Discover"],
+    "expected_any_skills": [
+      "actionable-job-stories-from-interview-transcripts",
+      "clustered-jtbd-forces-from-interview-data",
+      "risky-assumption-prioritization-for-rapid-validation"
+    ]
+  },
+  {
+    "name": "product manager messy transcript to v0 PRD",
+    "mode": "zero-to-one",
+    "persona": "product manager",
+    "stage": "MVP definition",
+    "query": "Product manager: I have a messy transcript from sales calls and design reviews. Turn it into a v0 PRD, structured requirements, and acceptance criteria for the first workflow automation release.",
+    "expected_lifecycles": ["Plan"],
+    "expected_any_skills": [
+      "structured-requirements-from-conversation-transcripts",
+      "prds-from-industry-and-feature-specifications",
+      "write-spec"
+    ]
+  },
+  {
+    "name": "cpo where-to-play 0-to-1 portfolio choice",
+    "mode": "zero-to-one",
+    "persona": "CPO",
+    "stage": "0-to-1 portfolio strategy",
+    "query": "CPO: where should we play first for a 0-to-1 automation product: legal ops, RevOps, or customer support? Compare market opportunity and choose the wedge.",
+    "expected_lifecycles": ["Strategize"],
+    "expected_top_skill": "market-opportunity"
+  },
+  {
+    "name": "founder pmf diagnosis not generic strategy",
+    "mode": "zero-to-one",
+    "persona": "founder",
+    "stage": "PMF check",
+    "query": "Founder: is this product-market fit or just early sales pull? We have enthusiastic pilots, weak retention cohorts, and unclear repeat usage.",
+    "expected_lifecycles": ["Growth"],
+    "expected_top_skill": "product-market-fit-cycle",
+    "disallowed_top_lifecycles": ["Strategize"]
+  },
+  {
+    "name": "founder lean canvas from raw concept",
+    "mode": "zero-to-one",
+    "persona": "founder",
+    "stage": "0-to-1 idea shaping",
+    "query": "Founder: turn my raw idea for an AI contract review assistant into a Lean Canvas with problem, solution, UVP, channels, revenue, costs, and riskiest assumptions.",
+    "expected_lifecycles": ["Think", "Strategize"],
+    "expected_top_skill": "lean-canvas"
+  },
+  {
+    "name": "founder market sizing for investor narrative",
+    "mode": "zero-to-one",
+    "persona": "founder",
+    "stage": "market opportunity sizing",
+    "query": "Founder: estimate TAM, SAM, and SOM for a workflow automation product serving boutique accounting firms and show the assumptions clearly.",
+    "expected_lifecycles": ["Strategize"],
+    "expected_top_skill": "market-sizing"
+  }
+]

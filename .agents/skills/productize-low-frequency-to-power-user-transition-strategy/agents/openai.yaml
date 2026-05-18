@@ -1,0 +1,8 @@
+interface:
+  display_name: "Low-Frequency-to-Power-User Transition Strategy"
+  short_description: "Low-Frequency-to-Power-User Transition Strategy. Use when the user needs a product workflow for product strategy..."
+  brand_color: "#C2410C"
+  default_prompt: "Use $productize-low-frequency-to-power-user-transition-strategy with my product context."
+
+policy:
+  allow_implicit_invocation: true

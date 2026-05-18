@@ -1,0 +1,40 @@
+{
+  "title": "Target opportunity selection from OST",
+  "category": "Discovery",
+  "lifecycle": "Think",
+  "tags": [
+    "target-opportunity-selection-from-ost",
+    "target",
+    "opportunity",
+    "selection",
+    "ost",
+    "decision",
+    "making",
+    "discovery"
+  ],
+  "use_when": "Target opportunity selection from OST. Use when the user needs a product workflow for decision making related to target opportunity selection from ost. Trigger terms: pm, decision-making, discovery, opportunity-solution-tree, prioritization.",
+  "do_not_use_when": "Do not use Target opportunity selection from OST when the request is mainly a different lifecycle artifact; route to the narrower Productize skill that owns that artifact instead. Do not use it when the user lacks enough context to distinguish facts, assumptions, and decision risk.",
+  "output_artifact": "Target opportunity selection from OST product artifact with evidence, risks, recommendation, and next action",
+  "routing_signals": [
+    "target-opportunity-selection-from-ost",
+    "target",
+    "opportunity",
+    "selection",
+    "ost",
+    "decision",
+    "making",
+    "discovery"
+  ],
+  "framework_fit": "Target opportunity selection from OST fits Discovery work in the Think lifecycle when the user needs Target opportunity selection from OST product artifact with evidence, risks, recommendation, and next action and has enough product context to make tradeoffs explicit. Use it to produce a decision-ready artifact, not a framework tour.",
+  "failure_modes": [
+    "Produces Target opportunity selection from OST product artifact with evidence, risks, recommendation, and next action without tying recommendations to the user's Think stage, evidence, and decision pressure.",
+    "Treats Target opportunity selection from OST as generic Discovery advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Target opportunity selection from OST when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $target-opportunity-selection-from-ost to turn this target context into a decision-ready Target opportunity selection from OST product artifact with evidence, risks, recommendation, and next action.",
+      "expected_artifact": "Target opportunity selection from OST product artifact with evidence, risks, recommendation, and next action"
+    }
+  ]
+}

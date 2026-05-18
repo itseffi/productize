@@ -1,0 +1,68 @@
+---
+name: ux-terminology-improvements-in-product-requirements
+description: >-
+  UX terminology improvements in product requirements. Use when the user needs a product
+  workflow for design & prototyping related to ux terminology improvements in product
+  requirements. Trigger terms: ux, product-requirements, terminology, content-review.
+---
+# UX terminology improvements in product requirements
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **UX terminology improvements in product requirements**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- {{PRODUCT_MANAGER_REQUIREMENTS}}
+</provided_inputs>
+
+GOAL
+Produce a high-quality deliverable for: "UX terminology improvements in product requirements".
+Success metric:
+- Identifies incorrect or imprecise UX terminology in the requirements, when present.
+- Provides context-appropriate terminology corrections with clear rationale.
+- Avoids unnecessary edits when wording is already accurate.
+- Output follows the required structure exactly.
+
+CONSTRAINTS
+- Use only `{{PRODUCT_MANAGER_REQUIREMENTS}}`; if context is missing, state assumptions explicitly.
+- Review terms in context; do not auto-replace words without justification.
+- For each correction, quote the original wording exactly.
+- Provide a correction only when it improves UX precision/clarity.
+- If no corrections are needed, explicitly return the no-change statement in the required schema.
+
+FORMAT
+Return exactly this structure:
+
+<analysis>
+1. Original term: [Quote the original text]  
+   Correction: [Provide the corrected term or phrase]  
+   Explanation: [Briefly explain why this correction is necessary]
+
+2. Original term: [Quote the original text]  
+   Correction: [Provide the corrected term or phrase]  
+   Explanation: [Briefly explain why this correction is necessary]
+
+[Continue with additional corrections as needed]
+
+[If no corrections are required, return exactly:
+"No corrections needed. The requirements use appropriate UX terminology."]
+</analysis>
+
+FAILURE
+- `<analysis>` section is missing or malformed.
+- Corrections are provided without quoting original text.
+- Explanations do not justify why the correction improves UX terminology precision.
+- Output changes terminology that is already context-appropriate without rationale.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.

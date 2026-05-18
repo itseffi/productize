@@ -1,0 +1,8 @@
+interface:
+  display_name: "Cohort Analysis"
+  short_description: "Cohort Analysis. Use when analyzing retention by signup, activation, usage, plan, feature adoption, or customer..."
+  brand_color: "#0F766E"
+  default_prompt: "Use $productize-cohort-analysis with my product context."
+
+policy:
+  allow_implicit_invocation: true

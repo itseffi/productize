@@ -1,0 +1,8 @@
+interface:
+  display_name: "App aha moment identification from user data and app description"
+  short_description: "App aha moment identification from user data and app description. Use when the user needs a product workflow for..."
+  brand_color: "#0D9488"
+  default_prompt: "Use $app-aha-moment-identification-from-user-data-and-app with my product context."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,83 @@
+---
+name: user-stories-with-gherkin-acceptance-criteria-from-requirements
+description: >-
+  User stories with Gherkin acceptance criteria from requirements. Use when the user needs a
+  product workflow for business analysis related to user stories with gherkin acceptance
+  criteria from requirements. Trigger terms: pm, user-stories, gherkin, requirements,
+  business-analysis.
+---
+# User stories with Gherkin acceptance criteria from requirements
+
+{{PRODUCTIZE_PREAMBLE}}
+
+Use this skill to run the Productize prompt contract for **User stories with Gherkin acceptance criteria from requirements**.
+
+## Instructions
+
+1. Treat every `{{PLACEHOLDER}}` in the contract as an input to collect, infer, or mark as missing.
+2. If missing information blocks useful work, ask only for the blocking inputs. If work can proceed, state assumptions explicitly.
+3. Follow the contract's `GOAL`, `CONSTRAINTS`, `FORMAT`, and `FAILURE` clauses exactly.
+4. Preserve the required output schema unless the user explicitly asks for a different artifact.
+5. Keep claims grounded in the provided inputs and disclose gaps.
+
+## Prompt Contract
+
+INPUTS
+<provided_inputs>
+- [No explicit variables declared; use provided context.]
+</provided_inputs>
+
+GOAL
+Generate INVEST-compliant, atomic user stories with Gherkin acceptance criteria from provided requirements context.
+Success metric:
+- Produces one or more atomic user stories aligned to persona goals and constraints.
+- Each story includes deterministic happy-path and edge/negative Gherkin scenarios.
+- Includes traceability from requirements to stories and acceptance criteria.
+- Follows the required markdown output structure exactly.
+
+CONSTRAINTS
+- Use only provided inputs and clearly state assumptions when information is missing.
+- Do not skip required steps:
+  1. Decompose requirements into distinct atomic outcomes.
+  2. Draft one story per outcome.
+  3. Add Gherkin acceptance criteria with one `When` and one `Then` in happy path.
+  4. Add at least one edge/negative scenario per story.
+  5. Complete notes and traceability mapping.
+- Stories must be INVEST-compliant and persona-aligned.
+- If a story would require multiple primary outcomes, split it or mark `SPLIT SUGGESTED`.
+- Keep language testable and implementation-neutral (unless a technical constraint is explicitly required).
+- Use `[TBD]` for critical missing info and surface it under Open Questions.
+
+FORMAT
+Return exactly this structure:
+
+```md
+Backlog Context
+[Backlog Header Template fields filled]
+
+User Story [ID-###]:
+[Use Case + Gherkin happy-path scenario + Gherkin edge/negative scenario]
+Notes
+[Non-Functional, Instrumentation, Dependencies, Out of Scope, Open Questions]
+
+[Repeat story blocks for each atomic outcome]
+
+Traceability Table
+[Requirement ID | Requirement Summary | Story ID(s) | AC Coverage Notes]
+
+Validation Checklist
+[All required checklist items]
+```
+
+FAILURE
+- Required markdown structure is missing or malformed.
+- Stories are non-atomic, non-INVEST, or not mapped to clear outcomes.
+- Happy-path scenario contains more than one `When` or more than one `Then` without `SPLIT SUGGESTED`.
+- Edge/negative scenario is missing for any story.
+- Traceability table or validation checklist is missing.
+- Claims are generic or not grounded in provided inputs.
+- Assumptions are used but not explicitly stated.
+
+## PM Skills Main Merge
+
+Load `references/pm-skills-main-merge.md` when the request mentions `3 cs`, `invest`, `user stories`, `conversation confirmation`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.

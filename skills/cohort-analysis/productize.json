@@ -1,0 +1,53 @@
+{
+  "title": "Cohort Analysis",
+  "category": "Analytics",
+  "lifecycle": "Measure",
+  "tags": [
+    "cohort-analysis",
+    "cohorts",
+    "retention",
+    "activation",
+    "churn",
+    "engagement",
+    "feature-adoption",
+    "growth",
+    "cohort",
+    "data",
+    "reporting",
+    "use",
+    "analyzing",
+    "signup"
+  ],
+  "use_when": "Use when analyzing retention by signup, activation, usage, plan, feature adoption, or customer segment, especially when churn, engagement, or product health needs cohort evidence.",
+  "do_not_use_when": "Do not use when the user only needs a single aggregate metric, a qualitative churn synthesis, or a growth strategy without cohort data.",
+  "output_artifact": "Cohort retention and engagement diagnosis with segment-level actions",
+  "routing_signals": [
+    "cohort-analysis",
+    "cohorts",
+    "retention",
+    "activation",
+    "churn",
+    "engagement",
+    "feature-adoption",
+    "when",
+    "analyzing",
+    "signup",
+    "usage",
+    "plan",
+    "feature",
+    "adoption"
+  ],
+  "framework_fit": "Best for existing products with event, account, or subscription data where averages hide retention, activation, or adoption differences across cohorts.",
+  "failure_modes": [
+    "Produces Cohort retention and engagement diagnosis with segment-level actions without tying recommendations to the user's Measure stage, evidence, and decision pressure.",
+    "Treats Cohort Analysis as generic Analytics advice instead of naming assumptions, missing inputs, risks, and the next validation step.",
+    "Fails to route away from Cohort Analysis when another Productize skill owns the requested artifact more directly."
+  ],
+  "examples": [
+    {
+      "prompt": "Use $cohort-analysis to turn this cohorts context into a decision-ready Cohort retention and engagement diagnosis with segment-level actions.",
+      "expected_artifact": "Cohort retention and engagement diagnosis with segment-level actions"
+    }
+  ],
+  "imported_from": "pm-skills-main/pm-data-analytics/skills/cohort-analysis/SKILL.md"
+}
