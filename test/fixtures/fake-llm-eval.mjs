@@ -15,6 +15,7 @@ Work product:
 - Metrics validation plan with source of truth, warehouse reconciliation, lineage, freshness, completeness, and validation check.
 - Valuation artifact with DCF, WACC, terminal value, enterprise value, equity value, market values, price per share, and sensitivity.
 - VC deal artifact with cap table, dilution, pre-money, post-money, option pool, liquidation preference, convertible note, and SAFE.
+- Dogfood QA report with Pages Tested, Flows Tested, Console Errors, Screenshots/Evidence, Severity Table, Blockers, sitemap, user flow, console error, and screenshot evidence.
 
 Warnings:
 - Do not ship vague playbooks or filler.

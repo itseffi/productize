@@ -21,6 +21,7 @@ export const skillRoutingBoosts = Object.freeze([
   [/productize[- ]product[- ]review|(?:use|run|call|do)\s+(?:the\s+)?product review|product[- ]review|product gate|pm review|requirements review|scope review|product judgment|feature scope|prd review/, "product-review", 620],
   [/productize[- ]design[- ]review|design[- ]review|design review|design gate|visual qa|ux review|experience review|responsive behavior|design handoff|ui polish/, "design-review", 620],
   [/productize[- ]eng[- ]review|eng[- ]review|eng review|engineering review|architecture review|technical review|data flow|implementation risk|build readiness|system boundaries/, "eng-review", 620],
+  [/dogfood|dogfooding|test.*(?:local web app|web app|url).*end[- ]to[- ]end|end[- ]to[- ]end.*(?:local web app|web app|url)|browser[- ]driven qa|browser qa|exploratory qa.*web|web ui qa|console checks?.*screenshots?|screenshots?.*console checks?/, "dogfood", 660],
   [/productize[- ]qa|(?:use|run|call|do)\s+(?:the\s+)?qa\b|qa gate|quality gate|verification evidence|regression risk|retest|eval results/, "qa", 620],
   [/productize[- ]release|ship gate|ship readiness|deployment decision|staged release|go no-go|rollback path|launch coordination/, "release", 620],
   [/productize[- ]docs|docs gate|documentation gate|docs consistency|update docs|documentation review|migration notes|help content|readme.*guide/, "docs", 620],

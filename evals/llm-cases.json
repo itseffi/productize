@@ -151,5 +151,27 @@
         "weight": 2
       }
     ]
+  },
+  {
+    "name": "dogfood web app QA contract",
+    "prompt": "Use $productize-dogfood. Dogfood this local web app at http://localhost:3000 end-to-end. I need a QA report with browser evidence.",
+    "must_contain": ["Route", "Pages Tested", "Flows Tested", "Console Errors", "Screenshots/Evidence", "Severity Table", "Blockers", "Next action"],
+    "rubric": [
+      {
+        "name": "dogfood report includes required evidence sections",
+        "must_contain": ["Pages Tested", "Flows Tested", "Console Errors", "Screenshots/Evidence"],
+        "weight": 2
+      },
+      {
+        "name": "dogfood report includes release triage",
+        "must_contain": ["Severity Table", "Blockers"],
+        "weight": 2
+      },
+      {
+        "name": "browser exploration is explicit",
+        "any_contain": ["sitemap", "user flow", "console error", "screenshot"],
+        "weight": 1
+      }
+    ]
   }
 ]

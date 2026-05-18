@@ -62,6 +62,9 @@ Missing required gates block release unless the user explicitly accepts the risk
 ### 2. Test And Eval Evidence
 
 - Summarize test commands, eval suites, browser/manual QA, and coverage gaps.
+- When the product has a web UI, treat `$dogfood` output as release evidence:
+  pages tested, flows tested, console errors, screenshots/evidence, severity
+  table, blockers, and release impact.
 - Classify failures as in-scope, pre-existing, environment, flaky, or unknown.
 - In-scope failures block unless explicitly accepted with rollback/mitigation.
 
@@ -127,6 +130,7 @@ Use release decisions precisely:
 - `$metrics-review`
 - `$verification`
 - `$qa`
+- `$dogfood` when a web UI needs browser-driven release evidence
 - `$docs`
 - `$comms-review`
 - `$implementation-notes`

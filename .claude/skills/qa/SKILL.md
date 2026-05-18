@@ -92,7 +92,9 @@ notes exist, verify they reflect the final tested behavior.
    - **Regression**: compare against a baseline or previously working behavior.
    - **Report-only**: never edit files.
 2. Detect target: URL, local app, diff scope, feature spec, eval set, or release
-   candidate.
+   candidate. If the target is a web UI and the request asks to use the product
+   like a real user, test a URL end-to-end, capture screenshots, or inspect
+   console errors, route the browser-driven exploratory pass to `$dogfood`.
 3. Read product spec, acceptance criteria, test plan, TODOs, prior bug reports,
    support themes, and relevant gate outputs.
 4. Detect available verification tools: unit/integration/e2e tests, browser,
@@ -194,6 +196,7 @@ Before passing:
 
 ## Route Internally
 
+- `$dogfood` for browser-driven exploratory QA of local apps, staging URLs, production URLs, sitemap coverage, screenshots, and console checks
 - `$test-scenarios`
 - `$verification`
 - `$acceptance-criteria-for-ui`

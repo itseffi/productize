@@ -306,9 +306,10 @@
   {
     "lifecycle": "Launch & Learn",
     "description": "Launch planning, QA, post-launch feedback, iteration, learning loops, and release evidence.",
-    "skill_count": 10,
+    "skill_count": 11,
     "skills": [
       "docs",
+      "dogfood",
       "feature-results-analysis-from-draft-to-final-report",
       "operate",
       "post-launch-feedback-into-v2-improvements-synthesis",

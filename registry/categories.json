@@ -174,13 +174,14 @@
   {
     "category": "Delivery",
     "description": "PRDs, requirements, backlog items, sprint plans, QA scenarios, launch readiness, release notes, and execution planning.",
-    "skill_count": 26,
+    "skill_count": 27,
     "skills": [
       "analyze-feature-requests",
       "bug-prioritization-against-work-in-progress",
       "critical-flaws-in-product-requirements-tough-and-unreasonable",
       "detailed-project-plans-from-project-briefs",
       "docs",
+      "dogfood",
       "nps-feedback-for-prioritized-customer-experience-initiatives",
       "outcome-roadmap",
       "prds-from-industry-and-feature-specifications",

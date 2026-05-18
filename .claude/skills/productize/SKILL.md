@@ -106,7 +106,7 @@ Use the smallest entry point that owns the cadence:
 
 **Routed Skills**
 
-- 238 Productize routed skills called internally by the three playbooks and nine gates.
+- 239 Productize routed skills called internally by the three playbooks and nine gates.
 
 ## Routing Map
 
@@ -133,7 +133,7 @@ Use the smallest entry point that owns the cadence:
 - **Growth**: 12 skills
 - **Align**: 31 skills
 - **Build With AI**: 13 skills
-- **Launch & Learn**: 10 skills
+- **Launch & Learn**: 11 skills
 
 ## Workflow
 

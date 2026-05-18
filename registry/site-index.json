@@ -2,7 +2,7 @@
   "name": "Productize AI",
   "tagline": "Agent skills for turning product ambiguity into shipped work.",
   "counts": {
-    "skills": 251,
+    "skills": 252,
     "category_plugins": 14
   },
   "navigation": [
@@ -2022,7 +2022,7 @@
     {
       "category": "Delivery",
       "description": "PRDs, requirements, backlog items, sprint plans, QA scenarios, launch readiness, release notes, and execution planning.",
-      "skill_count": 26,
+      "skill_count": 27,
       "related_skills": [],
       "skills": [
         {
@@ -2100,6 +2100,27 @@
             "help",
             "content",
             "api"
+          ],
+          "lifecycle": "Launch & Learn"
+        },
+        {
+          "name": "dogfood",
+          "title": "Dogfood",
+          "tags": [
+            "dogfood",
+            "exploratory-qa",
+            "browser-qa",
+            "web-app-qa",
+            "local-web-app",
+            "url-testing",
+            "end-to-end",
+            "console-errors",
+            "screenshots",
+            "sitemap",
+            "user-flows",
+            "release-evidence",
+            "delivery",
+            "browser"
           ],
           "lifecycle": "Launch & Learn"
         },
@@ -5461,12 +5482,17 @@
     {
       "lifecycle": "Launch & Learn",
       "description": "Launch planning, QA, post-launch feedback, iteration, learning loops, and release evidence.",
-      "skill_count": 10,
+      "skill_count": 11,
       "skills": [
         {
           "name": "docs",
           "title": "Docs",
           "output_artifact": "Docs gate report with docs scope, consistency check, update plan, decision, and handoff"
+        },
+        {
+          "name": "dogfood",
+          "title": "Dogfood",
+          "output_artifact": "Dogfood QA report with pages tested, flows tested, console errors, screenshots, severity table, blockers, and release decision"
         },
         {
           "name": "feature-results-analysis-from-draft-to-final-report",

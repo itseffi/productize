@@ -37,7 +37,7 @@ try {
 
   const summary = JSON.parse(readFileSync(summaryPath, "utf8"));
   assert.equal(summary.failed, 0);
-  assert.equal(summary.cases, 9);
+  assert.equal(summary.cases, 10);
   assert.ok(summary.score > 0);
   assert.ok(summary.max_score >= summary.score);
   assert.ok(summary.estimated_llm_cost_usd > 0);
@@ -64,7 +64,7 @@ try {
   });
   assert.equal(report.status, 0, `${report.stdout || ""}${report.stderr || ""}`);
   assert.match(report.stdout, /Productize Eval Report/);
-  assert.match(report.stdout, /9/);
+  assert.match(report.stdout, /10/);
 
   const noCostDefaultReport = path.join(tmpRoot, "default-report");
   const noCostDefault = spawnSync(process.execPath, ["scripts/eval-productize.mjs", "--report-dir", noCostDefaultReport], {

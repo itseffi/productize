@@ -1,0 +1,8 @@
+[
+  {
+    "name": "dogfood local web app",
+    "query": "Dogfood this local web app and test http://localhost:3000 end-to-end with browser screenshots, sitemap coverage, user flows, and console checks.",
+    "expected_top_skill": "dogfood",
+    "expected_lifecycles": ["Launch & Learn"]
+  }
+]
