@@ -1,8 +1,0 @@
-interface:
-  display_name: "Product decision analysis from anthropological research insights"
-  short_description: "Product decision analysis from anthropological research insights. Use when the user needs a product workflow for..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $product-decision-analysis-from-anthropological-research with my product context."
-
-policy:
-  allow_implicit_invocation: true

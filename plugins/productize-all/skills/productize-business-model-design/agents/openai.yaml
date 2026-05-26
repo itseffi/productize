@@ -1,8 +1,0 @@
-interface:
-  display_name: "Business Model Design"
-  short_description: "Design, compare, or document business models using the right canvas for the situation. Use when a founder, product..."
-  brand_color: "#9333EA"
-  default_prompt: "Use $productize-business-model-design with my product context."
-
-policy:
-  allow_implicit_invocation: false

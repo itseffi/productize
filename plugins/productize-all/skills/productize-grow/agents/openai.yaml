@@ -1,8 +1,0 @@
-interface:
-  display_name: "Productize Grow"
-  short_description: "Productize grow playbook for stable products with activation evidence. Use when the product has a working core and..."
-  brand_color: "#C2410C"
-  default_prompt: "Use $productize-grow with my product context."
-
-policy:
-  allow_implicit_invocation: false

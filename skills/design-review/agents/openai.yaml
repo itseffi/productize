@@ -1,8 +1,0 @@
-interface:
-  display_name: "Design Review"
-  short_description: "Design gate for UX quality, visual hierarchy, interaction states, accessibility, responsive behavior, design-system..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $design-review with my product context."
-
-policy:
-  allow_implicit_invocation: true

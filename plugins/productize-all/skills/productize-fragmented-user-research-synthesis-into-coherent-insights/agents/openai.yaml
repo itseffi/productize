@@ -1,8 +1,0 @@
-interface:
-  display_name: "Fragmented user research synthesis into coherent insights"
-  short_description: "Fragmented user research synthesis into coherent insights. Use when the user needs a product workflow for user..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-fragmented-user-research-synthesis-into-coherent-insights with my product context."
-
-policy:
-  allow_implicit_invocation: false

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Slide decks from problem statements and context"
-  short_description: "Slide decks from problem statements and context. Use when the user needs a product workflow for presentation &..."
-  brand_color: "#0891B2"
-  default_prompt: "Use $productize-slide-decks-from-problem-statements-and-context with my product context."
-
-policy:
-  allow_implicit_invocation: false

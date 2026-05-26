@@ -1,5 +1,300 @@
 # Changelog
 
-## 1.1.2
+All notable changes to this project will be documented in this file.
 
-- Added Productize distribution and runtime scaffolding: three playbooks, nine gates, routed skills, host outputs, registry, setup installer, runtime sidecars, team mode, validation, parser tests, router/e2e evals, CI, release automation, install smoke testing, and release checks.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## 0.2.4 - 2026-05-14
+
+### 🐛 Bug Fixes
+
+- Codex acp integration (#151)
+## 0.2.3 - 2026-05-09
+
+### 🐛 Bug Fixes
+
+- Cwd path
+## 0.2.2 - 2026-05-09
+
+### 🎉 Features
+
+- Add qa extension (#138)
+### 🐛 Bug Fixes
+
+- Workspace register (#140)- Workspace discover path- Prevent false task completion via prompt kickoff + worktree diff-check (#144) (#145)
+### 📚 Documentation
+
+- Update- Release notes
+### 📦 Build System
+
+- Release tool
+## 0.2.1 - 2026-05-01
+
+### 🐛 Bug Fixes
+
+- Binary release
+## 0.2.0 - 2026-05-01
+
+### ♻️  Refactoring
+
+- Daemon improvs (#121)
+### 🎉 Features
+
+- Add optional sound notifications on run lifecycle events (#96)- Global config defaults (#106)- Add per task prop selection (#109)- Migrate to daemon (#112)  - **BREAKING:** migrate to daemon (#112)
+- Daemon web UI (#122)- Web ui polish (#125)- Review watch (#133)
+### 🐛 Bug Fixes
+
+- Daemons adjustments (#116)- Harden runtime activity and version handling (#127)- Release adjustments (#131)- Infer task type during migrate (#129)- Watch adjustments- Lint errors
+### 📚 Documentation
+
+- Release notes- Daemon prd- New prds- Update- Add release notes
+### 🔧 CI/CD
+
+- Fix auto-docs- Add release notes- Fix windows
+### 🧪 Testing
+
+- Release config
+## 0.1.12 - 2026-04-14
+
+### 🎉 Features
+
+- Add shared layout package for run artifact filenames (#95)
+### 🐛 Bug Fixes
+
+- Execution order- Fetch reviews parsing
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.12 (#100)
+
+### 🧪 Testing
+
+- Fix suite
+## 0.1.11 - 2026-04-14
+
+### 🎉 Features
+
+- Agents spec (#78)- Add extensability (#80)- Add productize skill- Extension improvements (#83)- Migrate core extension (#93)
+### 📚 Documentation
+
+- New prds- Add auto-docs workflow (claude code on merge)- Update- Update docs path
+### 📦 Build System
+
+- Auto-docs workflow
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.11 (#94)
+
+## 0.1.10 - 2026-04-10
+
+### ♻️  Refactoring
+
+- Improve packages (#70)- Add nitpicks for coderabbit (#75)
+### 🎉 Features
+
+- Kernel refactoring (#68)
+### 🐛 Bug Fixes
+
+- Stop rewriting all _meta.md files when listing workflows (#73)
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.10 (#76)
+
+## 0.1.9 - 2026-04-06
+
+### 🎉 Features
+
+- Exec command (#60)
+### 🐛 Bug Fixes
+
+- Close issue #61 (#63)- Fail for unsupported --add-dir (#66)
+### 📚 Documentation
+
+- Context7 and exa skills
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.9 (#67)
+
+## 0.1.8 - 2026-04-05
+
+### ♻️  Refactoring
+
+- Rename idea-factory artifacts from issue to idea (#56)
+### 🎉 Features
+
+- Add GitHub Copilot CLI as ACP runtime (#57)
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.8 (#59)
+
+## 0.1.7 - 2026-04-05
+
+### ♻️  Refactoring
+
+- Tool calls (#48)- Task artifacts changes (#52)
+### 🎉 Features
+
+- *(build)* Add AUR support and automation via GoReleaser (#49)
+
+### 🐛 Bug Fixes
+
+- Review round
+### 📦 Build System
+
+- Comment AUR release for now
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.7 (#55)
+
+## 0.1.6 - 2026-04-04
+
+### 🐛 Bug Fixes
+
+- Improve failures
+### 📦 Build System
+
+- Remove ai-docs folder
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.6 (#47)
+
+## 0.1.5 - 2026-04-03
+
+### 🎉 Features
+
+- Add config.toml (#40)
+### 🐛 Bug Fixes
+
+- Check skills shift before run- Acp permission
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.5 (#45)
+
+## 0.1.4 - 2026-04-03
+
+### 🎉 Features
+
+- Add idea-factory skill and improve planning skills DX (#35)
+### 🐛 Bug Fixes
+
+- Failed tool call crash- Skills frontmatter
+### 📦 Build System
+
+- Fix skills symlink
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.4 (#39)
+
+## 0.1.3 - 2026-04-03
+
+### 🎉 Features
+
+- *(repo)* Add archive command
+- Use acp instead of stream raw json (#34)
+### 📚 Documentation
+
+- Archive old prds- Update readme
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.3 (#36)
+
+## 0.1.2 - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(repo)* Close tui when finish
+- Correct opencode run flags and add stdin support (#25)
+### 📚 Documentation
+
+- *(repo)* Update readme
+
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.2 (#28)
+
+## 0.1.1 - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(repo)* Automatic completion
+
+### 📚 Documentation
+
+- *(repo)* Remove installs
+
+### 📦 Build System
+
+- *(repo)* Fix release
+
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.1.1 (#24)
+
+## 0.1.0 - 2026-04-01
+
+### ♻️  Refactoring
+
+- *(repo)* Improve commands
+- *(repo)* Remove not needed flags
+- *(repo)* Remove PR as required for fix-reviews
+- *(repo)* Improve setup command
+- *(repo)* Remove prd- tasks folder prefix
+- *(repo)* Many improvements
+- *(repo)* Add cy prefix for skills and memory system
+
+### 🎉 Features
+
+- *(repo)* Add build and release
+- *(repo)* Add adr support
+- *(repo)* Add fetch reviews
+- *(repo)* Add review-round skill
+- *(repo)* Add setup command
+- *(repo)* Add _meta.md for tasks
+- Main structure
+### 🐛 Bug Fixes
+
+- *(repo)* Release
+- *(repo)* Color bugs
+
+### 📚 Documentation
+
+- *(repo)* Improve readme
+- *(repo)* Remove old templates
+- *(repo)* Improve readme
+- *(repo)* Readme
+- *(repo)* Update readme
+
+### 📦 Build System
+
+- *(repo)* Release
+- *(repo)* Gitignore
+- *(repo)* Rename to productize
+- *(repo)* Bump tag
+
+### 🔧 CI/CD
+
+- *(release)* Prepare release v0.0.1 (#4)
+- *(release)* Prepare release v0.0.2 (#5)
+- *(release)* Prepare release v0.0.3 (#11)
+- *(release)* Prepare release v0.1.0 (#21)
+- *(repo)* Fix tests
+
+[0.2.4]: https://github.com///compare/v0.2.3...v0.2.4
+[0.2.3]: https://github.com///compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com///compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com///compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com///compare/v0.1.12...v0.2.0
+[0.1.12]: https://github.com///compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com///compare/v0.1.10...v0.1.11
+[0.1.10]: https://github.com///compare/v0.1.9...v0.1.10
+[0.1.9]: https://github.com///compare/v0.1.8...v0.1.9
+[0.1.8]: https://github.com///compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com///compare/v0.1.6...v0.1.7
+[0.1.6]: https://github.com///compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com///compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com///compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com///compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com///compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com///compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com///releases/tag/v0.1.0
+---
+*Generated by [git-cliff](https://git-cliff.org)*

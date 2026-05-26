@@ -1,8 +1,0 @@
-interface:
-  display_name: "A/B Test Analysis"
-  short_description: "A/B Test Analysis. Use when evaluating A/B test results, checking statistical significance, validating sample size,..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $productize-ab-test-analysis with my product context."
-
-policy:
-  allow_implicit_invocation: false

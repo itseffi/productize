@@ -1,8 +1,0 @@
-interface:
-  display_name: "Solution design for edge cases in product development"
-  short_description: "Solution design for edge cases in product development. Use when the user needs a product workflow for design &..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $solution-design-for-edge-cases-in-product-development with my product context."
-
-policy:
-  allow_implicit_invocation: true

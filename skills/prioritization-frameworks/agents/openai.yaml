@@ -1,8 +1,0 @@
-interface:
-  display_name: "Prioritization Frameworks"
-  short_description: "Prioritization Frameworks. Use when selecting or comparing prioritization frameworks such as RICE, ICE, Kano,..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $prioritization-frameworks with my product context."
-
-policy:
-  allow_implicit_invocation: true

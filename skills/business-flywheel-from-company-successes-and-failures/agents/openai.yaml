@@ -1,8 +1,0 @@
-interface:
-  display_name: "Business flywheel from company successes and failures"
-  short_description: "Business flywheel from company successes and failures. Use when the user needs a product workflow for product..."
-  brand_color: "#9333EA"
-  default_prompt: "Use $business-flywheel-from-company-successes-and-failures with my product context."
-
-policy:
-  allow_implicit_invocation: true

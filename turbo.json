@@ -1,0 +1,20 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalDependencies": ["bun.lock", "package.json", "tsconfig.base.json", "tsconfig.json"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**"]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "typecheck": {
+            "dependsOn": ["^typecheck"]
+        },
+        "test": {
+            "cache": false
+        }
+    }
+}

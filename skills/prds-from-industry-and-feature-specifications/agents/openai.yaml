@@ -1,8 +1,0 @@
-interface:
-  display_name: "PRDs from industry and feature specifications"
-  short_description: "PRDs from industry and feature specifications. Use when the user needs a product workflow for business analysis..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $prds-from-industry-and-feature-specifications with my product context."
-
-policy:
-  allow_implicit_invocation: true

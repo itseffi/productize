@@ -1,8 +1,0 @@
-interface:
-  display_name: "Task-specific product strategy design"
-  short_description: "Task-specific product strategy design. Use when the user needs a product workflow for product strategy related to..."
-  brand_color: "#059669"
-  default_prompt: "Use $task-specific-product-strategy-design with my product context."
-
-policy:
-  allow_implicit_invocation: true

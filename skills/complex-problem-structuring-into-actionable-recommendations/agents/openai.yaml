@@ -1,8 +1,0 @@
-interface:
-  display_name: "Complex problem structuring into actionable recommendations"
-  short_description: "Complex problem structuring into actionable recommendations. Use when the user needs a product workflow for decision..."
-  brand_color: "#059669"
-  default_prompt: "Use $complex-problem-structuring-into-actionable-recommendations with my product context."
-
-policy:
-  allow_implicit_invocation: true

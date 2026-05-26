@@ -1,8 +1,0 @@
-interface:
-  display_name: "Meeting summaries from meeting transcript (IDEAS framework)"
-  short_description: "Meeting summaries from meeting transcript (IDEAS framework). Use when the user needs a product workflow for..."
-  brand_color: "#7C3AED"
-  default_prompt: "Use $meeting-summaries-from-meeting-transcript-ideas-framework with my product context."
-
-policy:
-  allow_implicit_invocation: true

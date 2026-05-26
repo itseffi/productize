@@ -1,8 +1,0 @@
-interface:
-  display_name: "Exec feedback without context to actionable design requirements"
-  short_description: "Exec feedback without context to actionable design requirements. Use when the user needs a product workflow for..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $exec-feedback-without-context-to-actionable-design-requirements with my product context."
-
-policy:
-  allow_implicit_invocation: true

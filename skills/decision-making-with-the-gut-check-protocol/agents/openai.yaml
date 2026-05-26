@@ -1,8 +1,0 @@
-interface:
-  display_name: "Decision-making with the GUT CHECK protocol"
-  short_description: "Decision-making with the GUT CHECK protocol. Use when the user needs a product workflow for decision making related..."
-  brand_color: "#7C2D12"
-  default_prompt: "Use $decision-making-with-the-gut-check-protocol with my product context."
-
-policy:
-  allow_implicit_invocation: true

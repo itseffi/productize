@@ -1,8 +1,0 @@
-interface:
-  display_name: "Writing Plans"
-  short_description: "Create comprehensive implementation plans with bite-sized tasks. Use when you have requirements before touching code."
-  brand_color: "#334155"
-  default_prompt: "Use $productize-writing-plans with my product context."
-
-policy:
-  allow_implicit_invocation: false

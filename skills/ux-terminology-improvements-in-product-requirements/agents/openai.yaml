@@ -1,8 +1,0 @@
-interface:
-  display_name: "UX terminology improvements in product requirements"
-  short_description: "UX terminology improvements in product requirements. Use when the user needs a product workflow for design &..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $ux-terminology-improvements-in-product-requirements with my product context."
-
-policy:
-  allow_implicit_invocation: true

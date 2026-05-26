@@ -1,8 +1,0 @@
-interface:
-  display_name: "PMF Review"
-  short_description: "Product-market fit gate between the 0-1 build loop and the grow playbook. Use to decide whether evidence supports..."
-  brand_color: "#059669"
-  default_prompt: "Use $productize-pmf-review with my product context."
-
-policy:
-  allow_implicit_invocation: false

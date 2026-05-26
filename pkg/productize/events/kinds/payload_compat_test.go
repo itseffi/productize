@@ -1,0 +1,158 @@
+package kinds
+
+import (
+	"encoding/json"
+	"reflect"
+	"testing"
+	"time"
+)
+
+func TestShutdownPayloadJSONCompatibility(t *testing.T) {
+	t.Parallel()
+
+	now := time.Unix(10, 0).UTC()
+	payload := ShutdownTerminatedPayload{
+		ShutdownBase: ShutdownBase{
+			Source:      "signal",
+			RequestedAt: now,
+			DeadlineAt:  now.Add(3 * time.Second),
+		},
+		Forced: true,
+	}
+
+	got := mustMarshalMap(t, payload)
+	want := map[string]any{
+		"source":       "signal",
+		"requested_at": now.Format(time.RFC3339),
+		"deadline_at":  now.Add(3 * time.Second).Format(time.RFC3339),
+		"forced":       true,
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("shutdown payload JSON mismatch: got %#v want %#v", got, want)
+	}
+}
+
+func TestJobAttemptPayloadJSONCompatibility(t *testing.T) {
+	t.Parallel()
+
+	payload := JobAttemptFinishedPayload{
+		JobAttemptInfo: JobAttemptInfo{
+			Index:       1,
+			Attempt:     2,
+			MaxAttempts: 3,
+		},
+		Status:    "failure",
+		ExitCode:  17,
+		Retryable: true,
+		Error:     "transient",
+	}
+
+	got := mustMarshalMap(t, payload)
+	want := map[string]any{
+		"index":        float64(1),
+		"attempt":      float64(2),
+		"max_attempts": float64(3),
+		"status":       "failure",
+		"exit_code":    float64(17),
+		"retryable":    true,
+		"error":        "transient",
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("job attempt payload JSON mismatch: got %#v want %#v", got, want)
+	}
+}
+
+func TestExtensionReadyPayloadJSONCompatibility(t *testing.T) {
+	t.Parallel()
+
+	payload := ExtensionReadyPayload{
+		Extension:            "mock-ext",
+		Source:               "workspace",
+		Version:              "1.0.0",
+		ProtocolVersion:      "1",
+		AcceptedCapabilities: []string{"events.read", "tasks.read"},
+		SupportedHookEvents:  []string{"prompt.post_build"},
+	}
+
+	got := mustMarshalMap(t, payload)
+	want := map[string]any{
+		"extension":             "mock-ext",
+		"source":                "workspace",
+		"version":               "1.0.0",
+		"protocol_version":      "1",
+		"accepted_capabilities": []any{"events.read", "tasks.read"},
+		"supported_hook_events": []any{"prompt.post_build"},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("extension ready payload JSON mismatch: got %#v want %#v", got, want)
+	}
+}
+
+func TestReviewWatchPayloadJSONCompatibility(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should serialize ReviewWatchPayload to a stable JSON map", func(t *testing.T) {
+		t.Parallel()
+
+		payload := ReviewWatchPayload{
+			Provider:        "coderabbit",
+			PR:              "123",
+			Workflow:        "engine-kernel",
+			Round:           2,
+			RunID:           "watch-run",
+			ChildRunID:      "fix-run",
+			HeadSHA:         "abc123",
+			ReviewID:        "review-1",
+			ReviewState:     "current_reviewed",
+			Status:          "completed",
+			Remote:          "origin",
+			Branch:          "feature",
+			Total:           3,
+			Resolved:        2,
+			Unresolved:      1,
+			Dirty:           true,
+			UnpushedCommits: 4,
+			Error:           "push failed",
+		}
+
+		got := mustMarshalMap(t, payload)
+		want := map[string]any{
+			"provider":         "coderabbit",
+			"pr":               "123",
+			"workflow":         "engine-kernel",
+			"round":            float64(2),
+			"run_id":           "watch-run",
+			"child_run_id":     "fix-run",
+			"head_sha":         "abc123",
+			"review_id":        "review-1",
+			"review_state":     "current_reviewed",
+			"status":           "completed",
+			"remote":           "origin",
+			"branch":           "feature",
+			"total":            float64(3),
+			"resolved":         float64(2),
+			"unresolved":       float64(1),
+			"dirty":            true,
+			"unpushed_commits": float64(4),
+			"error":            "push failed",
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("review watch payload JSON mismatch: got %#v want %#v", got, want)
+		}
+	})
+}
+
+func mustMarshalMap(t *testing.T, payload any) map[string]any {
+	t.Helper()
+
+	raw, err := json.Marshal(payload)
+	if err != nil {
+		t.Fatalf("marshal payload: %v", err)
+	}
+
+	var decoded map[string]any
+	if err := json.Unmarshal(raw, &decoded); err != nil {
+		t.Fatalf("unmarshal payload: %v", err)
+	}
+	return decoded
+}

@@ -1,0 +1,475 @@
+package test
+
+import (
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+
+	"gopkg.in/yaml.v3"
+)
+
+type goReleaserConfig struct {
+	Before        goReleaserBefore            `yaml:"before"`
+	Archives      []goReleaserArchive         `yaml:"archives"`
+	HomebrewBrews []goReleaserHomebrewFormula `yaml:"brews"`
+}
+
+type goReleaserBefore struct {
+	Hooks []string `yaml:"hooks"`
+}
+
+type goReleaserArchive struct {
+	ID              string `yaml:"id"`
+	WrapInDirectory bool   `yaml:"wrap_in_directory"`
+}
+
+type goReleaserHomebrewFormula struct {
+	Name       string               `yaml:"name"`
+	IDs        []string             `yaml:"ids"`
+	Directory  string               `yaml:"directory"`
+	Repository goReleaserRepository `yaml:"repository"`
+}
+
+type goReleaserRepository struct {
+	Owner string `yaml:"owner"`
+	Name  string `yaml:"name"`
+}
+
+func TestReleaseWorkflowsUseScopedReleaseNotesGenerator(t *testing.T) {
+	t.Parallel()
+
+	const fixedModule = "github.com/productize/releasepr@v0.0.21"
+	brokenModules := []string{
+		"github.com/productize/releasepr@v0.0.17",
+		"github.com/productize/releasepr@v0.0.18",
+		"github.com/productize/releasepr@v0.0.19",
+		"github.com/productize/releasepr@v0.0.20",
+	}
+	workflowPaths := []string{
+		filepath.Join(repoRoot(t), ".github", "workflows", "auto-docs.yml"),
+		filepath.Join(repoRoot(t), ".github", "workflows", "release.yml"),
+	}
+
+	for _, workflowPath := range workflowPaths {
+		workflowPath := workflowPath
+		t.Run(filepath.Base(workflowPath), func(t *testing.T) {
+			t.Parallel()
+			content, err := os.ReadFile(workflowPath)
+			if err != nil {
+				t.Fatalf("read release workflow: %v", err)
+			}
+			text := string(content)
+			if !strings.Contains(text, "PR_RELEASE_MODULE: "+fixedModule) {
+				t.Fatalf("expected workflow to use fixed releasepr module %q", fixedModule)
+			}
+			for _, brokenModule := range brokenModules {
+				if strings.Contains(text, brokenModule) {
+					t.Fatalf("expected workflow to avoid broken releasepr module %q", brokenModule)
+				}
+			}
+		})
+	}
+}
+
+func TestReleasePublicationUsesCurrentBodyAndHistoricalNotes(t *testing.T) {
+	t.Parallel()
+
+	root := repoRoot(t)
+	packageVersion := readPackageVersion(t, root)
+	currentHeadingPrefix := "## " + packageVersion + " - "
+	releaseBody := readRepoFile(t, root, "RELEASE_BODY.md")
+	releaseNotes := readRepoFile(t, root, "RELEASE_NOTES.md")
+	releaseWorkflow := readRepoFile(t, root, ".github", "workflows", "release.yml")
+
+	if !strings.Contains(releaseWorkflow, "--release-notes=RELEASE_BODY.md") {
+		t.Fatal("expected GoReleaser to publish the current-version release body")
+	}
+	if strings.Contains(releaseWorkflow, "--release-notes=RELEASE_NOTES.md") {
+		t.Fatal("expected GoReleaser to avoid publishing historical release notes")
+	}
+	if !strings.Contains(releaseBody, currentHeadingPrefix) {
+		t.Fatal("expected release body to contain the current release heading")
+	}
+	if !releaseBodyHasContent(releaseBody, currentHeadingPrefix) {
+		t.Fatal("expected release body to contain scoped notes for the current release")
+	}
+	if releaseHeadingCount(releaseBody) != 1 {
+		t.Fatal("expected release body to contain only the current release")
+	}
+	if !strings.Contains(releaseNotes, currentHeadingPrefix) {
+		t.Fatal("expected historical release notes to contain the current release")
+	}
+	if !strings.Contains(releaseNotes, "## 0.2.0 - 2026-05-01") {
+		t.Fatal("expected historical release notes to preserve the previous release")
+	}
+	if !strings.Contains(releaseNotes, "Daemon-based architecture") {
+		t.Fatal("expected historical release notes to preserve v0.2.0 manual notes")
+	}
+}
+
+func readPackageVersion(t *testing.T, root string) string {
+	t.Helper()
+	var pkg struct {
+		Version string `json:"version"`
+	}
+	if err := json.Unmarshal([]byte(readRepoFile(t, root, "package.json")), &pkg); err != nil {
+		t.Fatalf("decode package.json: %v", err)
+	}
+	if strings.TrimSpace(pkg.Version) == "" {
+		t.Fatal("expected package.json version to be set")
+	}
+	return strings.TrimSpace(pkg.Version)
+}
+
+func releaseHeadingCount(markdown string) int {
+	count := 0
+	for _, line := range strings.Split(markdown, "\n") {
+		if strings.HasPrefix(line, "## ") {
+			count++
+		}
+	}
+	return count
+}
+
+func releaseBodyHasContent(markdown string, headingPrefix string) bool {
+	trimmed := strings.TrimSpace(markdown)
+	headingIndex := strings.Index(trimmed, headingPrefix)
+	if headingIndex < 0 {
+		return false
+	}
+	content := strings.TrimSpace(trimmed[headingIndex+len(headingPrefix):])
+	lines := strings.SplitN(content, "\n", 2)
+	if len(lines) < 2 {
+		return false
+	}
+	return strings.TrimSpace(lines[1]) != ""
+}
+
+func TestGoReleaserConfigSupportsFirstRelease(t *testing.T) {
+	t.Parallel()
+
+	content, err := os.ReadFile(filepath.Join(repoRoot(t), ".goreleaser.yml"))
+	if err != nil {
+		t.Fatalf("read goreleaser config: %v", err)
+	}
+
+	configText := string(content)
+
+	if strings.Contains(configText, "use: github") {
+		t.Fatal(
+			"expected goreleaser changelog generation to avoid the GitHub compare API so the first release works without a previous remote tag",
+		)
+	}
+
+	if !strings.Contains(configText, "use: git") {
+		t.Fatal("expected goreleaser changelog generation to use git history for first-release compatibility")
+	}
+
+	footerContent, err := os.ReadFile(filepath.Join(repoRoot(t), ".goreleaser.release-footer.md.tmpl"))
+	if err != nil {
+		t.Fatalf("read goreleaser release footer template: %v", err)
+	}
+
+	footerText := string(footerContent)
+
+	if !strings.Contains(footerText, "{{- if .PreviousTag }}") {
+		t.Fatal("expected release notes to guard previous-tag links for the first release")
+	}
+
+	if !strings.Contains(footerText, "compare/{{ .PreviousTag }}...{{ .Tag }}") {
+		t.Fatal("expected release notes to keep the compare link when a previous tag exists")
+	}
+
+	if !strings.Contains(footerText, "tree/{{ .Tag }}") {
+		t.Fatal("expected release notes to include a first-release fallback link when no previous tag exists")
+	}
+
+	workflowContent, err := os.ReadFile(filepath.Join(repoRoot(t), ".github", "workflows", "release.yml"))
+	if err != nil {
+		t.Fatalf("read release workflow: %v", err)
+	}
+
+	if !strings.Contains(string(workflowContent), "--release-footer-tmpl=.goreleaser.release-footer.md.tmpl") {
+		t.Fatal("expected the release workflow to pass the first-release footer template to goreleaser")
+	}
+}
+
+func readRepoFile(t *testing.T, root string, path ...string) string {
+	t.Helper()
+	content, err := os.ReadFile(filepath.Join(append([]string{root}, path...)...))
+	if err != nil {
+		t.Fatalf("read repo file %s: %v", filepath.Join(path...), err)
+	}
+	return string(content)
+}
+
+func TestGoReleaserConfigUsesReadableChangelogTitlesAndFiltersReleaseCommits(t *testing.T) {
+	t.Parallel()
+
+	content, err := os.ReadFile(filepath.Join(repoRoot(t), ".goreleaser.yml"))
+	if err != nil {
+		t.Fatalf("read goreleaser config: %v", err)
+	}
+
+	text := string(content)
+
+	expectedTitles := []string{
+		`title: "🎉 Features"`,
+		`title: "🐛 Bug Fixes"`,
+		`title: "⚡ Performance Improvements"`,
+		`title: "🔒 Security"`,
+		`title: "📚 Documentation"`,
+		`title: "♻️ Refactoring"`,
+		`title: "📦 Dependencies"`,
+		`title: "🧪 Testing"`,
+		`title: "Other Changes"`,
+	}
+
+	for _, title := range expectedTitles {
+		title := title
+		t.Run("Should include readable title "+title, func(t *testing.T) {
+			t.Parallel()
+			if !strings.Contains(text, title) {
+				t.Fatalf("expected goreleaser changelog config to include readable group title %q", title)
+			}
+		})
+	}
+
+	unexpectedTitles := []string{
+		`title: "\U0001F389"`,
+		`title: "\U0001F41B"`,
+		`title: "⚡"`,
+		`title: "\U0001F510"`,
+		`title: "\U0001F4DA"`,
+		`title: "\U0001F527"`,
+		`title: "\U0001F4E6"`,
+		`title: "\U0001F9EA"`,
+		`title: "\U0001F504"`,
+	}
+
+	for _, title := range unexpectedTitles {
+		title := title
+		t.Run("Should avoid emoji-only title "+title, func(t *testing.T) {
+			t.Parallel()
+			if strings.Contains(text, title) {
+				t.Fatalf("expected goreleaser changelog config to avoid emoji-only group title %q", title)
+			}
+		})
+	}
+
+	expectedFilters := []string{
+		`- "^ci\\(release\\): "`,
+		`- "^chore\\(release\\): "`,
+	}
+
+	for _, filter := range expectedFilters {
+		filter := filter
+		t.Run("Should exclude release automation filter "+filter, func(t *testing.T) {
+			t.Parallel()
+			if !strings.Contains(text, filter) {
+				t.Fatalf(
+					"expected goreleaser changelog config to exclude release automation commits with filter %q",
+					filter,
+				)
+			}
+		})
+	}
+}
+
+func TestSetupReleaseActionUsesSupportedCosignVersionCommand(t *testing.T) {
+	t.Parallel()
+
+	content, err := os.ReadFile(filepath.Join(repoRoot(t), ".github", "actions", "setup-release", "action.yml"))
+	if err != nil {
+		t.Fatalf("read setup-release action: %v", err)
+	}
+
+	text := string(content)
+
+	if strings.Contains(text, "cosign version --short") {
+		t.Fatal("expected setup-release to avoid the unsupported `cosign version --short` command")
+	}
+
+	if !strings.Contains(text, "echo \"Cosign version:\"") {
+		t.Fatal("expected setup-release to print a cosign version header before running the standalone version command")
+	}
+
+	if !strings.Contains(text, "\n          cosign version\n") {
+		t.Fatal(
+			"expected setup-release to run `cosign version` as a standalone command so failures are not hidden inside command substitution",
+		)
+	}
+}
+
+func TestGoReleaserBuildsGoBinaryWithoutFrontendBundle(t *testing.T) {
+	t.Parallel()
+
+	content, err := os.ReadFile(filepath.Join(repoRoot(t), ".goreleaser.yml"))
+	if err != nil {
+		t.Fatalf("read goreleaser config: %v", err)
+	}
+
+	var cfg goReleaserConfig
+	if err := yaml.Unmarshal(content, &cfg); err != nil {
+		t.Fatalf("unmarshal goreleaser config: %v", err)
+	}
+
+	foundGoBuild := false
+	for _, hook := range cfg.Before.Hooks {
+		if hook == "make frontend-build" {
+			t.Fatal("expected GoReleaser to avoid frontend bundle builds")
+		}
+		if hook == "make go-build" {
+			foundGoBuild = true
+		}
+	}
+	if !foundGoBuild {
+		t.Fatal("expected GoReleaser to run the Go build hook before release")
+	}
+
+	workflowContent, err := os.ReadFile(filepath.Join(repoRoot(t), ".github", "workflows", "release.yml"))
+	if err != nil {
+		t.Fatalf("read release workflow: %v", err)
+	}
+	workflow := string(workflowContent)
+
+	dryRunBlock := workflowJobBlock(t, workflow, "dry-run", "release")
+	if strings.Contains(dryRunBlock, "setup-bun") {
+		t.Fatal("expected release dry-run to avoid Bun setup")
+	}
+
+	releaseBlock := workflowJobBlock(t, workflow, "release", "")
+	if strings.Contains(releaseBlock, "setup-bun") {
+		t.Fatal("expected production release to avoid Bun setup")
+	}
+}
+
+func TestGoReleaserConfigPublishesHomebrewFormulaFromKnownArchives(t *testing.T) {
+	t.Parallel()
+
+	content, err := os.ReadFile(filepath.Join(repoRoot(t), ".goreleaser.yml"))
+	if err != nil {
+		t.Fatalf("read goreleaser config: %v", err)
+	}
+
+	var cfg goReleaserConfig
+	if err := yaml.Unmarshal(content, &cfg); err != nil {
+		t.Fatalf("unmarshal goreleaser config: %v", err)
+	}
+
+	if strings.Contains(string(content), "homebrew_casks:") {
+		t.Fatal("expected goreleaser config to publish a Homebrew formula instead of a cask")
+	}
+	if len(cfg.HomebrewBrews) == 0 {
+		t.Fatal("expected goreleaser config to define at least one Homebrew formula")
+	}
+
+	archiveByID := make(map[string]goReleaserArchive, len(cfg.Archives))
+	archiveIDs := make([]string, 0, len(cfg.Archives))
+	for _, archive := range cfg.Archives {
+		if strings.TrimSpace(archive.ID) == "" {
+			continue
+		}
+		archiveByID[archive.ID] = archive
+		archiveIDs = append(archiveIDs, archive.ID)
+	}
+
+	if len(archiveByID) == 0 {
+		t.Fatal("expected goreleaser config to define archive IDs")
+	}
+
+	for _, formula := range cfg.HomebrewBrews {
+		formula := formula
+		t.Run(formula.Name, func(t *testing.T) {
+			t.Parallel()
+
+			if formula.Directory != "Formula" {
+				t.Fatalf(
+					"expected Homebrew formula %q to be written under Formula, got %q",
+					formula.Name,
+					formula.Directory,
+				)
+			}
+			if formula.Repository.Owner != "itseffi" || formula.Repository.Name != "homebrew-productize" {
+				t.Fatalf(
+					"expected Homebrew formula %q to publish to itseffi/homebrew-productize, got %s/%s",
+					formula.Name,
+					formula.Repository.Owner,
+					formula.Repository.Name,
+				)
+			}
+
+			targetIDs := formula.IDs
+			if len(targetIDs) == 0 {
+				targetIDs = archiveIDs
+			}
+
+			for _, id := range targetIDs {
+				archive, ok := archiveByID[id]
+				if !ok {
+					t.Fatalf("expected Homebrew formula %q to reference a known archive id %q", formula.Name, id)
+				}
+				if archive.WrapInDirectory {
+					t.Fatalf(
+						"expected Homebrew formula archive %q to keep the binary at the archive root so brew can install it directly",
+						id,
+					)
+				}
+			}
+		})
+	}
+}
+
+func TestHomebrewInstallDocsUseFormulaTap(t *testing.T) {
+	t.Parallel()
+
+	const installCommand = "brew install itseffi/productize/productize"
+	forbiddenCommands := []string{
+		"brew install --cask productize",
+		"productize/tap/productize",
+		"homebrew-tap",
+	}
+	paths := []string{
+		"README.md",
+		".goreleaser.release-header.md.tmpl",
+	}
+
+	for _, path := range paths {
+		path := path
+		t.Run(path, func(t *testing.T) {
+			t.Parallel()
+
+			content := readRepoFile(t, repoRoot(t), path)
+			if !strings.Contains(content, installCommand) {
+				t.Fatalf("expected %s to document %q", path, installCommand)
+			}
+			for _, forbiddenCommand := range forbiddenCommands {
+				if strings.Contains(content, forbiddenCommand) {
+					t.Fatalf("expected %s to avoid retired Homebrew command %q", path, forbiddenCommand)
+				}
+			}
+		})
+	}
+}
+
+func workflowJobBlock(t *testing.T, workflow string, jobName string, nextJobName string) string {
+	t.Helper()
+
+	startNeedle := "\n  " + jobName + ":\n"
+	start := strings.Index(workflow, startNeedle)
+	if start == -1 {
+		t.Fatalf("expected workflow to contain job %q", jobName)
+	}
+	start += len("\n")
+	if nextJobName == "" {
+		return workflow[start:]
+	}
+	endNeedle := "\n  " + nextJobName + ":\n"
+	end := strings.Index(workflow[start:], endNeedle)
+	if end == -1 {
+		t.Fatalf("expected workflow job %q to be followed by %q", jobName, nextJobName)
+	}
+	return workflow[start : start+end]
+}

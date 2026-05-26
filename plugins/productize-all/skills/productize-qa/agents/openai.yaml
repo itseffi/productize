@@ -1,8 +1,0 @@
-interface:
-  display_name: "QA"
-  short_description: "QA gate for product behavior, acceptance criteria, evals, regression risk, evidence quality, and ship readiness. Use..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $productize-qa with my product context."
-
-policy:
-  allow_implicit_invocation: false

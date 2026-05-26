@@ -1,8 +1,0 @@
-interface:
-  display_name: "Industry trend strategy"
-  short_description: "Industry trend strategy. Use when the user needs a product workflow for product strategy related to industry trend..."
-  brand_color: "#EA580C"
-  default_prompt: "Use $productize-industry-trend-strategy with my product context."
-
-policy:
-  allow_implicit_invocation: false

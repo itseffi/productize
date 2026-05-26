@@ -1,8 +1,0 @@
-interface:
-  display_name: "PLG Growth Playbook"
-  short_description: "Produce a practical PLG growth diagnosis for product-led B2B or self-serve products. Use when the user needs an..."
-  brand_color: "#C2410C"
-  default_prompt: "Use $plg-growth-playbook with my product context."
-
-policy:
-  allow_implicit_invocation: true

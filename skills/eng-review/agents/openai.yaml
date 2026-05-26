@@ -1,8 +1,0 @@
-interface:
-  display_name: "Eng Review"
-  short_description: "Engineering gate for architecture, data flow, system boundaries, implementation risk, test strategy, performance,..."
-  brand_color: "#334155"
-  default_prompt: "Use $eng-review with my product context."
-
-policy:
-  allow_implicit_invocation: true

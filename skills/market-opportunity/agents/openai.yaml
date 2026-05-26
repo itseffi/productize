@@ -1,8 +1,0 @@
-interface:
-  display_name: "Market Opportunity"
-  short_description: "Identify, compare, and choose market opportunities for a venture, product, technology, or innovation. Use when a..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $market-opportunity with my product context."
-
-policy:
-  allow_implicit_invocation: true

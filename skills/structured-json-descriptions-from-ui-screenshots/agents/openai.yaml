@@ -1,8 +1,0 @@
-interface:
-  display_name: "Structured JSON descriptions from UI screenshots"
-  short_description: "Structured JSON descriptions from UI screenshots. Use when the user needs a product workflow for design &..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $structured-json-descriptions-from-ui-screenshots with my product context."
-
-policy:
-  allow_implicit_invocation: true

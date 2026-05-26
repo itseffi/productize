@@ -1,8 +1,0 @@
-interface:
-  display_name: "Customer insights extraction from interview transcript using JTBD framework"
-  short_description: "Customer insights extraction from interview transcript using JTBD framework. Use when the user needs a product..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-customer-insights-extraction-from-interview-transcript-using with my product context."
-
-policy:
-  allow_implicit_invocation: false

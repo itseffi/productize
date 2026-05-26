@@ -1,8 +1,0 @@
-interface:
-  display_name: "Product-Market Fit Cycle"
-  short_description: "Run the product-market fit cycle to decide whether a startup or product problem is product, positioning, or..."
-  brand_color: "#C2410C"
-  default_prompt: "Use $productize-product-market-fit-cycle with my product context."
-
-policy:
-  allow_implicit_invocation: false

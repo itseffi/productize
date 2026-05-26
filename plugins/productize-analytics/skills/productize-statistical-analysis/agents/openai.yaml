@@ -1,8 +1,0 @@
-interface:
-  display_name: "Statistical Analysis"
-  short_description: "Apply statistical methods including descriptive stats, trend analysis, outlier detection, and hypothesis testing...."
-  brand_color: "#0F766E"
-  default_prompt: "Use $productize-statistical-analysis with my product context."
-
-policy:
-  allow_implicit_invocation: false
