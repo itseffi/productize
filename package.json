@@ -3,41 +3,16 @@
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@types/node": "^25.6.0",
-    "@vitest/coverage-v8": "^4.1.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "oxfmt": "^0.46.0",
-    "oxlint": "^1.60.0",
-    "turbo": "^2.8.20",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.3",
-    "vitest": "^4.1.0"
-  },
-  "lint-staged": {
-    "*.go": "make fmt",
-    "*.{css,html,json,jsonc,yaml,yml,md}": [
-      "oxfmt --no-error-on-unmatched-pattern"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "oxfmt --no-error-on-unmatched-pattern",
-      "oxlint --no-error-on-unmatched-pattern"
-    ]
+    "typescript": "^6.0.2"
   },
   "name": "productize",
-  "packageManager": "bun@1.3.11",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "codegen": "node scripts/codegen.mjs",
-    "codegen-check": "node scripts/codegen.mjs --check",
-    "format": "bunx oxfmt",
-    "format:check": "bunx oxfmt --check",
-    "lint": "bun run format \u0026\u0026 bunx oxlint",
+    "build:extension-sdks": "npm run build --workspace @productize/extension-sdk --workspace @productize/create-extension",
     "postinstall": "bash scripts/link-skills.sh",
     "prepare": "husky",
-    "test": "bun run test:config",
-    "test:config": "bunx vitest run --config vitest.config.ts test/*.test.ts",
-    "typecheck": "turbo run typecheck"
+    "typecheck:extension-sdks": "npm run typecheck --workspace @productize/extension-sdk --workspace @productize/create-extension"
   },
   "version": "0.2.4",
   "workspaces": [

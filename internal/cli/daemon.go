@@ -3,8 +3,6 @@ package cli
 import (
 	"context"
 	"fmt"
-	"log/slog"
-	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -26,16 +24,13 @@ var (
 
 const (
 	daemonHTTPPortEnv            = "PRODUCTIZE_DAEMON_HTTP_PORT"
-	daemonWebDevProxyEnv         = "PRODUCTIZE_WEB_DEV_PROXY"
-	daemonWebDevProxyFlag        = "--web-dev-proxy"
 	daemonStartInternalChildFlag = "internal-child"
 )
 
 type daemonStartState struct {
-	outputFormat      string
-	foreground        bool
-	internalChild     bool
-	webDevProxyTarget string
+	outputFormat  string
+	foreground    bool
+	internalChild bool
 }
 
 type daemonStatusState struct {
@@ -87,8 +82,7 @@ same status view exposed by "productize daemon status". Use --foreground to keep
 the daemon attached to the current terminal.`,
 		Example: `  productize daemon start
   productize daemon start --format json
-  productize daemon start --foreground
-  productize daemon start --foreground --web-dev-proxy http://127.0.0.1:3000`,
+  productize daemon start --foreground`,
 		RunE: state.run,
 	}
 	cmd.Flags().BoolVar(&state.foreground, "foreground", false, "Run the daemon in the foreground")
@@ -99,12 +93,6 @@ the daemon attached to the current terminal.`,
 		"Output format: text or json",
 	)
 	cmd.Flags().BoolVar(&state.internalChild, daemonStartInternalChildFlag, false, "Internal detached child mode")
-	cmd.Flags().StringVar(
-		&state.webDevProxyTarget,
-		"web-dev-proxy",
-		"",
-		"Development frontend origin to proxy through the daemon, for example http://127.0.0.1:3000",
-	)
 	if err := cmd.Flags().MarkHidden(daemonStartInternalChildFlag); err != nil {
 		panic(err)
 	}
@@ -164,15 +152,10 @@ func (s *daemonStartState) run(cmd *cobra.Command, _ []string) error {
 	if err != nil {
 		return withExitCode(1, err)
 	}
-	webDevProxyTarget, err := resolveDaemonWebDevProxyTarget(s.webDevProxyTarget)
-	if err != nil {
-		return withExitCode(1, err)
-	}
 	runOptions := daemon.RunOptions{
-		Version:           version.String(),
-		HTTPPort:          httpPort,
-		Mode:              mode,
-		WebDevProxyTarget: webDevProxyTarget,
+		Version:  version.String(),
+		HTTPPort: httpPort,
+		Mode:     mode,
 	}
 
 	if s.foreground {
@@ -184,22 +167,6 @@ func (s *daemonStartState) run(cmd *cobra.Command, _ []string) error {
 	if s.internalChild {
 		return runCLIDaemonForeground(commandContextOrBackground(cmd), runOptions)
 	}
-
-	restoreEnv, err := overrideDaemonWebDevProxyEnv(runOptions.WebDevProxyTarget)
-	if err != nil {
-		return withExitCode(2, err)
-	}
-	defer func() {
-		if restoreErr := restoreEnv(); restoreErr != nil {
-			slog.Warn(
-				"failed to restore daemon web dev proxy override",
-				"env",
-				daemonWebDevProxyEnv,
-				"error",
-				restoreErr,
-			)
-		}
-	}()
 
 	ctx, stop := signalCommandContext(cmd)
 	defer stop()
@@ -292,23 +259,6 @@ func daemonClientFromInfo(info daemon.Info) (daemonCommandClient, error) {
 	return apiclient.New(target)
 }
 
-func cliDaemonRunOptionsFromEnv(mode daemon.RunMode) (daemon.RunOptions, error) {
-	httpPort, err := cliDaemonHTTPPortFromEnv()
-	if err != nil {
-		return daemon.RunOptions{}, err
-	}
-	webDevProxyTarget, err := resolveDaemonWebDevProxyTarget("")
-	if err != nil {
-		return daemon.RunOptions{}, err
-	}
-	return daemon.RunOptions{
-		Version:           version.String(),
-		HTTPPort:          httpPort,
-		Mode:              mode,
-		WebDevProxyTarget: webDevProxyTarget,
-	}, nil
-}
-
 func commandContextOrBackground(cmd *cobra.Command) context.Context {
 	if cmd != nil && cmd.Context() != nil {
 		return cmd.Context()
@@ -316,12 +266,6 @@ func commandContextOrBackground(cmd *cobra.Command) context.Context {
 	return context.Background()
 }
 
-func resolveDaemonWebDevProxyTarget(flagValue string) (string, error) {
-	if strings.TrimSpace(flagValue) != "" {
-		return normalizeDaemonWebDevProxyTarget(flagValue, daemonWebDevProxyFlag)
-	}
-	return cliDaemonWebDevProxyFromEnv()
-}
 func cliDaemonHTTPPortFromEnv() (int, error) {
 	rawValue, ok := os.LookupEnv(daemonHTTPPortEnv)
 	if !ok {
@@ -341,59 +285,6 @@ func cliDaemonHTTPPortFromEnv() (int, error) {
 		return daemon.EphemeralHTTPPort, nil
 	}
 	return port, nil
-}
-
-func cliDaemonWebDevProxyFromEnv() (string, error) {
-	rawValue, ok := os.LookupEnv(daemonWebDevProxyEnv)
-	if !ok {
-		return "", nil
-	}
-	return normalizeDaemonWebDevProxyTarget(rawValue, daemonWebDevProxyEnv)
-}
-
-func normalizeDaemonWebDevProxyTarget(rawValue string, source string) (string, error) {
-	value := strings.TrimSpace(rawValue)
-	if value == "" {
-		return "", nil
-	}
-	sourceValue := fmt.Sprintf("%s=%q", source, rawValue)
-	if !strings.Contains(value, "://") {
-		return "", fmt.Errorf("%s must use http or https", sourceValue)
-	}
-
-	target, err := url.Parse(value)
-	if err != nil {
-		return "", fmt.Errorf("parse %s: %w", sourceValue, err)
-	}
-	if target.Scheme != "http" && target.Scheme != "https" {
-		return "", fmt.Errorf("%s must use http or https", sourceValue)
-	}
-	if strings.TrimSpace(target.Host) == "" {
-		return "", fmt.Errorf("%s must include a host", sourceValue)
-	}
-	return target.String(), nil
-}
-
-func overrideDaemonWebDevProxyEnv(value string) (func() error, error) {
-	previousValue, hadPrevious := os.LookupEnv(daemonWebDevProxyEnv)
-	if strings.TrimSpace(value) == "" {
-		return func() error { return nil }, nil
-	}
-	if err := os.Setenv(daemonWebDevProxyEnv, value); err != nil {
-		return nil, fmt.Errorf("set %s=%q: %w", daemonWebDevProxyEnv, value, err)
-	}
-	return func() error {
-		if hadPrevious {
-			if err := os.Setenv(daemonWebDevProxyEnv, previousValue); err != nil {
-				return fmt.Errorf("restore %s=%q: %w", daemonWebDevProxyEnv, previousValue, err)
-			}
-			return nil
-		}
-		if err := os.Unsetenv(daemonWebDevProxyEnv); err != nil {
-			return fmt.Errorf("unset %s: %w", daemonWebDevProxyEnv, err)
-		}
-		return nil
-	}, nil
 }
 
 func writeDaemonStatusOutput(

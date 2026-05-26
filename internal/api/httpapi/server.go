@@ -93,13 +93,6 @@ func WithPortUpdater(updater PortUpdater) Option {
 	}
 }
 
-// WithDevProxyTarget is retained for configuration compatibility. Productize no
-// longer serves or proxies a browser UI from the daemon.
-func WithDevProxyTarget(_ string) Option {
-	return func(_ *Server) {
-	}
-}
-
 // New constructs a localhost HTTP API server.
 func New(opts ...Option) (*Server, error) {
 	server := &Server{

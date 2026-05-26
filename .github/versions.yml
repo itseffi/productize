@@ -7,9 +7,6 @@ versions:
   go: "1.26.1"
   node: "22"
 
-  # Package manager versions
-  bun: "1.2.22"
-
   # GitHub Actions versions
   actions_checkout: "v6"
   actions_cache: "v5"

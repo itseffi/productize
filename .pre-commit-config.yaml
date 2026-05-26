@@ -9,7 +9,6 @@ exclude: |
     CHANGELOG.md|
     tools/.*/package\.json|
     .*\.(mp4|pdf|mp3|png)|
-    bun.lockb|
     node_modules|
   )$
 
@@ -18,7 +17,7 @@ repos:
     rev: v5.0.0
     hooks:
       - id: end-of-file-fixer
-        exclude: '^(CHANGELOG\.md|tools/.*/package\.json|bun\.lockb|node_modules/)'
+        exclude: '^(CHANGELOG\.md|tools/.*/package\.json|node_modules/)'
       - id: check-json
         exclude: '^(tools/.*/package\.json|node_modules/)'
       - id: check-toml

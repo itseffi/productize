@@ -318,7 +318,7 @@ Approved contract split:
 
 - in-process services: typed Go interfaces
 - CLI to daemon: UDS
-- local web/UI to daemon: HTTP on localhost
+- local machine API transport: HTTP on localhost
 - streaming: SSE
 - extension subprocess boundaries: JSON-RPC
 - agent runtime boundaries: ACP

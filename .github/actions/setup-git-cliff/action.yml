@@ -1,5 +1,5 @@
 name: "Setup git-cliff"
-description: "Sets up git-cliff changelog generator using Bun with caching"
+description: "Sets up the git-cliff changelog generator"
 author: "Productize Team"
 
 inputs:
@@ -19,80 +19,80 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup Bun
-      uses: oven-sh/setup-bun@v2
-      with:
-        bun-version: latest
-
-    - name: Cache git-cliff installation
+    - name: Cache git-cliff binary
       id: cache-cliff
       uses: actions/cache@v5
       with:
-        path: |
-          ~/.bun/install/global
-          ~/.local/share/bun/bin
-        key: ${{ runner.os }}-git-cliff-bun-${{ inputs.version }}
+        path: ~/.local/bin/git-cliff
+        key: ${{ runner.os }}-${{ runner.arch }}-git-cliff-${{ inputs.version }}
         restore-keys: |
-          ${{ runner.os }}-git-cliff-bun-
+          ${{ runner.os }}-${{ runner.arch }}-git-cliff-
 
     - name: Install git-cliff
       id: install-cliff
       shell: bash
       run: |
         set -e
-        echo "Installing git-cliff via Bun..."
+        mkdir -p "$HOME/.local/bin"
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-        # Check if already installed from cache
-        if command -v git-cliff &> /dev/null; then
-          # Verify git-cliff is functional
-          if INSTALLED_VERSION=$(git-cliff --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1); then
-            echo "git-cliff already installed: v$INSTALLED_VERSION"
-            echo "version=$INSTALLED_VERSION" >> $GITHUB_OUTPUT
-          else
-            echo "::error::git-cliff command found but not functional"
+        if [ ! -x "$HOME/.local/bin/git-cliff" ]; then
+          VERSION="${{ inputs.version }}"
+          if [ "$VERSION" = "latest" ]; then
+            echo "::error::latest git-cliff installs are intentionally unsupported; pin a version"
             exit 1
           fi
+
+          VERSION_NO_V="${VERSION#v}"
+          TAG="v$VERSION_NO_V"
+          OS="$(uname -s)"
+          ARCH="$(uname -m)"
+          case "$OS/$ARCH" in
+            Linux/x86_64) TARGET="x86_64-unknown-linux-gnu" ;;
+            Linux/aarch64|Linux/arm64) TARGET="aarch64-unknown-linux-gnu" ;;
+            Darwin/x86_64) TARGET="x86_64-apple-darwin" ;;
+            Darwin/arm64) TARGET="aarch64-apple-darwin" ;;
+            *)
+              echo "::error::Unsupported git-cliff platform: $OS/$ARCH"
+              exit 1
+              ;;
+          esac
+
+          URL="https://github.com/orhun/git-cliff/releases/download/$TAG/git-cliff-$VERSION_NO_V-$TARGET.tar.gz"
+          TMPDIR="$(mktemp -d)"
+          trap 'rm -rf "$TMPDIR"' EXIT
+
+          echo "Downloading git-cliff $TAG for $TARGET"
+          curl -fsSL "$URL" -o "$TMPDIR/git-cliff.tar.gz"
+          tar -xzf "$TMPDIR/git-cliff.tar.gz" -C "$TMPDIR"
+
+          BIN="$(find "$TMPDIR" -type f -name git-cliff | head -1)"
+          if [ -z "$BIN" ]; then
+            echo "::error::git-cliff binary not found in downloaded archive"
+            exit 1
+          fi
+
+          install -m 0755 "$BIN" "$HOME/.local/bin/git-cliff"
         else
-          # Install globally via Bun
-          if [ "${{ inputs.version }}" = "latest" ]; then
-            bun install -g git-cliff || {
-              echo "::error::Failed to install git-cliff via Bun"
-              exit 1
-            }
-          else
-            bun install -g git-cliff@${{ inputs.version }} || {
-              echo "::error::Failed to install git-cliff@${{ inputs.version }} via Bun"
-              exit 1
-            }
-          fi
+          echo "Using cached git-cliff binary"
+        fi
 
-          # Validate Bun global bin directory before adding to PATH
-          BUN_GLOBAL_BIN="$(bun pm bin -g)"
-          if [ -d "$BUN_GLOBAL_BIN" ]; then
-            echo "$BUN_GLOBAL_BIN" >> $GITHUB_PATH
-          else
-            echo "::error::Bun global bin directory not found: $BUN_GLOBAL_BIN"
-            exit 1
-          fi
-
-          # Verify installation
-          if INSTALLED_VERSION=$(git-cliff --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1); then
-            echo "version=$INSTALLED_VERSION" >> $GITHUB_OUTPUT
-            echo "git-cliff installed successfully: v$INSTALLED_VERSION"
-          else
-            echo "::error::git-cliff installation verification failed"
-            exit 1
-          fi
+        if INSTALLED_VERSION=$("$HOME/.local/bin/git-cliff" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1); then
+          echo "version=$INSTALLED_VERSION" >> "$GITHUB_OUTPUT"
+          echo "git-cliff ready: v$INSTALLED_VERSION"
+        else
+          echo "::error::git-cliff installation verification failed"
+          exit 1
         fi
 
     - name: Verify installation
       shell: bash
       run: |-
         set -e
-        if ! git-cliff --version &>/dev/null; then
+        if ! "$HOME/.local/bin/git-cliff" --version &>/dev/null; then
           echo "::error::git-cliff verification failed"
           exit 1
         fi
-        echo "git-cliff version: $(git-cliff --version)"
+        echo "git-cliff version: $("$HOME/.local/bin/git-cliff" --version)"
         echo "Installation completed successfully!"
         echo "Cache hit: ${{ steps.cache-cliff.outputs.cache-hit }}"
