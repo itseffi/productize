@@ -71,3 +71,19 @@ func TestCloseSQLiteDatabase(t *testing.T) {
 		}
 	})
 }
+
+func TestIsSQLiteBusy(t *testing.T) {
+	t.Parallel()
+
+	for _, err := range []error{
+		errors.New("database is locked (5) (SQLITE_BUSY)"),
+		errors.New("sqlite: database table is locked"),
+	} {
+		if !IsSQLiteBusy(err) {
+			t.Fatalf("IsSQLiteBusy(%q) = false, want true", err)
+		}
+	}
+	if IsSQLiteBusy(errors.New("not a database")) {
+		t.Fatal("IsSQLiteBusy(non-busy corruption error) = true, want false")
+	}
+}

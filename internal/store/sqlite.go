@@ -157,6 +157,17 @@ func ShouldRecoverSQLite(err error) bool {
 	return false
 }
 
+// IsSQLiteBusy reports transient lock contention from SQLite.
+func IsSQLiteBusy(err error) bool {
+	if err == nil {
+		return false
+	}
+	message := strings.ToLower(err.Error())
+	return strings.Contains(message, "sqlite_busy") ||
+		strings.Contains(message, "database is locked") ||
+		strings.Contains(message, "database table is locked")
+}
+
 // Checkpoint truncates the WAL for an open SQLite database.
 func Checkpoint(ctx context.Context, db *sql.DB) error {
 	if db == nil {

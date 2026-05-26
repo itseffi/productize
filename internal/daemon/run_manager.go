@@ -917,7 +917,7 @@ func (m *RunManager) syncWorkflowBeforeRun(ctx context.Context, active *activeRu
 	if active == nil || strings.TrimSpace(active.workflowRoot) == "" {
 		return nil
 	}
-	result, err := corepkg.SyncDirect(ctx, model.SyncConfig{TasksDir: active.workflowRoot})
+	result, err := m.syncActiveWorkflow(ctx, active)
 	if err != nil {
 		return fmt.Errorf("daemon: sync workflow %s before run: %w", active.workflowRoot, err)
 	}
@@ -929,6 +929,17 @@ func (m *RunManager) syncWorkflowBeforeRun(ctx context.Context, active *activeRu
 		result.SyncedPaths,
 	)
 	return nil
+}
+
+func (m *RunManager) syncActiveWorkflow(ctx context.Context, active *activeRun) (*corepkg.SyncResult, error) {
+	if active == nil || strings.TrimSpace(active.workflowRoot) == "" {
+		return &corepkg.SyncResult{}, nil
+	}
+	workspace, err := m.globalDB.Get(ctx, active.workspaceID)
+	if err != nil {
+		return nil, fmt.Errorf("load run workspace %q for workflow sync: %w", active.workspaceID, err)
+	}
+	return syncWorkflowWithOpenDB(ctx, m.globalDB, workspace, model.SyncConfig{TasksDir: active.workflowRoot})
 }
 
 func (m *RunManager) resolveExecWorkspace(ctx context.Context, workspacePath string) (globaldb.Workspace, error) {
@@ -1417,8 +1428,8 @@ func (m *RunManager) startWatcher(active *activeRun) error {
 	watcher, err := startWorkflowWatcher(active.ctx, workflowWatcherConfig{
 		WorkflowRoot: active.workflowRoot,
 		Debounce:     m.watcherDebounce,
-		Sync: func(ctx context.Context, workflowRoot string) error {
-			_, err := corepkg.SyncDirect(ctx, model.SyncConfig{TasksDir: workflowRoot})
+		Sync: func(ctx context.Context, _ string) error {
+			_, err := m.syncActiveWorkflow(ctx, active)
 			return err
 		},
 		Emit: func(ctx context.Context, item artifactSyncEvent) error {

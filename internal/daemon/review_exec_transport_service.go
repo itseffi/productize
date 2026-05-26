@@ -107,7 +107,7 @@ func (s *transportReviewService) syncFetchedReviewRound(
 	result *corepkg.FetchResult,
 ) (globaldb.ReviewRound, error) {
 	slug := strings.TrimSpace(workflowSlug)
-	syncResult, err := corepkg.SyncWithDB(ctx, s.globalDB, workspaceRow, corepkg.SyncConfig{
+	syncResult, err := syncWorkflowWithOpenDB(ctx, s.globalDB, workspaceRow, corepkg.SyncConfig{
 		WorkspaceRoot: workspaceRow.RootDir,
 		Name:          slug,
 	})
