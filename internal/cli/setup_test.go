@@ -18,7 +18,17 @@ func TestSetupHelpShowsSetupFlagsOnly(t *testing.T) {
 		t.Fatalf("execute setup help: %v", err)
 	}
 
-	required := []string{"--agent", "--skill", "--global", "--copy", "--list", "--yes", "--all"}
+	required := []string{
+		"--agent",
+		"--skill",
+		"--global",
+		"--copy",
+		"--list",
+		"--yes",
+		"--all",
+		"--core-only",
+		"--no-tactical",
+	}
 	for _, snippet := range required {
 		if !strings.Contains(output, snippet) {
 			t.Fatalf("expected setup help to include %q\noutput:\n%s", snippet, output)
@@ -30,6 +40,44 @@ func TestSetupHelpShowsSetupFlagsOnly(t *testing.T) {
 		if strings.Contains(output, snippet) {
 			t.Fatalf("expected setup help to omit %q\noutput:\n%s", snippet, output)
 		}
+	}
+}
+
+func TestSetupSkillSelectionDefaultsToFullCatalogAndSupportsCoreOnly(t *testing.T) {
+	t.Parallel()
+
+	skills := []setup.Skill{
+		{Name: "productize", Description: "Core workflow"},
+		{Name: "create-prd", Description: "Create PRD"},
+		{Name: "productize-pricing-strategy", Description: "Pricing"},
+	}
+
+	state := newSetupCommandState()
+	selected := state.resolveSkillSelection(skills)
+	if got := strings.Join(selected, ","); got != "productize,create-prd,productize-pricing-strategy" {
+		t.Fatalf("default skill selection = %q, want full catalog", got)
+	}
+
+	state = newSetupCommandState()
+	state.coreOnly = true
+	selected = state.resolveSkillSelection(skills)
+	if got := strings.Join(selected, ","); got != "productize,create-prd" {
+		t.Fatalf("core-only skill selection = %q, want core skills only", got)
+	}
+
+	state = newSetupCommandState()
+	state.noTactical = true
+	selected = state.resolveSkillSelection(skills)
+	if got := strings.Join(selected, ","); got != "productize,create-prd" {
+		t.Fatalf("no-tactical skill selection = %q, want core skills only", got)
+	}
+
+	state = newSetupCommandState()
+	state.coreOnly = true
+	state.skillNames = []string{"productize-pricing-strategy"}
+	selected = state.resolveSkillSelection(skills)
+	if got := strings.Join(selected, ","); got != "productize-pricing-strategy" {
+		t.Fatalf("explicit skill selection = %q, want explicit override", got)
 	}
 }
 

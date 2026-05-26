@@ -68,14 +68,14 @@ git clone git@github.com:itseffi/productize.git
 cd productize && make verify && go build ./cmd/productize
 ```
 
-Then install core skills into your AI agents:
+Then install Productize skills into your AI agents:
 
 ```bash
-productize setup          # interactive — pick agents and skills
-productize setup --all    # install everything to every detected agent
+productize setup          # interactive — install the full bundled catalog
+productize setup --core-only
 ```
 
-`productize setup` installs Productize's core workflow skills plus any setup assets shipped by enabled extensions.
+`productize setup` installs Productize's full bundled skill catalog plus any setup assets shipped by enabled extensions.
 
 If you want the optional ideation workflow and council roster, install the first-party `idea-factory` extension first:
 

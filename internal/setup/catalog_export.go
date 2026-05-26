@@ -41,7 +41,7 @@ func WriteSkillsCatalog(options ResolverOptions, global bool, skills []Skill) (s
 			Name:        skills[i].Name,
 			Description: skills[i].Description,
 			Directory:   skills[i].Directory,
-			Tier:        skillCatalogTier(skills[i].Name),
+			Tier:        SkillCatalogTier(skills[i].Name),
 			Origin:      skills[i].Origin,
 		})
 	}
@@ -61,7 +61,8 @@ func WriteSkillsCatalog(options ResolverOptions, global bool, skills []Skill) (s
 	return path, nil
 }
 
-func skillCatalogTier(name string) string {
+// SkillCatalogTier returns the public catalog tier for a bundled/setup skill.
+func SkillCatalogTier(name string) string {
 	switch name {
 	case "productize",
 		"productize-0-1",

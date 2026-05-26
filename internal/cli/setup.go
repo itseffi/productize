@@ -24,6 +24,8 @@ type setupCommandState struct {
 	list       bool
 	yes        bool
 	all        bool
+	coreOnly   bool
+	noTactical bool
 
 	loadCatalog           func(context.Context, setup.ResolverOptions) (setup.EffectiveCatalog, error)
 	listAgents            func(setup.ResolverOptions) ([]setup.Agent, error)
@@ -68,17 +70,17 @@ func newSetupCommand(_ *kernel.Dispatcher) *cobra.Command {
 	state := newSetupCommandState()
 	cmd := &cobra.Command{
 		Use:          "setup",
-		Short:        "Install Productize core assets plus setup assets shipped by enabled extensions",
+		Short:        "Install Productize skills plus setup assets shipped by enabled extensions",
 		SilenceUsage: true,
 		Args:         cobra.NoArgs,
-		Long: `Install Productize's core public skills, any additional skills shipped by enabled
-extensions, and reusable agents in either the project or user scope selected during setup.
+		Long: `Install Productize's full bundled skill catalog, any additional skills shipped by
+enabled extensions, and reusable agents in either the project or user scope selected during setup.
 
 The command can run interactively or entirely from flags.`,
 		Example: `  productize setup
   productize setup --list
   productize setup --agent codex --agent claude --skill create-prd --skill create-techspec --yes
-  productize setup --all
+  productize setup --core-only
   productize setup --agent cursor --global --copy --yes`,
 		RunE: state.run,
 	}
@@ -89,8 +91,10 @@ The command can run interactively or entirely from flags.`,
 	cmd.Flags().BoolVar(&state.copy, "copy", false, "Copy files instead of symlinking to agent directories")
 	cmd.Flags().BoolVarP(&state.list, "list", "l", false, "List setup assets without installing")
 	cmd.Flags().BoolVarP(&state.yes, "yes", "y", false, "Skip confirmation prompts")
+	cmd.Flags().BoolVar(&state.coreOnly, "core-only", false, "Install only core workflow, lifecycle, and gate skills")
+	cmd.Flags().BoolVar(&state.noTactical, "no-tactical", false, "Alias for --core-only")
 	cmd.Flags().
-		BoolVar(&state.all, "all", false, "Install all available setup skills to all supported agents without prompts")
+		BoolVar(&state.all, "all", false, "Deprecated: setup installs all skills by default; also skips prompts")
 	return cmd
 }
 
@@ -170,6 +174,9 @@ func (s *setupCommandState) prepareRunMode() error {
 	if s.all {
 		s.yes = true
 	}
+	if s.coreOnly && s.noTactical {
+		return errors.New("use only one of --core-only or --no-tactical")
+	}
 	if !s.yes && !s.isInteractive() {
 		return errors.New("productize setup requires an interactive terminal unless --yes is provided")
 	}
@@ -208,10 +215,7 @@ func (s *setupCommandState) buildInstallPlan(
 	supportedAgents []setup.Agent,
 	detectedAgents []setup.Agent,
 ) (setup.InstallConfig, []setup.PreviewItem, []setup.ReusableAgentPreviewItem, error) {
-	selectedSkillNames, err := s.resolveSkillSelection(catalog.Skills)
-	if err != nil {
-		return setup.InstallConfig{}, nil, nil, err
-	}
+	selectedSkillNames := s.resolveSkillSelection(catalog.Skills)
 	selectedSkills, err := setup.SelectSkills(catalog.Skills, selectedSkillNames)
 	if err != nil {
 		return setup.InstallConfig{}, nil, nil, err
@@ -330,46 +334,14 @@ func (s *setupCommandState) installPlan(plan setupInstallPlan) (*setup.Result, e
 	return result, nil
 }
 
-func (s *setupCommandState) resolveSkillSelection(skills []setup.Skill) ([]string, error) {
+func (s *setupCommandState) resolveSkillSelection(skills []setup.Skill) []string {
 	if len(s.skillNames) > 0 {
-		return append([]string(nil), s.skillNames...), nil
+		return append([]string(nil), s.skillNames...)
 	}
-	if s.all || s.yes {
-		return skillNames(skills), nil
+	if s.coreOnly || s.noTactical {
+		return coreSkillNames(skills)
 	}
-
-	selected := skillNames(skills)
-
-	maxNameLen := 0
-	for i := range skills {
-		if len(skills[i].Name) > maxNameLen {
-			maxNameLen = len(skills[i].Name)
-		}
-	}
-
-	options := make([]huh.Option[string], 0, len(skills))
-	for i := range skills {
-		label := fmt.Sprintf("%-*s  %s", maxNameLen, skills[i].Name, shortDescription(skills[i].Description))
-		options = append(options, huh.NewOption(label, skills[i].Name))
-	}
-
-	field := huh.NewMultiSelect[string]().
-		Key("skills").
-		Title("Setup Skills").
-		Description("Select the Productize skills to install, including enabled extension assets").
-		Options(options...).
-		Value(&selected).
-		Limit(len(skills)).
-		Validate(func(values []string) error {
-			if len(values) == 0 {
-				return errors.New("select at least one skill")
-			}
-			return nil
-		})
-	if err := runPromptField(field); err != nil {
-		return nil, fmt.Errorf("select setup skills: %w", err)
-	}
-	return selected, nil
+	return skillNames(skills)
 }
 
 func (s *setupCommandState) resolveAgentSelection(
@@ -499,7 +471,7 @@ func printWelcomeHeader(cmd *cobra.Command) {
 	content := lipgloss.JoinVertical(
 		lipgloss.Left,
 		styles.title.Render("PRODUCTIZE // SETUP"),
-		styles.subtitle.Render("Install core and enabled extension assets plus scoped reusable agents"),
+		styles.subtitle.Render("Install the full Productize catalog plus scoped reusable agents"),
 	)
 
 	lipgloss.Fprintln(cmd.OutOrStdout(), styles.box.Render(content))
@@ -853,18 +825,6 @@ func computeColumnWidths(successful []setup.SuccessItem, failed []setup.FailureI
 	return maxSkill, maxAgent
 }
 
-func shortDescription(desc string) string {
-	if idx := strings.Index(desc, ". "); idx >= 0 {
-		desc = desc[:idx+1]
-	}
-	const maxLen = 80
-	runes := []rune(desc)
-	if len(runes) > maxLen {
-		return string(runes[:maxLen-1]) + "…"
-	}
-	return desc
-}
-
 func padRight(s string, width int) string {
 	if len(s) >= width {
 		return s
@@ -894,6 +854,16 @@ func skillNames(skills []setup.Skill) []string {
 	names := make([]string, 0, len(skills))
 	for i := range skills {
 		names = append(names, skills[i].Name)
+	}
+	return names
+}
+
+func coreSkillNames(skills []setup.Skill) []string {
+	names := make([]string, 0, len(skills))
+	for i := range skills {
+		if setup.SkillCatalogTier(skills[i].Name) == "core" {
+			names = append(names, skills[i].Name)
+		}
 	}
 	return names
 }
