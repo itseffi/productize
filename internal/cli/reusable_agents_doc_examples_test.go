@@ -76,6 +76,7 @@ func TestDocumentedExecAgentExampleWorksWithReviewerFixture(t *testing.T) {
 	)
 	defer restore()
 
+	installFakeCodexACPOnPath(t)
 	stdout, stderr, err := executeDaemonBackedRootCommandCapturingProcessIO(
 		t,
 		nil,

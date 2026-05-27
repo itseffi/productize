@@ -43,7 +43,7 @@ Productize is a Go module and CLI that drives the full lifecycle of AI-assisted 
 | `internal/core/modelprovider` | Model provider alias discovery and resolution                              |
 | `internal/core/plan`          | Input discovery, filtering, grouping, and batch prep                       |
 | `internal/core/prompt`        | Thin prompt builders that emit runtime context and skill names             |
-| `internal/core/run`           | Execution pipeline, logging, shutdown, and Bubble Tea UI                   |
+| `internal/core/run`           | Execution pipeline, logging, shutdown, and runtime orchestration           |
 | `internal/core/run/exec`      | Ad-hoc single-prompt execution pipeline with extension hooks               |
 | `internal/core/run/executor`  | Workflow execution engine, event streaming, and lifecycle                  |
 | `internal/core/run/journal`   | Durable append-before-publish event journal for run artifacts              |

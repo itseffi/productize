@@ -476,6 +476,7 @@ func TestExecCommandExecutePersistedAgentParentChildEmitsReusableAgentLifecycleE
 	)
 	defer restore()
 
+	installFakeCodexACPOnPath(t)
 	stdout, stderr, err := executeDaemonBackedRootCommandCapturingProcessIO(
 		t,
 		nil,
@@ -585,6 +586,7 @@ func TestExecCommandExecuteRunIDWithAgentReattachesMCPServersAndLifecycleEvents(
 	)
 	defer restore()
 
+	installFakeCodexACPOnPath(t)
 	stdout, stderr, err := executeDaemonBackedRootCommandCapturingProcessIO(
 		t,
 		nil,
@@ -713,6 +715,7 @@ func TestExecCommandExecuteAgentWorkspaceOverrideWinsOverGlobalDefinition(t *tes
 	)
 	defer restore()
 
+	installFakeCodexACPOnPath(t)
 	stdout, stderr, err := executeDaemonBackedRootCommandCapturingProcessIO(
 		t,
 		nil,
@@ -2379,6 +2382,17 @@ func writePersistedExecRunForCLI(t *testing.T, _ string, record coreRun.Persiste
 	if err := os.WriteFile(runArtifacts.RunMetaPath, payload, 0o600); err != nil {
 		t.Fatalf("write persisted exec run: %v", err)
 	}
+}
+
+func installFakeCodexACPOnPath(t *testing.T) {
+	t.Helper()
+
+	binDir := t.TempDir()
+	binPath := filepath.Join(binDir, "codex-acp")
+	if err := os.WriteFile(binPath, []byte("#!/bin/sh\nexit 0\n"), 0o755); err != nil {
+		t.Fatalf("write fake codex-acp: %v", err)
+	}
+	t.Setenv("PATH", binDir+string(os.PathListSeparator)+os.Getenv("PATH"))
 }
 
 func persistedRunDirForCLI(t *testing.T, workspaceRoot, runID string) string {
