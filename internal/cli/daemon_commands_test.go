@@ -18,7 +18,6 @@ import (
 	apicore "github.com/itseffi/productize/internal/api/core"
 	productizeconfig "github.com/itseffi/productize/internal/config"
 	core "github.com/itseffi/productize/internal/core"
-	uipkg "github.com/itseffi/productize/internal/core/run/ui"
 	"github.com/itseffi/productize/internal/daemon"
 	"github.com/spf13/cobra"
 )
@@ -435,425 +434,30 @@ func installTestCLIReadyDaemonBootstrap(t *testing.T, client daemonCommandClient
 
 func installTestCLIRunObservers(
 	t *testing.T,
-	attachFn func(context.Context, daemonCommandClient, string) error,
+	_ func(context.Context, daemonCommandClient, string) error,
 	watchFn func(context.Context, io.Writer, daemonCommandClient, string) error,
 ) {
 	t.Helper()
 	acquireCLITestGlobalOverride(t)
 
-	originalAttach := attachCLIRunUI
-	originalAttachStarted := attachStartedCLIRunUI
 	originalWatch := watchCLIRun
-	if attachFn != nil {
-		attachCLIRunUI = attachFn
-		attachStartedCLIRunUI = attachFn
-	}
 	if watchFn != nil {
 		watchCLIRun = watchFn
 	}
 	t.Cleanup(func() {
-		attachCLIRunUI = originalAttach
-		attachStartedCLIRunUI = originalAttachStarted
 		watchCLIRun = originalWatch
 	})
 }
 
-type fakeCLIUISession struct {
-	quitHandler  func(uipkg.QuitRequest)
-	shutdownCh   chan struct{}
-	shutdownOnce sync.Once
-	waitFn       func(*fakeCLIUISession) error
-}
-
-func newFakeCLIUISession() *fakeCLIUISession {
-	return &fakeCLIUISession{
-		shutdownCh: make(chan struct{}),
-	}
-}
-
-func (*fakeCLIUISession) Enqueue(any) {}
-
-func (s *fakeCLIUISession) SetQuitHandler(fn func(uipkg.QuitRequest)) {
-	s.quitHandler = fn
-}
-
-func (*fakeCLIUISession) CloseEvents() {}
-
-func (s *fakeCLIUISession) Shutdown() {
-	s.shutdownOnce.Do(func() {
-		close(s.shutdownCh)
-	})
-}
-
-func (s *fakeCLIUISession) Wait() error {
-	if s.waitFn != nil {
-		return s.waitFn(s)
-	}
-	if s.quitHandler != nil {
-		s.quitHandler(uipkg.QuitRequestDrain)
-	}
-	<-s.shutdownCh
-	return nil
-}
-
-func TestRunSnapshotSettledBeforeUIAttach(t *testing.T) {
-	t.Parallel()
-
-	cases := []struct {
-		name     string
-		snapshot apicore.RunSnapshot
-		want     bool
-	}{
-		{
-			name: "terminal run status",
-			snapshot: apicore.RunSnapshot{
-				Run: apicore.Run{Status: "completed"},
-			},
-			want: true,
-		},
-		{
-			name: "all jobs terminal while row still running",
-			snapshot: apicore.RunSnapshot{
-				Run: apicore.Run{Status: "running"},
-				Jobs: []apicore.RunJobState{
-					{Index: 0, Status: "completed"},
-					{Index: 1, Status: "failed"},
-				},
-			},
-			want: true,
-		},
-		{
-			name: "still active job",
-			snapshot: apicore.RunSnapshot{
-				Run: apicore.Run{Status: "running"},
-				Jobs: []apicore.RunJobState{
-					{Index: 0, Status: "completed"},
-					{Index: 1, Status: "running"},
-				},
-			},
-			want: false,
-		},
-		{
-			name: "no jobs yet",
-			snapshot: apicore.RunSnapshot{
-				Run: apicore.Run{Status: "starting"},
-			},
-			want: false,
-		},
-	}
-
-	for _, tc := range cases {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-
-			if got := runSnapshotSettledBeforeUIAttach(tc.snapshot); got != tc.want {
-				t.Fatalf("runSnapshotSettledBeforeUIAttach() = %v, want %v", got, tc.want)
-			}
-		})
-	}
-}
-
-func TestDefaultAttachCLIRunUIReturnsReplaySentinelForSettledSnapshot(t *testing.T) {
-	t.Parallel()
-
-	client := &stubDaemonCommandClient{
-		snapshot: apicore.RunSnapshot{
-			Run: apicore.Run{RunID: "run-ui-settled", Status: "running"},
-			Jobs: []apicore.RunJobState{
-				{Index: 0, Status: "completed"},
-			},
-		},
-	}
-
-	err := defaultAttachCLIRunUI(context.Background(), client, "run-ui-settled")
-	if !errors.Is(err, errRunSettledBeforeUIAttach) {
-		t.Fatalf("defaultAttachCLIRunUI() error = %v, want errRunSettledBeforeUIAttach", err)
-	}
-}
-
-func TestDefaultAttachStartedCLIRunUICancelsOwnedRunOnLocalExit(t *testing.T) {
-	t.Parallel()
-
-	acquireCLITestGlobalOverride(t)
-
-	client := &stubDaemonCommandClient{
-		snapshot: apicore.RunSnapshot{
-			Run: apicore.Run{RunID: "run-ui-owned", Status: "running"},
-			Jobs: []apicore.RunJobState{
-				{Index: 0, Status: "running"},
-			},
-		},
-	}
-	session := newFakeCLIUISession()
-	var ownerSession bool
-
-	originalOpenRemoteUI := openCLIRemoteUISession
-	t.Cleanup(func() {
-		openCLIRemoteUISession = originalOpenRemoteUI
-	})
-	openCLIRemoteUISession = func(
-		_ context.Context,
-		opts uipkg.RemoteAttachOptions,
-	) (uipkg.Session, error) {
-		ownerSession = opts.OwnerSession
-		return session, nil
-	}
-
-	if err := defaultAttachStartedCLIRunUI(context.Background(), client, "run-ui-owned"); err != nil {
-		t.Fatalf("defaultAttachStartedCLIRunUI() error = %v", err)
-	}
-	if !ownerSession {
-		t.Fatal("expected owner remote attach session for started run ui")
-	}
-	if client.cancelCalls != 1 {
-		t.Fatalf("cancel calls = %d, want 1", client.cancelCalls)
-	}
-	if client.cancelRunID != "run-ui-owned" {
-		t.Fatalf("cancel run id = %q, want run-ui-owned", client.cancelRunID)
-	}
-}
-
-func TestDefaultAttachStartedCLIRunUIDoesNotCancelOwnedRunWhenUICloseDoesNotRequestStop(t *testing.T) {
-	t.Parallel()
-
-	acquireCLITestGlobalOverride(t)
-
-	client := &stubDaemonCommandClient{
-		snapshot: apicore.RunSnapshot{
-			Run: apicore.Run{RunID: "run-ui-owned-close-only", Status: "running"},
-			Jobs: []apicore.RunJobState{
-				{Index: 0, Status: "running"},
-			},
-		},
-	}
-	session := newFakeCLIUISession()
-	session.waitFn = func(*fakeCLIUISession) error {
-		return nil
-	}
-
-	originalOpenRemoteUI := openCLIRemoteUISession
-	t.Cleanup(func() {
-		openCLIRemoteUISession = originalOpenRemoteUI
-	})
-	openCLIRemoteUISession = func(
-		_ context.Context,
-		opts uipkg.RemoteAttachOptions,
-	) (uipkg.Session, error) {
-		if !opts.OwnerSession {
-			t.Fatal("expected owner remote attach session for started run ui")
-		}
-		return session, nil
-	}
-
-	if err := defaultAttachStartedCLIRunUI(context.Background(), client, "run-ui-owned-close-only"); err != nil {
-		t.Fatalf("defaultAttachStartedCLIRunUI() close-only error = %v", err)
-	}
-	if client.cancelCalls != 0 {
-		t.Fatalf("cancel calls = %d, want 0 when the UI closes without an explicit stop request", client.cancelCalls)
-	}
-}
-
-func TestNewAttachStartedCLIRunUIUsesConfiguredOwnedRunCancelTimeout(t *testing.T) {
-	t.Parallel()
-
-	acquireCLITestGlobalOverride(t)
-
-	client := &stubDaemonCommandClient{
-		snapshot: apicore.RunSnapshot{
-			Run: apicore.Run{RunID: "run-ui-owned-timeout", Status: "running"},
-			Jobs: []apicore.RunJobState{
-				{Index: 0, Status: "running"},
-			},
-		},
-	}
-	session := newFakeCLIUISession()
-
-	originalOpenRemoteUI := openCLIRemoteUISession
-	t.Cleanup(func() {
-		openCLIRemoteUISession = originalOpenRemoteUI
-	})
-	openCLIRemoteUISession = func(
-		_ context.Context,
-		opts uipkg.RemoteAttachOptions,
-	) (uipkg.Session, error) {
-		if !opts.OwnerSession {
-			t.Fatal("expected owner session when attaching started run")
-		}
-		return session, nil
-	}
-
-	timeout := 1500 * time.Millisecond
-	start := time.Now()
-	attachFn := newAttachStartedCLIRunUI(withOwnedRunCancelTimeout(timeout))
-	if err := attachFn(context.Background(), client, "run-ui-owned-timeout"); err != nil {
-		t.Fatalf("configured attach started ui error = %v", err)
-	}
-	if client.cancelCalls != 1 {
-		t.Fatalf("cancel calls = %d, want 1", client.cancelCalls)
-	}
-	deadline, ok := client.cancelCtx.Deadline()
-	if !ok {
-		t.Fatal("expected configured cancel context deadline")
-	}
-	got := deadline.Sub(start)
-	if got < time.Second || got > 2*time.Second {
-		t.Fatalf("cancel deadline offset = %s, want ~%s", got, timeout)
-	}
-}
-
-func TestLoadUIAttachSnapshotWaitsForJobsWhenInitialSnapshotIsEmpty(t *testing.T) {
-	t.Parallel()
-
-	var calls int
-	client := &stubDaemonCommandClient{
-		snapshotFunc: func(context.Context, string) (apicore.RunSnapshot, error) {
-			calls++
-			if calls == 1 {
-				return apicore.RunSnapshot{
-					Run: apicore.Run{RunID: "run-ui-warmup", Status: "running"},
-				}, nil
-			}
-			return apicore.RunSnapshot{
-				Run: apicore.Run{RunID: "run-ui-warmup", Status: "running"},
-				Jobs: []apicore.RunJobState{
-					{Index: 0, Status: "running"},
-				},
-			}, nil
-		},
-	}
-
-	snapshot, err := loadUIAttachSnapshot(
-		context.Background(),
-		client,
-		"run-ui-warmup",
-		20*time.Millisecond,
-		time.Millisecond,
-	)
-	if err != nil {
-		t.Fatalf("loadUIAttachSnapshot() error = %v", err)
-	}
-	if calls < 2 {
-		t.Fatalf("expected warmup polling, got %d snapshot calls", calls)
-	}
-	if got := len(snapshot.Jobs); got != 1 {
-		t.Fatalf("snapshot jobs = %d, want 1", got)
-	}
-	if snapshot.Jobs[0].Status != "running" {
-		t.Fatalf("snapshot job status = %q, want running", snapshot.Jobs[0].Status)
-	}
-}
-
-func TestLoadUIAttachSnapshotReturnsPromptlyWhenContextCanceledDuringWarmup(t *testing.T) {
-	t.Parallel()
-
-	ctx, cancel := context.WithCancel(context.Background())
-	t.Cleanup(cancel)
-
-	var calls int
-	client := &stubDaemonCommandClient{
-		snapshotFunc: func(context.Context, string) (apicore.RunSnapshot, error) {
-			calls++
-			if calls == 1 {
-				time.AfterFunc(20*time.Millisecond, cancel)
-			}
-			return apicore.RunSnapshot{
-				Run: apicore.Run{RunID: "run-ui-canceled", Status: "running"},
-			}, nil
-		},
-	}
-
-	pollInterval := 500 * time.Millisecond
-	start := time.Now()
-	snapshot, err := loadUIAttachSnapshot(
-		ctx,
-		client,
-		"run-ui-canceled",
-		2*time.Second,
-		pollInterval,
-	)
-	if !errors.Is(err, context.Canceled) {
-		t.Fatalf("loadUIAttachSnapshot() error = %v, want context.Canceled", err)
-	}
-	if calls != 1 {
-		t.Fatalf("snapshot calls = %d, want 1", calls)
-	}
-	if elapsed := time.Since(start); elapsed >= pollInterval/2 {
-		t.Fatalf("loadUIAttachSnapshot() elapsed = %s, want less than %s", elapsed, pollInterval/2)
-	}
-	if got := len(snapshot.Jobs); got != 0 {
-		t.Fatalf("snapshot jobs = %d, want 0", got)
-	}
-}
-
-func TestNewAttachCLIRunUIDisablesWarmupWhenConfiguredTimeoutIsZero(t *testing.T) {
-	t.Parallel()
-
-	acquireCLITestGlobalOverride(t)
-
-	var (
-		calls            int
-		capturedSnapshot apicore.RunSnapshot
-	)
-	client := &stubDaemonCommandClient{
-		snapshotFunc: func(context.Context, string) (apicore.RunSnapshot, error) {
-			calls++
-			if calls == 1 {
-				return apicore.RunSnapshot{
-					Run: apicore.Run{RunID: "run-ui-no-warmup", Status: "running"},
-				}, nil
-			}
-			return apicore.RunSnapshot{
-				Run: apicore.Run{RunID: "run-ui-no-warmup", Status: "running"},
-				Jobs: []apicore.RunJobState{
-					{Index: 0, Status: "running"},
-				},
-			}, nil
-		},
-	}
-	session := newFakeCLIUISession()
-	session.Shutdown()
-
-	originalOpenRemoteUI := openCLIRemoteUISession
-	t.Cleanup(func() {
-		openCLIRemoteUISession = originalOpenRemoteUI
-	})
-	openCLIRemoteUISession = func(
-		_ context.Context,
-		opts uipkg.RemoteAttachOptions,
-	) (uipkg.Session, error) {
-		capturedSnapshot = opts.Snapshot
-		return session, nil
-	}
-
-	attachFn := newAttachCLIRunUI(
-		withUIAttachSnapshotTimeout(0),
-		withUIAttachSnapshotPollInterval(time.Millisecond),
-	)
-	if err := attachFn(context.Background(), client, "run-ui-no-warmup"); err != nil {
-		t.Fatalf("configured attach ui error = %v", err)
-	}
-	if calls != 1 {
-		t.Fatalf("snapshot calls = %d, want 1", calls)
-	}
-	if got := len(capturedSnapshot.Jobs); got != 0 {
-		t.Fatalf("captured snapshot jobs = %d, want 0", got)
-	}
-}
-
-func TestHandleStartedTaskRunFallsBackToWatchWhenUIAttachIsAlreadySettled(t *testing.T) {
+func TestHandleStartedTaskRunStreamsStartedRuns(t *testing.T) {
 	t.Parallel()
 
 	var (
-		attachRunID string
-		watchRunID  string
+		watchRunID string
 	)
 	installTestCLIRunObservers(
 		t,
-		func(_ context.Context, _ daemonCommandClient, runID string) error {
-			attachRunID = runID
-			return errRunSettledBeforeUIAttach
-		},
+		nil,
 		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
 			watchRunID = runID
 			_, err := io.WriteString(dst, "run completed | completed\n")
@@ -870,20 +474,17 @@ func TestHandleStartedTaskRunFallsBackToWatchWhenUIAttachIsAlreadySettled(t *tes
 		cmd,
 		&stubDaemonCommandClient{},
 		apicore.Run{
-			RunID:            "run-ui-settled",
-			PresentationMode: attachModeUI,
+			RunID:            "run-stream",
+			PresentationMode: attachModeStream,
 		},
 	)
 	if err != nil {
 		t.Fatalf("handleStartedTaskRun() error = %v", err)
 	}
-	if attachRunID != "run-ui-settled" {
-		t.Fatalf("attach run id = %q, want run-ui-settled", attachRunID)
+	if watchRunID != "run-stream" {
+		t.Fatalf("watch run id = %q, want run-stream", watchRunID)
 	}
-	if watchRunID != "run-ui-settled" {
-		t.Fatalf("watch run id = %q, want run-ui-settled", watchRunID)
-	}
-	if got := stdout.String(); got != "run completed | completed\n" {
+	if got := stdout.String(); got != "task run started: run-stream (mode=stream)\nrun completed | completed\n" {
 		t.Fatalf("stdout = %q, want replay output", got)
 	}
 }
@@ -1250,9 +851,9 @@ func TestResolveTaskPresentationModeUsesInjectedInteractiveCheck(t *testing.T) {
 		configure     func(*testing.T, *commandState, *cobra.Command)
 	}{
 		{
-			name:        "auto resolves to ui on interactive terminals",
+			name:        "auto resolves to stream on interactive terminals",
 			interactive: true,
-			wantMode:    attachModeUI,
+			wantMode:    attachModeStream,
 		},
 		{
 			name:        "auto resolves to stream on non-interactive terminals",
@@ -1260,9 +861,9 @@ func TestResolveTaskPresentationModeUsesInjectedInteractiveCheck(t *testing.T) {
 			wantMode:    attachModeStream,
 		},
 		{
-			name:          "explicit ui requires an interactive terminal",
-			interactive:   false,
-			wantErrSubstr: "requires an interactive terminal for ui mode",
+			name:        "explicit ui alias resolves to stream",
+			interactive: false,
+			wantMode:    attachModeStream,
 			configure: func(t *testing.T, state *commandState, cmd *cobra.Command) {
 				t.Helper()
 				if err := cmd.Flags().Set("attach", attachModeUI); err != nil {
@@ -1975,7 +1576,7 @@ func TestResolveTaskPresentationModeRejectsConflictsAndInvalidModes(t *testing.T
 	cmd = newTaskRunPresentationCommand(state)
 	state.attachMode = "bogus"
 	if _, err := state.resolveTaskPresentationMode(cmd); err == nil ||
-		!containsAll(err.Error(), "attach mode must be one of auto, ui, stream, or detach") {
+		!containsAll(err.Error(), "attach mode must be one of auto, stream, or detach") {
 		t.Fatalf("expected invalid attach mode error, got %v", err)
 	}
 }

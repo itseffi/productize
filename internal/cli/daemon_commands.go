@@ -292,9 +292,9 @@ is running, and then sends the workflow request over the daemon transport.`,
 		&state.attachMode,
 		"attach",
 		attachModeAuto,
-		"Attach mode: auto, ui, stream, or detach",
+		"Attach mode: auto, stream, or detach",
 	)
-	cmd.Flags().Bool("ui", false, "Force interactive UI attach mode")
+	cmd.Flags().Bool("ui", false, "Deprecated alias for --stream")
 	cmd.Flags().Bool("stream", false, "Force textual stream attach mode")
 	cmd.Flags().Bool("detach", false, "Start the run without attaching a client")
 	cmd.Flags().Var(
@@ -367,22 +367,10 @@ func handleStartedTaskRun(
 	client daemonCommandClient,
 	run apicore.Run,
 ) error {
-	if run.PresentationMode == attachModeUI {
-		if err := attachStartedCLIRunUI(ctx, client, run.RunID); err != nil {
-			if errors.Is(err, errRunSettledBeforeUIAttach) {
-				if err := watchCLIRun(ctx, cmd.OutOrStdout(), client, run.RunID); err != nil {
-					return mapDaemonCommandError(err)
-				}
-				return nil
-			}
-			return mapDaemonCommandError(err)
-		}
-		return nil
-	}
 	if err := writeStartedTaskRun(cmd, run); err != nil {
 		return err
 	}
-	if run.PresentationMode != attachModeStream {
+	if run.PresentationMode == attachModeDetach {
 		return nil
 	}
 	if err := watchCLIRun(ctx, cmd.OutOrStdout(), client, run.RunID); err != nil {
@@ -438,7 +426,7 @@ func (s *commandState) resolveTaskPresentationMode(cmd *cobra.Command) (string, 
 		name  string
 		value string
 	}{
-		{name: "ui", value: attachModeUI},
+		{name: "ui", value: attachModeStream},
 		{name: "stream", value: attachModeStream},
 		{name: "detach", value: attachModeDetach},
 	} {
@@ -452,29 +440,15 @@ func (s *commandState) resolveTaskPresentationMode(cmd *cobra.Command) (string, 
 		return "", errors.New("choose only one of --attach, --ui, --stream, or --detach")
 	}
 
-	isInteractive := s.isInteractive
-	if isInteractive == nil {
-		isInteractive = isInteractiveTerminal
-	}
-
 	switch mode {
 	case attachModeAuto:
-		if isInteractive() {
-			return attachModeUI, nil
-		}
 		return attachModeStream, nil
 	case attachModeUI:
-		if !isInteractive() {
-			return "", fmt.Errorf(
-				"%s requires an interactive terminal for ui mode; rerun with --stream or --detach",
-				cmd.CommandPath(),
-			)
-		}
-		return attachModeUI, nil
+		return attachModeStream, nil
 	case attachModeStream, attachModeDetach:
 		return mode, nil
 	default:
-		return "", fmt.Errorf("attach mode must be one of auto, ui, stream, or detach (got %q)", mode)
+		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)
 	}
 }
 

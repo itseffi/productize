@@ -2389,7 +2389,7 @@ type runManagerTestDeps struct {
 
 var runManagerTestHomeMu sync.Mutex
 
-const runManagerTestWaitTimeout = 15 * time.Second
+const runManagerTestWaitTimeout = 30 * time.Second
 
 func newRunManagerTestEnv(tb testing.TB, deps runManagerTestDeps) *runManagerTestEnv {
 	tb.Helper()

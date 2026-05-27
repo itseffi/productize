@@ -1190,7 +1190,7 @@ func TestTasksRunCommandNoFlagsUsesInteractiveForm(t *testing.T) {
 			RunID:            "run-task-form-001",
 			Mode:             string(core.ModePRDTasks),
 			Status:           "running",
-			PresentationMode: attachModeUI,
+			PresentationMode: attachModeStream,
 			StartedAt:        time.Date(2026, 4, 17, 13, 5, 30, 0, time.UTC),
 		},
 	}
@@ -1219,11 +1219,16 @@ func TestTasksRunCommandNoFlagsUsesInteractiveForm(t *testing.T) {
 		pollInterval:   time.Millisecond,
 	})
 
-	var attachedRunID string
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		attachedRunID = runID
-		return nil
-	}, nil)
+	var watchedRunID string
+	installTestCLIRunObservers(
+		t,
+		nil,
+		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
+			watchedRunID = runID
+			_, err := io.WriteString(dst, "run completed | succeeded=1 failed=0 canceled=0\n")
+			return err
+		},
+	)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -1245,21 +1250,25 @@ func TestTasksRunCommandNoFlagsUsesInteractiveForm(t *testing.T) {
 	if readyClient.startSlug != "demo" {
 		t.Fatalf("unexpected workflow slug from form: %q", readyClient.startSlug)
 	}
-	if readyClient.startRequest.PresentationMode != attachModeUI {
-		t.Fatalf("expected interactive attach mode to resolve to ui, got %q", readyClient.startRequest.PresentationMode)
+	if readyClient.startRequest.PresentationMode != attachModeStream {
+		t.Fatalf(
+			"expected interactive attach mode to resolve to stream, got %q",
+			readyClient.startRequest.PresentationMode,
+		)
 	}
-	if attachedRunID != "run-task-form-001" {
-		t.Fatalf("expected ui attach for run-task-form-001, got %q", attachedRunID)
+	if watchedRunID != "run-task-form-001" {
+		t.Fatalf("expected stream watch for run-task-form-001, got %q", watchedRunID)
 	}
 	if !strings.Contains(stderr, "preflight=ok") {
 		t.Fatalf("expected preflight success log on stderr, got %q", stderr)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout before ui attach, got %q", stdout)
+	if !strings.Contains(stdout, "task run started: run-task-form-001 (mode=stream)") ||
+		!strings.Contains(stdout, "run completed | succeeded=1 failed=0 canceled=0") {
+		t.Fatalf("unexpected tasks run stdout: %q", stdout)
 	}
 }
 
-func TestTasksRunCommandInteractiveUIModeAttachesThroughRemoteClient(t *testing.T) {
+func TestTasksRunCommandUIAliasStreamsThroughRemoteClient(t *testing.T) {
 	workspaceRoot, tasksDir := makeValidateTasksWorkspace(t, "demo")
 	writeRawTaskFileForCLI(t, tasksDir, "task_01.md", cliTaskMarkdown(
 		[]string{
@@ -1279,7 +1288,7 @@ func TestTasksRunCommandInteractiveUIModeAttachesThroughRemoteClient(t *testing.
 			RunID:            "run-task-ui-001",
 			Mode:             string(core.ModePRDTasks),
 			Status:           "running",
-			PresentationMode: attachModeUI,
+			PresentationMode: attachModeStream,
 			StartedAt:        time.Date(2026, 4, 17, 13, 6, 0, 0, time.UTC),
 		},
 	}
@@ -1308,11 +1317,16 @@ func TestTasksRunCommandInteractiveUIModeAttachesThroughRemoteClient(t *testing.
 		pollInterval:   time.Millisecond,
 	})
 
-	var attachedRunID string
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		attachedRunID = runID
-		return nil
-	}, nil)
+	var watchedRunID string
+	installTestCLIRunObservers(
+		t,
+		nil,
+		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
+			watchedRunID = runID
+			_, err := io.WriteString(dst, "run completed | succeeded=1 failed=0 canceled=0\n")
+			return err
+		},
+	)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -1325,25 +1339,27 @@ func TestTasksRunCommandInteractiveUIModeAttachesThroughRemoteClient(t *testing.
 		"run",
 		"--name",
 		"demo",
+		"--ui",
 	)
 	if err != nil {
-		t.Fatalf("execute tasks run interactive ui: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
+		t.Fatalf("execute tasks run ui alias: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
 	if !strings.Contains(stderr, "preflight=ok") {
 		t.Fatalf("expected preflight success log on stderr, got %q", stderr)
 	}
-	if readyClient.startRequest.PresentationMode != attachModeUI {
-		t.Fatalf("expected interactive attach mode to resolve to ui, got %q", readyClient.startRequest.PresentationMode)
+	if readyClient.startRequest.PresentationMode != attachModeStream {
+		t.Fatalf("expected ui alias to resolve to stream, got %q", readyClient.startRequest.PresentationMode)
 	}
-	if attachedRunID != "run-task-ui-001" {
-		t.Fatalf("expected ui attach for run-task-ui-001, got %q", attachedRunID)
+	if watchedRunID != "run-task-ui-001" {
+		t.Fatalf("expected stream watch for run-task-ui-001, got %q", watchedRunID)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout before ui attach, got %q", stdout)
+	if !strings.Contains(stdout, "task run started: run-task-ui-001 (mode=stream)") ||
+		!strings.Contains(stdout, "run completed | succeeded=1 failed=0 canceled=0") {
+		t.Fatalf("unexpected tasks run stdout: %q", stdout)
 	}
 }
 
-func TestTasksRunCommandExplicitUIFailsWithoutTTY(t *testing.T) {
+func TestTasksRunCommandExplicitUIStreamsWithoutTTY(t *testing.T) {
 	workspaceRoot, tasksDir := makeValidateTasksWorkspace(t, "demo")
 	writeRawTaskFileForCLI(t, tasksDir, "task_01.md", cliTaskMarkdown(
 		[]string{
@@ -1355,6 +1371,52 @@ func TestTasksRunCommandExplicitUIFailsWithoutTTY(t *testing.T) {
 		"# Task 1: Demo Task",
 	))
 	withWorkingDir(t, workspaceRoot)
+
+	readyClient := &stubDaemonCommandClient{
+		target: apiclient.Target{SocketPath: "/tmp/productize-daemon.sock"},
+		health: apicore.DaemonHealth{Ready: true},
+		startRun: apicore.Run{
+			RunID:            "run-task-ui-nontty-001",
+			Mode:             string(core.ModePRDTasks),
+			Status:           "running",
+			PresentationMode: attachModeStream,
+			StartedAt:        time.Date(2026, 4, 17, 13, 6, 30, 0, time.UTC),
+		},
+	}
+	installTestCLIDaemonBootstrap(t, cliDaemonBootstrap{
+		resolveHomePaths: func() (productizeconfig.HomePaths, error) {
+			return productizeconfig.HomePaths{InfoPath: "/tmp/productize-home/daemon.json"}, nil
+		},
+		readInfo: func(string) (daemon.Info, error) {
+			return daemon.Info{
+				PID:        4242,
+				SocketPath: "/tmp/productize-daemon.sock",
+				StartedAt:  time.Date(2026, 4, 17, 13, 6, 30, 0, time.UTC),
+				State:      daemon.ReadyStateReady,
+			}, nil
+		},
+		newClient: func(apiclient.Target) (daemonCommandClient, error) {
+			return readyClient, nil
+		},
+		launch: func(productizeconfig.HomePaths) error {
+			t.Fatal("expected healthy daemon probe to avoid launch")
+			return nil
+		},
+		sleep:          func(time.Duration) {},
+		now:            func() time.Time { return time.Date(2026, 4, 17, 13, 6, 30, 0, time.UTC) },
+		startupTimeout: time.Second,
+		pollInterval:   time.Millisecond,
+	})
+	var watchedRunID string
+	installTestCLIRunObservers(
+		t,
+		nil,
+		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
+			watchedRunID = runID
+			_, err := io.WriteString(dst, "run completed | succeeded=1 failed=0 canceled=0\n")
+			return err
+		},
+	)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return false }
@@ -1368,14 +1430,21 @@ func TestTasksRunCommandExplicitUIFailsWithoutTTY(t *testing.T) {
 		"demo",
 		"--ui",
 	)
-	if err == nil {
-		t.Fatalf("expected tasks run explicit ui failure\nstdout:\n%s\nstderr:\n%s", stdout, stderr)
+	if err != nil {
+		t.Fatalf("execute tasks run ui alias without tty: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout on explicit ui failure, got %q", stdout)
+	if readyClient.startRequest.PresentationMode != attachModeStream {
+		t.Fatalf("expected ui alias to resolve to stream, got %q", readyClient.startRequest.PresentationMode)
 	}
-	if !strings.Contains(stderr, "requires an interactive terminal for ui mode") {
-		t.Fatalf("unexpected explicit ui error output: %q", stderr)
+	if watchedRunID != "run-task-ui-nontty-001" {
+		t.Fatalf("expected stream watch for run-task-ui-nontty-001, got %q", watchedRunID)
+	}
+	if !strings.Contains(stderr, "preflight=ok") {
+		t.Fatalf("expected preflight success log on stderr, got %q", stderr)
+	}
+	if !strings.Contains(stdout, "task run started: run-task-ui-nontty-001 (mode=stream)") ||
+		!strings.Contains(stdout, "run completed | succeeded=1 failed=0 canceled=0") {
+		t.Fatalf("unexpected tasks run stdout: %q", stdout)
 	}
 }
 
@@ -1462,7 +1531,7 @@ func TestTasksRunCommandBootstrapFailureReturnsStableExitCode(t *testing.T) {
 	}
 }
 
-func TestRunsAttachCommandUsesRemoteUIAttach(t *testing.T) {
+func TestRunsAttachCommandStreamsRunEvents(t *testing.T) {
 	readyClient := &stubDaemonCommandClient{
 		target: apiclient.Target{SocketPath: "/tmp/productize-daemon.sock"},
 		health: apicore.DaemonHealth{Ready: true},
@@ -1492,11 +1561,19 @@ func TestRunsAttachCommandUsesRemoteUIAttach(t *testing.T) {
 		pollInterval:   time.Millisecond,
 	})
 
-	var attachedRunID string
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		attachedRunID = runID
-		return nil
-	}, nil)
+	var watchedRunID string
+	installTestCLIRunObservers(
+		t,
+		func(context.Context, daemonCommandClient, string) error {
+			t.Fatal("runs attach should use the watch stream path")
+			return nil
+		},
+		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
+			watchedRunID = runID
+			_, err := io.WriteString(dst, "run completed | all good\n")
+			return err
+		},
+	)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -1505,15 +1582,15 @@ func TestRunsAttachCommandUsesRemoteUIAttach(t *testing.T) {
 	if err != nil {
 		t.Fatalf("execute runs attach: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if attachedRunID != "run-attach-001" {
-		t.Fatalf("expected attach for run-attach-001, got %q", attachedRunID)
+	if watchedRunID != "run-attach-001" {
+		t.Fatalf("expected watch for run-attach-001, got %q", watchedRunID)
 	}
-	if stdout != "" || stderr != "" {
-		t.Fatalf("expected quiet attach command, got stdout=%q stderr=%q", stdout, stderr)
+	if stdout != "run completed | all good\n" || stderr != "" {
+		t.Fatalf("expected streamed run output, got stdout=%q stderr=%q", stdout, stderr)
 	}
 }
 
-func TestRunsAttachCommandFallsBackToWatchWhenRunIsAlreadySettled(t *testing.T) {
+func TestRunsAttachCommandUsesWatchForSettledRuns(t *testing.T) {
 	readyClient := &stubDaemonCommandClient{
 		target: apiclient.Target{SocketPath: "/tmp/productize-daemon.sock"},
 		health: apicore.DaemonHealth{Ready: true},
@@ -1543,15 +1620,12 @@ func TestRunsAttachCommandFallsBackToWatchWhenRunIsAlreadySettled(t *testing.T) 
 		pollInterval:   time.Millisecond,
 	})
 
-	var (
-		attachedRunID string
-		watchedRunID  string
-	)
+	var watchedRunID string
 	installTestCLIRunObservers(
 		t,
-		func(_ context.Context, _ daemonCommandClient, runID string) error {
-			attachedRunID = runID
-			return errRunSettledBeforeUIAttach
+		func(context.Context, daemonCommandClient, string) error {
+			t.Fatal("runs attach should not use interactive attach")
+			return nil
 		},
 		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
 			watchedRunID = runID
@@ -1567,11 +1641,8 @@ func TestRunsAttachCommandFallsBackToWatchWhenRunIsAlreadySettled(t *testing.T) 
 	if err != nil {
 		t.Fatalf("execute runs attach settled fallback: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if attachedRunID != "run-attach-001" {
-		t.Fatalf("expected attach attempt for run-attach-001, got %q", attachedRunID)
-	}
 	if watchedRunID != "run-attach-001" {
-		t.Fatalf("expected watch fallback for run-attach-001, got %q", watchedRunID)
+		t.Fatalf("expected watch for run-attach-001, got %q", watchedRunID)
 	}
 	if stdout != "run completed | completed\n" || stderr != "" {
 		t.Fatalf("expected replay stdout only, got stdout=%q stderr=%q", stdout, stderr)
@@ -1852,7 +1923,7 @@ func TestReviewsFixCommandNoFlagsUsesInteractiveForm(t *testing.T) {
 				RunID:            "run-review-form-001",
 				Mode:             string(core.ModePRReview),
 				Status:           "running",
-				PresentationMode: attachModeUI,
+				PresentationMode: attachModeStream,
 				StartedAt:        time.Date(2026, 4, 17, 13, 41, 0, 0, time.UTC),
 			},
 		},
@@ -1882,11 +1953,16 @@ func TestReviewsFixCommandNoFlagsUsesInteractiveForm(t *testing.T) {
 		pollInterval:   time.Millisecond,
 	})
 
-	var attachedRunID string
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		attachedRunID = runID
-		return nil
-	}, nil)
+	var watchedRunID string
+	installTestCLIRunObservers(
+		t,
+		nil,
+		func(_ context.Context, dst io.Writer, _ daemonCommandClient, runID string) error {
+			watchedRunID = runID
+			_, err := io.WriteString(dst, "run completed | succeeded=1 failed=0 canceled=0\n")
+			return err
+		},
+	)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -1919,14 +1995,21 @@ func TestReviewsFixCommandNoFlagsUsesInteractiveForm(t *testing.T) {
 			client.startReviewRound,
 		)
 	}
-	if client.startReviewReq.PresentationMode != attachModeUI {
-		t.Fatalf("expected interactive attach mode to resolve to ui, got %q", client.startReviewReq.PresentationMode)
+	if client.startReviewReq.PresentationMode != attachModeStream {
+		t.Fatalf(
+			"expected interactive attach mode to resolve to stream, got %q",
+			client.startReviewReq.PresentationMode,
+		)
 	}
-	if attachedRunID != "run-review-form-001" {
-		t.Fatalf("expected ui attach for run-review-form-001, got %q", attachedRunID)
+	if watchedRunID != "run-review-form-001" {
+		t.Fatalf("expected stream watch for run-review-form-001, got %q", watchedRunID)
 	}
-	if stdout != "" || stderr != "" {
-		t.Fatalf("expected quiet reviews fix form flow before ui attach, got stdout=%q stderr=%q", stdout, stderr)
+	if !strings.Contains(stdout, "task run started: run-review-form-001 (mode=stream)") ||
+		!strings.Contains(stdout, "run completed | succeeded=1 failed=0 canceled=0") {
+		t.Fatalf("unexpected reviews fix stdout: %q", stdout)
+	}
+	if stderr != "" {
+		t.Fatalf("expected no stderr for reviews fix stream startup, got %q", stderr)
 	}
 }
 

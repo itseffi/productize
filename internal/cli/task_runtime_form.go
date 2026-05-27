@@ -5,7 +5,6 @@ import (
 	"slices"
 	"strings"
 
-	"charm.land/huh/v2"
 	"github.com/itseffi/productize/internal/core/model"
 	"github.com/itseffi/productize/internal/core/tasks"
 	"github.com/spf13/cobra"
@@ -47,7 +46,7 @@ func collectTaskRunRuntimeForm(cmd *cobra.Command, state *commandState) error {
 	if err != nil || form == nil {
 		return err
 	}
-	if err := form.build().Run(); err != nil {
+	if err := form.run(newPromptSession(cmd)); err != nil {
 		return fmt.Errorf("task runtime form canceled or error: %w", err)
 	}
 	form.apply(state)
@@ -81,87 +80,78 @@ func newTaskRunRuntimeForm(state *commandState) (*taskRunRuntimeForm, error) {
 	return form, nil
 }
 
-func (f *taskRunRuntimeForm) build() *huh.Form {
-	groups := []*huh.Group{
-		huh.NewGroup(f.selectorFields()...).Title("Per-Task Runtime"),
-	}
-	for _, option := range f.typeOptions {
-		option := option
-		editor := f.typeEditors[option.Value]
-		groups = append(groups, huh.NewGroup(
-			taskRuntimeIDEField(
-				"type-"+option.Value+"-ide",
-				"IDE",
-				"Override the runtime for this task type",
-				&editor.IDE,
-			),
-			taskRuntimeModelField("type-"+option.Value+"-model", &editor.Model),
-			taskRuntimeReasoningField(
-				"type-"+option.Value+"-reasoning-effort",
-				"Reasoning Effort",
-				"Override reasoning for this task type",
-				&editor.ReasoningEffort,
-			),
-		).Title("Type: "+option.Label).Description("Applies to every task with this type.").WithHideFunc(func() bool {
-			return !slices.Contains(f.selectedTypes, option.Value)
-		}))
-	}
-	for _, option := range f.taskOptions {
-		option := option
-		editor := f.taskEditors[option.ID]
-		groups = append(groups, huh.NewGroup(
-			taskRuntimeIDEField(
-				"task-"+option.ID+"-ide",
-				"IDE",
-				"Override the runtime for this task only",
-				&editor.IDE,
-			),
-			taskRuntimeModelField("task-"+option.ID+"-model", &editor.Model),
-			taskRuntimeReasoningField(
-				"task-"+option.ID+"-reasoning-effort",
-				"Reasoning Effort",
-				"Override reasoning for this task only",
-				&editor.ReasoningEffort,
-			),
-		).Title("Task: "+option.Label).Description("Task-specific overrides win over type rules.").WithHideFunc(func() bool {
-			return !slices.Contains(f.selectedTasks, option.ID)
-		}))
-	}
-	return huh.NewForm(groups...).WithTheme(darkHuhTheme())
-}
-
-func (f *taskRunRuntimeForm) selectorFields() []huh.Field {
-	fields := []huh.Field{
-		huh.NewNote().
-			Title("Task Runtime Overrides").
-			Description(taskRuntimeSelectionDescription(f.baseRuntime)),
+func (f *taskRunRuntimeForm) run(session promptSession) error {
+	if err := session.writePromptHeader(
+		"Per-Task Runtime",
+		taskRuntimeSelectionDescription(f.baseRuntime),
+	); err != nil {
+		return err
 	}
 	if len(f.typeOptions) > 0 {
-		options := make([]huh.Option[string], 0, len(f.typeOptions))
+		options := make([]promptOption, 0, len(f.typeOptions))
 		for _, option := range f.typeOptions {
-			options = append(options, huh.NewOption(option.Label, option.Value))
+			options = append(options, promptOption{Label: option.Label, Value: option.Value})
 		}
-		fields = append(fields, huh.NewMultiSelect[string]().
-			Key("task-runtime-types").
-			Title("Task Types").
-			Description("Select task types to override in bulk.").
-			Options(options...).
-			Value(&f.selectedTypes))
+		selected, err := session.selectMany(
+			"Task Types",
+			"Select task types to override in bulk.",
+			options,
+			f.selectedTypes,
+		)
+		if err != nil {
+			return err
+		}
+		f.selectedTypes = selected
 	}
 	if len(f.taskOptions) > 0 {
-		options := make([]huh.Option[string], 0, len(f.taskOptions))
+		options := make([]promptOption, 0, len(f.taskOptions))
 		for _, option := range f.taskOptions {
-			options = append(options, huh.NewOption(option.Label, option.ID))
+			options = append(options, promptOption{Label: option.Label, Value: option.ID})
 		}
-		fields = append(fields, huh.NewMultiSelect[string]().
-			Key("task-runtime-tasks").
-			Title("Specific Tasks").
-			Description("Select individual tasks for exceptions or one-off runtime choices.").
-			Filterable(true).
-			Options(options...).
-			Value(&f.selectedTasks))
+		selected, err := session.selectMany(
+			"Specific Tasks",
+			"Select individual tasks for exceptions or one-off runtime choices.",
+			options,
+			f.selectedTasks,
+		)
+		if err != nil {
+			return err
+		}
+		f.selectedTasks = selected
 	}
-	return fields
+	for _, option := range f.typeOptions {
+		if !slices.Contains(f.selectedTypes, option.Value) {
+			continue
+		}
+		editor := f.typeEditors[option.Value]
+		if err := promptTaskRuntimeEditor(
+			session,
+			"Type: "+option.Label,
+			"Applies to every task with this type.",
+			"Override the runtime for this task type",
+			"Override reasoning for this task type",
+			editor,
+		); err != nil {
+			return err
+		}
+	}
+	for _, option := range f.taskOptions {
+		if !slices.Contains(f.selectedTasks, option.ID) {
+			continue
+		}
+		editor := f.taskEditors[option.ID]
+		if err := promptTaskRuntimeEditor(
+			session,
+			"Task: "+option.Label,
+			"Task-specific overrides win over type rules.",
+			"Override the runtime for this task only",
+			"Override reasoning for this task only",
+			editor,
+		); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func indexTaskRuntimeRules(
@@ -314,47 +304,53 @@ func taskRuntimeEditorFromRule(rule model.TaskRuntimeRule) *taskRuntimeEditor {
 	return editor
 }
 
-func taskRuntimeIDEField(key, title, description string, target *string) huh.Field {
-	return huh.NewSelect[string]().
-		Key(key).
-		Title(title).
-		Description(description).
-		Options(taskRuntimeIDEOptions()...).
-		Value(target)
+func promptTaskRuntimeEditor(
+	session promptSession,
+	title string,
+	description string,
+	ideDescription string,
+	reasoningDescription string,
+	editor *taskRuntimeEditor,
+) error {
+	if editor == nil {
+		return nil
+	}
+	if err := session.writePromptHeader(title, description); err != nil {
+		return err
+	}
+	ide, err := session.selectOne("IDE", ideDescription, taskRuntimeIDEOptions(), editor.IDE)
+	if err != nil {
+		return err
+	}
+	editor.IDE = ide
+	modelName, err := session.input(
+		"Model",
+		"Leave empty to inherit from the current default or type rule.",
+		"inherit default",
+		editor.Model,
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+	editor.Model = modelName
+	reasoning, err := session.selectOne(
+		"Reasoning Effort",
+		reasoningDescription,
+		reasoningPromptOptions(true),
+		editor.ReasoningEffort,
+	)
+	if err != nil {
+		return err
+	}
+	editor.ReasoningEffort = reasoning
+	return nil
 }
 
-func taskRuntimeModelField(key string, target *string) huh.Field {
-	return huh.NewInput().
-		Key(key).
-		Title("Model").
-		Placeholder("inherit default").
-		Description("Leave empty to inherit from the current default or type rule.").
-		Value(target)
-}
-
-func taskRuntimeReasoningField(key, title, description string, target *string) huh.Field {
-	return huh.NewSelect[string]().
-		Key(key).
-		Title(title).
-		Description(description).
-		Options(taskRuntimeReasoningOptions()...).
-		Value(target)
-}
-
-func taskRuntimeIDEOptions() []huh.Option[string] {
-	options := []huh.Option[string]{huh.NewOption("Inherit default", "")}
+func taskRuntimeIDEOptions() []promptOption {
+	options := []promptOption{{Label: "Inherit default", Value: ""}}
 	options = append(options, ideCatalogOptions()...)
 	return options
-}
-
-func taskRuntimeReasoningOptions() []huh.Option[string] {
-	return []huh.Option[string]{
-		huh.NewOption("Inherit default", ""),
-		huh.NewOption("Low", "low"),
-		huh.NewOption("Medium", "medium"),
-		huh.NewOption("High", "high"),
-		huh.NewOption("Extra High", "xhigh"),
-	}
 }
 
 func taskRuntimeSelectionDescription(baseRuntime string) string {

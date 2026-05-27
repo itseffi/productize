@@ -8,9 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"charm.land/lipgloss/v2"
 	"github.com/itseffi/productize"
-	"github.com/itseffi/productize/internal/charmtheme"
 	"github.com/itseffi/productize/internal/core/model"
 	"github.com/itseffi/productize/internal/update"
 	"github.com/itseffi/productize/internal/version"
@@ -129,24 +127,16 @@ func waitForUpdateResult(result <-chan *update.ReleaseInfo) *update.ReleaseInfo 
 }
 
 func renderUpdateNotification(currentVersion string, release *update.ReleaseInfo) string {
-	styles := updateNotificationStyles{
-		header:  lipgloss.NewStyle().Bold(true).Foreground(charmtheme.ColorWarning),
-		current: lipgloss.NewStyle().Bold(true).Foreground(charmtheme.ColorMuted),
-		arrow:   lipgloss.NewStyle().Foreground(charmtheme.ColorMuted),
-		latest:  lipgloss.NewStyle().Bold(true).Foreground(charmtheme.ColorBrand),
-		body:    lipgloss.NewStyle().Foreground(charmtheme.ColorMuted),
-	}
-
 	lineOne := fmt.Sprintf(
 		"%s %s %s %s",
-		styles.header.Render("Update available:"),
-		styles.current.Render(strings.TrimSpace(currentVersion)),
-		styles.arrow.Render("->"),
-		styles.latest.Render(release.Version),
+		"Update available:",
+		strings.TrimSpace(currentVersion),
+		"->",
+		release.Version,
 	)
-	lineTwo := styles.body.Render("Run 'productize upgrade' to update")
+	lineTwo := "Run 'productize upgrade' to update"
 
-	return lipgloss.JoinVertical(lipgloss.Left, lineOne, lineTwo)
+	return lineOne + "\n" + lineTwo
 }
 
 func writeUpdateNotification(w io.Writer, currentVersion string, release *update.ReleaseInfo) error {
@@ -173,12 +163,4 @@ func shouldWriteUpdateNotification(cmd *cobra.Command) bool {
 	default:
 		return true
 	}
-}
-
-type updateNotificationStyles struct {
-	header  lipgloss.Style
-	current lipgloss.Style
-	arrow   lipgloss.Style
-	latest  lipgloss.Style
-	body    lipgloss.Style
 }

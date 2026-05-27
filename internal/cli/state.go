@@ -224,7 +224,7 @@ func addCommonFlags(cmd *cobra.Command, state *commandState, opts commonFlagOpti
 		&state.tailLines,
 		"tail-lines",
 		0,
-		"Maximum number of log lines to retain in UI per job (0 = full history)",
+		"Maximum number of log lines to retain per job in run snapshots (0 = full history)",
 	)
 	cmd.Flags().StringVar(
 		&state.reasoningEffort,
@@ -379,9 +379,9 @@ func (s *commandState) enableExecutableExtensions() bool {
 	}
 }
 
-func (s *commandState) normalizePresentationMode(cmd *cobra.Command) error {
+func (s *commandState) normalizePresentationMode(_ *cobra.Command) {
 	if s == nil || !s.isWorkflowExecutionCommand() {
-		return nil
+		return
 	}
 
 	outputFormat := strings.TrimSpace(s.outputFormat)
@@ -390,35 +390,12 @@ func (s *commandState) normalizePresentationMode(cmd *cobra.Command) error {
 		s.outputFormat = outputFormat
 	}
 
-	tuiExplicit := commandFlagChanged(cmd, "tui") || s.hasConfiguredWorkflowTUI()
 	if isJSONOutputFormat(outputFormat) {
-		if s.tui && tuiExplicit {
-			return errors.New("tui mode is not supported with json or raw-json output")
-		}
 		s.tui = false
-		return nil
+		return
 	}
 
-	isInteractive := s.isInteractive
-	if isInteractive == nil {
-		isInteractive = isInteractiveTerminal
-	}
-
-	if !isInteractive() {
-		if s.tui && tuiExplicit {
-			return fmt.Errorf(
-				"%s requires an interactive terminal for tui mode; rerun with --tui=false",
-				cmd.CommandPath(),
-			)
-		}
-		s.tui = false
-		return nil
-	}
-
-	if !tuiExplicit {
-		s.tui = true
-	}
-	return nil
+	s.tui = false
 }
 
 func (s *commandState) isWorkflowExecutionCommand() bool {
@@ -428,20 +405,6 @@ func (s *commandState) isWorkflowExecutionCommand() bool {
 	switch s.kind {
 	case commandKindTasksRun, commandKindFixReviews, commandKindWatchReviews:
 		return true
-	default:
-		return false
-	}
-}
-
-func (s *commandState) hasConfiguredWorkflowTUI() bool {
-	if s == nil {
-		return false
-	}
-	switch s.kind {
-	case commandKindTasksRun:
-		return s.projectConfig.Tasks.Run.TUI != nil
-	case commandKindFixReviews:
-		return s.projectConfig.FixReviews.TUI != nil
 	default:
 		return false
 	}

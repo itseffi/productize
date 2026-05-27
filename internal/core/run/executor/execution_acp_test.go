@@ -582,11 +582,16 @@ func TestExecuteJobWithTimeoutUsesContextBackstop(t *testing.T) {
 
 func TestExecuteJobWithTimeoutActiveACPUpdatesExtendTimeout(t *testing.T) {
 	tmpDir := t.TempDir()
+	const (
+		activityInterval = 50 * time.Millisecond
+		activityTimeout  = 500 * time.Millisecond
+		updateCount      = 12
+	)
 	activeClient := newFakeACPClient(func(_ context.Context, _ agent.SessionRequest) (agent.Session, error) {
 		session := newFakeACPSession("sess-active")
 		go func() {
-			for i := 0; i < 6; i++ {
-				time.Sleep(20 * time.Millisecond)
+			for i := 0; i < updateCount; i++ {
+				time.Sleep(activityInterval)
 				session.publish(model.SessionUpdate{
 					Kind: model.UpdateKindPlanUpdated,
 					PlanEntries: []model.SessionPlanEntry{{
@@ -616,7 +621,7 @@ func TestExecuteJobWithTimeoutActiveACPUpdatesExtendTimeout(t *testing.T) {
 		tmpDir,
 		false,
 		0,
-		50*time.Millisecond,
+		activityTimeout,
 		nil,
 		nil,
 		nil,

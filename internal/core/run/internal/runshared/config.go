@@ -88,7 +88,7 @@ func (cfg *Config) HumanOutputEnabled() bool {
 }
 
 func (cfg *Config) UIEnabled() bool {
-	return cfg != nil && cfg.TUI && cfg.HumanOutputEnabled() && !cfg.DryRun
+	return false
 }
 
 func (cfg *Config) EventStreamEnabled() bool {

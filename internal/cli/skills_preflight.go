@@ -5,7 +5,6 @@ import (
 	"slices"
 	"strings"
 
-	"charm.land/huh/v2"
 	core "github.com/itseffi/productize/internal/core"
 	"github.com/itseffi/productize/internal/core/agent"
 	"github.com/itseffi/productize/internal/setup"
@@ -324,20 +323,17 @@ func confirmSkillRefreshPrompt(cmd *cobra.Command, prompt skillRefreshPrompt) (b
 		strings.Join(prompt.DriftedSkills, ", "),
 	)
 
-	confirmed := false
-	field := huh.NewConfirm().
-		Key("confirm").
-		Title("Update required Productize skills now?").
-		Description(
-			fmt.Sprintf(
-				"Runs the equivalent of `productize setup --agent %s%s` before %s continues.",
-				prompt.AgentName,
-				scopeInstallFlag(prompt.Scope),
-				prompt.CommandPath,
-			),
-		).
-		Value(&confirmed)
-	if err := runPromptField(field); err != nil {
+	confirmed, err := newPromptSession(cmd).confirm(
+		"Update required Productize skills now?",
+		fmt.Sprintf(
+			"Runs the equivalent of `productize setup --agent %s%s` before %s continues.",
+			prompt.AgentName,
+			scopeInstallFlag(prompt.Scope),
+			prompt.CommandPath,
+		),
+		false,
+	)
+	if err != nil {
 		return false, fmt.Errorf("confirm bundled skill refresh: %w", err)
 	}
 	return confirmed, nil

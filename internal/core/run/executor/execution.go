@@ -260,7 +260,7 @@ func finalizeExecution(
 			Summary: hookRunSummary(result),
 		},
 	)
-	return nil
+	return waitForPendingObserverHooks(ctx, internalCfg.RuntimeManager)
 }
 
 func waitForPendingObserverHooks(ctx context.Context, manager model.RuntimeManager) error {

@@ -2,7 +2,9 @@ package extension
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -10,12 +12,15 @@ import (
 	"strings"
 	"syscall"
 
-	huh "charm.land/huh/v2"
-
 	extensions "github.com/itseffi/productize/internal/core/extension"
 	"github.com/itseffi/productize/internal/core/kernel"
 	"github.com/itseffi/productize/internal/core/workspace"
 	"github.com/spf13/cobra"
+)
+
+const (
+	promptBoolTrue  = "true"
+	promptBoolFalse = "false"
 )
 
 type discoverRequest struct {
@@ -287,8 +292,70 @@ func pathExists(path string) (bool, error) {
 	return false, err
 }
 
-func runPromptField(field huh.Field) error {
-	return huh.NewForm(huh.NewGroup(field)).Run()
+func runPromptConfirm(cmd *cobra.Command, title string, description string, defaultValue bool) (bool, error) {
+	if cmd == nil {
+		return false, fmt.Errorf("command is required")
+	}
+	if strings.TrimSpace(title) != "" {
+		if _, err := fmt.Fprintln(cmd.OutOrStdout(), title); err != nil {
+			return false, err
+		}
+	}
+	if strings.TrimSpace(description) != "" {
+		if _, err := fmt.Fprintln(cmd.OutOrStdout(), description); err != nil {
+			return false, err
+		}
+	}
+	defaultLabel := "y/N"
+	if defaultValue {
+		defaultLabel = "Y/n"
+	}
+	if _, err := fmt.Fprintf(cmd.OutOrStdout(), "Confirm [%s]: ", defaultLabel); err != nil {
+		return false, err
+	}
+	line, err := readPromptLine(cmd.InOrStdin())
+	if err != nil {
+		return false, err
+	}
+	switch strings.ToLower(strings.TrimSpace(line)) {
+	case "":
+		return defaultValue, nil
+	case "y", "yes", promptBoolTrue, "1":
+		return true, nil
+	case "n", "no", promptBoolFalse, "0":
+		return false, nil
+	default:
+		return false, fmt.Errorf("expected yes or no, got %q", strings.TrimSpace(line))
+	}
+}
+
+func readPromptLine(r io.Reader) (string, error) {
+	if r == nil {
+		return "", io.EOF
+	}
+	var builder strings.Builder
+	var buf [1]byte
+	for {
+		n, err := r.Read(buf[:])
+		if n > 0 {
+			switch buf[0] {
+			case '\n':
+				return builder.String(), nil
+			case '\r':
+				continue
+			default:
+				if err := builder.WriteByte(buf[0]); err != nil {
+					return "", err
+				}
+			}
+		}
+		if err != nil {
+			if errors.Is(err, io.EOF) && builder.Len() > 0 {
+				return builder.String(), nil
+			}
+			return "", err
+		}
+	}
 }
 
 func isInteractiveTerminal() bool {

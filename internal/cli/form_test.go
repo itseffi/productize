@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"charm.land/huh/v2"
 	core "github.com/itseffi/productize/internal/core"
 	"github.com/itseffi/productize/internal/core/agent"
 	"github.com/itseffi/productize/internal/core/model"
@@ -101,7 +100,7 @@ func TestWatchReviewsFormCollectsReviewWatchInputs(t *testing.T) {
 
 	keys := make(map[string]struct{}, len(builder.fields))
 	for _, field := range builder.fields {
-		key := field.GetKey()
+		key := field.key
 		if key != "" {
 			keys[key] = struct{}{}
 		}
@@ -445,38 +444,24 @@ func TestFormSelectOptionsOmitRecommendedSuffixes(t *testing.T) {
 	t.Run("ide field", func(t *testing.T) {
 		t.Parallel()
 
-		var selected string
-		builder := newFormBuilder(
-			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
-			newCommandState(commandKindTasksRun, core.ModePRDTasks),
-		)
-		builder.addIDEField(&selected)
-
-		view := renderSingleFormFieldForTest(t, builder.fields, "ide")
-		if !strings.Contains(view, "Codex") {
-			t.Fatalf("expected IDE selector to contain Codex, got %q", view)
+		labels := promptOptionLabels(ideCatalogOptions())
+		if !slices.Contains(labels, "Codex") {
+			t.Fatalf("expected IDE options to contain Codex, got %v", labels)
 		}
-		if strings.Contains(view, "Codex (recommended)") {
-			t.Fatalf("expected IDE selector to omit recommended suffix, got %q", view)
+		if slices.Contains(labels, "Codex (recommended)") {
+			t.Fatalf("expected IDE options to omit recommended suffix, got %v", labels)
 		}
 	})
 
 	t.Run("reasoning effort field", func(t *testing.T) {
 		t.Parallel()
 
-		var selected string
-		builder := newFormBuilder(
-			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
-			newCommandState(commandKindTasksRun, core.ModePRDTasks),
-		)
-		builder.addReasoningEffortField(&selected)
-
-		view := renderSingleFormFieldForTest(t, builder.fields, "reasoning-effort")
-		if !strings.Contains(view, "Medium") {
-			t.Fatalf("expected reasoning selector to contain Medium, got %q", view)
+		labels := promptOptionLabels(reasoningPromptOptions(false))
+		if !slices.Contains(labels, "Medium") {
+			t.Fatalf("expected reasoning options to contain Medium, got %v", labels)
 		}
-		if strings.Contains(view, "Medium (recommended)") {
-			t.Fatalf("expected reasoning selector to omit recommended suffix, got %q", view)
+		if slices.Contains(labels, "Medium (recommended)") {
+			t.Fatalf("expected reasoning options to omit recommended suffix, got %v", labels)
 		}
 	})
 }
@@ -517,13 +502,10 @@ func TestFormSelectOptionsIncludeExtensionCatalogEntries(t *testing.T) {
 			t.Fatalf("expected IDE field to be registered, got %d fields", len(builder.fields))
 		}
 		field := builder.fields[0]
-		if got := field.GetKey(); got != "ide" {
+		if got := field.key; got != "ide" {
 			t.Fatalf("field key = %q, want %q", got, "ide")
 		}
-		if got := field.GetValue(); got != selected {
-			t.Fatalf("field value = %#v, want %q", got, selected)
-		}
-		assertFieldViewContains(t, field, "Mock ACP")
+		assertPromptOptionsContain(t, ideCatalogOptions(), "Mock ACP")
 	})
 
 	t.Run("ShouldRenderOverlayProviderInTheSelectField", func(t *testing.T) {
@@ -537,27 +519,30 @@ func TestFormSelectOptionsIncludeExtensionCatalogEntries(t *testing.T) {
 			t.Fatalf("expected provider field to be registered, got %d fields", len(builder.fields))
 		}
 		field := builder.fields[0]
-		if got := field.GetKey(); got != "provider" {
+		if got := field.key; got != "provider" {
 			t.Fatalf("field key = %q, want %q", got, "provider")
 		}
-		if got := field.GetValue(); got != selected {
-			t.Fatalf("field value = %#v, want %q", got, selected)
-		}
-		assertFieldViewContains(t, field, "Extension Review")
+		assertPromptOptionsContain(t, providerCatalogOptions(), "Extension Review")
 	})
 }
 
-func assertFieldViewContains(t *testing.T, field huh.Field, wants ...string) {
+func assertPromptOptionsContain(t *testing.T, options []promptOption, wants ...string) {
 	t.Helper()
 
-	field = field.WithWidth(120).WithHeight(24)
-	_ = field.Focus()
-	view := field.View()
+	labels := promptOptionLabels(options)
 	for _, want := range wants {
-		if !strings.Contains(view, want) {
-			t.Fatalf("expected field view to contain %q, got:\n%s", want, view)
+		if !slices.Contains(labels, want) {
+			t.Fatalf("expected options to contain %q, got %v", want, labels)
 		}
 	}
+}
+
+func promptOptionLabels(options []promptOption) []string {
+	labels := make([]string, 0, len(options))
+	for _, option := range options {
+		labels = append(labels, option.Label)
+	}
+	return labels
 }
 
 func formFieldKeys(cmd *cobra.Command, state *commandState) map[string]struct{} {
@@ -572,7 +557,7 @@ func formFieldKeysWithBaseDir(cmd *cobra.Command, state *commandState, baseDir s
 
 	keys := make(map[string]struct{}, len(builder.fields))
 	for _, field := range builder.fields {
-		key := field.GetKey()
+		key := field.key
 		if key == "" {
 			continue
 		}
@@ -620,20 +605,4 @@ func writeFormTaskFile(t *testing.T, workflowDir, name, status string) {
 	if err := os.WriteFile(filepath.Join(workflowDir, name), []byte(content), 0o600); err != nil {
 		t.Fatalf("write %s: %v", name, err)
 	}
-}
-
-func renderSingleFormFieldForTest(t *testing.T, fields []huh.Field, key string) string {
-	t.Helper()
-
-	for _, field := range fields {
-		if field.GetKey() != key {
-			continue
-		}
-		field = field.WithTheme(darkHuhTheme()).WithWidth(80).WithHeight(8)
-		_ = field.Focus()
-		return field.View()
-	}
-
-	t.Fatalf("field %q not found", key)
-	return ""
 }

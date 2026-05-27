@@ -9,8 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"charm.land/huh/v2"
-	"charm.land/lipgloss/v2"
 	"github.com/itseffi/productize/internal/core/kernel"
 	"github.com/itseffi/productize/internal/setup"
 	"github.com/spf13/cobra"
@@ -221,7 +219,7 @@ func (s *setupCommandState) buildInstallPlan(
 		return setup.InstallConfig{}, nil, nil, err
 	}
 
-	selectedAgents, err := s.resolveAgentSelection(supportedAgents, detectedAgents)
+	selectedAgents, err := s.resolveAgentSelection(cmd, supportedAgents, detectedAgents)
 	if err != nil {
 		return setup.InstallConfig{}, nil, nil, err
 	}
@@ -270,7 +268,7 @@ func (s *setupCommandState) confirmPlan(
 	}
 
 	printPreviewSummary(cmd, previews, reusableAgentPreviews, global, mode)
-	confirmed, err := confirmSetup()
+	confirmed, err := confirmSetup(cmd)
 	if err != nil {
 		return err
 	}
@@ -345,6 +343,7 @@ func (s *setupCommandState) resolveSkillSelection(skills []setup.Skill) []string
 }
 
 func (s *setupCommandState) resolveAgentSelection(
+	cmd *cobra.Command,
 	supported []setup.Agent,
 	detected []setup.Agent,
 ) ([]string, error) {
@@ -362,33 +361,29 @@ func (s *setupCommandState) resolveAgentSelection(
 	}
 
 	preselected := defaultAgentSelection(supported, detected)
-	options := make([]huh.Option[string], 0, len(supported))
+	options := make([]promptOption, 0, len(supported))
 	for _, agent := range supported {
 		scopeHint := agent.ProjectRootDir
 		if agent.Universal {
 			scopeHint = ".agents/skills"
 		}
 		label := fmt.Sprintf("%s [%s]", agent.DisplayName, scopeHint)
-		options = append(options, huh.NewOption(label, agent.Name))
+		options = append(options, promptOption{Label: label, Value: agent.Name})
 	}
 
-	field := huh.NewMultiSelect[string]().
-		Key("agents").
-		Title("Target Agents").
-		Description("Select the editors/agents where Productize should install skills").
-		Options(options...).
-		Value(&preselected).
-		Limit(len(supported)).
-		Validate(func(values []string) error {
-			if len(values) == 0 {
-				return errors.New("select at least one agent")
-			}
-			return nil
-		})
-	if err := runPromptField(field); err != nil {
+	selected, err := newPromptSession(cmd).selectMany(
+		"Target Agents",
+		"Select the editors/agents where Productize should install skills",
+		options,
+		preselected,
+	)
+	if err != nil {
 		return nil, fmt.Errorf("select target agents: %w", err)
 	}
-	return preselected, nil
+	if len(selected) == 0 {
+		return nil, errors.New("select at least one agent")
+	}
+	return selected, nil
 }
 
 func (s *setupCommandState) resolveScope(cmd *cobra.Command, agents []string) (bool, error) {
@@ -399,17 +394,16 @@ func (s *setupCommandState) resolveScope(cmd *cobra.Command, agents []string) (b
 		return false, errors.New("resolve installation scope: no agents selected")
 	}
 
-	selection := "project"
-	field := huh.NewSelect[string]().
-		Key("scope").
-		Title("Installation Scope").
-		Description("Choose whether skills and reusable agents are shared per project or available globally").
-		Options(
-			huh.NewOption("Project (recommended)", "project"),
-			huh.NewOption("Global", "global"),
-		).
-		Value(&selection)
-	if err := runPromptField(field); err != nil {
+	selection, err := newPromptSession(cmd).selectOne(
+		"Installation Scope",
+		"Choose whether skills and reusable agents are shared per project or available globally",
+		[]promptOption{
+			{Label: "Project (recommended)", Value: "project"},
+			{Label: "Global", Value: "global"},
+		},
+		"project",
+	)
+	if err != nil {
 		return false, fmt.Errorf("select installation scope: %w", err)
 	}
 	return selection == "global", nil
@@ -448,17 +442,16 @@ func (s *setupCommandState) resolveInstallMode(
 		return setup.InstallModeSymlink, nil
 	}
 
-	selection := string(setup.InstallModeSymlink)
-	field := huh.NewSelect[string]().
-		Key("mode").
-		Title("Installation Method").
-		Description("Symlink keeps one canonical copy; copy duplicates files into each agent directory").
-		Options(
-			huh.NewOption("Symlink (recommended)", string(setup.InstallModeSymlink)),
-			huh.NewOption("Copy", string(setup.InstallModeCopy)),
-		).
-		Value(&selection)
-	if err := runPromptField(field); err != nil {
+	selection, err := newPromptSession(cmd).selectOne(
+		"Installation Method",
+		"Symlink keeps one canonical copy; copy duplicates files into each agent directory",
+		[]promptOption{
+			{Label: "Symlink (recommended)", Value: string(setup.InstallModeSymlink)},
+			{Label: "Copy", Value: string(setup.InstallModeCopy)},
+		},
+		string(setup.InstallModeSymlink),
+	)
+	if err != nil {
 		return "", fmt.Errorf("select installation method: %w", err)
 	}
 	return setup.InstallMode(selection), nil
@@ -468,13 +461,13 @@ func (s *setupCommandState) resolveInstallMode(
 
 func printWelcomeHeader(cmd *cobra.Command) {
 	styles := newCLIChromeStyles()
-	content := lipgloss.JoinVertical(
-		lipgloss.Left,
-		styles.title.Render("PRODUCTIZE // SETUP"),
-		styles.subtitle.Render("Install the full Productize catalog plus scoped reusable agents"),
+	content := styles.title.Render(
+		"PRODUCTIZE // SETUP",
+	) + "\n" + styles.subtitle.Render(
+		"Install the full Productize catalog plus scoped reusable agents",
 	)
 
-	lipgloss.Fprintln(cmd.OutOrStdout(), styles.box.Render(content))
+	fmt.Fprintln(cmd.OutOrStdout(), styles.box.Render(content))
 }
 
 func printSetupAssets(
@@ -497,7 +490,7 @@ func printSetupAssets(
 			}
 		}
 
-		lipgloss.Fprintln(cmd.OutOrStdout(), styles.sectionTitle.Render("Setup Skills"))
+		fmt.Fprintln(cmd.OutOrStdout(), styles.sectionTitle.Render("Setup Skills"))
 
 		for i := range skills {
 			skill := &skills[i]
@@ -506,7 +499,7 @@ func printSetupAssets(
 				"[" + setupAssetSourceLabel(skill.Origin, skill.ExtensionSource, skill.ExtensionName) + "]",
 			)
 			desc := styles.path.Render(skill.Description)
-			lipgloss.Fprintf(cmd.OutOrStdout(), "  %s  %s  %s\n", name, source, desc)
+			fmt.Fprintf(cmd.OutOrStdout(), "  %s  %s  %s\n", name, source, desc)
 		}
 	}
 
@@ -522,7 +515,7 @@ func printSetupAssets(
 			}
 		}
 
-		lipgloss.Fprintln(cmd.OutOrStdout(), styles.sectionTitle.Render("Reusable Agents"))
+		fmt.Fprintln(cmd.OutOrStdout(), styles.sectionTitle.Render("Reusable Agents"))
 		for i := range reusableAgents {
 			reusableAgent := &reusableAgents[i]
 			name := styles.agent.Render(padRight(reusableAgent.Name, maxNameLen))
@@ -534,7 +527,7 @@ func printSetupAssets(
 				) + "]",
 			)
 			desc := styles.path.Render(reusableAgent.Description)
-			lipgloss.Fprintf(cmd.OutOrStdout(), "  %s  %s  %s\n", name, source, desc)
+			fmt.Fprintf(cmd.OutOrStdout(), "  %s  %s  %s\n", name, source, desc)
 		}
 	}
 
@@ -549,9 +542,9 @@ func printSetupWarnings(cmd *cobra.Command, conflicts []setup.CatalogConflict) {
 	styles := newCLIChromeStyles()
 	w := cmd.OutOrStdout()
 	fmt.Fprintln(w)
-	lipgloss.Fprintln(w, styles.sectionTitle.Render("Warnings"))
+	fmt.Fprintln(w, styles.sectionTitle.Render("Warnings"))
 	for i := range conflicts {
-		lipgloss.Fprintf(w, "  %s  %s\n", styles.warn.Render("!"), formatSetupCatalogConflict(conflicts[i]))
+		fmt.Fprintf(w, "  %s  %s\n", styles.warn.Render("!"), formatSetupCatalogConflict(conflicts[i]))
 	}
 }
 
@@ -570,13 +563,13 @@ func printPreviewSummary(
 	cwd, homeDir := displayRoots()
 
 	w := cmd.OutOrStdout()
-	lipgloss.Fprintln(w, styles.sectionTitle.Render("Installation Summary"))
+	fmt.Fprintln(w, styles.sectionTitle.Render("Installation Summary"))
 	fmt.Fprintln(w)
 
-	lipgloss.Fprintf(w, "  %s  %s\n", styles.label.Render("Scope "), styles.value.Render(scopeLabel(global)))
-	lipgloss.Fprintf(w, "  %s  %s\n", styles.label.Render("Method"), styles.value.Render(string(mode)))
+	fmt.Fprintf(w, "  %s  %s\n", styles.label.Render("Scope "), styles.value.Render(scopeLabel(global)))
+	fmt.Fprintf(w, "  %s  %s\n", styles.label.Render("Method"), styles.value.Render(string(mode)))
 	fmt.Fprintln(w)
-	lipgloss.Fprintln(w, styles.separator.Render("  "+strings.Repeat("─", 50)))
+	fmt.Fprintln(w, styles.separator.Render("  "+strings.Repeat("─", 50)))
 	fmt.Fprintln(w)
 
 	maxSkillLen := 0
@@ -606,12 +599,12 @@ func printPreviewSummary(
 		if preview.WillOverwrite {
 			line += "  " + styles.warn.Render("[overwrite]")
 		}
-		lipgloss.Fprintln(w, line)
+		fmt.Fprintln(w, line)
 	}
 
 	if len(reusableAgentPreviews) > 0 {
 		fmt.Fprintln(w)
-		lipgloss.Fprintln(w, styles.sectionTitle.Render(reusableAgentSectionTitle(global)))
+		fmt.Fprintln(w, styles.sectionTitle.Render(reusableAgentSectionTitle(global)))
 		fmt.Fprintln(w)
 
 		maxReusableAgentLen := 0
@@ -630,7 +623,7 @@ func printPreviewSummary(
 			if preview.WillOverwrite {
 				line += "  " + styles.warn.Render("[overwrite]")
 			}
-			lipgloss.Fprintln(w, line)
+			fmt.Fprintln(w, line)
 		}
 	}
 	fmt.Fprintln(w)
@@ -647,7 +640,7 @@ func printInstallResult(cmd *cobra.Command, result *setup.Result) {
 	printSkillInstallSuccesses(w, styles, result.Successful, cwd, homeDir, maxSkillLen, maxAgentLen)
 	if len(result.Successful) > 0 && len(result.Failed) > 0 {
 		fmt.Fprintln(w)
-		lipgloss.Fprintln(w, styles.separator.Render("  "+strings.Repeat("─", 50)))
+		fmt.Fprintln(w, styles.separator.Render("  "+strings.Repeat("─", 50)))
 	}
 	printSkillInstallFailures(w, styles, result.Failed, cwd, homeDir, maxSkillLen, maxAgentLen)
 
@@ -655,7 +648,7 @@ func printInstallResult(cmd *cobra.Command, result *setup.Result) {
 	hasReusableAgentResults := len(result.ReusableAgentsSuccessful) > 0 || len(result.ReusableAgentsFailed) > 0
 	if hasSkillResults && hasReusableAgentResults {
 		fmt.Fprintln(w)
-		lipgloss.Fprintln(w, styles.separator.Render("  "+strings.Repeat("─", 50)))
+		fmt.Fprintln(w, styles.separator.Render("  "+strings.Repeat("─", 50)))
 		fmt.Fprintln(w)
 	}
 	printReusableAgentInstallResults(w, styles, result, cwd, homeDir)
@@ -673,7 +666,7 @@ func printSkillInstallSuccesses(
 		return
 	}
 
-	lipgloss.Fprintln(w, styles.successHeader.Render(
+	fmt.Fprintln(w, styles.successHeader.Render(
 		fmt.Sprintf("  ✓ Installed (%d)", len(successful)),
 	))
 	fmt.Fprintln(w)
@@ -690,7 +683,7 @@ func printSkillInstallSuccesses(
 		if item.Mode == setup.InstallModeSymlink && item.SymlinkFailed {
 			line += "  " + styles.warn.Render("[copied after symlink failure]")
 		}
-		lipgloss.Fprintln(w, line)
+		fmt.Fprintln(w, line)
 	}
 }
 
@@ -705,7 +698,7 @@ func printSkillInstallFailures(
 		return
 	}
 
-	lipgloss.Fprintln(w, styles.failureHeader.Render(
+	fmt.Fprintln(w, styles.failureHeader.Render(
 		fmt.Sprintf("  ✗ Failed (%d)", len(failed)),
 	))
 	fmt.Fprintln(w)
@@ -718,8 +711,8 @@ func printSkillInstallFailures(
 		agent := styles.agent.Render(padRight(item.Agent.DisplayName, maxAgentLen))
 		path := styles.path.Render(shortenPath(item.Path, cwd, homeDir))
 
-		lipgloss.Fprintf(w, "    %s  %s  %s  %s  %s\n", icon, name, arrow, agent, path)
-		lipgloss.Fprintf(w, "       %s\n", styles.errorMessage.Render(item.Error))
+		fmt.Fprintf(w, "    %s  %s  %s  %s  %s\n", icon, name, arrow, agent, path)
+		fmt.Fprintf(w, "       %s\n", styles.errorMessage.Render(item.Error))
 	}
 }
 
@@ -742,7 +735,7 @@ func printReusableAgentInstallResults(
 	)
 
 	if len(result.ReusableAgentsSuccessful) > 0 {
-		lipgloss.Fprintln(w, styles.successHeader.Render(
+		fmt.Fprintln(w, styles.successHeader.Render(
 			fmt.Sprintf(
 				"  ✓ Installed %s (%d)",
 				reusableAgentResultTitle(result.Global),
@@ -756,7 +749,7 @@ func printReusableAgentInstallResults(
 			icon := styles.successIcon.Render("✓")
 			name := styles.agent.Render(padRight(item.ReusableAgent.Name, maxReusableAgentLen))
 			path := styles.path.Render(shortenPath(item.Path, cwd, homeDir))
-			lipgloss.Fprintf(w, "    %s  %s  %s\n", icon, name, path)
+			fmt.Fprintf(w, "    %s  %s  %s\n", icon, name, path)
 		}
 	}
 
@@ -767,7 +760,7 @@ func printReusableAgentInstallResults(
 		fmt.Fprintln(w)
 	}
 
-	lipgloss.Fprintln(w, styles.failureHeader.Render(
+	fmt.Fprintln(w, styles.failureHeader.Render(
 		fmt.Sprintf(
 			"  ✗ Failed %s (%d)",
 			reusableAgentResultTitle(result.Global),
@@ -781,8 +774,8 @@ func printReusableAgentInstallResults(
 		icon := styles.failureIcon.Render("✗")
 		name := styles.agent.Render(padRight(item.ReusableAgent.Name, maxReusableAgentLen))
 		path := styles.path.Render(shortenPath(item.Path, cwd, homeDir))
-		lipgloss.Fprintf(w, "    %s  %s  %s\n", icon, name, path)
-		lipgloss.Fprintf(w, "       %s\n", styles.errorMessage.Render(item.Error))
+		fmt.Fprintf(w, "    %s  %s  %s\n", icon, name, path)
+		fmt.Fprintf(w, "       %s\n", styles.errorMessage.Render(item.Error))
 	}
 }
 
@@ -834,20 +827,12 @@ func padRight(s string, width int) string {
 
 // --- Form and utility functions ---
 
-func confirmSetup() (bool, error) {
-	confirmed := false
-	field := huh.NewConfirm().
-		Key("confirm").
-		Title("Proceed with installation?").
-		Value(&confirmed)
-	if err := runPromptField(field); err != nil {
+func confirmSetup(cmd *cobra.Command) (bool, error) {
+	confirmed, err := newPromptSession(cmd).confirm("Proceed with installation?", "", false)
+	if err != nil {
 		return false, fmt.Errorf("confirm installation: %w", err)
 	}
 	return confirmed, nil
-}
-
-func runPromptField(field huh.Field) error {
-	return huh.NewForm(huh.NewGroup(field)).WithTheme(darkHuhTheme()).Run()
 }
 
 func skillNames(skills []setup.Skill) []string {

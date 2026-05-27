@@ -225,8 +225,8 @@ func IsExecErrorReported(err error) bool {
 	return errors.As(err, &reported)
 }
 
-// ExecuteExec runs one headless-or-TUI exec turn with optional persistence,
-// ACP resume, and an optional pre-opened run scope.
+// ExecuteExec runs one headless exec turn with optional persistence, ACP resume,
+// and an optional pre-opened run scope.
 func ExecuteExec(ctx context.Context, cfg *model.RuntimeConfig, scope model.RunScope) error {
 	promptText, state, internalCfg, execJob, err := prepareExecExecution(ctx, cfg, scope)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExecuteExec(ctx context.Context, cfg *model.RuntimeConfig, scope model.RunS
 		return state.completeDryRun(promptText)
 	}
 
-	useUI := cfg.TUI
+	useUI := internalCfg.UIEnabled()
 	ui := setupExecUI(ctx, internalCfg, useUI, execJob)
 	result := executeExecJob(ctx, internalCfg, &execJob, cfg.WorkspaceRoot, useUI, state)
 	if waitErr := waitExecUI(ui); waitErr != nil && result.err == nil {
@@ -525,7 +525,7 @@ func prepareExecRunState(ctx context.Context, cfg *model.RuntimeConfig, scope mo
 	state := &execRunState{
 		ctx:      ctx,
 		cfg:      cfg,
-		emitText: cfg.OutputFormat == model.OutputFormatText && !cfg.TUI && !cfg.DaemonOwned,
+		emitText: cfg.OutputFormat == model.OutputFormatText && !cfg.DaemonOwned,
 	}
 	if scope != nil {
 		if strings.TrimSpace(cfg.RunID) != "" {

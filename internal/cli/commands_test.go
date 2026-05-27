@@ -110,7 +110,7 @@ func TestNewTasksRunCommandDefaultsAttachModeToAuto(t *testing.T) {
 	}
 }
 
-func TestReviewsFixCommandDefaultsTUIToTrue(t *testing.T) {
+func TestReviewsFixCommandDefaultsTUIToFalse(t *testing.T) {
 	t.Parallel()
 
 	cmd := newReviewsFixCommandWithDefaults(defaultCommandStateDefaults())
@@ -118,7 +118,7 @@ func TestReviewsFixCommandDefaultsTUIToTrue(t *testing.T) {
 	if flag == nil {
 		t.Fatal("expected --tui flag")
 	}
-	if flag.DefValue != "true" {
-		t.Fatalf("expected --tui default true, got %q", flag.DefValue)
+	if flag.DefValue != "false" {
+		t.Fatalf("expected --tui default false, got %q", flag.DefValue)
 	}
 }

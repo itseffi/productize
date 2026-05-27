@@ -15,8 +15,8 @@ func addWorkflowOutputFlags(cmd *cobra.Command, state *commandState) {
 	cmd.Flags().BoolVar(
 		&state.tui,
 		"tui",
-		true,
-		"Open the interactive TUI when the terminal supports it; otherwise stream headless output",
+		false,
+		"Deprecated; workflow observation uses textual streams",
 	)
 }
 
@@ -32,8 +32,8 @@ func newExecCommandWithDefaults(defaults commandStateDefaults) *cobra.Command {
 Provide the prompt as one positional argument, with --prompt-file, or via stdin. By default the
 command is headless and ephemeral: text mode writes only the final assistant response to stdout and
 json mode streams lean JSONL events to stdout, while raw-json preserves the full event stream.
-Operational runtime logs stay silent unless you opt into --verbose. Use --tui to open the
-interactive TUI and --persist to save resumable artifacts under
+Operational runtime logs stay silent unless you opt into --verbose. Use --persist to save
+resumable artifacts under
 ~/.productize/runs/<run-id>/. Use --run-id to resume a previously persisted exec session.`,
 		Example: `  productize exec "Summarize the current repository changes"
   productize exec --agent council "Decide between two designs"
@@ -60,7 +60,7 @@ interactive TUI and --persist to save resumable artifacts under
 		"Output format: text, json, or raw-json",
 	)
 	cmd.Flags().BoolVar(&state.verbose, "verbose", false, "Emit operational runtime logs to stderr during exec")
-	cmd.Flags().BoolVar(&state.tui, "tui", false, "Open the interactive TUI instead of using headless stdout output")
+	cmd.Flags().BoolVar(&state.tui, "tui", false, "Deprecated; exec uses headless text or event output")
 	cmd.Flags().BoolVar(&state.persist, "persist", false, "Persist exec artifacts under ~/.productize/runs/<run-id>/")
 	cmd.Flags().BoolVar(&state.extensionsEnabled, "extensions", false, "Enable executable extensions for this exec run")
 	cmd.Flags().StringVar(&state.runID, "run-id", "", "Resume a previously persisted exec session by run id")

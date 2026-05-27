@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	huh "charm.land/huh/v2"
-
 	extensions "github.com/itseffi/productize/internal/core/extension"
 	"github.com/spf13/cobra"
 )
@@ -373,19 +371,17 @@ func confirmInstall(cmd *cobra.Command, deps commandDeps, prompt installPrompt, 
 	return nil
 }
 
-func confirmInstallPrompt(_ *cobra.Command, prompt installPrompt) (bool, error) {
-	confirmed := false
-	field := huh.NewConfirm().
-		Key("confirm").
-		Title(fmt.Sprintf("Install extension %q?", prompt.Name)).
-		Description(
-			fmt.Sprintf(
-				"The extension requests: %s. It will stay disabled until you explicitly enable it on this machine.",
-				renderCapabilities(prompt.Capabilities),
-			),
-		).
-		Value(&confirmed)
-	if err := runPromptField(field); err != nil {
+func confirmInstallPrompt(cmd *cobra.Command, prompt installPrompt) (bool, error) {
+	confirmed, err := runPromptConfirm(
+		cmd,
+		fmt.Sprintf("Install extension %q?", prompt.Name),
+		fmt.Sprintf(
+			"The extension requests: %s. It will stay disabled until you explicitly enable it on this machine.",
+			renderCapabilities(prompt.Capabilities),
+		),
+		false,
+	)
+	if err != nil {
 		return false, fmt.Errorf("confirm extension install: %w", err)
 	}
 	return confirmed, nil

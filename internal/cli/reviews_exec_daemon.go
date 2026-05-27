@@ -143,7 +143,7 @@ opens the run cockpit by default; in non-TTY environments it falls back to headl
 	cmd.Flags().IntVar(&state.batchSize, "batch-size", 1, "Number of file groups to batch together (default: 1)")
 	cmd.Flags().BoolVar(&state.includeResolved, "include-resolved", false, "Include already-resolved review issues")
 	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "Attach mode: auto, ui, stream, or detach")
-	cmd.Flags().Bool("ui", false, "Force interactive UI attach mode")
+	cmd.Flags().Bool("ui", false, "Deprecated alias for --stream")
 	cmd.Flags().Bool("stream", false, "Force textual stream attach mode")
 	cmd.Flags().Bool("detach", false, "Start the run without attaching a client")
 	return cmd
@@ -159,7 +159,7 @@ func newReviewsWatchCommandWithDefaults(defaults commandStateDefaults) *cobra.Co
 		Long: `Start a daemon-owned review watch run that waits for provider feedback,
 imports actionable review rounds, starts child review-fix runs, and optionally pushes committed fixes.
 Text mode starts the watch in the background by default. Use --stream to follow events
-without opening the interactive cockpit UI.`,
+through the textual run stream.`,
 		Example: `  productize reviews watch tools-registry --provider coderabbit --pr 85 --auto-push \
     --until-clean --max-rounds 6
   productize reviews watch --name tools-registry --provider coderabbit --pr 85 --stream
@@ -186,7 +186,7 @@ without opening the interactive cockpit UI.`,
 	cmd.Flags().IntVar(&state.batchSize, "batch-size", 1, "Number of file groups to batch together (default: 1)")
 	cmd.Flags().BoolVar(&state.includeResolved, "include-resolved", false, "Include already-resolved review issues")
 	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "Attach mode: auto, ui, stream, or detach")
-	cmd.Flags().Bool("ui", false, "Force interactive UI attach mode")
+	cmd.Flags().Bool("ui", false, "Deprecated alias for --stream")
 	cmd.Flags().Bool("stream", false, "Force textual stream attach mode")
 	cmd.Flags().Bool("detach", false, "Start the run without attaching a client")
 	return cmd
@@ -558,14 +558,7 @@ func (s *commandState) execDaemon(cmd *cobra.Command, args []string) error {
 
 func (s *commandState) resolveExecPresentationMode(cmd *cobra.Command) (string, error) {
 	if s.tui {
-		isInteractive := s.isInteractive
-		if isInteractive == nil {
-			isInteractive = isInteractiveTerminal
-		}
-		if !isInteractive() {
-			return "", fmt.Errorf("%s requires an interactive terminal for tui mode", cmd.CommandPath())
-		}
-		return attachModeUI, nil
+		return "", fmt.Errorf("%s no longer supports --tui; use text output or --format json", cmd.CommandPath())
 	}
 	if isJSONOutputFormat(s.outputFormat) {
 		return attachModeStream, nil
@@ -587,7 +580,7 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 		name  string
 		value string
 	}{
-		{name: "ui", value: attachModeUI},
+		{name: "ui", value: attachModeStream},
 		{name: "stream", value: attachModeStream},
 		{name: "detach", value: attachModeDetach},
 	} {
@@ -603,9 +596,9 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 	switch mode {
 	case attachModeAuto, attachModeUI, attachModeStream, attachModeDetach:
 	default:
-		return "", fmt.Errorf("attach mode must be one of auto, ui, stream, or detach (got %q)", mode)
+		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)
 	}
-	if mode == attachModeUI || (commandFlagChanged(cmd, "tui") && s.tui) {
+	if commandFlagChanged(cmd, "tui") && s.tui {
 		return "", reviewWatchUIUnsupportedError(cmd)
 	}
 	if isJSONOutputFormat(s.outputFormat) {
@@ -614,10 +607,10 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 	switch mode {
 	case attachModeAuto, attachModeDetach:
 		return attachModeDetach, nil
-	case attachModeStream:
+	case attachModeStream, attachModeUI:
 		return attachModeStream, nil
 	default:
-		return "", fmt.Errorf("attach mode must be one of auto, ui, stream, or detach (got %q)", mode)
+		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)
 	}
 }
 
@@ -627,7 +620,7 @@ func reviewWatchUIUnsupportedError(cmd *cobra.Command) error {
 		commandLabel = strings.TrimSpace(cmd.CommandPath())
 	}
 	return fmt.Errorf(
-		"%s does not support UI attach; use --stream to follow events or --detach to run in background",
+		"%s does not support interactive attach; use --stream to follow events or --detach to run in background",
 		commandLabel,
 	)
 }

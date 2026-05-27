@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,6 +15,28 @@ import (
 	"github.com/itseffi/productize/internal/core/model"
 	"github.com/spf13/cobra"
 )
+
+func closedClientRunStream() *staticClientRunStream {
+	stream := newStaticClientRunStream()
+	close(stream.items)
+	close(stream.errors)
+	return stream
+}
+
+func installClosedCLIRunWatch(t *testing.T) *string {
+	t.Helper()
+
+	var watchedRunID string
+	installTestCLIRunObservers(
+		t,
+		nil,
+		func(_ context.Context, _ io.Writer, _ daemonCommandClient, runID string) error {
+			watchedRunID = runID
+			return nil
+		},
+	)
+	return &watchedRunID
+}
 
 func TestApplyInputMarksFormValuesAsExplicitOverrides(t *testing.T) {
 	t.Parallel()
@@ -104,18 +127,14 @@ func TestReviewsFixInteractiveFormPropagatesDaemonBatchingOverrides(t *testing.T
 				RunID:            "run-review-form-batching-001",
 				Mode:             "review",
 				Status:           "running",
-				PresentationMode: attachModeUI,
+				PresentationMode: attachModeStream,
 				StartedAt:        time.Date(2026, 4, 20, 12, 0, 0, 0, time.UTC),
 			},
+			stream: closedClientRunStream(),
 		},
 	}
 	installTestCLIReadyDaemonBootstrap(t, client)
-
-	var attachedRunID string
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		attachedRunID = runID
-		return nil
-	}, nil)
+	watchedRunID := installClosedCLIRunWatch(t)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -139,11 +158,15 @@ func TestReviewsFixInteractiveFormPropagatesDaemonBatchingOverrides(t *testing.T
 	if err != nil {
 		t.Fatalf("execute interactive reviews fix: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if attachedRunID != "run-review-form-batching-001" {
-		t.Fatalf("expected UI attach for run-review-form-batching-001, got %q", attachedRunID)
+	if *watchedRunID != "run-review-form-batching-001" {
+		t.Fatalf("expected stream watch for run-review-form-batching-001, got %q", *watchedRunID)
 	}
-	if stdout != "" || stderr != "" {
-		t.Fatalf("expected quiet form flow before ui attach, got stdout=%q stderr=%q", stdout, stderr)
+	if !strings.Contains(stdout, "run-review-form-batching-001") ||
+		!strings.Contains(stdout, "mode=stream") {
+		t.Fatalf("expected started run stream output, got stdout=%q", stdout)
+	}
+	if stderr != "" {
+		t.Fatalf("expected no stderr for review form stream startup, got %q", stderr)
 	}
 
 	var batching struct {
@@ -185,17 +208,13 @@ func TestTasksRunInteractiveFormPropagatesDaemonRuntimeOverrides(t *testing.T) {
 			RunID:            "run-task-form-overrides-001",
 			Mode:             string(core.ModePRDTasks),
 			Status:           "running",
-			PresentationMode: attachModeUI,
+			PresentationMode: attachModeStream,
 			StartedAt:        time.Date(2026, 4, 20, 12, 5, 0, 0, time.UTC),
 		},
+		stream: closedClientRunStream(),
 	}
 	installTestCLIReadyDaemonBootstrap(t, client)
-
-	var attachedRunID string
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		attachedRunID = runID
-		return nil
-	}, nil)
+	watchedRunID := installClosedCLIRunWatch(t)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -216,14 +235,15 @@ func TestTasksRunInteractiveFormPropagatesDaemonRuntimeOverrides(t *testing.T) {
 	if err != nil {
 		t.Fatalf("execute interactive tasks run: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if attachedRunID != "run-task-form-overrides-001" {
-		t.Fatalf("expected UI attach for run-task-form-overrides-001, got %q", attachedRunID)
+	if *watchedRunID != "run-task-form-overrides-001" {
+		t.Fatalf("expected stream watch for run-task-form-overrides-001, got %q", *watchedRunID)
 	}
 	if !strings.Contains(stderr, "preflight=ok") {
 		t.Fatalf("expected preflight success log on stderr, got %q", stderr)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout before ui attach, got %q", stdout)
+	if !strings.Contains(stdout, "run-task-form-overrides-001") ||
+		!strings.Contains(stdout, "mode=stream") {
+		t.Fatalf("expected started run stream output, got stdout=%q", stdout)
 	}
 
 	var overrides daemonRuntimeOverrides
@@ -254,18 +274,13 @@ func TestTasksRunInteractiveFormPropagatesTaskRuntimeRulesWithoutExplicitFlagMut
 			RunID:            "run-task-form-task-runtime-001",
 			Mode:             string(core.ModePRDTasks),
 			Status:           "running",
-			PresentationMode: attachModeUI,
+			PresentationMode: attachModeStream,
 			StartedAt:        time.Date(2026, 4, 20, 12, 6, 0, 0, time.UTC),
 		},
+		stream: closedClientRunStream(),
 	}
 	installTestCLIReadyDaemonBootstrap(t, client)
-
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		if runID != "run-task-form-task-runtime-001" {
-			t.Fatalf("unexpected attached run id: %q", runID)
-		}
-		return nil
-	}, nil)
+	watchedRunID := installClosedCLIRunWatch(t)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -310,8 +325,12 @@ func TestTasksRunInteractiveFormPropagatesTaskRuntimeRulesWithoutExplicitFlagMut
 	if !strings.Contains(stderr, "preflight=ok") {
 		t.Fatalf("expected preflight success log on stderr, got %q", stderr)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout before ui attach, got %q", stdout)
+	if *watchedRunID != "run-task-form-task-runtime-001" {
+		t.Fatalf("expected stream watch for run-task-form-task-runtime-001, got %q", *watchedRunID)
+	}
+	if !strings.Contains(stdout, "run-task-form-task-runtime-001") ||
+		!strings.Contains(stdout, "mode=stream") {
+		t.Fatalf("expected started run stream output, got stdout=%q", stdout)
 	}
 
 	var overrides daemonRuntimeOverrides
@@ -356,18 +375,13 @@ func TestTasksRunInteractiveFormClearsConfiguredTaskRuntimeRulesExplicitly(t *te
 			RunID:            "run-task-form-task-runtime-clear-001",
 			Mode:             string(core.ModePRDTasks),
 			Status:           "running",
-			PresentationMode: attachModeUI,
+			PresentationMode: attachModeStream,
 			StartedAt:        time.Date(2026, 4, 20, 12, 7, 0, 0, time.UTC),
 		},
+		stream: closedClientRunStream(),
 	}
 	installTestCLIReadyDaemonBootstrap(t, client)
-
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		if runID != "run-task-form-task-runtime-clear-001" {
-			t.Fatalf("unexpected attached run id: %q", runID)
-		}
-		return nil
-	}, nil)
+	watchedRunID := installClosedCLIRunWatch(t)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -395,8 +409,12 @@ func TestTasksRunInteractiveFormClearsConfiguredTaskRuntimeRulesExplicitly(t *te
 	if !strings.Contains(stderr, "preflight=ok") {
 		t.Fatalf("expected preflight success log on stderr, got %q", stderr)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout before ui attach, got %q", stdout)
+	if *watchedRunID != "run-task-form-task-runtime-clear-001" {
+		t.Fatalf("expected stream watch for run-task-form-task-runtime-clear-001, got %q", *watchedRunID)
+	}
+	if !strings.Contains(stdout, "run-task-form-task-runtime-clear-001") ||
+		!strings.Contains(stdout, "mode=stream") {
+		t.Fatalf("expected started run stream output, got stdout=%q", stdout)
 	}
 	if !strings.Contains(string(client.startRequest.RuntimeOverrides), `"task_runtime_rules":[]`) {
 		t.Fatalf(
@@ -439,19 +457,14 @@ batch_size = 7
 				RunID:            "run-review-form-blank-batching-001",
 				Mode:             "review",
 				Status:           "running",
-				PresentationMode: attachModeUI,
+				PresentationMode: attachModeStream,
 				StartedAt:        time.Date(2026, 4, 20, 12, 10, 0, 0, time.UTC),
 			},
+			stream: closedClientRunStream(),
 		},
 	}
 	installTestCLIReadyDaemonBootstrap(t, client)
-
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		if runID != "run-review-form-blank-batching-001" {
-			t.Fatalf("unexpected attached run id: %q", runID)
-		}
-		return nil
-	}, nil)
+	watchedRunID := installClosedCLIRunWatch(t)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -470,8 +483,15 @@ batch_size = 7
 	if err != nil {
 		t.Fatalf("execute interactive reviews fix blank batching: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if stdout != "" || stderr != "" {
-		t.Fatalf("expected quiet form flow before ui attach, got stdout=%q stderr=%q", stdout, stderr)
+	if *watchedRunID != "run-review-form-blank-batching-001" {
+		t.Fatalf("expected stream watch for run-review-form-blank-batching-001, got %q", *watchedRunID)
+	}
+	if !strings.Contains(stdout, "run-review-form-blank-batching-001") ||
+		!strings.Contains(stdout, "mode=stream") {
+		t.Fatalf("expected started run stream output, got stdout=%q", stdout)
+	}
+	if stderr != "" {
+		t.Fatalf("expected no stderr for review form stream startup, got %q", stderr)
 	}
 	var batching map[string]any
 	if err := json.Unmarshal(client.startReviewReq.Batching, &batching); err != nil {
@@ -499,18 +519,13 @@ add_dirs = ["../shared", "../docs"]
 			RunID:            "run-task-form-blank-adddir-001",
 			Mode:             string(core.ModePRDTasks),
 			Status:           "running",
-			PresentationMode: attachModeUI,
+			PresentationMode: attachModeStream,
 			StartedAt:        time.Date(2026, 4, 20, 12, 15, 0, 0, time.UTC),
 		},
+		stream: closedClientRunStream(),
 	}
 	installTestCLIReadyDaemonBootstrap(t, client)
-
-	installTestCLIRunObservers(t, func(_ context.Context, _ daemonCommandClient, runID string) error {
-		if runID != "run-task-form-blank-adddir-001" {
-			t.Fatalf("unexpected attached run id: %q", runID)
-		}
-		return nil
-	}, nil)
+	watchedRunID := installClosedCLIRunWatch(t)
 
 	defaults := allowBundledSkillsForExecutionTests()
 	defaults.isInteractive = func() bool { return true }
@@ -527,8 +542,12 @@ add_dirs = ["../shared", "../docs"]
 	if err != nil {
 		t.Fatalf("execute interactive tasks run blank add-dir: %v\nstdout:\n%s\nstderr:\n%s", err, stdout, stderr)
 	}
-	if stdout != "" {
-		t.Fatalf("expected no stdout before ui attach, got %q", stdout)
+	if *watchedRunID != "run-task-form-blank-adddir-001" {
+		t.Fatalf("expected stream watch for run-task-form-blank-adddir-001, got %q", *watchedRunID)
+	}
+	if !strings.Contains(stdout, "run-task-form-blank-adddir-001") ||
+		!strings.Contains(stdout, "mode=stream") {
+		t.Fatalf("expected started run stream output, got stdout=%q", stdout)
 	}
 	if !strings.Contains(stderr, "preflight=ok") {
 		t.Fatalf("expected preflight success log on stderr, got %q", stderr)

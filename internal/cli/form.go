@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 
-	"charm.land/huh/v2"
 	core "github.com/itseffi/productize/internal/core"
 	"github.com/itseffi/productize/internal/core/agent"
 	"github.com/itseffi/productize/internal/core/model"
@@ -28,7 +27,7 @@ func collectFormParams(cmd *cobra.Command, state *commandState) error {
 	inputs := newFormInputsFromState(state)
 	builder := newFormBuilder(cmd, state)
 	inputs.register(builder)
-	if err := builder.build().Run(); err != nil {
+	if err := builder.run(newPromptSession(cmd)); err != nil {
 		return fmt.Errorf("form canceled or error: %w", err)
 	}
 	inputs.apply(cmd, state)
@@ -127,12 +126,19 @@ func (fi *formInputs) register(builder *formBuilder) {
 	builder.addAddDirsField(&fi.addDirs)
 	builder.addReasoningEffortField(&fi.reasoningEffort)
 	if builder.state != nil && builder.state.kind == commandKindTasksRun {
-		builder.addVirtualField(func() huh.Field {
-			return huh.NewConfirm().
-				Key("define-task-runtime").
-				Title("Define Runtime Per Task?").
-				Description("Open a second round to configure runtime overrides by task type or task id.").
-				Value(&fi.defineTaskRuntime)
+		builder.addVirtualField("define-task-runtime", func() promptStep {
+			return func(session promptSession) error {
+				value, err := session.confirm(
+					"Define Runtime Per Task?",
+					"Open a second round to configure runtime overrides by task type or task id.",
+					fi.defineTaskRuntime,
+				)
+				if err != nil {
+					return err
+				}
+				fi.defineTaskRuntime = value
+				return nil
+			}
 		})
 	}
 	builder.addConfirmField(
@@ -189,9 +195,16 @@ func (fi *formInputs) apply(cmd *cobra.Command, state *commandState) {
 type formBuilder struct {
 	cmd             *cobra.Command
 	state           *commandState
-	fields          []huh.Field
+	fields          []promptField
 	nameFromDirList bool
 	tasksBaseDir    string
+}
+
+type promptStep func(promptSession) error
+
+type promptField struct {
+	key string
+	run promptStep
 }
 
 func newFormBuilder(cmd *cobra.Command, state *commandState) *formBuilder {
@@ -202,29 +215,37 @@ func newFormBuilder(cmd *cobra.Command, state *commandState) *formBuilder {
 	}
 }
 
-func (fb *formBuilder) build() *huh.Form {
-	return huh.NewForm(huh.NewGroup(fb.fields...)).WithTheme(darkHuhTheme())
+func (fb *formBuilder) run(session promptSession) error {
+	for _, field := range fb.fields {
+		if field.run == nil {
+			continue
+		}
+		if err := field.run(session); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (fb *formBuilder) hasFlag(flag string) bool {
 	return fb.cmd.Flags().Lookup(flag) != nil
 }
 
-func (fb *formBuilder) addField(flag string, build func() huh.Field) {
+func (fb *formBuilder) addField(flag string, build func() promptStep) {
 	if !fb.hasFlag(flag) || fb.cmd.Flags().Changed(flag) || fb.hideField(flag) {
 		return
 	}
-	fb.addBuiltField(build)
+	fb.addBuiltField(flag, build)
 }
 
-func (fb *formBuilder) addVirtualField(build func() huh.Field) {
-	fb.addBuiltField(build)
+func (fb *formBuilder) addVirtualField(key string, build func() promptStep) {
+	fb.addBuiltField(key, build)
 }
 
-func (fb *formBuilder) addBuiltField(build func() huh.Field) {
+func (fb *formBuilder) addBuiltField(key string, build func() promptStep) {
 	field := build()
 	if field != nil {
-		fb.fields = append(fb.fields, field)
+		fb.fields = append(fb.fields, promptField{key: key, run: field})
 	}
 }
 
@@ -250,35 +271,38 @@ func (fb *formBuilder) hideField(flag string) bool {
 }
 
 func (fb *formBuilder) addNameField(target *string) {
-	fb.addField("name", func() huh.Field {
+	fb.addField("name", func() promptStep {
 		title, description, dirs := fb.nameFieldOptions()
 		if len(dirs) > 0 {
 			fb.nameFromDirList = true
-			options := make([]huh.Option[string], 0, len(dirs))
+			options := make([]promptOption, 0, len(dirs))
 			for _, d := range dirs {
-				options = append(options, huh.NewOption(d, d))
+				options = append(options, promptOption{Label: d, Value: d})
 			}
-			return huh.NewSelect[string]().
-				Key("name").
-				Title(title).
-				Description(description).
-				Options(options...).
-				Value(target)
+			return func(session promptSession) error {
+				value, err := session.selectOne(title, description, options, *target)
+				if err != nil {
+					return err
+				}
+				*target = value
+				return nil
+			}
 		}
 
 		title, description = fb.nameInputLabels()
-		return huh.NewInput().
-			Key("name").
-			Title(title).
-			Placeholder("my-feature").
-			Description(description).
-			Value(target).
-			Validate(func(str string) error {
+		return func(session promptSession) error {
+			value, err := session.input(title, description, "my-feature", *target, func(str string) error {
 				if strings.TrimSpace(str) == "" && !fb.hasFlag("reviews-dir") {
 					return errors.New("name is required")
 				}
 				return nil
 			})
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
@@ -307,39 +331,53 @@ func (fb *formBuilder) nameInputLabels() (string, string) {
 }
 
 func (fb *formBuilder) addPRField(target *string) {
-	fb.addField("pr", func() huh.Field {
-		return huh.NewInput().
-			Key("pr").
-			Title("Pull Request").
-			Placeholder("259").
-			Description("Required: pull request number to fetch reviews from").
-			Value(target).
-			Validate(func(str string) error {
-				if strings.TrimSpace(str) == "" {
-					return errors.New("pull request number is required")
-				}
-				return nil
-			})
+	fb.addField("pr", func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.input(
+				"Pull Request",
+				"Required: pull request number to fetch reviews from",
+				"259",
+				*target,
+				func(str string) error {
+					if strings.TrimSpace(str) == "" {
+						return errors.New("pull request number is required")
+					}
+					return nil
+				},
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addProviderField(target *string) {
-	fb.addField("provider", func() huh.Field {
+	fb.addField("provider", func() promptStep {
 		options := providerCatalogOptions()
 		if len(options) == 0 {
-			options = []huh.Option[string]{huh.NewOption("CodeRabbit", "coderabbit")}
+			options = []promptOption{{Label: "CodeRabbit", Value: "coderabbit"}}
 		}
-		return huh.NewSelect[string]().
-			Key("provider").
-			Title("Review Provider").
-			Description("Choose which review provider to fetch from").
-			Options(options...).
-			Value(target)
+		return func(session promptSession) error {
+			value, err := session.selectOne(
+				"Review Provider",
+				"Choose which review provider to fetch from",
+				options,
+				*target,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addRoundField(target *string) {
-	fb.addField("round", func() huh.Field {
+	fb.addField("round", func() promptStep {
 		description := "Leave empty to auto-detect the appropriate round"
 		if fb.state.kind == commandKindFetchReviews {
 			description = "Leave empty to create the next available review round"
@@ -357,29 +395,45 @@ func (fb *formBuilder) addRoundField(target *string) {
 }
 
 func (fb *formBuilder) addReviewsDirField(target *string) {
-	fb.addField("reviews-dir", func() huh.Field {
-		return huh.NewInput().
-			Key("reviews-dir").
-			Title("Reviews Directory (optional)").
-			Placeholder(".productize/tasks/<name>/reviews-NNN").
-			Description("Leave empty to resolve from PRD name and round").
-			Value(target)
+	fb.addField("reviews-dir", func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.input(
+				"Reviews Directory (optional)",
+				"Leave empty to resolve from PRD name and round",
+				".productize/tasks/<name>/reviews-NNN",
+				*target,
+				nil,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addTasksDirField(target *string) {
-	fb.addField("tasks-dir", func() huh.Field {
-		return huh.NewInput().
-			Key("tasks-dir").
-			Title("Tasks Directory (optional)").
-			Placeholder(".productize/tasks/<name>").
-			Description("Leave empty to auto-generate from task name").
-			Value(target)
+	fb.addField("tasks-dir", func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.input(
+				"Tasks Directory (optional)",
+				"Leave empty to auto-generate from task name",
+				".productize/tasks/<name>",
+				*target,
+				nil,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addConcurrentField(target *string) {
-	fb.addField("concurrent", func() huh.Field {
+	fb.addField("concurrent", func() promptStep {
 		return numericInput(
 			"concurrent",
 			"Concurrent Jobs",
@@ -393,7 +447,7 @@ func (fb *formBuilder) addConcurrentField(target *string) {
 }
 
 func (fb *formBuilder) addBatchSizeField(target *string) {
-	fb.addField("batch-size", func() huh.Field {
+	fb.addField("batch-size", func() promptStep {
 		return numericInput(
 			"batch-size",
 			"Batch Size",
@@ -407,84 +461,105 @@ func (fb *formBuilder) addBatchSizeField(target *string) {
 }
 
 func (fb *formBuilder) addIDEField(target *string) {
-	fb.addField("ide", func() huh.Field {
+	fb.addField("ide", func() promptStep {
 		options := ideCatalogOptions()
-		return huh.NewSelect[string]().
-			Key("ide").
-			Title("IDE Tool").
-			Description("Choose which ACP runtime to use (installed directly or available via a supported launcher).").
-			Options(options...).
-			Value(target)
+		return func(session promptSession) error {
+			value, err := session.selectOne(
+				"IDE Tool",
+				"Choose which ACP runtime to use (installed directly or available via a supported launcher).",
+				options,
+				*target,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addModelField(target *string) {
-	fb.addField("model", func() huh.Field {
-		return huh.NewInput().
-			Key("model").
-			Title("Model (optional)").
-			Placeholder("auto").
-			Description("Model override (defaults: codex/droid=gpt-5.5, " +
-				"claude=opus, opencode/pi=anthropic/claude-opus-4-6, gemini=gemini-2.5-pro)").
-			Value(target)
+	fb.addField("model", func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.input(
+				"Model (optional)",
+				"Model override (defaults: codex/droid=gpt-5.5, "+
+					"claude=opus, opencode/pi=anthropic/claude-opus-4-6, gemini=gemini-2.5-pro)",
+				"auto",
+				*target,
+				nil,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addAddDirsField(target *string) {
-	fb.addField("add-dir", func() huh.Field {
-		return huh.NewInput().
-			Key("add-dir").
-			Title("Additional Directories (optional)").
-			Placeholder("../shared, ../docs").
-			Description(
+	fb.addField("add-dir", func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.input(
+				"Additional Directories (optional)",
 				"Comma-separated directories to pass via --add-dir for Claude and Codex only; quote paths that contain commas",
-			).
-			Value(target)
+				"../shared, ../docs",
+				*target,
+				nil,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addReasoningEffortField(target *string) {
-	fb.addField("reasoning-effort", func() huh.Field {
-		return huh.NewSelect[string]().
-			Key("reasoning-effort").
-			Title("Reasoning Effort").
-			Description("Model reasoning effort level (applies to Codex, Claude, Droid, OpenCode, and Pi)").
-			Options(
-				huh.NewOption("Low", "low"),
-				huh.NewOption("Medium", "medium"),
-				huh.NewOption("High", "high"),
-				huh.NewOption("Extra High", "xhigh"),
-			).
-			Value(target)
+	fb.addField("reasoning-effort", func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.selectOne(
+				"Reasoning Effort",
+				"Model reasoning effort level (applies to Codex, Claude, Droid, OpenCode, and Pi)",
+				reasoningPromptOptions(false),
+				*target,
+			)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func (fb *formBuilder) addConfirmField(flag, title, description string, target *bool) {
-	fb.addField(flag, func() huh.Field {
-		return huh.NewConfirm().
-			Key(flag).
-			Title(title).
-			Description(description).
-			Value(target)
+	fb.addField(flag, func() promptStep {
+		return func(session promptSession) error {
+			value, err := session.confirm(title, description, *target)
+			if err != nil {
+				return err
+			}
+			*target = value
+			return nil
+		}
 	})
 }
 
 func numericInput(
-	key string,
+	_ string,
 	title string,
 	placeholder string,
 	description string,
 	target *string,
 	minVal int,
 	maxVal int,
-) huh.Field {
-	return huh.NewInput().
-		Key(key).
-		Title(title).
-		Placeholder(placeholder).
-		Description(description).
-		Value(target).
-		Validate(func(str string) error {
+) promptStep {
+	return func(session promptSession) error {
+		value, err := session.input(title, description, placeholder, *target, func(str string) error {
 			if str == "" {
 				return nil
 			}
@@ -500,6 +575,12 @@ func numericInput(
 			}
 			return nil
 		})
+		if err != nil {
+			return err
+		}
+		*target = value
+		return nil
+	}
 }
 
 func applyInput[T any, V any](
@@ -629,32 +710,45 @@ func listTaskSubdirs(baseDir string) []string {
 	return dirs
 }
 
-func ideCatalogOptions() []huh.Option[string] {
+func ideCatalogOptions() []promptOption {
 	entries := agent.DriverCatalog()
-	options := make([]huh.Option[string], 0, len(entries))
+	options := make([]promptOption, 0, len(entries))
 	for i := range entries {
 		entry := &entries[i]
 		label := strings.TrimSpace(entry.DisplayName)
 		if label == "" {
 			label = entry.IDE
 		}
-		options = append(options, huh.NewOption(label, entry.IDE))
+		options = append(options, promptOption{Label: label, Value: entry.IDE})
 	}
 	return options
 }
 
-func providerCatalogOptions() []huh.Option[string] {
+func providerCatalogOptions() []promptOption {
 	entries := provider.Catalog(providerdefaults.DefaultRegistry())
-	options := make([]huh.Option[string], 0, len(entries))
+	options := make([]promptOption, 0, len(entries))
 	for i := range entries {
 		entry := &entries[i]
 		label := strings.TrimSpace(entry.DisplayName)
 		if label == "" {
 			label = entry.Name
 		}
-		options = append(options, huh.NewOption(label, entry.Name))
+		options = append(options, promptOption{Label: label, Value: entry.Name})
 	}
 	return options
+}
+
+func reasoningPromptOptions(includeInherit bool) []promptOption {
+	options := make([]promptOption, 0, 5)
+	if includeInherit {
+		options = append(options, promptOption{Label: "Inherit default", Value: ""})
+	}
+	return append(options,
+		promptOption{Label: "Low", Value: "low"},
+		promptOption{Label: "Medium", Value: "medium"},
+		promptOption{Label: "High", Value: "high"},
+		promptOption{Label: "Extra High", Value: "xhigh"},
+	)
 }
 
 func listTaskRunSubdirs(baseDir string) []string {

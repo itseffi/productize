@@ -2733,13 +2733,15 @@ func normalizePresentationMode(value string) (string, error) {
 		mode = defaultPresentationMode
 	}
 	switch mode {
-	case "ui", "stream", "detach":
+	case "ui", "stream":
+		return "stream", nil
+	case "detach":
 		return mode, nil
 	default:
 		return "", apicore.NewProblem(
 			http.StatusUnprocessableEntity,
 			"invalid_presentation_mode",
-			"presentation_mode must be one of ui, stream, or detach",
+			"presentation_mode must be one of stream or detach",
 			map[string]any{"field": "presentation_mode"},
 			nil,
 		)

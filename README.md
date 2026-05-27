@@ -116,8 +116,8 @@ Task and review issue files use YAML frontmatter for parseable metadata such as 
 
 - `productize daemon start|status|stop` manages the home-scoped daemon lifecycle. `daemon start` is idempotent, and task/review/exec commands auto-start the daemon when needed.
 - `productize workspaces list|show|register|unregister|resolve` exposes the daemon workspace registry. Workspaces are also lazily registered when you run daemon-backed commands inside them.
-- `productize tasks run <slug>` is the canonical workflow runner. In interactive terminals it attaches to the TUI by default; in non-interactive environments it falls back to streaming. Use `--ui`, `--stream`, `--detach`, or `--attach` to override that behavior.
-- `productize runs attach <run-id>` restores the interactive TUI for an existing daemon-managed run, while `productize runs watch <run-id>` streams textual observation from the same snapshot-plus-stream transport.
+- `productize tasks run <slug>` is the canonical workflow runner. It auto-starts the daemon when needed and streams run observation by default. Use `--stream`, `--detach`, or `--attach` to control whether the command follows the run or returns immediately; `--ui` remains a deprecated alias for `--stream`.
+- `productize runs attach <run-id>` and `productize runs watch <run-id>` both stream textual observation from the same snapshot-plus-stream transport.
 - `productize reviews fetch|list|show|fix` is the canonical review command family.
 
 ### Task Schema v2
@@ -316,7 +316,7 @@ Output modes:
 - `--format raw-json` streams the full raw JSONL event trace to stdout
 - when `--persist` is enabled, `~/.productize/runs/<run-id>/events.jsonl` always stores the full raw event stream regardless of the selected stdout format
 - operational ACP/runtime logs stay silent by default; use `--verbose` when you want lifecycle logs on stderr
-- `--tui` opts back into the Bubble Tea interface for interactive inspection
+- `--tui` is a deprecated compatibility flag and is rejected for new exec runs
 - `--persist` stores a resumable conversation under `~/.productize/runs/<run-id>/`
 - `--run-id` loads a previously persisted ACP session and appends a new turn
 
@@ -617,8 +617,8 @@ The CLI resolves workspace defaults locally, validates the task metadata, auto-s
 | `--include-completed` | `false` | Re-run completed tasks                                                              |
 | `--skip-validation`   | `false` | Skip task metadata preflight; use only when validation already ran elsewhere        |
 | `--force`             | `false` | Continue after task metadata validation fails in non-interactive mode               |
-| `--attach`            | `auto`  | Attach mode: `auto`, `ui`, `stream`, or `detach`                                    |
-| `--ui`                | `false` | Force interactive TUI attach mode                                                   |
+| `--attach`            | `auto`  | Attach mode: `auto`, `stream`, or `detach`; legacy `ui` maps to `stream`            |
+| `--ui`                | `false` | Deprecated alias for `--stream`                                                     |
 | `--stream`            | `false` | Force textual stream attach mode                                                    |
 | `--detach`            | `false` | Start the run without attaching a client                                            |
 | `--task-runtime`      |         | Per-task runtime override rule (`type=...`, `id=...`, `ide=...`, `model=...`, etc.) |
@@ -635,7 +635,7 @@ productize reviews show <slug> [round]
 productize reviews fix <slug> [flags]
 ```
 
-`reviews fetch` imports provider feedback into `.productize/tasks/<slug>/reviews-NNN/`. `reviews fix` uses the same daemon-backed runtime model as `tasks run`, including `--attach`, `--ui`, `--stream`, and `--detach`.
+`reviews fetch` imports provider feedback into `.productize/tasks/<slug>/reviews-NNN/`. `reviews fix` uses the same daemon-backed runtime model as `tasks run`, including `--attach`, `--stream`, and `--detach`; `--ui` remains a deprecated alias for `--stream`.
 
 </details>
 
@@ -648,7 +648,7 @@ productize runs watch <run-id>
 productize runs purge
 ```
 
-Use `runs attach` to restore the interactive TUI for an existing run, `runs watch` for textual streaming observation, and `runs purge` to delete terminal run artifacts according to the configured retention policy.
+Use `runs attach` or `runs watch` for textual streaming observation of an existing run, and `runs purge` to delete terminal run artifacts according to the configured retention policy.
 
 </details>
 
@@ -676,7 +676,7 @@ productize exec [prompt] [flags]
 
 Provide exactly one prompt source: a positional prompt, `--prompt-file`, or `stdin`. When present, `~/.productize/config.toml` and `.productize/config.toml` can provide exec defaults through `[exec]` and shared runtime defaults through `[defaults]`.
 
-`productize exec` is headless and ephemeral by default. Use `--agent <name>` to execute a reusable agent from `.productize/agents/` or `~/.productize/agents/`, `--persist` to create `~/.productize/runs/<run-id>/` for resumable sessions, `--run-id` to continue a persisted session, `--format json` for lean JSONL, `--format raw-json` for the full raw event stream, and `--tui` to opt back into the interactive UI.
+`productize exec` is headless and ephemeral by default. Use `--agent <name>` to execute a reusable agent from `.productize/agents/` or `~/.productize/agents/`, `--persist` to create `~/.productize/runs/<run-id>/` for resumable sessions, `--run-id` to continue a persisted session, `--format json` for lean JSONL, and `--format raw-json` for the full raw event stream. `--tui` is kept only as a deprecated compatibility flag and is rejected for new exec runs.
 
 | Flag                         | Default     | Description                                                                                |
 | ---------------------------- | ----------- | ------------------------------------------------------------------------------------------ |
@@ -690,11 +690,11 @@ Provide exactly one prompt source: a positional prompt, `--prompt-file`, or `std
 | `--timeout`                  | `10m`       | Activity timeout per job                                                                   |
 | `--max-retries`              | `2`         | Retry execution-stage ACP failures or timeouts N times                                     |
 | `--retry-backoff-multiplier` | `1.5`       | Multiplier applied to the next timeout after each retry                                    |
-| `--tail-lines`               | `0`         | Maximum log lines retained per job in UI (`0` = full history)                              |
+| `--tail-lines`               | `0`         | Maximum log lines retained per job (`0` = full history)                                    |
 | `--add-dir`                  |             | Additional directories to allow (repeatable; currently `claude` and `codex` only)          |
 | `--auto-commit`              | `false`     | Include automatic commit instructions when the prompt asks for code changes                |
 | `--verbose`                  | `false`     | Emit operational runtime logs to stderr during exec                                        |
-| `--tui`                      | `false`     | Open the interactive TUI instead of headless stdout output                                 |
+| `--tui`                      | `false`     | Deprecated compatibility flag; new exec runs remain headless                               |
 | `--persist`                  | `false`     | Persist exec artifacts under `~/.productize/runs/<run-id>/`                                   |
 | `--run-id`                   |             | Resume a previously persisted exec session by run id                                       |
 | `--dry-run`                  | `false`     | Preview prompts without executing                                                          |
@@ -793,7 +793,7 @@ internal/core/           Internal facade for preparation and execution
   model/                 Shared runtime data structures
   plan/                  Input discovery, filtering, grouping, batch prep
   prompt/                Prompt builders emitting runtime context + skill names
-  run/                   Execution pipeline, logging, shutdown, Bubble Tea UI
+  run/                   Execution pipeline, logging, shutdown, event streaming
 internal/setup/          Bundled skill and council-agent installer (agent detection, symlink/copy)
 internal/version/        Build metadata
 sdk/extension/           Public Go SDK for extension authors

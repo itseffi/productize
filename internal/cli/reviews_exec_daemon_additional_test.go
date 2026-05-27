@@ -957,33 +957,15 @@ func TestReviewsWatchCommandObservationModes(t *testing.T) {
 		}
 	})
 
-	t.Run("Should reject UI attach modes before daemon bootstrap", func(t *testing.T) {
+	t.Run("Should reject legacy tui mode before daemon bootstrap", func(t *testing.T) {
 		for _, tc := range []struct {
 			name string
 			args []string
 		}{
 			{
-				name: "ui shorthand",
-				args: []string{
-					"watch", "demo", "--provider", "coderabbit", "--pr", "85", "--ui",
-				},
-			},
-			{
-				name: "attach ui",
-				args: []string{
-					"watch", "demo", "--provider", "coderabbit", "--pr", "85", "--attach", "ui",
-				},
-			},
-			{
 				name: "explicit tui true",
 				args: []string{
 					"watch", "demo", "--provider", "coderabbit", "--pr", "85", "--tui=true",
-				},
-			},
-			{
-				name: "json ui",
-				args: []string{
-					"watch", "demo", "--provider", "coderabbit", "--pr", "85", "--format", "json", "--ui",
 				},
 			},
 		} {
@@ -1013,8 +995,8 @@ func TestReviewsWatchCommandObservationModes(t *testing.T) {
 				if bootstrapCalled {
 					t.Fatal("daemon bootstrap was called before rejecting incompatible output mode")
 				}
-				if !containsAll(err.Error(), "does not support UI attach", "--stream", "--detach") {
-					t.Fatalf("error = %v, want UI unsupported guidance", err)
+				if !containsAll(err.Error(), "does not support interactive attach", "--stream", "--detach") {
+					t.Fatalf("error = %v, want legacy tui unsupported guidance", err)
 				}
 			})
 		}
@@ -2065,14 +2047,14 @@ func TestReviewsExecDaemonStreamHelpers(t *testing.T) {
 		}
 	})
 
-	t.Run("resolveExecPresentationMode enforces tui interactivity", func(t *testing.T) {
+	t.Run("resolveExecPresentationMode rejects legacy tui", func(t *testing.T) {
 		state := newCommandState(commandKindExec, core.ModeExec)
 		state.tui = true
 		state.isInteractive = func() bool { return false }
 		cmd := &cobra.Command{Use: "exec"}
 		if _, err := state.resolveExecPresentationMode(cmd); err == nil ||
-			!strings.Contains(err.Error(), "requires an interactive terminal") {
-			t.Fatalf("resolveExecPresentationMode() error = %v, want interactive terminal error", err)
+			!strings.Contains(err.Error(), "no longer supports --tui") {
+			t.Fatalf("resolveExecPresentationMode() error = %v, want legacy tui error", err)
 		}
 
 		state.tui = false

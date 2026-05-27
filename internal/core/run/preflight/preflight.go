@@ -2,13 +2,13 @@ package preflight
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
 	"os"
 	"strings"
 
-	uipkg "github.com/itseffi/productize/internal/core/run/ui"
 	"github.com/itseffi/productize/internal/core/tasks"
 )
 
@@ -110,17 +110,90 @@ func runValidationFormWithIO(
 	output io.Writer,
 	clipboardWrite func(string) error,
 ) (Decision, error) {
-	decision, err := uipkg.RunValidationFormWithIO(report, registry, stderr, input, output, clipboardWrite)
-	if err != nil {
+	promptOutput := output
+	if promptOutput == nil {
+		promptOutput = stderr
+	}
+	if err := writePreflightIssueSummary(stderr, report); err != nil {
 		return "", err
 	}
-	switch decision {
-	case uipkg.ValidationContinued:
+	if _, err := fmt.Fprint(
+		promptOutput,
+		"\nContinue despite validation issues? [y/N, p=copy fix prompt]: ",
+	); err != nil {
+		return "", fmt.Errorf("write validation prompt: %w", err)
+	}
+	answer, err := readPromptLine(resolveValidationFormInput(input))
+	if err != nil {
+		return "", fmt.Errorf("read validation prompt: %w", err)
+	}
+	switch strings.ToLower(strings.TrimSpace(answer)) {
+	case "y", "yes", "c", "continue":
 		return Continued, nil
-	case uipkg.ValidationAborted, "":
+	case "p", "prompt", "copy":
+		prompt := tasks.FixPrompt(report, registry)
+		if strings.TrimSpace(prompt) == "" {
+			return Aborted, nil
+		}
+		if clipboardWrite != nil {
+			if err := clipboardWrite(prompt); err != nil {
+				if _, writeErr := fmt.Fprintf(
+					stderr,
+					"Unable to copy fix prompt to clipboard: %v\n\nFix prompt:\n%s\n",
+					err,
+					prompt,
+				); writeErr != nil {
+					return "", fmt.Errorf("write fallback fix prompt: %w", writeErr)
+				}
+				return Aborted, nil
+			}
+			if _, err := fmt.Fprintln(stderr, "Fix prompt copied to clipboard."); err != nil {
+				return "", fmt.Errorf("write clipboard confirmation: %w", err)
+			}
+			return Aborted, nil
+		}
+		if _, err := fmt.Fprintln(stderr, prompt); err != nil {
+			return "", fmt.Errorf("write fix prompt: %w", err)
+		}
 		return Aborted, nil
 	default:
-		return "", fmt.Errorf("unexpected validation decision %q", decision)
+		return Aborted, nil
+	}
+}
+
+func resolveValidationFormInput(input io.Reader) io.Reader {
+	if input != nil {
+		return input
+	}
+	return os.Stdin
+}
+
+func readPromptLine(r io.Reader) (string, error) {
+	if r == nil {
+		return "", io.EOF
+	}
+	var builder strings.Builder
+	var buf [1]byte
+	for {
+		n, err := r.Read(buf[:])
+		if n > 0 {
+			switch buf[0] {
+			case '\n':
+				return builder.String(), nil
+			case '\r':
+				continue
+			default:
+				if err := builder.WriteByte(buf[0]); err != nil {
+					return "", err
+				}
+			}
+		}
+		if err != nil {
+			if errors.Is(err, io.EOF) && builder.Len() > 0 {
+				return builder.String(), nil
+			}
+			return "", err
+		}
 	}
 }
 
@@ -157,6 +230,34 @@ func writePreflightFailure(stderr io.Writer, report tasks.Report, registry *task
 	}
 	if _, err := fmt.Fprintf(stderr, "\nFix prompt:\n%s\n", prompt); err != nil {
 		return fmt.Errorf("write preflight fix prompt: %w", err)
+	}
+	return nil
+}
+
+func writePreflightIssueSummary(stderr io.Writer, report tasks.Report) error {
+	if stderr == nil {
+		return nil
+	}
+	if _, err := fmt.Fprintf(
+		stderr,
+		"task validation failed: %d issue(s) across %d file(s)\n",
+		len(report.Issues),
+		distinctValidationIssuePaths(report.Issues),
+	); err != nil {
+		return fmt.Errorf("write preflight summary: %w", err)
+	}
+
+	currentPath := ""
+	for _, issue := range report.Issues {
+		if issue.Path != currentPath {
+			currentPath = issue.Path
+			if _, err := fmt.Fprintf(stderr, "\n%s\n", currentPath); err != nil {
+				return fmt.Errorf("write preflight issue path: %w", err)
+			}
+		}
+		if _, err := fmt.Fprintf(stderr, "- %s: %s\n", issue.Field, issue.Message); err != nil {
+			return fmt.Errorf("write preflight issue: %w", err)
+		}
 	}
 	return nil
 }

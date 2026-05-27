@@ -12,7 +12,6 @@ import (
 	"github.com/itseffi/productize/internal/core/run/internal/runshared"
 	"github.com/itseffi/productize/internal/core/run/internal/runtimeevents"
 	"github.com/itseffi/productize/internal/core/run/journal"
-	uipkg "github.com/itseffi/productize/internal/core/run/ui"
 	"github.com/itseffi/productize/pkg/productize/events"
 )
 
@@ -64,13 +63,13 @@ func atLeastOne(value int) int {
 }
 
 func setupUI(
-	ctx context.Context,
-	jobs []job,
-	cfg *config,
-	bus *events.Bus[events.Event],
-	enabled bool,
+	_ context.Context,
+	_ []job,
+	_ *config,
+	_ *events.Bus[events.Event],
+	_ bool,
 ) uiSession {
-	return uipkg.Setup(ctx, jobs, cfg, bus, enabled)
+	return nil
 }
 
 func notifyJobStart(

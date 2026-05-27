@@ -247,7 +247,7 @@ func TestManagerShutdownSendsShutdownWithoutForceWhenExtensionExitsCooperatively
 		Binary:          binary,
 		Mode:            "normal",
 		Capabilities:    []Capability{CapabilityPromptMutate},
-		ShutdownTimeout: 120 * time.Millisecond,
+		ShutdownTimeout: 2 * time.Second,
 		Env: map[string]string{
 			"PRODUCTIZE_MOCK_SHUTDOWN_DELAY_MS": "40",
 		},

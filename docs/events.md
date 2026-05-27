@@ -643,7 +643,7 @@ Both the `exec` and workflow commands support real-time event streaming to stdou
 
 | Flag value | Mode    | Description                                                             |
 | ---------- | ------- | ----------------------------------------------------------------------- |
-| `text`     | default | Human-readable TUI output. No event streaming.                          |
+| `text`     | default | Human-readable text output. No event streaming.                         |
 | `json`     | lean    | Emits a filtered subset of high-signal events as compact JSONL objects. |
 | `raw-json` | raw     | Emits every bus event as its full `events.Event` envelope.              |
 

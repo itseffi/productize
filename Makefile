@@ -14,6 +14,7 @@ BINARY_DIR=bin
 SRC_DIRS=./...
 GOLANGCI_LINT_VERSION=v2.11.4
 LINTCMD=golangci-lint
+GOTESTPKGPARALLEL ?= 1
 
 # Colors for output
 RED := \033[0;31m
@@ -130,13 +131,13 @@ deps: check-go-version
 # Testing
 # -----------------------------------------------------------------------------
 test:
-	@gotestsum --format pkgname -- -race -parallel=4 ./...
+	@gotestsum --format pkgname -- -race -p=$(GOTESTPKGPARALLEL) -parallel=4 ./...
 
 test-coverage:
-	@gotestsum --format pkgname -- -race -parallel=4 -coverprofile=coverage.out -covermode=atomic ./...
+	@gotestsum --format pkgname -- -race -p=$(GOTESTPKGPARALLEL) -parallel=4 -coverprofile=coverage.out -covermode=atomic ./...
 
 test-nocache:
-	@gotestsum --format pkgname -- -race -count=1 -parallel=4 ./...
+	@gotestsum --format pkgname -- -race -count=1 -p=$(GOTESTPKGPARALLEL) -parallel=4 ./...
 
 # -----------------------------------------------------------------------------
 # Help

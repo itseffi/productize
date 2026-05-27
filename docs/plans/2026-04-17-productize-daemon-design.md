@@ -21,7 +21,7 @@ The goal of this redesign is to move Productize to a single-binary daemon model,
 - Keep the product local-first and single-binary.
 - Preserve Productize's current workflow concepts and artifact flow.
 - Introduce a robust operational source of truth in SQLite.
-- Keep TUI as a first-class client for interactive terminal users.
+- Keep textual stream observation as a first-class terminal client.
 - Make room for a web client and richer extension integrations.
 - Reuse AGH patterns aggressively where they reduce design risk.
 
@@ -78,7 +78,7 @@ Pros:
 
 - solves the real platform needs without importing AGH wholesale
 - keeps Markdown workflow ownership intact
-- preserves current TUI ergonomics while enabling web and richer extension behaviors
+- preserves terminal observation ergonomics while enabling web and richer extension behaviors
 - gives a clean path to better failover, attach, replay, and observability
 
 Cons:
@@ -93,7 +93,7 @@ Cons:
 
 Productize becomes a local platform built around one daemon process per user/machine. The daemon is the operational control plane. Workspaces remain the home of human-owned workflow artifacts. The daemon owns runtime state, orchestration state, event history, and multi-client access.
 
-This is not a web-first replacement of the terminal UX. It is a daemon-first architecture with TUI, CLI, and web as clients.
+This is not a web-first replacement of the terminal UX. It is a daemon-first architecture with CLI, stream, and web clients.
 
 ### 2. Architectural blocks
 
@@ -163,7 +163,7 @@ The implementation should not re-invent daemon host, transport, and runtime pers
 | `internal/api/core/handlers.go`                                      | Shared transport-neutral handlers                      | Shared REST handler layer for UDS and localhost HTTP  |
 | `internal/api/core/sse.go`                                           | SSE framing and cursoring helpers                      | Run watch/observe streaming                           |
 | `internal/api/httpapi/server.go`                                     | Localhost HTTP server with options                     | Web/client transport                                  |
-| `internal/api/udsapi/server.go`                                      | UDS server with the same handler core                  | CLI/TUI transport                                     |
+| `internal/api/udsapi/server.go`                                      | UDS server with the same handler core                  | CLI transport                                         |
 | `internal/api/httpapi/routes.go` and `internal/api/udsapi/routes.go` | Route parity and resource-oriented endpoint style      | Productize daemon endpoint layout                        |
 | `internal/store/globaldb/global_db.go`                               | Global registry schema and workspace catalog           | `global.db` workspace/run registry                    |
 | `internal/store/sessiondb/session_db.go`                             | Per-session event DB and dedicated writer loop         | `run.db` event/transcript store                       |
@@ -389,12 +389,12 @@ The daemonized model must preserve current terminal ergonomics.
 
 Approved behavior:
 
-- `productize tasks run <feature>` attaches to TUI by default in interactive TTYs
-- headless/non-interactive execution falls back to `stream` or `detach`
+- `productize tasks run <feature>` streams run observation by default
+- detached execution uses `detach`
 - `--detach` starts the run and returns immediately
 - `--stream` attaches in textual streaming mode
-- `--ui` forces TUI attach
-- `productize runs attach <run-id>` reattaches to the interactive TUI
+- `--ui` is a deprecated alias for textual streaming mode
+- `productize runs attach <run-id>` follows the live textual stream
 - `productize runs watch <run-id>` follows the live textual stream
 
 Foreground/background wording is reserved for daemon lifecycle, not run observation.
@@ -403,7 +403,7 @@ Foreground/background wording is reserved for daemon lifecycle, not run observat
 
 - `runs show <run-id>`: static snapshot of the run
 - `runs watch <run-id>`: live stream of run progress/events
-- `runs attach <run-id>`: richer interactive attach, primarily the TUI
+- `runs attach <run-id>`: alias for live textual observation
 
 ### 14. Failover and recovery posture
 
