@@ -545,7 +545,7 @@ func TestREADMEExecDocumentationMatchesCurrentContract(t *testing.T) {
 
 	content := string(body)
 	required := []string{
-		"## ⚡ Ad Hoc Exec",
+		`## <img src="imgs/logo-64.png" alt="" width="24" height="24"> ⚡ Ad Hoc Exec`,
 		"productize exec \"Summarize the current repository changes\"",
 		"productize exec --prompt-file prompt.md",
 		"cat prompt.md | productize exec --format json",

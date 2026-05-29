@@ -11,7 +11,7 @@ snapshots, streams, and run history move through the Productize daemon under
 `~/.productize`, so agents can run, reconnect, review, fix, and archive without
 scattering runtime state across the workspace.
 
-## What Productize Is
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> What Productize Is
 
 Productize is the operating layer between product artifacts and agent execution.
 
@@ -21,7 +21,7 @@ Productize is the operating layer between product artifacts and agent execution.
 - Reattach to live or completed work with snapshot-plus-stream observation.
 - Route work through product skills, reusable agents, review gates, and extension hooks.
 
-## Why It Exists
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Why It Exists
 
 AI agents can write code, but product work breaks down around the edges:
 
@@ -34,7 +34,7 @@ AI agents can write code, but product work breaks down around the edges:
 Productize keeps the authored workflow human-readable while giving execution a
 daemon-owned runtime with durable state, streams, history, and hooks.
 
-## Core Model
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Core Model
 
 | Layer | Lives In | Owns |
 | ----- | -------- | ---- |
@@ -45,7 +45,7 @@ daemon-owned runtime with durable state, streams, history, and hooks.
 Snapshots are rebuilt from persisted run data. Workspace markdown remains the
 authoring surface; the daemon owns execution state.
 
-## Quick Start
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Quick Start
 
 Install Productize:
 
@@ -87,13 +87,13 @@ productize reviews watch user-auth
 so explicit `productize sync` is useful for inspection and reconciliation but is
 not required before every run.
 
-## Runtime Flow
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Runtime Flow
 
 ```text
 markdown workflow -> daemon sync -> supervised run -> attach/watch -> review/fix -> archive
 ```
 
-## Productize-Specific Features
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Productize-Specific Features
 
 - **Daemon-owned run state.** The daemon owns workspace registration, run lifecycle, run databases, health, metrics, and attach/watch streams under `~/.productize`.
 - **Snapshot plus stream reconnect.** `runs attach` and `runs watch` reconnect from persisted state, then continue through the live run stream.
@@ -104,7 +104,7 @@ markdown workflow -> daemon sync -> supervised run -> attach/watch -> review/fix
 - **Review/fix/watch loops.** `reviews watch` waits for provider feedback, imports actionable rounds, starts child fix runs, and can optionally push committed fixes.
 - **Extension hooks.** Executable extensions can observe lifecycle events, mutate prompts, inject plan sources, modify agent sessions, gate retries, ship skills or reusable agents, and register review providers.
 
-## Skills And Gates
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Skills And Gates
 
 Productize routes product jobs to skills instead of asking every agent to
 improvise the process.
@@ -135,7 +135,7 @@ productize ext enable idea-forge
 productize setup
 ```
 
-## Supported Agents
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Supported Agents
 
 Productize executes through ACP-capable runtimes:
 
@@ -158,7 +158,7 @@ Execution runtimes are separate from skill installation. To run `productize
 exec`, `productize tasks run`, or `productize reviews fix`, install the
 ACP-capable runtime or adapter for the `--ide` you choose.
 
-## Authoring Details
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Authoring Details
 
 Task files use v2 YAML frontmatter:
 
@@ -189,7 +189,7 @@ If you have older XML-tagged artifacts, run:
 productize migrate
 ```
 
-## ⚡ Ad Hoc Exec
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> ⚡ Ad Hoc Exec
 
 Use `productize exec` for one prompt through the same ACP-backed execution stack
 without creating a full workflow first.
@@ -217,7 +217,7 @@ Persisted exec runs store resumable state under `~/.productize/runs/<run-id>/`:
 flags > workspace [exec] > workspace [defaults] > global [exec] > global [defaults] > built-in defaults
 ```
 
-## Reusable Agents
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Reusable Agents
 
 Reusable agents are filesystem bundles discovered from two scopes:
 
@@ -235,7 +235,7 @@ productize exec --agent reviewer "Review the staged changes"
 See [docs/reusable-agents.md](docs/reusable-agents.md) for the full format,
 runtime precedence, MCP behavior, and examples.
 
-## Extensions
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Extensions
 
 Extensions are JSON-RPC subprocess plugins. They can observe or modify runtime
 behavior without rebuilding Productize.
@@ -257,7 +257,7 @@ SDKs and references:
 - [Go SDK](sdk/extension/)
 - [TypeScript SDK](sdk/extension-sdk-ts/)
 
-## Reference
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Reference
 
 - [CLI reference](docs/cli-reference.md)
 - [Configuration reference](docs/configuration.md)
@@ -265,7 +265,7 @@ SDKs and references:
 - [Run reader library](docs/reader-library.md)
 - [Events reference](docs/events.md)
 
-## Development
+## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Development
 
 ```bash
 make verify    # Full pipeline: fmt, lint, test, build
