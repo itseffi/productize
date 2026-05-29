@@ -1,15 +1,13 @@
 #!/bin/bash
 
-# Script to create symbolic links for each individual skill from
-# .agents/skills/<skill> to .claude/skills/<skill>
-# This keeps .agents/skills as the source of truth while making
-# skills accessible to Claude Code via .claude/skills
+# Script to create symbolic links for each bundled skill from
+# skills/<skill> to .claude/skills/<skill>.
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-SOURCE_DIR="$REPO_ROOT/.agents/skills"
+SOURCE_DIR="$REPO_ROOT/skills"
 
 # Agent targets
 TARGET_DIRS=(".claude")

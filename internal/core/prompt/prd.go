@@ -100,9 +100,7 @@ func buildPRDExecutionRulesSection(prdDir string, autoCommit bool) string {
 		"- Use installed `workflow-memory` before editing code when workflow memory paths are provided below.\n",
 	)
 	sb.WriteString("- Use installed `execute-task` as the execution workflow for this task.\n")
-	sb.WriteString(
-		"- Read `AGENTS.md`, `CLAUDE.md`, and the PRD documents under `" + prdDir + "` before editing code.\n",
-	)
+	sb.WriteString("- Read `AGENTS.md` and the PRD documents under `" + prdDir + "` before editing code.\n")
 	sb.WriteString(
 		"- Treat the task specification below plus the supporting PRD documents, especially `_techspec.md` and `_tasks.md`, as the source of truth.\n",
 	)

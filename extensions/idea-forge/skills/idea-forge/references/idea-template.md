@@ -64,11 +64,11 @@ Score from the business analysis phase:
 
 Leverage type: {Quick Win / Strategic Bet / Compounding Feature}
 
-## Council Insights
+## Advisors Insights
 
 Key findings from the multi-advisor debate:
 
-- **Recommended approach:** {summary of the council recommendation}
+- **Recommended approach:** {summary of the advisors recommendation}
 - **Key trade-offs:** {list of trade-offs surfaced}
 - **Risks identified:** {list of risks and mitigations}
 - **Stretch goal (V2+):** {optional more ambitious version for later}

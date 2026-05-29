@@ -2,7 +2,7 @@
 
 Reusable agents let you package a prompt, runtime defaults, and optional agent-local MCP servers into a directory that Productize can discover and execute.
 
-The first-party `idea-forge` extension ships the council advisor roster below. Install and enable it, then run `productize setup` to provision those reusable agents in the selected scope:
+The first-party `idea-forge` extension ships the advisors advisor roster below. Install and enable it, then run `productize setup` to provision those reusable agents in the selected scope:
 
 ```bash
 productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge
@@ -10,7 +10,7 @@ productize ext enable idea-forge
 productize setup
 ```
 
-Council roster:
+Advisors roster:
 
 - `architect-advisor`
 - `devils-advocate`
@@ -19,7 +19,7 @@ Council roster:
 - `security-advocate`
 - `the-thinker`
 
-Those extension-shipped council agents intentionally inherit the host runtime, which keeps council debates consistent across supported drivers.
+Those extension-shipped advisors agents intentionally inherit the host runtime, which keeps advisors debates consistent across supported drivers.
 
 ## Discovery and Override Rules
 
@@ -127,7 +127,7 @@ Nested execution follows the same boundary:
 - a child agent gets the reserved `productize` server plus the child's own `mcp.json`
 - a child agent does not inherit the parent agent's local MCP servers implicitly
 
-That automatic host injection is what lets optional extension skills such as `idea-forge` run council advisors through `run_agent` even when the top-level session was not started with `productize exec --agent ...`.
+That automatic host injection is what lets optional extension skills such as `idea-forge` run advisors advisors through `run_agent` even when the top-level session was not started with `productize exec --agent ...`.
 
 ## Commands
 

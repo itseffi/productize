@@ -115,7 +115,7 @@ jobs:
       - name: Setup Release Tools
         uses: ./.github/actions/setup-release
         with:
-          goreleaser-distribution: goreleaser-pro
+          goreleaser-distribution: goreleaser
           setup-docker: false
           setup-docker-login: false
 
@@ -126,7 +126,6 @@ jobs:
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
           GITHUB_ISSUE_NUMBER: ${{ github.event.pull_request.number }}
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GOTMPDIR: ${{ runner.temp }}/go-tmp
         run: go run "${{ env.PR_RELEASE_MODULE }}" dry-run --ci-output
 
@@ -164,7 +163,7 @@ jobs:
       - name: Setup Release Tools
         uses: ./.github/actions/setup-release
         with:
-          goreleaser-distribution: goreleaser-pro
+          goreleaser-distribution: goreleaser
           setup-docker: true
           setup-docker-login: true
           setup-qemu: true
@@ -174,6 +173,7 @@ jobs:
           cosign-version: "v2.2.4"
 
       - name: Create Git Tag
+        id: release-version
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
@@ -185,6 +185,7 @@ jobs:
             git tag -a "v$VERSION" -m "Release v$VERSION"
             git push origin "v$VERSION"
             echo "Created and pushed tag v$VERSION"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           else
             echo "Could not get version from git-cliff. Got: $VERSION"
             echo "Fallback: Extract from commit message"
@@ -195,31 +196,33 @@ jobs:
               git tag -a "v$VERSION" -m "Release v$VERSION"
               git push origin "v$VERSION"
               echo "Created and pushed tag v$VERSION"
+              echo "version=$VERSION" >> "$GITHUB_OUTPUT"
             else
               echo "Could not extract version from any source. Got: $VERSION"
               exit 1
             fi
           fi
 
-      - name: Ensure release notes file exists
-        run: |
-          if [ ! -f RELEASE_BODY.md ]; then
-            echo "No release body found, creating empty file"
-            touch RELEASE_BODY.md
-          fi
-
       - uses: goreleaser/goreleaser-action@v6
         with:
-          distribution: goreleaser-pro
+          distribution: goreleaser
           version: ~> v2
           args: >-
             release --clean
-            --release-notes=RELEASE_BODY.md
             --release-header-tmpl=.goreleaser.release-header.md.tmpl
             --release-footer-tmpl=.goreleaser.release-footer.md.tmpl
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           COSIGN_EXPERIMENTAL: 1
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GOTMPDIR: ${{ runner.temp }}/go-tmp
+
+      - name: Build npm CLI package
+        run: >-
+          node npm/cli/prepare-package.mjs
+          --version "${{ steps.release-version.outputs.version }}"
+          --dist dist
+          --out dist/npm/@productize/cli
+
+      - name: Publish npm CLI package
+        run: npm publish dist/npm/@productize/cli --access public

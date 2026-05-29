@@ -1,0 +1,31 @@
+{
+  "name": "@productize/cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Productize CLI",
+  "type": "module",
+  "bin": {
+    "productize": "run-productize.js"
+  },
+  "files": [
+    "bin/",
+    "run-productize.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itseffi/productize.git"
+  },
+  "bugs": {
+    "url": "https://github.com/itseffi/productize/issues"
+  },
+  "homepage": "https://github.com/itseffi/productize",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

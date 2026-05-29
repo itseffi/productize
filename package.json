@@ -10,6 +10,7 @@
   "private": true,
   "scripts": {
     "build:extension-sdks": "npm run build --workspace @productize/extension-sdk --workspace @productize/create-extension",
+    "build:npm-cli": "node npm/cli/prepare-package.mjs",
     "postinstall": "bash scripts/link-skills.sh",
     "prepare": "husky",
     "typecheck:extension-sdks": "npm run typecheck --workspace @productize/extension-sdk --workspace @productize/create-extension"

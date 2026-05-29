@@ -38,7 +38,7 @@ You MUST create a task for each phase and complete them in order:
 2. **Understand the idea** — ask 3-6 targeted questions to refine scope and intent
 3. **Research the market** — web research for competitive intelligence and market data + codebase exploration
 4. **Analyze business viability** — adopt business analyst persona (`references/business-analyst.md`) for KPIs, personas, and success metrics
-5. **Debate trade-offs** — run council session (`references/council.md`) to challenge assumptions and surface risks
+5. **Debate trade-offs** — run advisors session (`references/advisors.md`) to challenge assumptions and surface risks
 6. **Scan for opportunities** — adopt product strategist persona (`references/product-strategist.md`) to suggest higher-leverage alternatives before committing to the draft
 7. **Draft the idea** — write using the canonical template from `references/idea-template.md`
 8. **Review with user** — present the draft, iterate until approved
@@ -102,19 +102,19 @@ You MUST create a task for each phase and complete them in order:
      | **Defensibility**   | Is this easy to copy or does it compound over time? | Must do/Strong/Maybe/Pass |
      | **Feasibility**     | Can we actually build this?                         | Must do/Strong/Maybe/Pass |
 
-   - This evaluation informs the idea's priority and feeds into the council debate.
+   - This evaluation informs the idea's priority and feeds into the advisors debate.
    - Present the analysis to the user before proceeding.
 
-5. Debate trade-offs through multi-advisor council.
-   - Read `references/council.md` and run a council session in embedded mode to debate:
+5. Debate trade-offs through multi-advisor advisors.
+   - Read `references/advisors.md` and run a advisors session in embedded mode to debate:
      - **Scope:** Is the V1 scope right? Too much? Too little?
      - **Priority:** Where should this rank vs other planned features?
      - **Technical approach:** Are there simpler alternatives?
      - **Risks:** What could go wrong? What are the hidden dependencies?
      - **10x Challenge:** Is this truly high-leverage or just incremental? Is there a more ambitious version worth exploring? Could a simpler version deliver disproportionate value?
-   - Follow the council session structure from the reference: Opening Statements, Tensions & Debate, Position Evolution, Synthesis.
-   - Use real reusable subagents through `run_agent`. Do NOT simulate the advisors inline. The canonical council roster is: `pragmatic-engineer`, `architect-advisor`, `security-advocate`, `product-mind`, `devils-advocate`, `the-thinker`.
-   - If `run_agent` is unavailable or the council archetypes cannot be resolved, stop with an actionable error that tells the user to run `productize setup`.
+   - Follow the advisors session structure from the reference: Opening Statements, Tensions & Debate, Position Evolution, Synthesis.
+   - Use real reusable subagents through `run_agent`. Do NOT simulate the advisors inline. The canonical advisor roster is: `pragmatic-engineer`, `architect-advisor`, `security-advocate`, `product-mind`, `devils-advocate`, `the-thinker`.
+   - If `run_agent` is unavailable or the advisors archetypes cannot be resolved, stop with an actionable error that tells the user to run `productize setup`.
    - Select 3-5 advisors based on dilemma complexity.
    - Extract: key trade-offs, recommended approach, items for out-of-scope (V1), optional stretch goal for V2+.
    - After the debate, create an ADR for the scope decision:
@@ -125,7 +125,7 @@ You MUST create a task for each phase and complete them in order:
 
 6. Scan for opportunities.
    - Read `references/product-strategist.md` and adopt the product strategist persona.
-   - Using all context gathered so far (research, business analysis, council output), evaluate whether the original idea is the highest-leverage move.
+   - Using all context gathered so far (research, business analysis, advisors output), evaluate whether the original idea is the highest-leverage move.
    - Suggest up to 3 alternatives spanning different scales:
      - One more ambitious version (what if we thought bigger?)
      - One simpler version (what if we stripped it to the essence?)
@@ -142,7 +142,7 @@ You MUST create a task for each phase and complete them in order:
 7. Draft the idea.
    - Read `references/idea-template.md` and fill every applicable section with gathered context.
    - Include an "Architecture Decision Records" section listing all ADRs created during this session.
-   - Mandatory sections (ALWAYS include): Overview, Problem (enriched with market data), Core Features, KPIs, Feature Assessment, Council Insights, Out of Scope (V1), Architecture Decision Records, Open Questions.
+   - Mandatory sections (ALWAYS include): Overview, Problem (enriched with market data), Core Features, KPIs, Feature Assessment, Advisors Insights, Out of Scope (V1), Architecture Decision Records, Open Questions.
    - Optional sections (include when relevant): Summary/Differentiator, Integration with Existing Features, Sub-Features, Cost Estimate.
    - Prefer active voice, omit needless words, use definite and specific language over vague generalities. Every sentence should earn its place.
    - Language: **English**. Tone: clear, technical, consistent with existing project artifacts.
@@ -175,7 +175,7 @@ digraph idea_forge {
     "Ask 3-6 targeted questions (one at a time)" [shape=box];
     "Discover context (codebase + web)" [shape=box];
     "Analyze business viability" [shape=box];
-    "Debate trade-offs (council)" [shape=box];
+    "Debate trade-offs (advisors)" [shape=box];
     "Create ADR for scope decision" [shape=box];
     "Opportunity scan (product strategist)" [shape=box];
     "User picks direction?" [shape=diamond];
@@ -186,8 +186,8 @@ digraph idea_forge {
     "Determine project & directory" -> "Ask 3-6 targeted questions (one at a time)";
     "Ask 3-6 targeted questions (one at a time)" -> "Discover context (codebase + web)";
     "Discover context (codebase + web)" -> "Analyze business viability";
-    "Analyze business viability" -> "Debate trade-offs (council)";
-    "Debate trade-offs (council)" -> "Create ADR for scope decision";
+    "Analyze business viability" -> "Debate trade-offs (advisors)";
+    "Debate trade-offs (advisors)" -> "Create ADR for scope decision";
     "Create ADR for scope decision" -> "Opportunity scan (product strategist)";
     "Opportunity scan (product strategist)" -> "User picks direction?";
     "User picks direction?" -> "Draft idea (canonical template)" [label="confirmed"];
@@ -201,7 +201,7 @@ digraph idea_forge {
 
 - If the user provides insufficient context to complete a section, note it in the Open Questions section rather than guessing.
 - If web research tools (Exa MCP, web search) are unavailable, proceed with codebase exploration only and note the limitation.
-- If the reference files for business analyst or council are missing, perform the analysis and debate inline using the guidelines described in phases 4 and 5.
+- If the reference files for business analyst or advisors are missing, perform the analysis and debate inline using the guidelines described in phases 4 and 5.
 - If the target directory cannot be created, stop and report the filesystem error.
 - If operating in update mode, preserve sections the user has not asked to change.
 

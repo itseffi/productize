@@ -8,15 +8,18 @@ dist/
 web/dist/*
 !web/dist/.keep
 RELEASE_NOTES.md
+RELEASE_BODY.md
+CLAUDE.md
 coverage.out
 coverage.html
 # Internal dev session notes, scratch, QA — never publish.
 .codex/
+.agents/
+.claude/
 .resources/
 .factory/skills
 skills/*/autoresearch-*/
 skills-lock.json
-.claude/skills
 ai-docs
 **/**/node_modules
 node_modules/

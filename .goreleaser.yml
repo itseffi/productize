@@ -1,18 +1,18 @@
-# yaml-language-server: $schema=https://goreleaser.com/static/schema-pro.json
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=jcroql
 version: 2
-pro: true
 
 project_name: productize
 
 metadata:
   mod_timestamp: "{{ .CommitTimestamp }}"
-  license: "MIT"
-  homepage: "https://github.com/itseffi/productize"
-  description: "Productize CLI"
 
 env:
   - CGO_ENABLED=0
+
+before:
+  hooks:
+    - make go-build
 
 git:
   tag_sort: -version:refname
@@ -171,18 +171,7 @@ homebrew_casks:
 
     commit_msg_template: "Brew cask update for {{ .ProjectName }} version {{ .Tag }}"
     directory: Casks
-    caveats: |
-      To get started with Productize, see https://github.com/itseffi/productize
     homepage: "https://github.com/itseffi/productize"
     description: "Productize CLI"
+    license: "MIT"
     skip_upload: auto
-
-# NPM package configuration
-npms:
-  - name: "@productize/cli"
-    description: "Productize CLI"
-    repository: "git+https://github.com/itseffi/productize.git"
-    bugs: https://github.com/itseffi/productize/issues
-    access: public
-    license: MIT
-    homepage: "https://github.com/itseffi/productize"

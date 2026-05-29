@@ -205,7 +205,7 @@ persist = false
 
 For all fields, types, and defaults, read `references/config-reference.md`.
 
-## Reusable Agents and the Council Pattern
+## Reusable Agents and the Advisor Pattern
 
 Reusable agents are standalone personas that can be invoked via `productize exec --agent <name>` or referenced by skills through `run_agent`.
 
@@ -213,7 +213,7 @@ Reusable agents are standalone personas that can be invoked via `productize exec
 
 **Agent definition:** Each agent has an `AGENT.md` with YAML frontmatter (`title`, `description`) and optional `mcp.json` for MCP server configuration.
 
-**Council agents shipped by the optional `idea-forge` extension**:
+**Advisor agents shipped by the optional `idea-forge` extension**:
 
 | Agent | Perspective |
 | --- | --- |
@@ -226,7 +226,7 @@ Reusable agents are standalone personas that can be invoked via `productize exec
 
 Install flow: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`.
 
-The `idea-forge` skill uses these agents in a council debate to challenge feature scope and surface risks. The `council` skill can also orchestrate multi-advisor debates on demand.
+The `idea-forge` skill uses these agents in an advisor debate to challenge feature scope and surface risks.
 
 Management commands: `productize agents list`, `productize agents inspect <name>`.
 

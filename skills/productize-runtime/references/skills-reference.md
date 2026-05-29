@@ -11,12 +11,12 @@ skill layer.
 
 Install first: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`
 
-Expands a raw feature idea into a structured, research-backed specification through interactive brainstorming, web research, business analysis, and multi-advisor council debate.
+Expands a raw feature idea into a structured, research-backed specification through interactive brainstorming, web research, business analysis, and multi-advisor advisor debate.
 
 - **Inputs:** Feature idea or problem description. Optional existing `_idea.md` for update mode.
 - **Outputs:** `.productize/tasks/<slug>/_idea.md`, ADRs in `adrs/`.
 - **Pipeline position:** Optional first step. Feeds into `create-prd`.
-- **Process:** Clarifying questions -> parallel codebase + web research -> business viability analysis -> council debate -> opportunity scan -> draft -> user approval.
+- **Process:** Clarifying questions -> parallel codebase + web research -> business viability analysis -> advisor debate -> opportunity scan -> draft -> user approval.
 - **Use when:** The user has a raw idea and wants to explore viability before committing to a PRD.
 - **Do not use for:** PRD creation, technical specifications, task breakdown, or code implementation.
 

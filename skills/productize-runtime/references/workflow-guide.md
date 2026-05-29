@@ -21,7 +21,7 @@ Install flow: `productize ext install --yes itseffi/productize --remote github -
 2. Answer 3-6 clarifying questions (one per message, multiple-choice preferred).
 3. The skill runs parallel codebase exploration and web research.
 4. A business analyst persona evaluates viability with KPIs and scoring.
-5. A council debate (3-5 advisors from the extension-shipped council agents) challenges scope and surfaces risks.
+5. A advisor debate (3-5 advisors from the extension-shipped advisor agents) challenges scope and surfaces risks.
 6. A product strategist scans for higher-leverage alternatives.
 7. Review and approve the draft idea spec.
 8. Output: `.productize/tasks/<slug>/_idea.md` + ADRs.

@@ -49,7 +49,7 @@ Force yourself through each category when scanning for alternatives:
 
 ## Opportunity Scan Process
 
-Given a feature idea and its context (research, business analysis, council output):
+Given a feature idea and its context (research, business analysis, advisors output):
 
 ### 1. Assess the Original Idea
 

@@ -1,28 +1,11 @@
 <div align="center">
   <h1>Productize</h1>
   <p><strong>Orchestrate AI coding agents from idea to shipped code — in a single pipeline.</strong></p>
-  <p>
-    <a href="https://github.com/itseffi/productize/actions/workflows/ci.yml">
-      <img src="https://github.com/itseffi/productize/actions/workflows/ci.yml/badge.svg" alt="CI">
-    </a>
-    <a href="https://pkg.go.dev/github.com/itseffi/productize">
-      <img src="https://pkg.go.dev/badge/github.com/itseffi/productize.svg" alt="Go Reference">
-    </a>
-    <a href="https://goreportcard.com/report/github.com/itseffi/productize">
-      <img src="https://goreportcard.com/badge/github.com/itseffi/productize" alt="Go Report Card">
-    </a>
-    <a href="LICENSE">
-      <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT">
-    </a>
-    <a href="https://github.com/itseffi/productize/releases">
-      <img src="https://img.shields.io/github/v/release/itseffi/productize?include_prereleases" alt="Release">
-    </a>
-  </p>
 </div>
 
 One CLI to replace scattered prompts, manual task tracking, and copy-paste review cycles. Productize drives the full lifecycle of AI-assisted development: product ideation, technical specification, task breakdown with codebase-informed enrichment, concurrent execution across agents, and automated PR review remediation.
 
-## ✨ Highlights
+## Highlights
 
 - **One command, 40+ agents.** Install core workflow skills into Claude Code, Codex, Cursor, Droid, OpenCode, Pi, Gemini, and 40+ other agents and editors with `productize setup`, plus any setup assets shipped by enabled extensions.
 - **Idea to code in a structured pipeline.** Optional Idea → PRD → TechSpec → Tasks → Execution → Review. Each phase produces plain markdown artifacts that feed into the next. Start from an idea for full research and debate, or jump straight to PRD if you already have a clear scope.
@@ -42,7 +25,7 @@ One CLI to replace scattered prompts, manual task tracking, and copy-paste revie
 #### Homebrew
 
 ```bash
-brew install itseffi/productize/productize
+brew install --cask itseffi/productize/productize
 ```
 
 #### NPM
@@ -73,7 +56,7 @@ productize setup --core-only
 
 `productize setup` installs Productize's full bundled skill catalog plus any setup assets shipped by enabled extensions.
 
-If you want the optional ideation workflow and council roster, install the first-party `idea-forge` extension first:
+If you want the optional ideation workflow and advisor roster, install the first-party `idea-forge` extension first:
 
 ```bash
 productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge
@@ -354,7 +337,7 @@ Then:
 /idea-forge user-auth
 ```
 
-Transforms a raw idea into a structured idea spec — asks targeted questions, researches market and codebase in parallel, runs business analysis and council debate, suggests high-leverage alternatives, and produces a research-backed idea. Skip this step if you already have a clear feature scope.
+Transforms a raw idea into a structured idea spec — asks targeted questions, researches market and codebase in parallel, runs business analysis and advisors debate, suggests high-leverage alternatives, and produces a research-backed idea. Skip this step if you already have a clear feature scope.
 
 ### 3. Create a PRD
 
@@ -438,7 +421,7 @@ Optional first-party extension skills:
 
 | Skill             | Purpose                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------- |
-| `idea-forge` | Raw idea → structured idea spec with market research, business analysis, and council debate |
+| `idea-forge` | Raw idea → structured idea spec with market research, business analysis, and advisors debate |
 
 Install the optional ideation extension with:
 
@@ -786,7 +769,7 @@ internal/core/           Internal facade for preparation and execution
   plan/                  Input discovery, filtering, grouping, batch prep
   prompt/                Prompt builders emitting runtime context + skill names
   run/                   Execution pipeline, logging, shutdown, event streaming
-internal/setup/          Bundled skill and council-agent installer (agent detection, symlink/copy)
+internal/setup/          Bundled skill and advisors-agent installer (agent detection, symlink/copy)
 internal/version/        Build metadata
 sdk/extension/           Public Go SDK for extension authors
 sdk/extension-sdk-ts/    Public TypeScript SDK for extension authors
@@ -822,10 +805,10 @@ make deps      # Tidy and verify modules
  </picture>
 </a>
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## 📄 License
+## License
 
 [MIT](LICENSE)
