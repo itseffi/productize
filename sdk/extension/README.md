@@ -107,10 +107,10 @@ func TestExtension(t *testing.T) {
 
 ## Documentation
 
-- [Author guide](../../.productize/docs/extensibility/index.md)
-- [Getting started](../../.productize/docs/extensibility/getting-started.md)
-- [Hello world in Go](../../.productize/docs/extensibility/hello-world-go.md)
-- [Hook reference](../../.productize/docs/extensibility/hook-reference.md)
-- [Host API reference](../../.productize/docs/extensibility/host-api-reference.md)
-- [Capability reference](../../.productize/docs/extensibility/capability-reference.md)
-- [Testing guide](../../.productize/docs/extensibility/testing.md)
+- [Author guide](../../docs/extensibility/index.md)
+- [Getting started](../../docs/extensibility/getting-started.md)
+- [Hello world in Go](../../docs/extensibility/hello-world-go.md)
+- [Hook reference](../../docs/extensibility/hook-reference.md)
+- [Host API reference](../../docs/extensibility/host-api-reference.md)
+- [Capability reference](../../docs/extensibility/capability-reference.md)
+- [Testing guide](../../docs/extensibility/testing.md)

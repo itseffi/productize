@@ -5,11 +5,11 @@ description: Explains Productize capabilities, CLI commands, core workflow skill
 
 # Productize Reference Guide
 
-Comprehensive reference for the Productize CLI and its AI-assisted development workflow.
+Comprehensive reference for the Productize CLI and its daemon-backed product workflow runtime.
 
 ## What Is Productize
 
-Productize is a Go CLI that orchestrates the full lifecycle of AI-assisted development. It covers product ideation, technical specification, task decomposition, automated execution via AI coding agents, and PR review remediation.
+Productize is a Go CLI and daemon-backed runtime for shipping products with AI agents. It keeps product work in markdown, syncs authored workflow artifacts into daemon state, supervises ACP-backed agent runs, and supports review/fix loops, reusable agents, extensions, memory, gates, and routed product skills.
 
 Key characteristics:
 
@@ -17,7 +17,7 @@ Key characteristics:
 - **Skills-based.** Bundled Productize workflow skills and Productize product-operating skills (installed via `productize setup`) teach agents how to execute each workflow phase.
 - **Artifact-driven.** Planning and review artifacts live as markdown under `.productize/tasks/<slug>/`, versioned alongside the codebase.
 - **Daemon-backed runtime.** A home-scoped daemon owns run state, workspace registration, snapshots, streams, and the synced `global.db` catalog under `~/.productize/`.
-- **Single binary, local-first.** The daemon is launched from the same binary; there are no external control planes.
+- **Single binary runtime.** The daemon is launched from the same binary; there are no external control planes.
 
 ## Workflow Pipeline Overview
 

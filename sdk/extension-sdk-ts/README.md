@@ -47,8 +47,8 @@ The published package also ships the starter templates used by `@productize/crea
 
 ## Documentation
 
-- [Author docs](../../.productize/docs/extensibility/index.md)
-- [Getting started](../../.productize/docs/extensibility/getting-started.md)
-- [Hook reference](../../.productize/docs/extensibility/hook-reference.md)
-- [Host API reference](../../.productize/docs/extensibility/host-api-reference.md)
-- [Testing guide](../../.productize/docs/extensibility/testing.md)
+- [Author docs](../../docs/extensibility/index.md)
+- [Getting started](../../docs/extensibility/getting-started.md)
+- [Hook reference](../../docs/extensibility/hook-reference.md)
+- [Host API reference](../../docs/extensibility/host-api-reference.md)
+- [Testing guide](../../docs/extensibility/testing.md)
