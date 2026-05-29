@@ -10,8 +10,6 @@ metadata:
   license: "MIT"
   homepage: "https://github.com/itseffi/productize"
   description: "Productize CLI"
-  maintainers:
-    - "itseffi <itseffi@users.noreply.github.com>"
 
 env:
   - GO111MODULE=on
