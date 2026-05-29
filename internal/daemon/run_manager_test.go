@@ -1978,34 +1978,6 @@ func TestRunManagerEnsureWorkflowIdentityValidatesAndReusesRows(t *testing.T) {
 	}
 }
 
-func TestHostSetHTTPPortPersistsInfo(t *testing.T) {
-	paths := mustHomePaths(t)
-	host := &Host{
-		paths: paths,
-		info: Info{
-			PID:        4242,
-			Version:    "test",
-			SocketPath: paths.SocketPath,
-			StartedAt:  time.Now().UTC(),
-			State:      ReadyStateReady,
-		},
-	}
-
-	if err := host.SetHTTPPort(context.Background(), 43123); err != nil {
-		t.Fatalf("SetHTTPPort() error = %v", err)
-	}
-	current, err := ReadInfo(paths.InfoPath)
-	if err != nil {
-		t.Fatalf("ReadInfo() error = %v", err)
-	}
-	if current.HTTPPort != 43123 {
-		t.Fatalf("current.HTTPPort = %d, want 43123", current.HTTPPort)
-	}
-	if host.Info().HTTPPort != 43123 {
-		t.Fatalf("host.Info().HTTPPort = %d, want 43123", host.Info().HTTPPort)
-	}
-}
-
 func TestHostCloseRemovesOwnedInfoAndReleasesLock(t *testing.T) {
 	paths := mustHomePaths(t)
 	lock, err := acquireLock(paths.LockPath, 5150, lockDeps{

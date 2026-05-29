@@ -2,18 +2,22 @@
   <img src="imgs/productize-banner.png" alt="Productize" width="100%">
 </p>
 
-Productize is a runtime for shipping products with AI agents: product
-playbooks, review gates, daemon-backed runs, reusable agents, and 250+ routed
-skills for building, shipping, operating, and growing products.
+<p align="center"><strong>Runtime for shipping products with AI agents.</strong></p>
 
-Product work stays in editable markdown inside your repo. Execution state,
-snapshots, streams, and run history move through the Productize daemon under
-`~/.productize`, so agents can run, reconnect, review, fix, and archive without
-scattering runtime state across the workspace.
+Productize drives the product development lifecycle on top of the AI coding agents you
+already use: idea, PRD, tech spec, codebase-informed task breakdown, multi-agent
+execution, and review remediation. It ships 250+ routed product, design, QA, growth,
+and engineering skills plus review gates, and keeps every artifact as editable
+markdown in your repo while the daemon owns execution state — runs, streams, history,
+and hooks — under `~/.productize`.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> What Productize Is
+**Local, BYOK, no SaaS.** Productize is a single Go binary that runs on your machine
+and drives whichever AI agent you already pay for (Claude Code, Codex, Cursor, and
+more) with your own keys — no token markup, no second subscription, no accounts, no
+telemetry. There is no Productize cloud: your code goes only where your chosen agent
+already sends it.
 
-Productize is the operating layer between product artifacts and agent execution.
+## What It Does
 
 - Author PRDs, TechSpecs, ADRs, tasks, reviews, and memory in `.productize/tasks/<slug>/`.
 - Sync authored markdown into the daemon catalog at `~/.productize/db/global.db`.
@@ -21,20 +25,21 @@ Productize is the operating layer between product artifacts and agent execution.
 - Reattach to live or completed work with snapshot-plus-stream observation.
 - Route work through product skills, reusable agents, review gates, and extension hooks.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Why It Exists
+## Why It Exists
 
-AI agents can write code, but product work breaks down around the edges:
+A coding prompt gets you a diff. Shipping a product needs the work to hold together
+across many runs and many agents:
 
-- context gets lost between agent runs
-- long-running work is hard to supervise or reconnect to
-- review feedback turns into copy-paste chores
-- task files, run logs, transcripts, and status drift apart
-- teams need product, design, QA, DX, metrics, release, and growth gates, not just coding prompts
+- context survives between runs instead of restarting from scratch
+- long-running work can be supervised, reconnected, and replayed
+- review feedback becomes a tracked fix loop, not a copy-paste chore
+- task files, run logs, transcripts, and status stay in sync
+- product, design, QA, DX, metrics, release, and growth gates apply judgment — not just coding prompts
 
-Productize keeps the authored workflow human-readable while giving execution a
-daemon-owned runtime with durable state, streams, history, and hooks.
+Productize handles this: it runs the agents, persists run state, routes work to the
+right skill, and keeps the artifacts in your repo.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Core Model
+## Core Model
 
 | Layer | Lives In | Owns |
 | ----- | -------- | ---- |
@@ -45,7 +50,7 @@ daemon-owned runtime with durable state, streams, history, and hooks.
 Snapshots are rebuilt from persisted run data. Workspace markdown remains the
 authoring surface; the daemon owns execution state.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Quick Start
+## Quick Start
 
 Install Productize:
 
@@ -87,13 +92,17 @@ productize reviews watch user-auth
 so explicit `productize sync` is useful for inspection and reconciliation but is
 not required before every run.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Runtime Flow
+## Runtime Flow
+
+<p align="center">
+  <img src="imgs/runtime-flow.png" alt="Productize runtime flow: workflow artifacts, daemon, and runs" width="100%">
+</p>
 
 ```text
 markdown workflow -> daemon sync -> supervised run -> attach/watch -> review/fix -> archive
 ```
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Productize-Specific Features
+## Productize-Specific Features
 
 - **Daemon-owned run state.** The daemon owns workspace registration, run lifecycle, run databases, health, metrics, and attach/watch streams under `~/.productize`.
 - **Snapshot plus stream reconnect.** `runs attach` and `runs watch` reconnect from persisted state, then continue through the live run stream.
@@ -104,7 +113,7 @@ markdown workflow -> daemon sync -> supervised run -> attach/watch -> review/fix
 - **Review/fix/watch loops.** `reviews watch` waits for provider feedback, imports actionable rounds, starts child fix runs, and can optionally push committed fixes.
 - **Extension hooks.** Executable extensions can observe lifecycle events, mutate prompts, inject plan sources, modify agent sessions, gate retries, ship skills or reusable agents, and register review providers.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Skills And Gates
+## Skills And Gates
 
 Productize routes product jobs to skills instead of asking every agent to
 improvise the process.
@@ -130,12 +139,12 @@ go-to-market, and AI product execution.
 Optional first-party ideation lives in the `idea-forge` extension:
 
 ```bash
-productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge
+productize ext install --yes itseffi/productize --remote github --ref main --subdir extensions/idea-forge
 productize ext enable idea-forge
 productize setup
 ```
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Supported Agents
+## Supported Agents
 
 Productize executes through ACP-capable runtimes:
 
@@ -150,7 +159,7 @@ Productize executes through ACP-capable runtimes:
 | Pi | `pi` |
 | Gemini | `gemini` |
 
-`productize setup` can install skills into 40+ agents and editors, including
+`productize setup` can install skills into 44 agents and editors, including
 Claude Code, Codex, Cursor, Droid, OpenCode, Pi, Gemini CLI, GitHub Copilot,
 Windsurf, Amp, Continue, Goose, Roo Code, Augment, Kiro CLI, Cline, and more.
 
@@ -158,9 +167,11 @@ Execution runtimes are separate from skill installation. To run `productize
 exec`, `productize tasks run`, or `productize reviews fix`, install the
 ACP-capable runtime or adapter for the `--ide` you choose.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Authoring Details
+## Authoring Details
 
-Task files use v2 YAML frontmatter:
+Each artifact type carries its own YAML frontmatter: task files, review issues,
+skills (`SKILL.md`), reusable agents (`AGENT.md`), and ADRs all have distinct fields.
+Task files use:
 
 ```md
 ---
@@ -189,7 +200,7 @@ If you have older XML-tagged artifacts, run:
 productize migrate
 ```
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> ⚡ Ad Hoc Exec
+## Ad Hoc Exec
 
 Use `productize exec` for one prompt through the same ACP-backed execution stack
 without creating a full workflow first.
@@ -217,7 +228,7 @@ Persisted exec runs store resumable state under `~/.productize/runs/<run-id>/`:
 flags > workspace [exec] > workspace [defaults] > global [exec] > global [defaults] > built-in defaults
 ```
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Reusable Agents
+## Reusable Agents
 
 Reusable agents are filesystem bundles discovered from two scopes:
 
@@ -235,7 +246,7 @@ productize exec --agent reviewer "Review the staged changes"
 See [docs/reusable-agents.md](docs/reusable-agents.md) for the full format,
 runtime precedence, MCP behavior, and examples.
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Extensions
+## Extensions
 
 Extensions are JSON-RPC subprocess plugins. They can observe or modify runtime
 behavior without rebuilding Productize.
@@ -257,7 +268,7 @@ SDKs and references:
 - [Go SDK](sdk/extension/)
 - [TypeScript SDK](sdk/extension-sdk-ts/)
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Reference
+## Reference
 
 - [CLI reference](docs/cli-reference.md)
 - [Configuration reference](docs/configuration.md)
@@ -265,7 +276,7 @@ SDKs and references:
 - [Run reader library](docs/reader-library.md)
 - [Events reference](docs/events.md)
 
-## <img src="imgs/logo-64.png" alt="" width="24" height="24"> Development
+## Development
 
 ```bash
 make verify    # Full pipeline: fmt, lint, test, build

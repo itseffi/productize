@@ -11,7 +11,6 @@ import (
 
 	apiclient "github.com/itseffi/productize/internal/api/client"
 	apicore "github.com/itseffi/productize/internal/api/core"
-	"github.com/itseffi/productize/internal/api/httpapi"
 	"github.com/itseffi/productize/internal/api/udsapi"
 	"github.com/itseffi/productize/internal/logger"
 	"github.com/itseffi/productize/internal/store/globaldb"
@@ -19,16 +18,14 @@ import (
 
 // RunOptions control the long-lived daemon host process.
 type RunOptions struct {
-	Version  string
-	HTTPPort int
-	Mode     RunMode
+	Version string
+	Mode    RunMode
 }
 
 type hostRuntime struct {
 	runManager      *RunManager
 	db              *globaldb.GlobalDB
 	udsServer       *udsapi.Server
-	httpServer      *httpapi.Server
 	shutdownTimeout time.Duration
 }
 
@@ -41,9 +38,6 @@ type hostPersistence struct {
 var (
 	shutdownRunManager = func(ctx context.Context, manager *RunManager) error {
 		return manager.Shutdown(ctx, true)
-	}
-	shutdownHTTPServer = func(ctx context.Context, server *httpapi.Server) error {
-		return server.Shutdown(ctx)
 	}
 	shutdownUDSServer = func(ctx context.Context, server *udsapi.Server) error {
 		return server.Shutdown(ctx)
@@ -78,9 +72,8 @@ func Run(ctx context.Context, opts RunOptions) (retErr error) {
 
 	mode := resolveRunMode(opts.Mode)
 	result, err := Start(runCtx, StartOptions{
-		Version:  opts.Version,
-		HTTPPort: opts.HTTPPort,
-		Healthy:  ProbeReady,
+		Version: opts.Version,
+		Healthy: ProbeReady,
 		Prepare: func(startCtx context.Context, currentHost *Host) error {
 			host = currentHost
 			preparedRuntime, preparedLogger, err := prepareRuntimeForRun(
@@ -154,8 +147,6 @@ func logDaemonStarted(mode RunMode, info Info) {
 		mode,
 		"pid",
 		info.PID,
-		"http_port",
-		info.HTTPPort,
 		"socket_path",
 		info.SocketPath,
 	)
@@ -219,7 +210,6 @@ func prepareHostRuntime(
 		return hostRuntime{}, err
 	}
 	runtime.udsServer = servers.udsServer
-	runtime.httpServer = servers.httpServer
 	return runtime, nil
 }
 
@@ -297,7 +287,6 @@ func buildHostHandlers(
 	queryService := NewQueryService(QueryServiceConfig{
 		GlobalDB:   persistence.db,
 		RunManager: runManager,
-		Daemon:     daemonService,
 	})
 
 	return apicore.NewHandlers(&apicore.HandlerConfig{
@@ -314,8 +303,7 @@ func buildHostHandlers(
 }
 
 type hostServers struct {
-	udsServer  *udsapi.Server
-	httpServer *httpapi.Server
+	udsServer *udsapi.Server
 }
 
 func startHostTransports(
@@ -343,29 +331,8 @@ func startHostTransports(
 		return hostServers{}, err
 	}
 
-	httpServer, err := httpapi.New(
-		httpapi.WithHandlers(handlers),
-		httpapi.WithPort(currentHost.Info().HTTPPort),
-		httpapi.WithPortUpdater(currentHost),
-	)
-	if err != nil {
-		return hostServers{}, err
-	}
-	defer func() {
-		if err == nil {
-			return
-		}
-		shutdownCtx, cancel := boundedLifecycleContext(ctx, shutdownTimeout)
-		defer cancel()
-		err = errors.Join(err, shutdownHTTPServer(shutdownCtx, httpServer))
-	}()
-	if err := httpServer.Start(ctx); err != nil {
-		return hostServers{}, err
-	}
-
 	return hostServers{
-		udsServer:  udsServer,
-		httpServer: httpServer,
+		udsServer: udsServer,
 	}, nil
 }
 
@@ -378,11 +345,6 @@ func closeHostRuntime(ctx context.Context, runtime hostRuntime, host *Host) erro
 	if runtime.runManager != nil {
 		shutdownCtx, cancel := boundedLifecycleContext(ctx, shutdownTimeout)
 		errs = append(errs, shutdownRunManager(shutdownCtx, runtime.runManager))
-		cancel()
-	}
-	if runtime.httpServer != nil {
-		shutdownCtx, cancel := boundedLifecycleContext(ctx, shutdownTimeout)
-		errs = append(errs, shutdownHTTPServer(shutdownCtx, runtime.httpServer))
 		cancel()
 	}
 	if runtime.udsServer != nil {
@@ -417,7 +379,6 @@ func ProbeReady(ctx context.Context, info Info) error {
 
 	client, err := apiclient.New(apiclient.Target{
 		SocketPath: strings.TrimSpace(info.SocketPath),
-		HTTPPort:   info.HTTPPort,
 	})
 	if err != nil {
 		return err

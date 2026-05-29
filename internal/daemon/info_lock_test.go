@@ -26,15 +26,6 @@ func TestInfoValidateRejectsInvalidValues(t *testing.T) {
 			},
 		},
 		{
-			name: "invalid port",
-			info: Info{
-				PID:       1,
-				HTTPPort:  70000,
-				StartedAt: time.Now().UTC(),
-				State:     ReadyStateReady,
-			},
-		},
-		{
 			name: "missing started at",
 			info: Info{
 				PID:   1,

@@ -329,7 +329,6 @@ func (s *commandState) buildConfig() (core.Config, error) {
 		Mode:                       s.mode,
 		OutputFormat:               core.OutputFormat(s.outputFormat),
 		Verbose:                    s.verbose,
-		TUI:                        s.tui,
 		Persist:                    s.persist,
 		EnableExecutableExtensions: s.enableExecutableExtensions(),
 		RunID:                      s.runID,
@@ -389,13 +388,6 @@ func (s *commandState) normalizePresentationMode(_ *cobra.Command) {
 		outputFormat = string(core.OutputFormatText)
 		s.outputFormat = outputFormat
 	}
-
-	if isJSONOutputFormat(outputFormat) {
-		s.tui = false
-		return
-	}
-
-	s.tui = false
 }
 
 func (s *commandState) isWorkflowExecutionCommand() bool {

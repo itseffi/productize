@@ -153,7 +153,6 @@ func hookRuntimeConfig(src *config) model.RuntimeConfig {
 		Mode:                   src.Mode,
 		OutputFormat:           src.OutputFormat,
 		Verbose:                src.Verbose,
-		TUI:                    src.TUI,
 		Persist:                src.Persist,
 		RunID:                  src.RunID,
 		IncludeCompleted:       src.IncludeCompleted,
@@ -192,7 +191,6 @@ func applyHookRuntimeConfig(dst *config, updated model.RuntimeConfig) {
 	dst.Mode = updated.Mode
 	dst.OutputFormat = updated.OutputFormat
 	dst.Verbose = updated.Verbose
-	dst.TUI = updated.TUI
 	dst.Persist = updated.Persist
 	dst.RunID = updated.RunID
 	dst.IncludeCompleted = updated.IncludeCompleted

@@ -359,17 +359,13 @@ func TestGoReleaserBuildsGoBinaryWithoutFrontendBundle(t *testing.T) {
 		t.Fatalf("unmarshal goreleaser config: %v", err)
 	}
 
-	foundGoBuild := false
+	// GoReleaser's own `builds:` block cross-compiles the binary (and surfaces any
+	// compile error), so a `before` build hook is redundant and intentionally absent.
+	// The invariant that matters: no frontend bundle build sneaks back in.
 	for _, hook := range cfg.Before.Hooks {
 		if hook == "make frontend-build" {
 			t.Fatal("expected GoReleaser to avoid frontend bundle builds")
 		}
-		if hook == "make go-build" {
-			foundGoBuild = true
-		}
-	}
-	if !foundGoBuild {
-		t.Fatal("expected GoReleaser to run the Go build hook before release")
 	}
 
 	workflowContent, err := os.ReadFile(filepath.Join(repoRoot(t), ".github", "workflows", "release.yml"))

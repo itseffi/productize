@@ -957,51 +957,6 @@ func TestReviewsWatchCommandObservationModes(t *testing.T) {
 		}
 	})
 
-	t.Run("Should reject legacy tui mode before daemon bootstrap", func(t *testing.T) {
-		for _, tc := range []struct {
-			name string
-			args []string
-		}{
-			{
-				name: "explicit tui true",
-				args: []string{
-					"watch", "demo", "--provider", "coderabbit", "--pr", "85", "--tui=true",
-				},
-			},
-		} {
-			t.Run(tc.name, func(t *testing.T) {
-				workspaceRoot := t.TempDir()
-				if err := os.MkdirAll(filepath.Join(workspaceRoot, ".productize", "tasks", "demo"), 0o755); err != nil {
-					t.Fatalf("mkdir workflow dir: %v", err)
-				}
-				withWorkingDir(t, workspaceRoot)
-
-				bootstrapCalled := false
-				installTestCLIDaemonBootstrap(t, cliDaemonBootstrap{
-					resolveHomePaths: func() (productizeconfig.HomePaths, error) {
-						bootstrapCalled = true
-						return productizeconfig.HomePaths{}, errors.New("daemon bootstrap should not run")
-					},
-				})
-
-				output, err := executeCommandCombinedOutput(
-					newReviewsCommandWithDefaults(testReviewExecCommandDefaults()),
-					nil,
-					tc.args...,
-				)
-				if err == nil {
-					t.Fatalf("execute reviews watch error = nil, want UI unsupported error\noutput:\n%s", output)
-				}
-				if bootstrapCalled {
-					t.Fatal("daemon bootstrap was called before rejecting incompatible output mode")
-				}
-				if !containsAll(err.Error(), "does not support interactive attach", "--stream", "--detach") {
-					t.Fatalf("error = %v, want legacy tui unsupported guidance", err)
-				}
-			})
-		}
-	})
-
 	t.Run("Should propagate daemon start errors", func(t *testing.T) {
 		workspaceRoot := t.TempDir()
 		if err := os.MkdirAll(filepath.Join(workspaceRoot, ".productize", "tasks", "demo"), 0o755); err != nil {
@@ -2047,32 +2002,17 @@ func TestReviewsExecDaemonStreamHelpers(t *testing.T) {
 		}
 	})
 
-	t.Run("resolveExecPresentationMode rejects legacy tui", func(t *testing.T) {
+	t.Run("resolveExecPresentationMode resolves output formats", func(t *testing.T) {
 		state := newCommandState(commandKindExec, core.ModeExec)
-		state.tui = true
 		state.isInteractive = func() bool { return false }
-		cmd := &cobra.Command{Use: "exec"}
-		if _, err := state.resolveExecPresentationMode(cmd); err == nil ||
-			!strings.Contains(err.Error(), "no longer supports --tui") {
-			t.Fatalf("resolveExecPresentationMode() error = %v, want legacy tui error", err)
-		}
 
-		state.tui = false
 		state.outputFormat = string(core.OutputFormatJSON)
-		mode, err := state.resolveExecPresentationMode(cmd)
-		if err != nil {
-			t.Fatalf("resolveExecPresentationMode(json) error = %v", err)
-		}
-		if mode != attachModeStream {
+		if mode := state.resolveExecPresentationMode(); mode != attachModeStream {
 			t.Fatalf("json presentation mode = %q, want %q", mode, attachModeStream)
 		}
 
 		state.outputFormat = string(core.OutputFormatText)
-		mode, err = state.resolveExecPresentationMode(cmd)
-		if err != nil {
-			t.Fatalf("resolveExecPresentationMode(text) error = %v", err)
-		}
-		if mode != attachModeDetach {
+		if mode := state.resolveExecPresentationMode(); mode != attachModeDetach {
 			t.Fatalf("text presentation mode = %q, want %q", mode, attachModeDetach)
 		}
 	})

@@ -216,7 +216,6 @@ func buildChildRuntime(
 	runtime.PromptText = ""
 	runtime.PromptFile = ""
 	runtime.ReadPromptStdin = false
-	runtime.TUI = false
 	runtime.Persist = false
 	runtime.OutputFormat = model.OutputFormatText
 	runtime.Mode = model.ExecutionModeExec

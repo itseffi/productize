@@ -792,52 +792,12 @@ func TestExecuteJobWithTimeoutInteractiveDoesNotLeakACPLogsToDefaultLogger(t *te
 	}
 }
 
-func TestJobExecutionContextUICleanupHelpers(t *testing.T) {
-	ui := &fakeLifecycleUISession{eventsCh: make(chan uiMsg)}
-	execCtx := &jobExecutionContext{ctx: context.Background(), ui: ui}
-
-	if err := execCtx.awaitUIAfterCompletion(); err != nil {
-		t.Fatalf("awaitUIAfterCompletion: %v", err)
-	}
-	if ui.closeEventsCalls != 0 || ui.waitCalls != 1 {
-		t.Fatalf(
-			"expected awaitUIAfterCompletion to keep events open and wait once, got close=%d wait=%d",
-			ui.closeEventsCalls,
-			ui.waitCalls,
-		)
-	}
-
-	if err := execCtx.shutdownUI(); err != nil {
-		t.Fatalf("shutdownUI: %v", err)
-	}
-	if ui.closeEventsCalls != 1 || ui.shutdownCalls != 1 || ui.waitCalls != 2 {
-		t.Fatalf(
-			"expected shutdownUI to close events, request shutdown, and wait again, got close=%d shutdown=%d wait=%d",
-			ui.closeEventsCalls,
-			ui.shutdownCalls,
-			ui.waitCalls,
-		)
-	}
-
-	execCtx.cleanup()
-	if ui.closeEventsCalls != 2 || ui.shutdownCalls != 2 || ui.waitCalls != 3 {
-		t.Fatalf(
-			"expected cleanup to rerun the shutdown path, got close=%d shutdown=%d wait=%d",
-			ui.closeEventsCalls,
-			ui.shutdownCalls,
-			ui.waitCalls,
-		)
-	}
-}
-
 func TestExecutorControllerAwaitCompletionAndCancelPaths(t *testing.T) {
 	done := make(chan struct{})
 	close(done)
 
-	ui := &fakeLifecycleUISession{eventsCh: make(chan uiMsg)}
 	execCtx := &jobExecutionContext{
 		ctx:   context.Background(),
-		ui:    ui,
 		total: 1,
 	}
 	controller := &executorController{
@@ -856,10 +816,8 @@ func TestExecutorControllerAwaitCompletionAndCancelPaths(t *testing.T) {
 
 	cancelDone := make(chan struct{})
 	close(cancelDone)
-	cancelUI := &fakeLifecycleUISession{eventsCh: make(chan uiMsg)}
 	cancelExecCtx := &jobExecutionContext{
 		ctx:   context.Background(),
-		ui:    cancelUI,
 		total: 2,
 	}
 	ctx, cancel := context.WithCancel(context.Background())
@@ -1130,35 +1088,6 @@ func newFakeACPSession(id string) *fakeACPSession {
 		updates: make(chan model.SessionUpdate, 8),
 		done:    make(chan struct{}),
 	}
-}
-
-type fakeLifecycleUISession struct {
-	eventsCh         chan uiMsg
-	closeEventsCalls int
-	shutdownCalls    int
-	waitCalls        int
-}
-
-func (f *fakeLifecycleUISession) Enqueue(msg any) {
-	if f.eventsCh == nil {
-		return
-	}
-	f.eventsCh <- msg
-}
-
-func (f *fakeLifecycleUISession) SetQuitHandler(func(uiQuitRequest)) {}
-
-func (f *fakeLifecycleUISession) CloseEvents() {
-	f.closeEventsCalls++
-}
-
-func (f *fakeLifecycleUISession) Shutdown() {
-	f.shutdownCalls++
-}
-
-func (f *fakeLifecycleUISession) Wait() error {
-	f.waitCalls++
-	return nil
 }
 
 func (s *fakeACPSession) ID() string {

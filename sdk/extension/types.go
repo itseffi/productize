@@ -532,7 +532,6 @@ type RuntimeConfig struct {
 	Mode                       ExecutionMode
 	OutputFormat               OutputFormat
 	Verbose                    bool
-	TUI                        bool
 	Persist                    bool
 	EnableExecutableExtensions bool
 	DaemonOwned                bool

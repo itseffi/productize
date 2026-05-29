@@ -382,7 +382,6 @@ func TestReviewsFixHelpShowsReviewFlagsOnly(t *testing.T) {
 		"--batch-size",
 		"--concurrent",
 		"--include-resolved",
-		"--tui",
 	}
 	for _, snippet := range required {
 		if !strings.Contains(output, snippet) {
@@ -390,7 +389,7 @@ func TestReviewsFixHelpShowsReviewFlagsOnly(t *testing.T) {
 		}
 	}
 
-	forbidden := []string{"--provider", "--pr", "--tasks-dir", "--include-completed", "--form "}
+	forbidden := []string{"--provider", "--pr", "--tasks-dir", "--include-completed", "--form ", "--tui"}
 	for _, snippet := range forbidden {
 		if strings.Contains(output, snippet) {
 			t.Fatalf("expected reviews fix help to omit %q\noutput:\n%s", snippet, output)
@@ -545,7 +544,7 @@ func TestREADMEExecDocumentationMatchesCurrentContract(t *testing.T) {
 
 	content := string(body)
 	required := []string{
-		`## <img src="imgs/logo-64.png" alt="" width="24" height="24"> ⚡ Ad Hoc Exec`,
+		`## Ad Hoc Exec`,
 		"productize exec \"Summarize the current repository changes\"",
 		"productize exec --prompt-file prompt.md",
 		"cat prompt.md | productize exec --format json",

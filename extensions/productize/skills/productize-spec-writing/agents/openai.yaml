@@ -1,8 +1,0 @@
-interface:
-  display_name: "Spec Writing"
-  short_description: "Convert an approved PRD or clear requirements into an implementation-ready technical spec with scope, interfaces,..."
-  brand_color: "#334155"
-  default_prompt: "Use $productize-spec-writing with my product context."
-
-policy:
-  allow_implicit_invocation: true

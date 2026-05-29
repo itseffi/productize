@@ -1,8 +1,0 @@
-interface:
-  display_name: "Actionable product improvements from survey responses"
-  short_description: "Actionable product improvements from survey responses. Use when the user needs a product workflow for user research..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-actionable-product-improvements-from-survey-responses with my product context."
-
-policy:
-  allow_implicit_invocation: true

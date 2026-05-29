@@ -106,7 +106,11 @@ fmt:
 # -----------------------------------------------------------------------------
 # Verification Pipeline (BLOCKING GATE for any change)
 # -----------------------------------------------------------------------------
-verify: fmt lint test go-build
+# Uses test-nocache (-count=1) so the gate never reports a false green from a
+# cached result — TestEmbeddedSkillsFSMatchesOnDisk compares the compiled
+# go:embed snapshot against on-disk skills, which can desync under cached runs
+# after editing skills/**. Day-to-day iteration can still use the cached `test`.
+verify: fmt lint test-nocache go-build
 	@echo "$(GREEN)All verification checks passed$(NC)"
 
 # -----------------------------------------------------------------------------

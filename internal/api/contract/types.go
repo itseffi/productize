@@ -90,7 +90,6 @@ type DaemonStatus struct {
 	Version        string    `json:"version,omitempty"`
 	StartedAt      time.Time `json:"started_at"`
 	SocketPath     string    `json:"socket_path,omitempty"`
-	HTTPPort       int       `json:"http_port,omitempty"`
 	ActiveRunCount int       `json:"active_run_count"`
 	WorkspaceCount int       `json:"workspace_count"`
 }

@@ -521,10 +521,7 @@ func (s *commandState) execDaemon(cmd *cobra.Command, args []string) error {
 		return s.handleExecError(cmd, err)
 	}
 
-	presentationMode, err := s.resolveExecPresentationMode(cmd)
-	if err != nil {
-		return s.handleExecError(cmd, withExitCode(1, err))
-	}
+	presentationMode := s.resolveExecPresentationMode()
 	runtimeOverrides, err := s.buildExecRuntimeOverrides(cmd)
 	if err != nil {
 		return s.handleExecError(cmd, withExitCode(2, err))
@@ -556,14 +553,11 @@ func (s *commandState) execDaemon(cmd *cobra.Command, args []string) error {
 	return s.handleExecError(cmd, decorateReusableAgentError(cmd, s.agentName, err))
 }
 
-func (s *commandState) resolveExecPresentationMode(cmd *cobra.Command) (string, error) {
-	if s.tui {
-		return "", fmt.Errorf("%s no longer supports --tui; use text output or --format json", cmd.CommandPath())
-	}
+func (s *commandState) resolveExecPresentationMode() string {
 	if isJSONOutputFormat(s.outputFormat) {
-		return attachModeStream, nil
+		return attachModeStream
 	}
-	return attachModeDetach, nil
+	return attachModeDetach
 }
 
 func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (string, error) {
@@ -598,9 +592,6 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 	default:
 		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)
 	}
-	if commandFlagChanged(cmd, "tui") && s.tui {
-		return "", reviewWatchUIUnsupportedError(cmd)
-	}
 	if isJSONOutputFormat(s.outputFormat) {
 		return attachModeStream, nil
 	}
@@ -612,17 +603,6 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 	default:
 		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)
 	}
-}
-
-func reviewWatchUIUnsupportedError(cmd *cobra.Command) error {
-	commandLabel := "reviews watch"
-	if cmd != nil {
-		commandLabel = strings.TrimSpace(cmd.CommandPath())
-	}
-	return fmt.Errorf(
-		"%s does not support interactive attach; use --stream to follow events or --detach to run in background",
-		commandLabel,
-	)
 }
 
 func handleStartedReviewWatchRun(

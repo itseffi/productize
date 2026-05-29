@@ -1,8 +1,0 @@
-interface:
-  display_name: "Innovative idea generation from structured brainstorming techniques"
-  short_description: "Innovative idea generation from structured brainstorming techniques. Use when the user needs a product workflow for..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-innovative-idea-generation-from-structured-brainstorming with my product context."
-
-policy:
-  allow_implicit_invocation: true

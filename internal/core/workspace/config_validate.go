@@ -31,10 +31,10 @@ func (cfg ProjectConfig) validate(scope string) error {
 	if err := validateDefaults(scope, cfg.Defaults); err != nil {
 		return err
 	}
-	if err := validateTasks(scope, cfg.Defaults, cfg.Tasks); err != nil {
+	if err := validateTasks(scope, cfg.Tasks); err != nil {
 		return err
 	}
-	if err := validateFixReviews(scope, cfg.Defaults, cfg.FixReviews); err != nil {
+	if err := validateFixReviews(scope, cfg.FixReviews); err != nil {
 		return err
 	}
 	if err := validateFetchReviews(scope, cfg.FetchReviews); err != nil {
@@ -80,21 +80,18 @@ func validateDefaults(scope string, cfg DefaultsConfig) error {
 	return validateRuntimeAddDirs(scope, "defaults", overrides, nil)
 }
 
-func validateTaskRun(scope string, defaults DefaultsConfig, cfg TaskRunConfig) error {
+func validateTaskRun(scope string, cfg TaskRunConfig) error {
 	if err := validateOutputFormatValue(
 		configFieldName(scope, "tasks.run.output_format"),
 		cfg.OutputFormat,
 	); err != nil {
 		return err
 	}
-	if err := validateWorkflowTUI(scope, "tasks.run", defaults, cfg.OutputFormat, cfg.TUI); err != nil {
-		return err
-	}
 	return validateTaskRunRuntimeRules(scope, cfg.TaskRuntimeRules)
 }
 
-func validateTasks(scope string, defaults DefaultsConfig, cfg TasksConfig) error {
-	if err := validateTaskRun(scope, defaults, cfg.Run); err != nil {
+func validateTasks(scope string, cfg TasksConfig) error {
+	if err := validateTaskRun(scope, cfg.Run); err != nil {
 		return err
 	}
 	if cfg.Types == nil {
@@ -112,7 +109,7 @@ func validateTasks(scope string, defaults DefaultsConfig, cfg TasksConfig) error
 	return nil
 }
 
-func validateFixReviews(scope string, defaults DefaultsConfig, cfg FixReviewsConfig) error {
+func validateFixReviews(scope string, cfg FixReviewsConfig) error {
 	if cfg.Concurrent != nil && *cfg.Concurrent <= 0 {
 		return fmt.Errorf(
 			"%s must be greater than zero (got %d)",
@@ -133,7 +130,7 @@ func validateFixReviews(scope string, defaults DefaultsConfig, cfg FixReviewsCon
 	); err != nil {
 		return err
 	}
-	return validateWorkflowTUI(scope, "fix_reviews", defaults, cfg.OutputFormat, cfg.TUI)
+	return nil
 }
 
 func validateFetchReviews(scope string, cfg FetchReviewsConfig) error {
@@ -238,21 +235,6 @@ func validateExec(scope string, defaults DefaultsConfig, cfg ExecConfig) error {
 	if err := validateRuntimeAddDirs(scope, "exec", cfg.RuntimeOverrides, &defaults); err != nil {
 		return err
 	}
-
-	effectiveOutputFormat := cfg.OutputFormat
-	if effectiveOutputFormat == nil {
-		effectiveOutputFormat = defaults.OutputFormat
-	}
-	if cfg.TUI != nil && effectiveOutputFormat != nil && *cfg.TUI &&
-		isExecJSONOutputFormat(*effectiveOutputFormat) {
-		return fmt.Errorf(
-			"%s cannot be true when %s is %q or %q",
-			configFieldName(scope, "exec.tui"),
-			configFieldName(scope, "exec.output_format"),
-			model.OutputFormatJSONValue,
-			model.OutputFormatRawJSONValue,
-		)
-	}
 	return nil
 }
 
@@ -317,25 +299,6 @@ func validateAttachModeValue(field string, value *string) error {
 			strings.TrimSpace(*value),
 		)
 	}
-}
-
-func validateWorkflowTUI(scope, section string, defaults DefaultsConfig, outputFormat *string, tui *bool) error {
-	effectiveOutputFormat := outputFormat
-	outputField := configFieldName(scope, fmt.Sprintf("%s.output_format", section))
-	if effectiveOutputFormat == nil {
-		effectiveOutputFormat = defaults.OutputFormat
-		outputField = configFieldName(scope, "defaults.output_format")
-	}
-	if tui != nil && effectiveOutputFormat != nil && *tui && isExecJSONOutputFormat(*effectiveOutputFormat) {
-		return fmt.Errorf(
-			"%s cannot be true when %s is %q or %q",
-			configFieldName(scope, fmt.Sprintf("%s.tui", section)),
-			outputField,
-			model.OutputFormatJSONValue,
-			model.OutputFormatRawJSONValue,
-		)
-	}
-	return nil
 }
 
 func validateRuntimeOverrides(scope, section string, cfg RuntimeOverrides) error {
@@ -550,15 +513,6 @@ func validateOutputFormatValue(field string, value *string) error {
 			model.OutputFormatRawJSONValue,
 			strings.TrimSpace(*value),
 		)
-	}
-}
-
-func isExecJSONOutputFormat(value string) bool {
-	switch strings.TrimSpace(value) {
-	case model.OutputFormatJSONValue, model.OutputFormatRawJSONValue:
-		return true
-	default:
-		return false
 	}
 }
 

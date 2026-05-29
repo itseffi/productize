@@ -1,8 +1,0 @@
-interface:
-  display_name: "Message Framing & Comms Plan Designer"
-  short_description: "Message Framing & Comms Plan Designer. Use when the user needs a product workflow for stakeholder management related..."
-  brand_color: "#EA580C"
-  default_prompt: "Use $productize-message-framing-and-comms-plan-designer with my product context."
-
-policy:
-  allow_implicit_invocation: true

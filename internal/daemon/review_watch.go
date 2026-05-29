@@ -203,7 +203,6 @@ func (m *RunManager) prepareReviewWatchStart(
 		runtimeCfg.RunID = strings.TrimSpace(*overrides.RunID)
 	}
 	runtimeCfg.ApplyDefaults()
-	runtimeCfg.TUI = false
 	runtimeCfg.EnableExecutableExtensions = true
 
 	return &preparedReviewWatch{

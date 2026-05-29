@@ -29,27 +29,6 @@ func TestTaskTransportServiceExposesRichReadModelsFromRealDaemonState(t *testing
 	fixture := newTransportReadModelFixture(t)
 	service := newTransportTaskService(fixture.env.globalDB, fixture.env.manager, fixture.query)
 
-	dashboard, err := service.Dashboard(context.Background(), fixture.env.workspaceRoot)
-	if err != nil {
-		t.Fatalf("Dashboard() error = %v", err)
-	}
-	if !sameCanonicalPath(t, dashboard.Workspace.RootDir, fixture.env.workspaceRoot) {
-		t.Fatalf(
-			"dashboard.Workspace.RootDir = %q, want canonical match for %q",
-			dashboard.Workspace.RootDir,
-			fixture.env.workspaceRoot,
-		)
-	}
-	if dashboard.Queue.Completed != 1 || dashboard.PendingReviews != 1 {
-		t.Fatalf("unexpected dashboard queue/review payload: %#v", dashboard)
-	}
-	if len(dashboard.Workflows) != 1 || dashboard.Workflows[0].Workflow.Slug != fixture.env.workflowSlug {
-		t.Fatalf("unexpected dashboard workflows: %#v", dashboard.Workflows)
-	}
-	if dashboard.Workflows[0].LatestReview == nil || dashboard.Workflows[0].LatestReview.RoundNumber != 1 {
-		t.Fatalf("unexpected dashboard latest review: %#v", dashboard.Workflows[0].LatestReview)
-	}
-
 	overview, err := service.WorkflowOverview(context.Background(), fixture.env.workspaceRoot, fixture.env.workflowSlug)
 	if err != nil {
 		t.Fatalf("WorkflowOverview() error = %v", err)
@@ -632,10 +611,6 @@ func newTransportReadModelFixture(t *testing.T) transportReadModelFixture {
 	query := NewQueryService(QueryServiceConfig{
 		GlobalDB:   env.globalDB,
 		RunManager: env.manager,
-		Daemon: stubDaemonStatusReader{
-			status: apicore.DaemonStatus{PID: 42, ActiveRunCount: 0, WorkspaceCount: 1},
-			health: apicore.DaemonHealth{Ready: true},
-		},
 	})
 
 	return transportReadModelFixture{
@@ -653,18 +628,4 @@ func mustProblem(t *testing.T, err error) *apicore.Problem {
 		t.Fatalf("error = %T %v, want *core.Problem", err, err)
 	}
 	return problem
-}
-
-func sameCanonicalPath(t *testing.T, left string, right string) bool {
-	t.Helper()
-
-	leftResolved, err := filepath.EvalSymlinks(left)
-	if err != nil {
-		t.Fatalf("EvalSymlinks(%q) error = %v", left, err)
-	}
-	rightResolved, err := filepath.EvalSymlinks(right)
-	if err != nil {
-		t.Fatalf("EvalSymlinks(%q) error = %v", right, err)
-	}
-	return leftResolved == rightResolved
 }

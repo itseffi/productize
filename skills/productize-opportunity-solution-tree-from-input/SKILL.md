@@ -184,6 +184,6 @@ FAILURE
 - Priority scores are missing or incorrectly computed.
 - Assumptions/ambiguities exist but are not explicitly listed in Part E.
 
-## PM Skills Main Merge
+## Extended Reference
 
-Load `references/pm-skills-main-merge.md` when the request mentions `opportunity solution tree`, `ost`, `continuous discovery`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.
+Load `references/extended-reference.md` when the request mentions `opportunity solution tree`, `ost`, `continuous discovery`. Use this reference material to sharpen this Productize skill.

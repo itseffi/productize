@@ -1,8 +1,0 @@
-interface:
-  display_name: "Press releases from product vision (Working Backwards)"
-  short_description: "Press releases from product vision (Working Backwards). Use when the user needs a product workflow for presentation..."
-  brand_color: "#EA580C"
-  default_prompt: "Use $productize-press-releases-from-product-vision-working-backwards with my product context."
-
-policy:
-  allow_implicit_invocation: true

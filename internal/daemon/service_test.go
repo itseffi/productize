@@ -23,7 +23,6 @@ func TestServiceStatusHealthAndMetricsReflectRuntimeState(t *testing.T) {
 			PID:        3030,
 			Version:    "v1.2.3",
 			SocketPath: paths.SocketPath,
-			HTTPPort:   8787,
 			StartedAt:  now,
 			State:      ReadyStateReady,
 		},
@@ -66,9 +65,6 @@ func TestServiceStatusHealthAndMetricsReflectRuntimeState(t *testing.T) {
 	}
 	if status.Version != host.info.Version {
 		t.Fatalf("status.Version = %q, want %q", status.Version, host.info.Version)
-	}
-	if status.HTTPPort != host.info.HTTPPort {
-		t.Fatalf("status.HTTPPort = %d, want %d", status.HTTPPort, host.info.HTTPPort)
 	}
 	if status.ActiveRunCount != 2 {
 		t.Fatalf("status.ActiveRunCount = %d, want 2", status.ActiveRunCount)

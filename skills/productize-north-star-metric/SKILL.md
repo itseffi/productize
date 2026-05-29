@@ -152,4 +152,4 @@ Define 3-5 Input Metrics (also called leading indicators) that most directly inf
 - Produce the artifact named in the Productize contract, not a generic framework summary.
 - Separate known facts, assumptions, missing evidence, and risky leaps before recommending.
 - Convert uncertain claims into validation steps, metrics, owner decisions, or launch/readout checks.
-- If the PM source method conflicts with Productize evidence standards, keep the Productize standard.
+- If this reference method conflicts with Productize evidence standards, keep the Productize standard.

@@ -17,8 +17,6 @@ import (
 	eventspkg "github.com/itseffi/productize/pkg/productize/events"
 )
 
-type uiMsg = any
-
 const (
 	attemptStatusSuccess     = runshared.AttemptStatusSuccess
 	attemptStatusFailure     = runshared.AttemptStatusFailure

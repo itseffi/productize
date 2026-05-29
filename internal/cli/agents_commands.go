@@ -75,7 +75,7 @@ func newAgentsListCommand() *cobra.Command {
 		SilenceUsage: true,
 		Args:         cobra.NoArgs,
 		Example: `  productize agents list
-  productize agents inspect council`,
+  productize agents inspect reviewer`,
 		RunE: state.run,
 	}
 }
@@ -87,7 +87,7 @@ func newAgentsInspectCommand() *cobra.Command {
 		Short:        "Inspect one reusable agent and its validation status",
 		SilenceUsage: true,
 		Args:         cobra.ExactArgs(1),
-		Example: `  productize agents inspect council
+		Example: `  productize agents inspect reviewer
   productize agents inspect planner`,
 		RunE: state.run,
 	}

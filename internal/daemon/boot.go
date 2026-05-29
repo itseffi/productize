@@ -32,7 +32,6 @@ type StartOptions struct {
 	HomePaths    productizeconfig.HomePaths
 	Version      string
 	PID          int
-	HTTPPort     int
 	Now          func() time.Time
 	ProcessAlive func(int) bool
 	Healthy      func(context.Context, Info) error
@@ -114,7 +113,6 @@ func Start(ctx context.Context, opts StartOptions) (_ StartResult, retErr error)
 		PID:        resolved.PID,
 		Version:    strings.TrimSpace(resolved.Version),
 		SocketPath: resolved.HomePaths.SocketPath,
-		HTTPPort:   resolved.HTTPPort,
 		StartedAt:  resolved.Now().UTC(),
 		State:      ReadyStateStarting,
 	}
@@ -203,22 +201,6 @@ func (h *Host) MarkReady(_ context.Context) error {
 	h.info.State = ReadyStateReady
 	if err := WriteInfo(h.paths.InfoPath, h.info); err != nil {
 		return fmt.Errorf("daemon: write ready info: %w", err)
-	}
-	return nil
-}
-
-// SetHTTPPort persists the effective HTTP port once the transport listener binds.
-func (h *Host) SetHTTPPort(_ context.Context, port int) error {
-	if h == nil {
-		return errors.New("daemon: host is required")
-	}
-	if port < 0 || port > 65535 {
-		return fmt.Errorf("daemon: daemon http port must be between 0 and 65535: %d", port)
-	}
-
-	h.info.HTTPPort = port
-	if err := WriteInfo(h.paths.InfoPath, h.info); err != nil {
-		return fmt.Errorf("daemon: write daemon info with http port: %w", err)
 	}
 	return nil
 }
@@ -321,23 +303,11 @@ func normalizeStartOptions(opts StartOptions) (StartOptions, error) {
 		HomePaths:    resolvedPaths,
 		Version:      opts.Version,
 		PID:          pid,
-		HTTPPort:     normalizedDaemonHTTPPort(opts.HTTPPort),
 		Now:          now,
 		ProcessAlive: processAlive,
 		Healthy:      healthy,
 		Prepare:      opts.Prepare,
 	}, nil
-}
-
-func normalizedDaemonHTTPPort(port int) int {
-	switch port {
-	case EphemeralHTTPPort:
-		return 0
-	case 0:
-		return DefaultHTTPPort
-	default:
-		return port
-	}
 }
 
 func normalizeProbeOptions(

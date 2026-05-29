@@ -49,7 +49,7 @@ func TestEnsureQATasksCreatesReportAndExecutionTasks(t *testing.T) {
 		{Number: 1, Title: "First", Type: "backend"},
 	}}
 
-	if err := ensureQATasks(context.Background(), client, "daemon-web-ui"); err != nil {
+	if err := ensureQATasks(context.Background(), client, "qa-smoke"); err != nil {
 		t.Fatalf("ensureQATasks() error = %v", err)
 	}
 	if len(client.creates) != 2 {
@@ -57,7 +57,7 @@ func TestEnsureQATasksCreatesReportAndExecutionTasks(t *testing.T) {
 	}
 
 	report := client.creates[0]
-	if report.Title != "Daemon Web Ui QA plan and regression artifacts" {
+	if report.Title != "Qa Smoke QA plan and regression artifacts" {
 		t.Fatalf("report.Title = %q", report.Title)
 	}
 	if report.Frontmatter.Type != qaReportTaskType || report.Frontmatter.Complexity != qaReportComplexity {
@@ -70,7 +70,7 @@ func TestEnsureQATasksCreatesReportAndExecutionTasks(t *testing.T) {
 		t.Fatalf("report dependencies = %q, want task_01,task_02", got)
 	}
 	if !strings.Contains(report.Body, reportMarker) ||
-		!strings.Contains(report.Body, "qa-output-path=.productize/tasks/daemon-web-ui") {
+		!strings.Contains(report.Body, "qa-output-path=.productize/tasks/qa-smoke") {
 		t.Fatalf("report body missing marker or output path: %q", report.Body)
 	}
 

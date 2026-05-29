@@ -205,19 +205,6 @@ func TestHandlerInternalHelpers(t *testing.T) {
 	if nilHandlers.streamDoneChannel() != nil {
 		t.Fatal("nil handlers streamDoneChannel() != nil")
 	}
-
-	handlers.SetHTTPPort(1234)
-	if got := handlers.httpPort.Load(); got != 1234 {
-		t.Fatalf("httpPort = %d, want 1234", got)
-	}
-	if got := cloned.httpPort.Load(); got != 1234 {
-		t.Fatalf("cloned httpPort = %d, want 1234", got)
-	}
-	handlers.SetHTTPPort(0)
-	if got := handlers.httpPort.Load(); got != 1234 {
-		t.Fatalf("httpPort after invalid set = %d, want 1234", got)
-	}
-	nilHandlers.SetHTTPPort(4321)
 }
 
 func TestCursorHelpersAndTerminalEvents(t *testing.T) {

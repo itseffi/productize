@@ -763,20 +763,6 @@ func TestValidateRuntimeConfigRejectsInvalidExecCombinations(t *testing.T) {
 			},
 			wantErr: "prompt source fields are only supported for exec mode",
 		},
-		{
-			name: "raw-json with tui",
-			cfg: &model.RuntimeConfig{
-				Mode:                   model.ExecutionModeExec,
-				IDE:                    model.IDECodex,
-				OutputFormat:           model.OutputFormatRawJSON,
-				PromptText:             "hello",
-				TUI:                    true,
-				BatchSize:              1,
-				MaxRetries:             1,
-				RetryBackoffMultiplier: 1.5,
-			},
-			wantErr: "json or raw-json output",
-		},
 	}
 
 	for _, tt := range tests {

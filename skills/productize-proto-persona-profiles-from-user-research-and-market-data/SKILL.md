@@ -175,6 +175,6 @@ FAILURE
 - Content exceeds 400 words per persona when `depth` is not `deep`.
 - Output includes JSON/XML/HTML or generic filler not grounded in provided inputs.
 
-## PM Skills Main Merge
+## Extended Reference
 
-Load `references/pm-skills-main-merge.md` when the request mentions `user personas`, `proto persona`, `persona from research`, `segment profiles`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.
+Load `references/extended-reference.md` when the request mentions `user personas`, `proto persona`, `persona from research`, `segment profiles`. Use this reference material to sharpen this Productize skill.

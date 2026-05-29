@@ -18,7 +18,6 @@ const (
 type ShutdownSource string
 
 const (
-	ShutdownSourceUI     ShutdownSource = "ui"
 	ShutdownSourceSignal ShutdownSource = "signal"
 	ShutdownSourceTimer  ShutdownSource = "timer"
 )
@@ -32,19 +31,4 @@ type ShutdownState struct {
 
 func (s ShutdownState) Active() bool {
 	return s.Phase != ShutdownPhaseIdle
-}
-
-type UIQuitRequest int
-
-const (
-	UIQuitRequestDrain UIQuitRequest = iota
-	UIQuitRequestForce
-)
-
-type UISession interface {
-	Enqueue(any)
-	SetQuitHandler(func(UIQuitRequest))
-	CloseEvents()
-	Shutdown()
-	Wait() error
 }

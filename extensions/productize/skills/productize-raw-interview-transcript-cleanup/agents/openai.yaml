@@ -1,8 +1,0 @@
-interface:
-  display_name: "Raw interview transcript cleanup"
-  short_description: "Raw interview transcript cleanup. Use when the user needs a product workflow for user research related to raw..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-raw-interview-transcript-cleanup with my product context."
-
-policy:
-  allow_implicit_invocation: true

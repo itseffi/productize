@@ -125,15 +125,6 @@ func TestSharedHandlersServiceErrorPaths(t *testing.T) {
 			"internal_error",
 		},
 		{
-			"dashboard service error",
-			&core.HandlerConfig{Tasks: &errorTaskService{err: boom}},
-			http.MethodGet,
-			"/api/ui/dashboard?workspace=ws-1",
-			"",
-			http.StatusInternalServerError,
-			"internal_error",
-		},
-		{
 			"task workflows service error",
 			&core.HandlerConfig{Tasks: &errorTaskService{err: boom}},
 			http.MethodGet,
@@ -367,7 +358,7 @@ func TestSharedHandlersServiceErrorPaths(t *testing.T) {
 			"stale workspace context returns precondition failed",
 			&core.HandlerConfig{Tasks: &errorTaskService{err: globaldb.ErrWorkspaceNotFound}},
 			http.MethodGet,
-			"/api/ui/dashboard?workspace=ws-stale",
+			"/api/tasks?workspace=ws-stale",
 			"",
 			http.StatusPreconditionFailed,
 			"workspace_context_stale",
@@ -675,10 +666,6 @@ func (s *errorWorkspaceService) Sync(context.Context) (core.WorkspaceSyncResult,
 
 type errorTaskService struct {
 	err error
-}
-
-func (s *errorTaskService) Dashboard(context.Context, string) (core.DashboardPayload, error) {
-	return core.DashboardPayload{}, s.err
 }
 
 func (s *errorTaskService) ListWorkflows(context.Context, string) ([]core.WorkflowSummary, error) {

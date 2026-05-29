@@ -3,9 +3,6 @@ package cli
 import (
 	"context"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
 	"time"
 
 	apiclient "github.com/itseffi/productize/internal/api/client"
@@ -23,7 +20,6 @@ var (
 )
 
 const (
-	daemonHTTPPortEnv            = "PRODUCTIZE_DAEMON_HTTP_PORT"
 	daemonStartInternalChildFlag = "internal-child"
 )
 
@@ -148,14 +144,9 @@ func (s *daemonStartState) run(cmd *cobra.Command, _ []string) error {
 		mode = daemon.RunModeForeground
 	}
 
-	httpPort, err := cliDaemonHTTPPortFromEnv()
-	if err != nil {
-		return withExitCode(1, err)
-	}
 	runOptions := daemon.RunOptions{
-		Version:  version.String(),
-		HTTPPort: httpPort,
-		Mode:     mode,
+		Version: version.String(),
+		Mode:    mode,
 	}
 
 	if s.foreground {
@@ -254,7 +245,6 @@ func (s *daemonStopState) run(cmd *cobra.Command, _ []string) error {
 func daemonClientFromInfo(info daemon.Info) (daemonCommandClient, error) {
 	target := apiclient.Target{
 		SocketPath: info.SocketPath,
-		HTTPPort:   info.HTTPPort,
 	}
 	return apiclient.New(target)
 }
@@ -264,27 +254,6 @@ func commandContextOrBackground(cmd *cobra.Command) context.Context {
 		return cmd.Context()
 	}
 	return context.Background()
-}
-
-func cliDaemonHTTPPortFromEnv() (int, error) {
-	rawValue, ok := os.LookupEnv(daemonHTTPPortEnv)
-	if !ok {
-		return 0, nil
-	}
-
-	value := strings.TrimSpace(rawValue)
-	if value == "" {
-		return 0, nil
-	}
-
-	port, err := strconv.Atoi(value)
-	if err != nil {
-		return 0, fmt.Errorf("parse %s=%q: %w", daemonHTTPPortEnv, rawValue, err)
-	}
-	if port == 0 {
-		return daemon.EphemeralHTTPPort, nil
-	}
-	return port, nil
 }
 
 func writeDaemonStatusOutput(
@@ -322,7 +291,6 @@ func writeDaemonStatusOutput(
 		"version: %s\n" +
 		"started_at: %s\n" +
 		"socket: %s\n" +
-		"http_port: %d\n" +
 		"active_runs: %d\n" +
 		"workspaces: %d\n"
 
@@ -336,7 +304,6 @@ func writeDaemonStatusOutput(
 		status.Version,
 		status.StartedAt.Format(time.RFC3339Nano),
 		status.SocketPath,
-		status.HTTPPort,
 		status.ActiveRunCount,
 		status.WorkspaceCount,
 	)

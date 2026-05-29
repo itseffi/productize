@@ -9,7 +9,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/coder/websocket"
@@ -49,7 +48,6 @@ type Handlers struct {
 	settingsMu                    sync.RWMutex
 	streamDone                    <-chan struct{}
 	workspaceSocketOriginPatterns []string
-	httpPort                      *atomic.Int64
 }
 
 // NewHandlers builds the shared handler set with transport-specific defaults applied.
@@ -96,7 +94,6 @@ func NewHandlers(cfg *HandlerConfig) *Handlers {
 		Exec:                          cfg.Exec,
 		streamDone:                    done,
 		workspaceSocketOriginPatterns: originPatterns,
-		httpPort:                      &atomic.Int64{},
 	}
 }
 
@@ -122,7 +119,6 @@ func (h *Handlers) Clone() *Handlers {
 		Sync:                          h.Sync,
 		Exec:                          h.Exec,
 	})
-	clone.httpPort = h.httpPort
 	return clone
 }
 
@@ -153,17 +149,6 @@ func (h *Handlers) SetStreamDone(done <-chan struct{}) {
 	h.settingsMu.Lock()
 	h.streamDone = done
 	h.settingsMu.Unlock()
-}
-
-// SetHTTPPort overrides the reported HTTP port for daemon status responses.
-func (h *Handlers) SetHTTPPort(port int) {
-	if h == nil || port <= 0 {
-		return
-	}
-	if h.httpPort == nil {
-		h.httpPort = &atomic.Int64{}
-	}
-	h.httpPort.Store(int64(port))
 }
 
 func (h *Handlers) transportName() string {
@@ -359,12 +344,6 @@ func (h *Handlers) DaemonStatus(c *gin.Context) {
 	if err != nil {
 		h.respondError(c, err)
 		return
-	}
-
-	if h.httpPort != nil {
-		if httpPort := int(h.httpPort.Load()); httpPort > 0 {
-			status.HTTPPort = httpPort
-		}
 	}
 
 	c.JSON(http.StatusOK, contract.DaemonStatusResponse{Daemon: status})
@@ -568,26 +547,6 @@ func (h *Handlers) ResolveWorkspace(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, contract.WorkspaceResponse{Workspace: workspace})
-}
-
-// GetDashboard returns the active-workspace dashboard aggregate.
-func (h *Handlers) GetDashboard(c *gin.Context) {
-	if h.Tasks == nil {
-		h.respondError(c, serviceUnavailableProblem("task service"))
-		return
-	}
-
-	workspace, ok := h.requireWorkspaceContext(c, c.Query("workspace"))
-	if !ok {
-		return
-	}
-
-	dashboard, err := h.Tasks.Dashboard(c.Request.Context(), workspace)
-	if err != nil {
-		h.respondWorkspaceContextError(c, workspace, err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"dashboard": dashboard})
 }
 
 // ListTaskWorkflows lists task workflows for one workspace.

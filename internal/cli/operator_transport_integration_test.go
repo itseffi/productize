@@ -3,7 +3,6 @@ package cli
 import (
 	"context"
 	"encoding/json"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -13,10 +12,9 @@ import (
 	"github.com/itseffi/productize/internal/daemon"
 )
 
-func TestDaemonPublicSnapshotAndStreamMatchAcrossHTTPAndUDSForTempWorkspaceRun(t *testing.T) {
+func TestDaemonPublicSnapshotAndStreamOverUDSForTempWorkspaceRun(t *testing.T) {
 	homeDir := newShortCLITestHomeDir(t)
 	t.Setenv("HOME", homeDir)
-	configureCLITestDaemonHTTPPort(t)
 
 	paths := mustCLITestHomePaths(t)
 	workspaceRoot := t.TempDir()
@@ -37,15 +35,11 @@ func TestDaemonPublicSnapshotAndStreamMatchAcrossHTTPAndUDSForTempWorkspaceRun(t
 		Health struct {
 			Ready bool `json:"ready"`
 		} `json:"health"`
-		Daemon struct {
-			HTTPPort int `json:"http_port"`
-		} `json:"daemon"`
 	}
 	if err := json.Unmarshal([]byte(startStdout), &startPayload); err != nil {
 		t.Fatalf("decode daemon start payload: %v\nstdout:\n%s", err, startStdout)
 	}
-	if startPayload.State != string(daemon.ReadyStateReady) || !startPayload.Health.Ready ||
-		startPayload.Daemon.HTTPPort <= 0 {
+	if startPayload.State != string(daemon.ReadyStateReady) || !startPayload.Health.Ready {
 		t.Fatalf("unexpected daemon start payload: %#v", startPayload)
 	}
 
@@ -57,10 +51,6 @@ func TestDaemonPublicSnapshotAndStreamMatchAcrossHTTPAndUDSForTempWorkspaceRun(t
 		t.Fatal("status.Info = nil, want running daemon info")
 	}
 
-	httpClient, err := apiclient.New(apiclient.Target{HTTPPort: status.Info.HTTPPort})
-	if err != nil {
-		t.Fatalf("apiclient.New(http) error = %v", err)
-	}
 	udsClient, err := apiclient.New(apiclient.Target{SocketPath: status.Info.SocketPath})
 	if err != nil {
 		t.Fatalf("apiclient.New(uds) error = %v", err)
@@ -69,29 +59,12 @@ func TestDaemonPublicSnapshotAndStreamMatchAcrossHTTPAndUDSForTempWorkspaceRun(t
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	httpStatus, err := httpClient.DaemonStatus(ctx)
-	if err != nil {
-		t.Fatalf("http DaemonStatus() error = %v", err)
-	}
-	udsStatus, err := udsClient.DaemonStatus(ctx)
-	if err != nil {
-		t.Fatalf("uds DaemonStatus() error = %v", err)
-	}
-	if !reflect.DeepEqual(httpStatus, udsStatus) {
-		t.Fatalf("daemon status mismatch:\nhttp=%#v\nuds=%#v", httpStatus, udsStatus)
-	}
-
-	httpHealth, err := httpClient.Health(ctx)
-	if err != nil {
-		t.Fatalf("http Health() error = %v", err)
-	}
 	udsHealth, err := udsClient.Health(ctx)
 	if err != nil {
 		t.Fatalf("uds Health() error = %v", err)
 	}
-	assertDaemonHealthParity(t, httpHealth, udsHealth)
-	if !httpHealth.Ready {
-		t.Fatalf("expected ready health payload, got %#v", httpHealth)
+	if !udsHealth.Ready {
+		t.Fatalf("expected ready health payload, got %#v", udsHealth)
 	}
 
 	syncStdout, syncStderr, exitCode := runCLICommand(
@@ -136,26 +109,13 @@ func TestDaemonPublicSnapshotAndStreamMatchAcrossHTTPAndUDSForTempWorkspaceRun(t
 	}
 	runID := parseStartedTaskRunID(t, taskStdout)
 
-	httpSnapshot, err := httpClient.GetRunSnapshot(ctx, runID)
-	if err != nil {
-		t.Fatalf("http GetRunSnapshot() error = %v", err)
-	}
 	udsSnapshot, err := udsClient.GetRunSnapshot(ctx, runID)
 	if err != nil {
 		t.Fatalf("uds GetRunSnapshot() error = %v", err)
 	}
-	if !reflect.DeepEqual(httpSnapshot, udsSnapshot) {
-		t.Fatalf("run snapshot mismatch:\nhttp=%#v\nuds=%#v", httpSnapshot, udsSnapshot)
+	if udsSnapshot.Run.RunID != runID || udsSnapshot.Run.Status != "completed" {
+		t.Fatalf("unexpected terminal snapshot: %#v", udsSnapshot.Run)
 	}
-	if httpSnapshot.Run.RunID != runID || httpSnapshot.Run.Status != "completed" {
-		t.Fatalf("unexpected terminal snapshot: %#v", httpSnapshot.Run)
-	}
-
-	httpStream, err := httpClient.OpenRunStream(ctx, runID, apicore.StreamCursor{})
-	if err != nil {
-		t.Fatalf("http OpenRunStream() error = %v", err)
-	}
-	httpItems := collectRunStreamSummaries(t, httpStream)
 
 	udsStream, err := udsClient.OpenRunStream(ctx, runID, apicore.StreamCursor{})
 	if err != nil {
@@ -163,11 +123,8 @@ func TestDaemonPublicSnapshotAndStreamMatchAcrossHTTPAndUDSForTempWorkspaceRun(t
 	}
 	udsItems := collectRunStreamSummaries(t, udsStream)
 
-	if !reflect.DeepEqual(httpItems, udsItems) {
-		t.Fatalf("run stream mismatch:\nhttp=%#v\nuds=%#v", httpItems, udsItems)
-	}
-	if len(httpItems) == 0 || httpItems[len(httpItems)-1].Kind != "run.completed" {
-		t.Fatalf("expected terminal stream summary, got %#v", httpItems)
+	if len(udsItems) == 0 || udsItems[len(udsItems)-1].Kind != "run.completed" {
+		t.Fatalf("expected terminal stream summary, got %#v", udsItems)
 	}
 }
 
@@ -263,38 +220,4 @@ func collectRunStreamSummaries(t *testing.T, stream apiclient.RunStream) []runSt
 	}
 
 	return summaries
-}
-
-func assertDaemonHealthParity(t *testing.T, httpHealth, udsHealth apicore.DaemonHealth) {
-	t.Helper()
-
-	if httpHealth.Ready != udsHealth.Ready ||
-		httpHealth.Degraded != udsHealth.Degraded ||
-		!httpHealth.StartedAt.Equal(udsHealth.StartedAt) ||
-		httpHealth.ActiveRunCount != udsHealth.ActiveRunCount ||
-		httpHealth.WorkspaceCount != udsHealth.WorkspaceCount ||
-		httpHealth.IntegrityIssueCount != udsHealth.IntegrityIssueCount ||
-		!reflect.DeepEqual(httpHealth.ActiveRunsByMode, udsHealth.ActiveRunsByMode) ||
-		!reflect.DeepEqual(httpHealth.Reconcile, udsHealth.Reconcile) ||
-		!reflect.DeepEqual(httpHealth.Details, udsHealth.Details) {
-		t.Fatalf("daemon health mismatch:\nhttp=%#v\nuds=%#v", httpHealth, udsHealth)
-	}
-
-	if diff := httpHealth.UptimeSeconds - udsHealth.UptimeSeconds; diff < -1 || diff > 1 {
-		t.Fatalf("daemon health uptime mismatch: http=%d uds=%d", httpHealth.UptimeSeconds, udsHealth.UptimeSeconds)
-	}
-	if httpHealth.Databases.GlobalBytes < 0 || udsHealth.Databases.GlobalBytes < 0 {
-		t.Fatalf(
-			"daemon global db bytes must be non-negative: http=%d uds=%d",
-			httpHealth.Databases.GlobalBytes,
-			udsHealth.Databases.GlobalBytes,
-		)
-	}
-	if httpHealth.Databases.RunDBBytes < 0 || udsHealth.Databases.RunDBBytes < 0 {
-		t.Fatalf(
-			"daemon run db bytes must be non-negative: http=%d uds=%d",
-			httpHealth.Databases.RunDBBytes,
-			udsHealth.Databases.RunDBBytes,
-		)
-	}
 }

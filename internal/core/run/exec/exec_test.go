@@ -702,13 +702,6 @@ func TestValidateExecPreparedStateMutationRejectsStateDefiningChanges(t *testing
 			},
 			expectedErr: "output_format",
 		},
-		{
-			name: "Should reject tui mutations",
-			mutate: func(cfg *model.RuntimeConfig) {
-				cfg.TUI = true
-			},
-			expectedErr: "tui",
-		},
 	}
 
 	for _, tc := range testCases {

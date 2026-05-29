@@ -1,6 +1,6 @@
 # Contributing to Productize
 
-Thanks for your interest in contributing. This guide covers what you need to get started.
+How to set up Productize, pass the verification gate, and submit changes.
 
 ## Prerequisites
 
@@ -83,7 +83,9 @@ When contributing a new skill or modifying an existing one:
 
 ## Commit Messages
 
-- Use [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`.
+- Use [Conventional Commits](https://www.conventionalcommits.org/). The `commit-msg` hook enforces the type and rejects anything else.
+- Allowed types: `build`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `release`, `test`.
+- Do not use a scope: `feat: ...` is accepted, `feat(api): ...` is rejected.
 - Keep the subject line under 72 characters.
 - Focus on **why**, not what.
 

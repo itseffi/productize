@@ -237,13 +237,7 @@ func ExecuteExec(ctx context.Context, cfg *model.RuntimeConfig, scope model.RunS
 		return state.completeDryRun(promptText)
 	}
 
-	useUI := internalCfg.UIEnabled()
-	ui := setupExecUI(ctx, internalCfg, useUI, execJob)
-	result := executeExecJob(ctx, internalCfg, &execJob, cfg.WorkspaceRoot, useUI, state)
-	if waitErr := waitExecUI(ui); waitErr != nil && result.err == nil {
-		result.status = runStatusFailed
-		result.err = waitErr
-	}
+	result := executeExecJob(ctx, internalCfg, &execJob, cfg.WorkspaceRoot, false, state)
 	return finalizeExecResult(state, result)
 }
 
@@ -309,21 +303,6 @@ func prepareExecExecution(
 		return "", nil, nil, job{}, err
 	}
 	return promptText, state, internalCfg, execJob, nil
-}
-
-func setupExecUI(ctx context.Context, cfg *config, enabled bool, execJob job) uiSession {
-	if !enabled {
-		return nil
-	}
-	return setupUI(ctx, []job{execJob}, cfg, true)
-}
-
-func waitExecUI(ui uiSession) error {
-	if ui == nil {
-		return nil
-	}
-	ui.CloseEvents()
-	return ui.Wait()
 }
 
 func finalizeExecResult(state *execRunState, result execExecutionResult) error {
@@ -1324,7 +1303,6 @@ type execPreparedStateConfig struct {
 	dryRun        bool
 	persist       bool
 	outputFormat  model.OutputFormat
-	tui           bool
 }
 
 func snapshotExecPreparedStateConfig(cfg *model.RuntimeConfig) execPreparedStateConfig {
@@ -1338,7 +1316,6 @@ func snapshotExecPreparedStateConfig(cfg *model.RuntimeConfig) execPreparedState
 		dryRun:        cfg.DryRun,
 		persist:       cfg.Persist,
 		outputFormat:  cfg.OutputFormat,
-		tui:           cfg.TUI,
 	}
 }
 
@@ -1359,8 +1336,6 @@ func validateExecPreparedStateMutation(
 		return fmt.Errorf("run.pre_start cannot mutate persist after exec state preparation")
 	case current.outputFormat != before.outputFormat:
 		return fmt.Errorf("run.pre_start cannot mutate output_format after exec state preparation")
-	case current.tui != before.tui:
-		return fmt.Errorf("run.pre_start cannot mutate tui after exec state preparation")
 	default:
 		return nil
 	}

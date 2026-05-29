@@ -147,7 +147,6 @@ func TestContractRoundTripsCanonicalResponses(t *testing.T) {
 				Version:        "v1.2.3",
 				StartedAt:      now,
 				SocketPath:     "/tmp/productize.sock",
-				HTTPPort:       4317,
 				ActiveRunCount: 3,
 				WorkspaceCount: 2,
 			},

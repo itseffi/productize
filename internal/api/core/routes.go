@@ -26,9 +26,6 @@ func RegisterRoutes(router gin.IRouter, handlers *Handlers) {
 	workspaces.DELETE("/:id", handlers.DeleteWorkspace)
 	workspaces.POST("/resolve", handlers.ResolveWorkspace)
 
-	ui := api.Group("/ui")
-	ui.GET("/dashboard", handlers.GetDashboard)
-
 	tasks := api.Group("/tasks")
 	tasks.GET("", handlers.ListTaskWorkflows)
 	tasks.GET("/:slug", handlers.GetTaskWorkflow)

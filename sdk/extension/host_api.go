@@ -140,7 +140,6 @@ type RunConfig struct {
 	Mode                   ExecutionMode `json:"mode,omitempty"`
 	OutputFormat           OutputFormat  `json:"output_format,omitempty"`
 	Verbose                bool          `json:"verbose,omitempty"`
-	TUI                    bool          `json:"tui,omitempty"`
 	Persist                bool          `json:"persist,omitempty"`
 	RunID                  string        `json:"run_id,omitempty"`
 	PromptText             string        `json:"prompt_text,omitempty"`

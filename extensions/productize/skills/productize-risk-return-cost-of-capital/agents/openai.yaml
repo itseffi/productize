@@ -1,8 +1,0 @@
-interface:
-  display_name: "Risk Return Cost Of Capital"
-  short_description: "Productize Finance engine for expected return, volatility, diversification, beta, CAPM, excess-return regression,..."
-  brand_color: "#0369A1"
-  default_prompt: "Use $productize-risk-return-cost-of-capital with my product context."
-
-policy:
-  allow_implicit_invocation: true

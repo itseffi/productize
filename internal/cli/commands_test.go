@@ -110,15 +110,11 @@ func TestNewTasksRunCommandDefaultsAttachModeToAuto(t *testing.T) {
 	}
 }
 
-func TestReviewsFixCommandDefaultsTUIToFalse(t *testing.T) {
+func TestReviewsFixCommandOmitsLegacyTUIFlag(t *testing.T) {
 	t.Parallel()
 
 	cmd := newReviewsFixCommandWithDefaults(defaultCommandStateDefaults())
-	flag := cmd.Flags().Lookup("tui")
-	if flag == nil {
-		t.Fatal("expected --tui flag")
-	}
-	if flag.DefValue != "false" {
-		t.Fatalf("expected --tui default false, got %q", flag.DefValue)
+	if cmd.Flags().Lookup("tui") != nil {
+		t.Fatal("expected reviews fix to omit legacy --tui flag")
 	}
 }

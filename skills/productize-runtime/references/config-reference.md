@@ -37,7 +37,7 @@ Options specific to `productize tasks run`.
 
 #### `[[tasks.run.task_runtime_rules]]`
 
-Per-task runtime rules let `productize tasks run` change the runtime for tasks that match a given task `type`. This v1 config surface is intentionally bulk-oriented: config supports `type` selectors only, while one-off task `id` overrides are available from the CLI and TUI for the current run.
+Per-task runtime rules let `productize tasks run` change the runtime for tasks that match a given task `type`. This v1 config surface is intentionally bulk-oriented: config supports `type` selectors only, while one-off task `id` overrides are available from the CLI for the current run.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -50,8 +50,8 @@ Rules are applied in declaration order within config, with later rules for the s
 
 1. Base runtime from `[defaults]` and `[tasks.run]`
 2. Config `[[tasks.run.task_runtime_rules]]` matching the task `type`
-3. CLI or TUI `type` rules for the current run
-4. CLI or TUI `id` rules for the current run
+3. CLI `--task-runtime type=...` rules for the current run
+4. CLI `--task-runtime id=...` rules for the current run
 
 Example:
 
@@ -172,7 +172,6 @@ Options specific to `productize exec`. Inherits all `[defaults]` fields plus:
 | Field | Type | Description |
 | --- | --- | --- |
 | `verbose` | bool | Emit operational runtime logs to stderr |
-| `tui` | bool | Open the interactive TUI |
 | `persist` | bool | Save artifacts under `~/.productize/runs/<run-id>/` |
 
 ### `[sound]`
@@ -246,7 +245,6 @@ auto_push = false
 
 [exec]
 verbose = false
-tui = false
 persist = false
 
 [sound]

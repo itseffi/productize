@@ -12,7 +12,7 @@ Usage:
 
 Examples:
   productize exec "Summarize the current repository changes"
-  productize exec --agent council "Decide between two designs"
+  productize exec --agent reviewer "Review the staged changes"
   productize exec --prompt-file prompt.md
   cat prompt.md | productize exec --format json
   productize exec --format raw-json "Inspect every streamed event"

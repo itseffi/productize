@@ -161,7 +161,6 @@ type runtimeOverrideInput struct {
 	IncludeCompleted           *bool                       `json:"include_completed"`
 	IncludeResolved            *bool                       `json:"include_resolved"`
 	TaskRuntimeRules           *[]model.TaskRuntimeRule    `json:"task_runtime_rules"`
-	TUI                        *bool                       `json:"tui"`
 	EnableExecutableExtensions *bool                       `json:"enable_executable_extensions"`
 }
 
@@ -619,7 +618,7 @@ func (m *RunManager) RunDetail(ctx context.Context, runID string) (apicore.RunDe
 		return apicore.RunDetailPayload{}, errors.New("daemon: run manager is required")
 	}
 
-	query := resolveTransportQueryService(nil, m, nil, nil)
+	query := resolveTransportQueryService(nil, m, nil)
 	if query == nil {
 		return apicore.RunDetailPayload{}, errors.New("daemon: run detail query service is unavailable")
 	}
@@ -779,7 +778,6 @@ func (m *RunManager) prepareTaskStart(
 		return globaldb.Workspace{}, nil, nil, "", err
 	}
 	runtimeCfg.ApplyDefaults()
-	runtimeCfg.TUI = false
 	runtimeCfg.DaemonOwned = true
 	runtimeCfg.EnableExecutableExtensions = true
 	if err := validateDaemonRuntimeConfig(runtimeCfg); err != nil {
@@ -904,7 +902,6 @@ func (m *RunManager) prepareReviewStart(
 	}
 	applyReviewBatching(runtimeCfg, batching)
 	runtimeCfg.ApplyDefaults()
-	runtimeCfg.TUI = false
 	runtimeCfg.DaemonOwned = true
 	runtimeCfg.EnableExecutableExtensions = true
 	if err := validateDaemonRuntimeConfig(runtimeCfg); err != nil {
@@ -1024,7 +1021,6 @@ func (m *RunManager) prepareExecStart(
 	}
 	runtimeCfg.ApplyDefaults()
 	runtimeCfg.Persist = true
-	runtimeCfg.TUI = false
 	runtimeCfg.DaemonOwned = true
 	if err := validateDaemonRuntimeConfig(runtimeCfg); err != nil {
 		return globaldb.Workspace{}, nil, "", err

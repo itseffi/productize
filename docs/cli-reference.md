@@ -102,7 +102,7 @@ productize tasks validate [--name my-feature | --tasks-dir .productize/tasks/my-
 ```
 
 Use `tasks validate` to check every `task_*.md` file in a workflow directory
-against the v2 task metadata schema before `tasks run`.
+against the task metadata schema before `tasks run`.
 
 ## `productize tasks run`
 

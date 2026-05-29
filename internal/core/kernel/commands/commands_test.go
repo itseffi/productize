@@ -389,9 +389,6 @@ func assertRuntimeConfig(t *testing.T, got *model.RuntimeConfig, want core.Confi
 	if got.Verbose != want.Verbose {
 		t.Fatalf("unexpected verbose: %v", got.Verbose)
 	}
-	if got.TUI != want.TUI {
-		t.Fatalf("unexpected tui: %v", got.TUI)
-	}
 	if got.Persist != want.Persist {
 		t.Fatalf("unexpected persist: %v", got.Persist)
 	}
@@ -455,7 +452,6 @@ func testCoreConfig() core.Config {
 		Mode:                       core.ModePRDTasks,
 		OutputFormat:               core.OutputFormatText,
 		Verbose:                    true,
-		TUI:                        true,
 		Persist:                    true,
 		EnableExecutableExtensions: true,
 		RunID:                      "run-123",

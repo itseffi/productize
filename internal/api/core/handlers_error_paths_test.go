@@ -125,15 +125,6 @@ func TestSharedHandlersValidationAndServiceErrors(t *testing.T) {
 			"path_required",
 		},
 		{
-			"dashboard missing workspace",
-			&core.HandlerConfig{Tasks: taskSvc},
-			http.MethodGet,
-			"/api/ui/dashboard",
-			"",
-			http.StatusPreconditionFailed,
-			"workspace_context_missing",
-		},
-		{
 			"task workflows missing workspace",
 			&core.HandlerConfig{Tasks: taskSvc},
 			http.MethodGet,

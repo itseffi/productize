@@ -41,7 +41,6 @@ type DefaultsConfig RuntimeOverrides
 type TaskRunConfig struct {
 	IncludeCompleted *bool                    `toml:"include_completed"`
 	OutputFormat     *string                  `toml:"output_format"`
-	TUI              *bool                    `toml:"tui"`
 	TaskRuntimeRules *[]model.TaskRuntimeRule `toml:"task_runtime_rules"`
 }
 
@@ -55,7 +54,6 @@ type FixReviewsConfig struct {
 	BatchSize       *int    `toml:"batch_size"`
 	IncludeResolved *bool   `toml:"include_resolved"`
 	OutputFormat    *string `toml:"output_format"`
-	TUI             *bool   `toml:"tui"`
 }
 
 type FetchReviewsConfig struct {
@@ -77,7 +75,6 @@ type WatchReviewsConfig struct {
 type ExecConfig struct {
 	RuntimeOverrides
 	Verbose *bool `toml:"verbose"`
-	TUI     *bool `toml:"tui"`
 	Persist *bool `toml:"persist"`
 }
 

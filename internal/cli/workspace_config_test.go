@@ -207,7 +207,6 @@ output_format = "text"
 
 [tasks.run]
 output_format = "json"
-tui = false
 `)
 
 	state := newCommandState(commandKindTasksRun, core.ModePRDTasks)
@@ -220,9 +219,6 @@ tui = false
 	}
 	if state.outputFormat != "json" {
 		t.Fatalf("expected tasks.run.output_format to override defaults.output_format, got %q", state.outputFormat)
-	}
-	if state.tui {
-		t.Fatal("expected tasks.run.tui to disable the workflow TUI")
 	}
 }
 
@@ -292,7 +288,6 @@ output_format = "text"
 
 [fix_reviews]
 output_format = "raw-json"
-tui = false
 `)
 
 	state := newCommandState(commandKindFixReviews, core.ModePRReview)
@@ -305,9 +300,6 @@ tui = false
 	}
 	if state.outputFormat != "raw-json" {
 		t.Fatalf("expected fix_reviews.output_format to override defaults.output_format, got %q", state.outputFormat)
-	}
-	if state.tui {
-		t.Fatal("expected fix_reviews.tui to disable the workflow TUI")
 	}
 }
 
@@ -687,7 +679,6 @@ output_format = "json"
 
 [tasks.run]
 output_format = "raw-json"
-tui = false
 `)
 	writeCLIWorkspaceConfig(t, root, `
 [defaults]
@@ -707,9 +698,6 @@ output_format = "text"
 			"expected workspace defaults.output_format to beat global tasks.run.output_format, got %q",
 			state.outputFormat,
 		)
-	}
-	if state.tui {
-		t.Fatal("expected global tasks.run.tui to remain applied")
 	}
 }
 

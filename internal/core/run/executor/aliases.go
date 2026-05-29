@@ -22,8 +22,6 @@ type jobPhase = runshared.JobPhase
 type jobAttemptResult = runshared.JobAttemptResult
 type shutdownSource = runshared.ShutdownSource
 type shutdownState = runshared.ShutdownState
-type uiQuitRequest = runshared.UIQuitRequest
-type uiSession = runshared.UISession
 
 const (
 	exitCodeCanceled = runshared.ExitCodeCanceled
@@ -40,12 +38,8 @@ const (
 	shutdownPhaseDraining = runshared.ShutdownPhaseDraining
 	shutdownPhaseForcing  = runshared.ShutdownPhaseForcing
 
-	shutdownSourceUI     = runshared.ShutdownSourceUI
 	shutdownSourceSignal = runshared.ShutdownSourceSignal
 	shutdownSourceTimer  = runshared.ShutdownSourceTimer
-
-	uiQuitRequestDrain = runshared.UIQuitRequestDrain
-	uiQuitRequestForce = runshared.UIQuitRequestForce
 
 	gracefulShutdownTimeout = runshared.GracefulShutdownTimeout
 )
@@ -60,16 +54,6 @@ func newJobs(src []model.Job) []job {
 
 func atLeastOne(value int) int {
 	return runshared.AtLeastOne(value)
-}
-
-func setupUI(
-	_ context.Context,
-	_ []job,
-	_ *config,
-	_ *events.Bus[events.Event],
-	_ bool,
-) uiSession {
-	return nil
 }
 
 func notifyJobStart(
@@ -92,8 +76,8 @@ func runtimeLogger(enabled bool) *slog.Logger {
 	return runshared.RuntimeLogger(enabled)
 }
 
-func runtimeLoggerFor(cfg *config, useUI bool) *slog.Logger {
-	return runshared.RuntimeLoggerFor(cfg, useUI)
+func runtimeLoggerFor(cfg *config) *slog.Logger {
+	return runshared.RuntimeLoggerFor(cfg, false)
 }
 
 func recordFailure(mu *sync.Mutex, list *[]failInfo, f failInfo) {

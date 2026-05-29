@@ -11,7 +11,7 @@ func TestSessionViewModelMergesChunkedAgentText(t *testing.T) {
 
 	viewModel := newSessionViewModel()
 	first := mustContentBlockTranscriptTest(t, model.TextBlock{Text: "Ledger Snapshot: "})
-	second := mustContentBlockTranscriptTest(t, model.TextBlock{Text: "Goal is fix the TUI"})
+	second := mustContentBlockTranscriptTest(t, model.TextBlock{Text: "Goal is fix the parser"})
 
 	if snapshot, changed := viewModel.Apply(model.SessionUpdate{
 		Kind:   model.UpdateKindAgentMessageChunk,
@@ -35,7 +35,7 @@ func TestSessionViewModelMergesChunkedAgentText(t *testing.T) {
 	if err != nil {
 		t.Fatalf("decode merged text block: %v", err)
 	}
-	if want := "Ledger Snapshot: Goal is fix the TUI"; textBlock.Text != want {
+	if want := "Ledger Snapshot: Goal is fix the parser"; textBlock.Text != want {
 		t.Fatalf("unexpected merged text: got %q want %q", textBlock.Text, want)
 	}
 }
@@ -45,7 +45,7 @@ func TestSessionViewModelMergesOverlappingAgentTextWithoutDuplicatingBoundary(t 
 
 	viewModel := newSessionViewModel()
 	first := mustContentBlockTranscriptTest(t, model.TextBlock{Text: "Ledger Snapshot: Goal"})
-	second := mustContentBlockTranscriptTest(t, model.TextBlock{Text: "Goal is fix the TUI"})
+	second := mustContentBlockTranscriptTest(t, model.TextBlock{Text: "Goal is fix the parser"})
 
 	if _, changed := viewModel.Apply(model.SessionUpdate{
 		Kind:   model.UpdateKindAgentMessageChunk,
@@ -66,7 +66,7 @@ func TestSessionViewModelMergesOverlappingAgentTextWithoutDuplicatingBoundary(t 
 	if err != nil {
 		t.Fatalf("decode overlapping text block: %v", err)
 	}
-	if want := "Ledger Snapshot: Goal is fix the TUI"; textBlock.Text != want {
+	if want := "Ledger Snapshot: Goal is fix the parser"; textBlock.Text != want {
 		t.Fatalf("unexpected overlap-aware merge: got %q want %q", textBlock.Text, want)
 	}
 }

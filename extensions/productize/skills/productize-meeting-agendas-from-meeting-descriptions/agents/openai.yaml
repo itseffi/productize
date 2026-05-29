@@ -1,8 +1,0 @@
-interface:
-  display_name: "Meeting agendas from meeting descriptions"
-  short_description: "Meeting agendas from meeting descriptions. Use when the user needs a product workflow for project management related..."
-  brand_color: "#7C3AED"
-  default_prompt: "Use $productize-meeting-agendas-from-meeting-descriptions with my product context."
-
-policy:
-  allow_implicit_invocation: true

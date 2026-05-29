@@ -8,25 +8,11 @@ import (
 	"testing"
 	"time"
 
-	apicore "github.com/itseffi/productize/internal/api/core"
 	"github.com/itseffi/productize/internal/core/model"
 	"github.com/itseffi/productize/internal/store/globaldb"
 	eventspkg "github.com/itseffi/productize/pkg/productize/events"
 	"github.com/itseffi/productize/pkg/productize/events/kinds"
 )
-
-type stubDaemonStatusReader struct {
-	status apicore.DaemonStatus
-	health apicore.DaemonHealth
-}
-
-func (s stubDaemonStatusReader) Status(context.Context) (apicore.DaemonStatus, error) {
-	return s.status, nil
-}
-
-func (s stubDaemonStatusReader) Health(context.Context) (apicore.DaemonHealth, error) {
-	return s.health, nil
-}
 
 func TestDocumentReaderNormalizesFrontmatterAndInvalidatesCacheOnMTime(t *testing.T) {
 	dir := t.TempDir()
@@ -206,26 +192,7 @@ func TestQueryServiceAssemblesReadModelsFromRealDaemonState(t *testing.T) {
 	service := NewQueryService(QueryServiceConfig{
 		GlobalDB:   env.globalDB,
 		RunManager: env.manager,
-		Daemon: stubDaemonStatusReader{
-			status: apicore.DaemonStatus{PID: 42, ActiveRunCount: 0, WorkspaceCount: 1},
-			health: apicore.DaemonHealth{Ready: true},
-		},
 	})
-
-	dashboard, err := service.Dashboard(context.Background(), env.workspaceRoot)
-	if err != nil {
-		t.Fatalf("Dashboard() error = %v", err)
-	}
-	if dashboard.PendingReviews != 1 {
-		t.Fatalf("dashboard.PendingReviews = %d, want 1", dashboard.PendingReviews)
-	}
-	if len(dashboard.Workflows) != 1 {
-		t.Fatalf("len(dashboard.Workflows) = %d, want 1", len(dashboard.Workflows))
-	}
-	card := dashboard.Workflows[0]
-	if card.TaskTotal != 2 || card.TaskCompleted != 1 || card.TaskPending != 1 {
-		t.Fatalf("unexpected workflow card task counts: %#v", card)
-	}
 
 	overview, err := service.WorkflowOverview(context.Background(), env.workspaceRoot, env.workflowSlug)
 	if err != nil {
@@ -367,87 +334,6 @@ func TestQueryServiceAssemblesReadModelsFromRealDaemonState(t *testing.T) {
 	}
 }
 
-func TestQueryServiceDashboardCollapsesChildRunsWithActiveParents(t *testing.T) {
-	env := newRunManagerTestEnv(t, runManagerTestDeps{})
-
-	env.writeWorkflowFile(t, env.workflowSlug, "task_01.md", daemonTaskBody("pending", "Dashboard child run"))
-	syncWorkflowForDaemonTest(t, env)
-
-	workspaceID := mustWorkspaceID(t, env.globalDB, env.workspaceRoot)
-	workflow, err := env.globalDB.GetActiveWorkflowBySlug(
-		context.Background(),
-		workspaceID,
-		env.workflowSlug,
-	)
-	if err != nil {
-		t.Fatalf("GetActiveWorkflowBySlug() error = %v", err)
-	}
-
-	startedAt := time.Date(2026, 4, 30, 21, 0, 0, 0, time.UTC)
-	parent := globaldb.Run{
-		RunID:            "run-review-watch-parent",
-		WorkspaceID:      workspaceID,
-		WorkflowID:       &workflow.ID,
-		Mode:             runModeReviewWatch,
-		Status:           runStatusRunning,
-		PresentationMode: defaultPresentationMode,
-		StartedAt:        startedAt,
-	}
-	child := globaldb.Run{
-		RunID:            "run-review-watch-child",
-		WorkspaceID:      workspaceID,
-		WorkflowID:       &workflow.ID,
-		ParentRunID:      parent.RunID,
-		Mode:             runModeReview,
-		Status:           runStatusRunning,
-		PresentationMode: defaultPresentationMode,
-		StartedAt:        startedAt.Add(time.Second),
-	}
-	orphan := globaldb.Run{
-		RunID:            "run-orphan-child",
-		WorkspaceID:      workspaceID,
-		WorkflowID:       &workflow.ID,
-		ParentRunID:      "run-missing-parent",
-		Mode:             runModeReview,
-		Status:           runStatusRunning,
-		PresentationMode: defaultPresentationMode,
-		StartedAt:        startedAt.Add(2 * time.Second),
-	}
-	for _, run := range []globaldb.Run{parent, child, orphan} {
-		if _, err := env.globalDB.PutRun(context.Background(), run); err != nil {
-			t.Fatalf("PutRun(%q) error = %v", run.RunID, err)
-		}
-	}
-
-	service := NewQueryService(QueryServiceConfig{
-		GlobalDB:   env.globalDB,
-		RunManager: env.manager,
-		Daemon: stubDaemonStatusReader{
-			status: apicore.DaemonStatus{PID: 42, ActiveRunCount: 3, WorkspaceCount: 1},
-			health: apicore.DaemonHealth{Ready: true},
-		},
-	})
-	dashboard, err := service.Dashboard(context.Background(), env.workspaceRoot)
-	if err != nil {
-		t.Fatalf("Dashboard() error = %v", err)
-	}
-
-	activeIDs := apicoreRunIDs(dashboard.ActiveRuns)
-	wantActiveIDs := []string{orphan.RunID, parent.RunID}
-	if strings.Join(activeIDs, ",") != strings.Join(wantActiveIDs, ",") {
-		t.Fatalf("dashboard active run IDs = %v, want %v", activeIDs, wantActiveIDs)
-	}
-	if dashboard.Queue.Active != 2 || dashboard.Queue.Total != 2 {
-		t.Fatalf("dashboard queue = %#v, want 2 visible active runs", dashboard.Queue)
-	}
-	if len(dashboard.Workflows) != 1 {
-		t.Fatalf("len(dashboard.Workflows) = %d, want 1", len(dashboard.Workflows))
-	}
-	if dashboard.Workflows[0].ActiveRuns != 2 {
-		t.Fatalf("workflow active runs = %d, want 2", dashboard.Workflows[0].ActiveRuns)
-	}
-}
-
 func TestQueryServiceReadsSyncedDocumentsAfterWorkspaceFilesDisappear(t *testing.T) {
 	env := newRunManagerTestEnv(t, runManagerTestDeps{})
 
@@ -543,12 +429,4 @@ func TestQueryServiceReadsArchivedFilesystemWhenActiveProjectionIsStale(t *testi
 	if detail.Task.Title != "Archived stale task" || detail.Document.Title != "Archived stale task" {
 		t.Fatalf("unexpected stale archived task detail: %#v", detail)
 	}
-}
-
-func apicoreRunIDs(runs []apicore.Run) []string {
-	ids := make([]string, 0, len(runs))
-	for i := range runs {
-		ids = append(ids, runs[i].RunID)
-	}
-	return ids
 }

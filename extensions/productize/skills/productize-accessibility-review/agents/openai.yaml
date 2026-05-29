@@ -1,8 +1,0 @@
-interface:
-  display_name: "Accessibility Review"
-  short_description: "Run a WCAG 2.1 AA accessibility audit on a design or page. Use when asked to audit accessibility, check a11y,..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-accessibility-review with my product context."
-
-policy:
-  allow_implicit_invocation: true

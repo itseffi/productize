@@ -1,8 +1,0 @@
-interface:
-  display_name: "Managerial Finance DCF"
-  short_description: "Productize Finance engine for time value of money, DCF, NPV, IRR, payback, free cash flow, terminal value, project..."
-  brand_color: "#0369A1"
-  default_prompt: "Use $productize-managerial-finance-dcf with my product context."
-
-policy:
-  allow_implicit_invocation: true

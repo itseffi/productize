@@ -137,6 +137,6 @@ FAILURE
 - Claims are generic or not grounded in provided inputs.
 - Assumptions are used but not explicitly stated.
 
-## PM Skills Main Merge
+## Extended Reference
 
-Load `references/pm-skills-main-merge.md` when the request mentions `3 cs`, `invest`, `user stories`, `conversation confirmation`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.
+Load `references/extended-reference.md` when the request mentions `3 cs`, `invest`, `user stories`, `conversation confirmation`. Use this reference material to sharpen this Productize skill.

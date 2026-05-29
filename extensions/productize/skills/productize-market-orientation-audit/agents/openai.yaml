@@ -1,8 +1,0 @@
-interface:
-  display_name: "Market Orientation Audit"
-  short_description: "Audit whether an organization is truly market oriented using intelligence generation, intelligence dissemination,..."
-  brand_color: "#EA580C"
-  default_prompt: "Use $productize-market-orientation-audit with my product context."
-
-policy:
-  allow_implicit_invocation: true

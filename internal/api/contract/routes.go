@@ -61,12 +61,6 @@ var RouteInventory = []RouteSpec{
 		ResponseType: "WorkspaceResponse",
 		TimeoutClass: TimeoutRead,
 	},
-	{
-		Method:       http.MethodGet,
-		Path:         "/api/ui/dashboard",
-		ResponseType: "DashboardPayload",
-		TimeoutClass: TimeoutRead,
-	},
 	{Method: http.MethodGet, Path: "/api/tasks", ResponseType: "TaskWorkflowListResponse", TimeoutClass: TimeoutRead},
 	{Method: http.MethodGet, Path: "/api/tasks/:slug", ResponseType: "TaskWorkflowResponse", TimeoutClass: TimeoutRead},
 	{

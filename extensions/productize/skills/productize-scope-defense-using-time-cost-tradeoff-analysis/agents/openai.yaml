@@ -1,8 +1,0 @@
-interface:
-  display_name: "Scope defense using time-cost tradeoff analysis"
-  short_description: "Scope defense using time-cost tradeoff analysis. Use when the user needs a product workflow for project management..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $productize-scope-defense-using-time-cost-tradeoff-analysis with my product context."
-
-policy:
-  allow_implicit_invocation: true

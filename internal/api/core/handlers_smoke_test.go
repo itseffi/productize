@@ -29,7 +29,6 @@ func TestSharedHandlersSmokeSuccessPaths(t *testing.T) {
 				Version:        "test",
 				StartedAt:      now,
 				SocketPath:     "/tmp/productize.sock",
-				HTTPPort:       4321,
 				ActiveRunCount: 1,
 				WorkspaceCount: 1,
 			},
@@ -227,14 +226,6 @@ func TestSharedHandlersSmokeSuccessPaths(t *testing.T) {
 			`{"path":"/tmp/workspace"}`,
 			http.StatusOK,
 			`"workspace":{"id":"ws-1"`,
-		},
-		{
-			"dashboard",
-			http.MethodGet,
-			"/api/ui/dashboard?workspace=ws-1",
-			"",
-			http.StatusOK,
-			`"dashboard":{"workspace":`,
 		},
 		{"task workflows", http.MethodGet, "/api/tasks?workspace=ws-1", "", http.StatusOK, `"workflows":[`},
 		{
@@ -490,10 +481,6 @@ type smokeTaskService struct {
 	workflow core.WorkflowSummary
 	item     core.TaskItem
 	run      core.Run
-}
-
-func (s *smokeTaskService) Dashboard(context.Context, string) (core.DashboardPayload, error) {
-	return core.DashboardPayload{}, nil
 }
 
 func (s *smokeTaskService) ListWorkflows(context.Context, string) ([]core.WorkflowSummary, error) {

@@ -265,14 +265,12 @@ retry_backoff_multiplier = 1.5
 [tasks.run]
 include_completed = false
 output_format = "json"
-tui = false
 
 [fix_reviews]
 concurrent = 2
 batch_size = 3
 include_resolved = false
 output_format = "raw-json"
-tui = false
 
 [fetch_reviews]
 provider = "coderabbit"
@@ -325,17 +323,11 @@ output_format = "json"
 	if cfg.Tasks.Run.OutputFormat == nil || *cfg.Tasks.Run.OutputFormat != "json" {
 		t.Fatalf("unexpected tasks.run.output_format: %#v", cfg.Tasks.Run.OutputFormat)
 	}
-	if cfg.Tasks.Run.TUI == nil || *cfg.Tasks.Run.TUI {
-		t.Fatalf("unexpected tasks.run.tui: %#v", cfg.Tasks.Run.TUI)
-	}
 	if cfg.FixReviews.Concurrent == nil || *cfg.FixReviews.Concurrent != 2 {
 		t.Fatalf("unexpected fix_reviews.concurrent: %#v", cfg.FixReviews.Concurrent)
 	}
 	if cfg.FixReviews.OutputFormat == nil || *cfg.FixReviews.OutputFormat != "raw-json" {
 		t.Fatalf("unexpected fix_reviews.output_format: %#v", cfg.FixReviews.OutputFormat)
-	}
-	if cfg.FixReviews.TUI == nil || *cfg.FixReviews.TUI {
-		t.Fatalf("unexpected fix_reviews.tui: %#v", cfg.FixReviews.TUI)
 	}
 	if cfg.FetchReviews.Provider == nil || *cfg.FetchReviews.Provider != "coderabbit" {
 		t.Fatalf("unexpected fetch_reviews.provider: %#v", cfg.FetchReviews.Provider)
@@ -674,69 +666,6 @@ output_format = "yaml"
 		t.Fatal("expected invalid exec output format error")
 	}
 	if !strings.Contains(err.Error(), "exec.output_format") {
-		t.Fatalf("unexpected error: %v", err)
-	}
-}
-
-func TestLoadConfigRejectsExecTUIWhenDefaultsOutputFormatIsJSON(t *testing.T) {
-	t.Parallel()
-
-	root := t.TempDir()
-	writeWorkspaceConfig(t, root, `
-[defaults]
-output_format = "json"
-
-[exec]
-tui = true
-`)
-
-	_, _, err := LoadConfig(context.Background(), root)
-	if err == nil {
-		t.Fatal("expected invalid exec tui/output format combination")
-	}
-	if !strings.Contains(err.Error(), "exec.tui cannot be true") {
-		t.Fatalf("unexpected error: %v", err)
-	}
-}
-
-func TestLoadConfigRejectsStartTUIWhenDefaultsOutputFormatIsJSON(t *testing.T) {
-	t.Parallel()
-
-	root := t.TempDir()
-	writeWorkspaceConfig(t, root, `
-[defaults]
-output_format = "json"
-
-[tasks.run]
-tui = true
-`)
-
-	_, _, err := LoadConfig(context.Background(), root)
-	if err == nil {
-		t.Fatal("expected invalid start tui/output format combination")
-	}
-	if !strings.Contains(err.Error(), "tasks.run.tui cannot be true") {
-		t.Fatalf("unexpected error: %v", err)
-	}
-}
-
-func TestLoadConfigRejectsFixReviewsTUIWhenDefaultsOutputFormatIsJSON(t *testing.T) {
-	t.Parallel()
-
-	root := t.TempDir()
-	writeWorkspaceConfig(t, root, `
-[defaults]
-output_format = "json"
-
-[fix_reviews]
-tui = true
-`)
-
-	_, _, err := LoadConfig(context.Background(), root)
-	if err == nil {
-		t.Fatal("expected invalid fix_reviews tui/output format combination")
-	}
-	if !strings.Contains(err.Error(), "fix_reviews.tui cannot be true") {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
@@ -1234,7 +1163,6 @@ output_format = "json"
 
 [tasks.run]
 output_format = "raw-json"
-tui = false
 
 [exec]
 model = "gpt-5.5"
@@ -1260,9 +1188,6 @@ output_format = "text"
 	if cfg.Tasks.Run.OutputFormat != nil {
 		t.Fatalf("expected global tasks.run.output_format to stay shadowed, got %#v", cfg.Tasks.Run.OutputFormat)
 	}
-	if cfg.Tasks.Run.TUI == nil || *cfg.Tasks.Run.TUI {
-		t.Fatalf("expected global tasks.run.tui to remain available, got %#v", cfg.Tasks.Run.TUI)
-	}
 	if cfg.Exec.Model != nil {
 		t.Fatalf("expected global exec.model to stay shadowed, got %#v", cfg.Exec.Model)
 	}
@@ -1271,27 +1196,6 @@ output_format = "text"
 	}
 	if cfg.Exec.Verbose == nil || !*cfg.Exec.Verbose {
 		t.Fatalf("expected global exec.verbose to remain available, got %#v", cfg.Exec.Verbose)
-	}
-}
-
-func TestLoadConfigRejectsInvalidMergedCrossScopeCombination(t *testing.T) {
-	homeDir := isolateWorkspaceConfigHome(t)
-	root := t.TempDir()
-	writeGlobalConfig(t, homeDir, `
-[defaults]
-output_format = "json"
-`)
-	writeWorkspaceConfig(t, root, `
-[tasks.run]
-tui = true
-`)
-
-	_, _, err := LoadConfig(context.Background(), root)
-	if err == nil {
-		t.Fatal("expected merged config validation error")
-	}
-	if !strings.Contains(err.Error(), "effective config tasks.run.tui cannot be true") {
-		t.Fatalf("unexpected error: %v", err)
 	}
 }
 

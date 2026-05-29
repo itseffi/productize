@@ -602,7 +602,6 @@ func TestDaemonStartCommandDetachedReturnsReadyStatus(t *testing.T) {
 			Version:        "test-version",
 			StartedAt:      time.Date(2026, 4, 18, 12, 0, 0, 0, time.UTC),
 			SocketPath:     "/tmp/productize-ready.sock",
-			HTTPPort:       2323,
 			ActiveRunCount: 2,
 			WorkspaceCount: 3,
 		},
@@ -674,7 +673,6 @@ func TestDaemonStartCommandForegroundUsesDaemonRunner(t *testing.T) {
 		gotRun = opts
 		return nil
 	}
-	t.Setenv(daemonHTTPPortEnv, "43123")
 	cmd := newDaemonStartCommand()
 	cmd.SetContext(context.WithValue(context.Background(), ctxKey, "foreground-start"))
 	output, err := executeCommandCombinedOutput(
@@ -690,9 +688,6 @@ func TestDaemonStartCommandForegroundUsesDaemonRunner(t *testing.T) {
 	}
 	if gotCtx == nil || gotCtx.Value(ctxKey) != "foreground-start" {
 		t.Fatalf("foreground daemon context = %#v, want command context value", gotCtx)
-	}
-	if gotRun.HTTPPort != 43123 {
-		t.Fatalf("foreground daemon http port = %d, want 43123", gotRun.HTTPPort)
 	}
 	if gotRun.Mode != daemon.RunModeForeground {
 		t.Fatalf("foreground daemon mode = %q, want %q", gotRun.Mode, daemon.RunModeForeground)
@@ -725,8 +720,6 @@ func TestDaemonStartCommandInternalChildUsesDetachedRunMode(t *testing.T) {
 		gotRun = opts
 		return nil
 	}
-	t.Setenv(daemonHTTPPortEnv, "43124")
-
 	cmd := newDaemonStartCommand()
 	cmd.SetContext(context.WithValue(context.Background(), ctxKey, "detached-child"))
 	output, err := executeCommandCombinedOutput(cmd, nil, "--"+daemonStartInternalChildFlag)
@@ -738,9 +731,6 @@ func TestDaemonStartCommandInternalChildUsesDetachedRunMode(t *testing.T) {
 	}
 	if gotCtx == nil || gotCtx.Value(ctxKey) != "detached-child" {
 		t.Fatalf("detached daemon context = %#v, want command context value", gotCtx)
-	}
-	if gotRun.HTTPPort != 43124 {
-		t.Fatalf("detached daemon http port = %d, want 43124", gotRun.HTTPPort)
 	}
 	if gotRun.Mode != daemon.RunModeDetached {
 		t.Fatalf("detached daemon mode = %q, want %q", gotRun.Mode, daemon.RunModeDetached)
@@ -928,11 +918,11 @@ func TestNewDefaultCLIDaemonBootstrapProvidesRuntimeDependencies(t *testing.T) {
 		t.Fatalf("unexpected poll interval: %s", bootstrap.pollInterval)
 	}
 
-	client, err := bootstrap.newClient(apiclient.Target{HTTPPort: 43123})
+	client, err := bootstrap.newClient(apiclient.Target{SocketPath: "/tmp/productize.sock"})
 	if err != nil {
 		t.Fatalf("newClient: %v", err)
 	}
-	if client.Target().HTTPPort != 43123 {
+	if client.Target().SocketPath != "/tmp/productize.sock" {
 		t.Fatalf("unexpected bootstrap client target: %#v", client.Target())
 	}
 }

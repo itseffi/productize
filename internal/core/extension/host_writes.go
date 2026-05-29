@@ -286,7 +286,6 @@ func (cfg RunConfig) toRuntimeConfig(workspaceRoot string, parentRunID string) *
 		Mode:                   cfg.Mode,
 		OutputFormat:           cfg.OutputFormat,
 		Verbose:                cfg.Verbose,
-		TUI:                    cfg.TUI,
 		Persist:                cfg.Persist,
 		RunID:                  strings.TrimSpace(cfg.RunID),
 		ParentRunID:            strings.TrimSpace(parentRunID),

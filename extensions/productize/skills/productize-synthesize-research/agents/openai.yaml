@@ -1,8 +1,0 @@
-interface:
-  display_name: "Synthesize Research"
-  short_description: "Synthesize user research from interviews, surveys, and feedback into structured insights. Use when making sense of..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-synthesize-research with my product context."
-
-policy:
-  allow_implicit_invocation: true

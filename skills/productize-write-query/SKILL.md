@@ -81,9 +81,9 @@ Write a SQL query from a natural-language description, optimized for the user's 
 /write-query <description of what data you need>
 ```
 
-## PM Skills Main Merge
+## Extended Reference
 
-Load `references/pm-skills-main-merge.md` when the request mentions `sql generator`, `bigquery`, `postgres`, `mysql`, `schema diagram`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.
+Load `references/extended-reference.md` when the request mentions `sql generator`, `bigquery`, `postgres`, `mysql`, `schema diagram`. Use this reference material to sharpen this Productize skill.
 
 ## Workflow
 

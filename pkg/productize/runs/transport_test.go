@@ -47,16 +47,8 @@ func TestNewDaemonClientAndReaderBootstrap(t *testing.T) {
 	if err != nil {
 		t.Fatalf("newDaemonClient(socket) error = %v", err)
 	}
-	if target := socketClient.Target(); target.SocketPath != "/tmp/productize.sock" || target.HTTPPort != 0 {
+	if target := socketClient.Target(); target.SocketPath != "/tmp/productize.sock" {
 		t.Fatalf("newDaemonClient(socket) target = %#v", target)
-	}
-
-	httpClient, err := newDaemonClient(daemonInfoRecord{HTTPPort: 43123})
-	if err != nil {
-		t.Fatalf("newDaemonClient(http) error = %v", err)
-	}
-	if target := httpClient.Target(); target.SocketPath != "" || target.HTTPPort != 43123 {
-		t.Fatalf("newDaemonClient(http) target = %#v", target)
 	}
 
 	if _, err := newDaemonClient(daemonInfoRecord{}); err == nil {
@@ -69,7 +61,7 @@ func TestNewDaemonClientAndReaderBootstrap(t *testing.T) {
 	if err := os.MkdirAll(filepath.Dir(infoPath), 0o755); err != nil {
 		t.Fatalf("mkdir daemon info dir: %v", err)
 	}
-	if err := os.WriteFile(infoPath, []byte(`{"http_port":43123}`), 0o600); err != nil {
+	if err := os.WriteFile(infoPath, []byte(`{"socket_path":"/tmp/productize.sock"}`), 0o600); err != nil {
 		t.Fatalf("write daemon info: %v", err)
 	}
 
@@ -81,8 +73,8 @@ func TestNewDaemonClientAndReaderBootstrap(t *testing.T) {
 	if !ok {
 		t.Fatalf("newDefaultDaemonRunReader() type = %T, want *defaultDaemonRunReader", reader)
 	}
-	if target := defaultReader.daemon.Target(); target.HTTPPort != 43123 {
-		t.Fatalf("reader target = %#v, want http port 43123", target)
+	if target := defaultReader.daemon.Target(); target.SocketPath != "/tmp/productize.sock" {
+		t.Fatalf("reader target = %#v, want socket path", target)
 	}
 
 	t.Setenv("HOME", t.TempDir())
@@ -95,7 +87,7 @@ func TestReadRunsDaemonInfoAndCursorHelpers(t *testing.T) {
 	t.Parallel()
 
 	infoPath := filepath.Join(t.TempDir(), "daemon.json")
-	if err := os.WriteFile(infoPath, []byte(`{"socket_path":"/tmp/test.sock","http_port":1234}`), 0o600); err != nil {
+	if err := os.WriteFile(infoPath, []byte(`{"socket_path":"/tmp/test.sock"}`), 0o600); err != nil {
 		t.Fatalf("write daemon info: %v", err)
 	}
 
@@ -103,8 +95,8 @@ func TestReadRunsDaemonInfoAndCursorHelpers(t *testing.T) {
 	if err != nil {
 		t.Fatalf("readRunsDaemonInfo() error = %v", err)
 	}
-	if info.SocketPath != "/tmp/test.sock" || info.HTTPPort != 1234 {
-		t.Fatalf("readRunsDaemonInfo() = %#v, want socket + port", info)
+	if info.SocketPath != "/tmp/test.sock" {
+		t.Fatalf("readRunsDaemonInfo() = %#v, want socket path", info)
 	}
 
 	cursor := RemoteCursor{

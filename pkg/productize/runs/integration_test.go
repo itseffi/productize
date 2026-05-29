@@ -2,16 +2,15 @@ package runs
 
 import (
 	"context"
-	"net/http/httptest"
-	"net/url"
-	"strconv"
+	"os"
+	"path/filepath"
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	apiclient "github.com/itseffi/productize/internal/api/client"
 	apicore "github.com/itseffi/productize/internal/api/core"
+	"github.com/itseffi/productize/internal/api/udsapi"
 	productizeconfig "github.com/itseffi/productize/internal/config"
 	"github.com/itseffi/productize/internal/daemon"
 	"github.com/itseffi/productize/pkg/productize/events"
@@ -73,7 +72,7 @@ func TestOpenAndListUseDaemonBackedHTTPTransport(t *testing.T) {
 			},
 		},
 	}
-	withIntegrationDaemonServer(t, service, func(_ int) {
+	withIntegrationDaemonServer(t, service, func(_ string) {
 		got, err := List("/workspace", ListOptions{})
 		if err != nil {
 			t.Fatalf("List() error = %v", err)
@@ -159,7 +158,7 @@ func TestTailAndWatchWorkspaceUseDaemonBackedHTTPTransport(t *testing.T) {
 			}},
 		},
 	}
-	withIntegrationDaemonServer(t, service, func(_ int) {
+	withIntegrationDaemonServer(t, service, func(_ string) {
 		run, err := Open("/workspace", "run-tail")
 		if err != nil {
 			t.Fatalf("Open() error = %v", err)
@@ -225,8 +224,8 @@ func TestOpenMatchesInternalClientSnapshotMetadata(t *testing.T) {
 		},
 	}
 
-	withIntegrationDaemonServer(t, service, func(port int) {
-		client, err := apiclient.New(apiclient.Target{HTTPPort: port})
+	withIntegrationDaemonServer(t, service, func(socketPath string) {
+		client, err := apiclient.New(apiclient.Target{SocketPath: socketPath})
 		if err != nil {
 			t.Fatalf("apiclient.New() error = %v", err)
 		}
@@ -287,8 +286,8 @@ func TestRemoteWatchAndClientStreamSurviveHeartbeatIdlePeriod(t *testing.T) {
 		},
 	}
 
-	withIntegrationDaemonServer(t, service, func(port int) {
-		client, err := apiclient.New(apiclient.Target{HTTPPort: port})
+	withIntegrationDaemonServer(t, service, func(socketPath string) {
+		client, err := apiclient.New(apiclient.Target{SocketPath: socketPath})
 		if err != nil {
 			t.Fatalf("apiclient.New() error = %v", err)
 		}
@@ -321,28 +320,38 @@ func TestRemoteWatchAndClientStreamSurviveHeartbeatIdlePeriod(t *testing.T) {
 	})
 }
 
-func withIntegrationDaemonServer(t *testing.T, runs apicore.RunService, fn func(port int)) {
+func withIntegrationDaemonServer(t *testing.T, runs apicore.RunService, fn func(socketPath string)) {
 	t.Helper()
 
-	gin.SetMode(gin.TestMode)
-	engine := gin.New()
-	apicore.RegisterRoutes(engine, apicore.NewHandlers(&apicore.HandlerConfig{
-		TransportName:     "http-test",
-		HeartbeatInterval: 10 * time.Millisecond,
-		Runs:              runs,
-	}))
-
-	server := httptest.NewServer(engine)
-	defer server.Close()
-
-	serverURL, err := url.Parse(server.URL)
+	socketFile, err := os.CreateTemp("", "productize-runs-*.sock")
 	if err != nil {
-		t.Fatalf("parse server URL: %v", err)
+		t.Fatalf("CreateTemp() error = %v", err)
 	}
-	port, err := strconv.Atoi(serverURL.Port())
+	socketPath := socketFile.Name()
+	if err := socketFile.Close(); err != nil {
+		t.Fatalf("Close(temp socket file) error = %v", err)
+	}
+	if err := os.Remove(socketPath); err != nil {
+		t.Fatalf("Remove(temp socket file) error = %v", err)
+	}
+
+	server, err := udsapi.New(
+		udsapi.WithHandlers(apicore.NewHandlers(&apicore.HandlerConfig{
+			TransportName:     "uds-test",
+			HeartbeatInterval: 10 * time.Millisecond,
+			Runs:              runs,
+		})),
+		udsapi.WithSocketPath(socketPath),
+	)
 	if err != nil {
-		t.Fatalf("parse server port: %v", err)
+		t.Fatalf("udsapi.New() error = %v", err)
 	}
+	if err := server.Start(context.Background()); err != nil {
+		t.Fatalf("server.Start() error = %v", err)
+	}
+	defer func() {
+		_ = server.Shutdown(context.Background())
+	}()
 
 	homeDir := t.TempDir()
 	t.Setenv("HOME", homeDir)
@@ -350,12 +359,14 @@ func withIntegrationDaemonServer(t *testing.T, runs apicore.RunService, fn func(
 	if err != nil {
 		t.Fatalf("ResolveHomePaths() error = %v", err)
 	}
+	if err := os.MkdirAll(filepath.Dir(paths.InfoPath), 0o700); err != nil {
+		t.Fatalf("mkdir daemon info dir: %v", err)
+	}
 	if err := daemon.WriteInfo(paths.InfoPath, daemon.Info{
 		PID:        1,
-		HTTPPort:   port,
 		StartedAt:  time.Now().UTC(),
 		State:      daemon.ReadyStateReady,
-		SocketPath: "",
+		SocketPath: socketPath,
 	}); err != nil {
 		t.Fatalf("WriteInfo() error = %v", err)
 	}
@@ -366,7 +377,7 @@ func withIntegrationDaemonServer(t *testing.T, runs apicore.RunService, fn func(
 		resolveRunsDaemonReader = previous
 	}()
 
-	fn(port)
+	fn(socketPath)
 }
 
 type integrationRunService struct {

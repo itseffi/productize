@@ -248,7 +248,7 @@ func finalizeExecution(
 		ctx,
 		internalCfg,
 		terminalEventKindFor(result.Status),
-		runtimeLoggerFor(internalCfg, internalCfg.UIEnabled()),
+		runtimeLoggerFor(internalCfg),
 	)
 	model.DispatchObserverHook(
 		ctx,
@@ -277,7 +277,7 @@ func ensureRuntimeEventBus(
 	runJournal *journal.Journal,
 	bus *events.Bus[events.Event],
 ) *events.Bus[events.Event] {
-	if cfg != nil && (cfg.UIEnabled() || cfg.EventStreamEnabled()) && bus == nil {
+	if cfg != nil && cfg.EventStreamEnabled() && bus == nil {
 		bus = events.New[events.Event](runtimeEventBusBufferSize)
 	}
 	if runJournal != nil && bus != nil {
@@ -416,7 +416,6 @@ type jobExecutionContext struct {
 	logger         *slog.Logger
 	journal        *journal.Journal
 	bus            *events.Bus[events.Event]
-	ui             uiSession
 	sem            chan struct{}
 	aggregateUsage model.Usage
 	aggregateMu    sync.Mutex
@@ -446,7 +445,7 @@ func newJobExecutionContext(
 		jobs:          jobs,
 		total:         len(jobs),
 		cwd:           cwd,
-		logger:        runtimeLoggerFor(cfg, cfg.UIEnabled()),
+		logger:        runtimeLoggerFor(cfg),
 		journal:       runJournal,
 		bus:           bus,
 		sem:           make(chan struct{}, atLeastOne(cfg.Concurrent)),
@@ -456,7 +455,6 @@ func newJobExecutionContext(
 		execCtx.jobs[idx].OutBuffer = newLineBuffer(cfg.TailLines)
 		execCtx.jobs[idx].ErrBuffer = newLineBuffer(cfg.TailLines)
 	}
-	execCtx.ui = setupUI(ctx, execCtx.jobs, cfg, bus, cfg.UIEnabled())
 	return execCtx, nil
 }
 
@@ -505,41 +503,14 @@ func terminalEventKindFor(status string) events.EventKind {
 	}
 }
 
-func (j *jobExecutionContext) cleanup() {
-	if err := j.shutdownUI(); err != nil {
-		if j != nil && j.cfg.HumanOutputEnabled() {
-			fmt.Fprintf(os.Stderr, "UI shutdown error: %v\n", err)
-		}
-	}
-}
-
 func (j *jobExecutionContext) runtimeLogger() *slog.Logger {
 	if j != nil && j.logger != nil {
 		return j.logger
 	}
 	if j != nil {
-		return runtimeLoggerFor(j.cfg, j.cfg != nil && j.cfg.UIEnabled())
+		return runtimeLoggerFor(j.cfg)
 	}
 	return runtimeLogger(false)
-}
-
-func (j *jobExecutionContext) awaitUIAfterCompletion() error {
-	if j.ui == nil {
-		return nil
-	}
-	// Normal completion must leave the event adapter running until the operator
-	// exits the completed cockpit. Closing it early can drop the final
-	// session/job completion events and leave the UI visually stuck in RUNNING.
-	return j.ui.Wait()
-}
-
-func (j *jobExecutionContext) shutdownUI() error {
-	if j.ui == nil {
-		return nil
-	}
-	j.ui.CloseEvents()
-	j.ui.Shutdown()
-	return j.ui.Wait()
 }
 
 func (j *jobExecutionContext) publishShutdownStatus(state shutdownState) {

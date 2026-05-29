@@ -500,7 +500,6 @@ export interface RuntimeConfig {
   mode?: ExecutionMode;
   output_format?: OutputFormat;
   verbose?: boolean;
-  tui?: boolean;
   persist?: boolean;
   enable_executable_extensions?: boolean;
   run_id?: string;
@@ -1007,7 +1006,6 @@ export interface RunConfig {
   mode?: ExecutionMode;
   output_format?: OutputFormat;
   verbose?: boolean;
-  tui?: boolean;
   persist?: boolean;
   run_id?: string;
   prompt_text?: string;

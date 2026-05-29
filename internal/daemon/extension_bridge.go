@@ -119,7 +119,6 @@ func (b *extensionBridge) normalizeRuntime(
 		normalized.WorkspaceRoot = bridgeWorkspaceRoot
 	}
 	normalized.ApplyDefaults()
-	normalized.TUI = false
 	normalized.DaemonOwned = true
 	if normalized.Mode == model.ExecutionModeExec {
 		normalized.Persist = true

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Stakeholder Power–Interest & Influence Map"
-  short_description: "Stakeholder Power–Interest & Influence Map. Use when the user needs a product workflow for stakeholder management..."
-  brand_color: "#7C2D12"
-  default_prompt: "Use $productize-stakeholder-power-interest-and-influence-map with my product context."
-
-policy:
-  allow_implicit_invocation: true

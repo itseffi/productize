@@ -3,10 +3,10 @@ package daemon
 import (
 	"context"
 	"errors"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -39,7 +39,6 @@ func TestHostRuntimeBehaviors(t *testing.T) {
 			HomePaths: paths,
 			PID:       os.Getpid(),
 			Version:   "test-run-host",
-			HTTPPort:  EphemeralHTTPPort,
 			ProcessAlive: func(pid int) bool {
 				return pid == os.Getpid()
 			},
@@ -56,25 +55,36 @@ func TestHostRuntimeBehaviors(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Start() error = %v", err)
 		}
-		if runtime.db == nil || runtime.httpServer == nil || runtime.udsServer == nil {
+		if runtime.db == nil || runtime.udsServer == nil {
 			t.Fatalf("prepareHostRuntime() returned incomplete runtime: %#v", runtime)
 		}
 
 		waitForCondition(t, 5*time.Second, "probe ready", func() bool {
 			info := result.Host.Info()
-			return info.State == ReadyStateReady && info.HTTPPort > 0 && ProbeReady(context.Background(), info) == nil
+			return info.State == ReadyStateReady && info.SocketPath != "" &&
+				ProbeReady(context.Background(), info) == nil
 		})
 
+		socketPath := result.Host.Info().SocketPath
+		unixClient := &http.Client{
+			Timeout: time.Second,
+			Transport: &http.Transport{
+				DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+					var dialer net.Dialer
+					return dialer.DialContext(ctx, "unix", socketPath)
+				},
+			},
+		}
 		rootRequest, err := http.NewRequestWithContext(
 			t.Context(),
 			http.MethodGet,
-			"http://127.0.0.1:"+strconv.Itoa(result.Host.Info().HTTPPort)+"/",
+			"http://unix/",
 			http.NoBody,
 		)
 		if err != nil {
 			t.Fatalf("NewRequestWithContext(/) error = %v", err)
 		}
-		rootResponse, err := (&http.Client{Timeout: time.Second}).Do(rootRequest)
+		rootResponse, err := unixClient.Do(rootRequest)
 		if err != nil {
 			t.Fatalf("GET / error = %v", err)
 		}

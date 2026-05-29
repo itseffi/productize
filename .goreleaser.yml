@@ -10,10 +10,6 @@ metadata:
 env:
   - CGO_ENABLED=0
 
-before:
-  hooks:
-    - make go-build
-
 git:
   tag_sort: -version:refname
 
@@ -59,7 +55,7 @@ archives:
     files:
       - README.md
       - LICENSE*
-    # Keep the binary at the archive root so Homebrew formulas can install it directly.
+    # Keep the binary at the archive root so the Homebrew cask can install it directly.
 
 checksum:
   name_template: "checksums.txt"

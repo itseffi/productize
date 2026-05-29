@@ -28,22 +28,8 @@ func newTransportTaskService(
 	return &transportTaskService{
 		globalDB:   globalDB,
 		runManager: runManager,
-		query:      resolveTransportQueryService(globalDB, runManager, nil, query),
+		query:      resolveTransportQueryService(globalDB, runManager, query),
 	}
-}
-
-func (s *transportTaskService) Dashboard(
-	ctx context.Context,
-	workspaceRef string,
-) (apicore.DashboardPayload, error) {
-	if s == nil || s.query == nil {
-		return apicore.DashboardPayload{}, taskTransportUnavailable("dashboard read")
-	}
-	payload, err := s.query.Dashboard(ctx, workspaceRef)
-	if err != nil {
-		return apicore.DashboardPayload{}, mapQueryTransportError(err)
-	}
-	return transportDashboard(payload), nil
 }
 
 func (s *transportTaskService) ListWorkflows(

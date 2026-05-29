@@ -82,7 +82,6 @@ func buildEffectiveTaskRunConfig(
 			workspaceDefaults.OutputFormat,
 			workspace.OutputFormat,
 		),
-		TUI:              cloneOptionalValue(preferOverlay(global.TUI, workspace.TUI)),
 		TaskRuntimeRules: mergeTaskRunRuntimeRules(global.TaskRuntimeRules, workspace.TaskRuntimeRules),
 	}
 }
@@ -103,7 +102,6 @@ func buildEffectiveFixReviewsConfig(
 			workspaceDefaults.OutputFormat,
 			workspace.OutputFormat,
 		),
-		TUI: cloneOptionalValue(preferOverlay(global.TUI, workspace.TUI)),
 	}
 }
 
@@ -183,7 +181,6 @@ func buildEffectiveExecConfig(
 			),
 		},
 		Verbose: cloneOptionalValue(preferOverlay(global.Verbose, workspace.Verbose)),
-		TUI:     cloneOptionalValue(preferOverlay(global.TUI, workspace.TUI)),
 		Persist: cloneOptionalValue(preferOverlay(global.Persist, workspace.Persist)),
 	}
 }

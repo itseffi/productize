@@ -1,8 +1,0 @@
-interface:
-  display_name: "Workshop activity design from problem and participant parameters"
-  short_description: "Workshop activity design from problem and participant parameters. Use when the user needs a product workflow for..."
-  brand_color: "#7C3AED"
-  default_prompt: "Use $productize-workshop-activity-design-from-problem-and-participant with my product context."
-
-policy:
-  allow_implicit_invocation: true

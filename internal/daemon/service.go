@@ -84,7 +84,6 @@ func (s *Service) Status(ctx context.Context) (apicore.DaemonStatus, error) {
 		Version:        info.Version,
 		StartedAt:      info.StartedAt,
 		SocketPath:     info.SocketPath,
-		HTTPPort:       info.HTTPPort,
 		ActiveRunCount: s.activeRunCount(),
 		WorkspaceCount: workspaceCount,
 	}

@@ -12,12 +12,6 @@ func addWorkflowOutputFlags(cmd *cobra.Command, state *commandState) {
 		string(core.OutputFormatText),
 		"Output format: text, json, or raw-json",
 	)
-	cmd.Flags().BoolVar(
-		&state.tui,
-		"tui",
-		false,
-		"Deprecated; workflow observation uses textual streams",
-	)
 }
 
 func newExecCommandWithDefaults(defaults commandStateDefaults) *cobra.Command {
@@ -36,7 +30,7 @@ Operational runtime logs stay silent unless you opt into --verbose. Use --persis
 resumable artifacts under
 ~/.productize/runs/<run-id>/. Use --run-id to resume a previously persisted exec session.`,
 		Example: `  productize exec "Summarize the current repository changes"
-  productize exec --agent council "Decide between two designs"
+  productize exec --agent reviewer "Review the staged changes"
   productize exec --prompt-file prompt.md
   cat prompt.md | productize exec --format json
   productize exec --format raw-json "Inspect every streamed event"

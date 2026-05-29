@@ -10,7 +10,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
 
@@ -32,16 +31,11 @@ var (
 // Target identifies one daemon transport endpoint.
 type Target struct {
 	SocketPath string
-	HTTPPort   int
 }
 
-// Validate ensures the target can be dialed over UDS or localhost HTTP.
+// Validate ensures the target can be dialed over the Unix domain socket.
 func (t Target) Validate() error {
-	socketPath := strings.TrimSpace(t.SocketPath)
-	if socketPath != "" {
-		return nil
-	}
-	if t.HTTPPort <= 0 || t.HTTPPort > 65535 {
+	if strings.TrimSpace(t.SocketPath) == "" {
 		return errors.New("daemon transport target is invalid")
 	}
 	return nil
@@ -53,13 +47,10 @@ func (t Target) String() string {
 	if socketPath != "" {
 		return "unix://" + socketPath
 	}
-	if t.HTTPPort > 0 {
-		return "http://127.0.0.1:" + strconv.Itoa(t.HTTPPort)
-	}
 	return "unknown"
 }
 
-// Client issues daemon API requests over UDS by default with localhost HTTP fallback.
+// Client issues daemon API requests over the daemon Unix domain socket.
 type Client struct {
 	target     Target
 	baseURL    string
@@ -93,27 +84,18 @@ func New(target Target) (*Client, error) {
 	}
 
 	socketPath := strings.TrimSpace(target.SocketPath)
-	if socketPath != "" {
-		transport := &http.Transport{
-			DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
-				var dialer net.Dialer
-				return dialer.DialContext(ctx, "unix", socketPath)
-			},
-		}
-		return &Client{
-			target:  target,
-			baseURL: "http://daemon",
-			httpClient: &http.Client{
-				Transport: transport,
-			},
-		}, nil
+	transport := &http.Transport{
+		DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+			var dialer net.Dialer
+			return dialer.DialContext(ctx, "unix", socketPath)
+		},
 	}
-
-	baseURL := "http://127.0.0.1:" + strconv.Itoa(target.HTTPPort)
 	return &Client{
-		target:     target,
-		baseURL:    baseURL,
-		httpClient: &http.Client{},
+		target:  target,
+		baseURL: "http://daemon",
+		httpClient: &http.Client{
+			Transport: transport,
+		},
 	}, nil
 }
 

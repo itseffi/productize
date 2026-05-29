@@ -84,7 +84,7 @@ Install flow: `productize ext install --yes itseffi/productize --remote github -
 - `--dry-run` -- generate prompts without running the IDE tool.
 - `--include-completed` -- re-process tasks already marked as completed.
 
-**Interactive mode:** In interactive terminals, `tasks run` attaches to the TUI by default; use `--ui`, `--stream`, `--detach`, or `--attach` to override that behavior.
+**Attach mode:** In interactive terminals, `tasks run` streams textual run observation by default; use `--stream`, `--detach`, or `--attach` to control whether the command follows the run or returns immediately.
 
 ## Phase 6: Review
 
@@ -134,9 +134,8 @@ Moves fully completed workflows from `.productize/tasks/<slug>/` to `.productize
 
 Execute a single prompt outside the pipeline workflow.
 
-- **Reusable agents:** `productize exec --agent council "Evaluate this design"` invokes a named agent.
+- **Reusable agents:** `productize exec --agent reviewer "Review the staged changes"` invokes a named agent.
 - **Persistence:** `--persist` saves session artifacts. Resume with `--run-id <id>`.
-- **TUI mode:** `--tui` opens an interactive terminal UI.
 - **Output formats:** `--format text` (default), `json` (lean JSONL), `raw-json` (full event stream).
 
 ## Workflow Memory

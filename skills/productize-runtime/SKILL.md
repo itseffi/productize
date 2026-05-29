@@ -1,6 +1,6 @@
 ---
 name: productize-runtime
-description: Explains Productize capabilities, CLI commands, core workflow skills, optional extension skills, configuration, artifact structure, reusable agents, and extensions. Use when the user asks how to use Productize, what commands are available, how the workflow pipeline works, or how to configure a workspace. Do not use for executing workflow steps — use the specific cy- skills instead.
+description: Explains Productize capabilities, CLI commands, core workflow skills, optional extension skills, configuration, artifact structure, reusable agents, and extensions. Use when the user asks how to use Productize, what commands are available, how the workflow pipeline works, or how to configure a workspace. Do not use for executing workflow steps — use the specific workflow skills (create-prd, create-techspec, create-tasks, execute-task, review-round, fix-reviews, final-verify, workflow-memory) instead.
 ---
 
 # Productize Reference Guide
@@ -73,8 +73,8 @@ For a detailed step-by-step walkthrough of each phase, read `references/workflow
 | **Workflow Execution** | | |
 | `productize daemon` | Manage the home-scoped daemon lifecycle | `start`, `status`, `stop` |
 | `productize workspaces` | Inspect and manage daemon workspace registrations | `list`, `show`, `register`, `unregister`, `resolve` |
-| `productize tasks run` | Execute PRD task files through the daemon | `--name`, `--attach`, `--ui`, `--stream`, `--detach`, `--task-runtime` |
-| `productize exec` | Execute an ad hoc prompt | `--agent`, `--format`, `--prompt-file`, `--tui`, `--persist`, `--run-id` |
+| `productize tasks run` | Execute PRD task files through the daemon | `--name`, `--attach`, `--stream`, `--detach`, `--task-runtime` |
+| `productize exec` | Execute an ad hoc prompt | `--agent`, `--format`, `--prompt-file`, `--persist`, `--run-id` |
 | `productize runs` | Attach, watch, and purge daemon-managed runs | `attach`, `watch`, `purge` |
 | **Review** | | |
 | `productize reviews fetch` | Fetch provider review comments | `--provider`, `--pr`, `--name`, `--round` |
@@ -199,7 +199,6 @@ nitpicks = false
 
 [exec]
 verbose = false
-tui = false
 persist = false
 ```
 

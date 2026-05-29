@@ -264,9 +264,8 @@ func TestManagedDaemonHelperProcess(t *testing.T) {
 		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 		defer stop()
 		if err := Run(ctx, RunOptions{
-			Version:  "managed-helper",
-			HTTPPort: EphemeralHTTPPort,
-			Mode:     RunModeForeground,
+			Version: "managed-helper",
+			Mode:    RunModeForeground,
 		}); err != nil {
 			t.Fatalf("Run(foreground) error = %v", err)
 		}
@@ -274,9 +273,8 @@ func TestManagedDaemonHelperProcess(t *testing.T) {
 	}
 
 	if err := Run(context.Background(), RunOptions{
-		Version:  "managed-helper",
-		HTTPPort: EphemeralHTTPPort,
-		Mode:     RunModeDetached,
+		Version: "managed-helper",
+		Mode:    RunModeDetached,
 	}); err != nil {
 		t.Fatalf("Run(detached) error = %v", err)
 	}
@@ -300,7 +298,6 @@ func TestManagedDaemonStopEndpointShutsDownAndRemovesSocket(t *testing.T) {
 
 			client, err := apiclient.New(apiclient.Target{
 				SocketPath: status.Info.SocketPath,
-				HTTPPort:   status.Info.HTTPPort,
 			})
 			if err != nil {
 				t.Fatalf("apiclient.New() error = %v", err)

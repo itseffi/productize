@@ -59,9 +59,9 @@ Execute PRD task files sequentially from a workflow directory through the shared
 | `--include-completed` | bool | false | Include tasks already marked as completed |
 | `--skip-validation` | bool | false | Skip task metadata preflight check |
 | `--force` | bool | false | Continue after validation fails in non-interactive mode |
-| `--attach` | string | auto | Attach mode: auto, ui, stream, detach |
-| `--ui` | bool | false | Force interactive TUI attach mode |
+| `--attach` | string | auto | Attach mode: auto, stream, detach |
 | `--stream` | bool | false | Force textual stream attach mode |
+| `--ui` | bool | false | Deprecated alias for `--stream` |
 | `--detach` | bool | false | Start the run without attaching a client |
 | `--task-runtime` | string[] | | Per-task runtime override rules |
 | + common flags | | | `--ide`, `--model`, `--reasoning-effort`, `--add-dir`, `--auto-commit`, `--dry-run` |
@@ -82,7 +82,7 @@ Execute a single ad hoc prompt through the ACP runtime. Provide prompt as argume
 | `--prompt-file` | string | | Path to a file containing the prompt text |
 | `--format` | string | text | Output format: text, json, raw-json |
 | `--verbose` | bool | false | Emit operational runtime logs to stderr |
-| `--tui` | bool | false | Open the interactive TUI |
+| `--tui` | bool | false | Deprecated; exec is headless (text or event output) |
 | `--persist` | bool | false | Save artifacts under `~/.productize/runs/<run-id>/` |
 | `--extensions` | bool | false | Enable executable extensions for this run |
 | `--run-id` | string | | Resume a previously persisted session |
@@ -90,7 +90,7 @@ Execute a single ad hoc prompt through the ACP runtime. Provide prompt as argume
 
 ```
 productize exec "Summarize the current repository changes"
-productize exec --agent council "Decide between two designs"
+productize exec --agent reviewer "Review the staged changes"
 productize exec --prompt-file prompt.md --format json
 cat prompt.md | productize exec
 productize exec --persist "Review the latest changes"
@@ -135,9 +135,9 @@ Process review issue files and dispatch agents to remediate feedback.
 | `--batch-size` | int | 1 | Number of file groups per batch |
 | `--include-resolved` | bool | false | Include already-resolved issues |
 | `--concurrent` | int | 1 | Number of batches to process in parallel |
-| `--attach` | string | auto | Attach mode: auto, ui, stream, detach |
-| `--ui` | bool | false | Force interactive TUI attach mode |
+| `--attach` | string | auto | Attach mode: auto, stream, detach |
 | `--stream` | bool | false | Force textual stream attach mode |
+| `--ui` | bool | false | Deprecated alias for `--stream` |
 | `--detach` | bool | false | Start the run without attaching a client |
 | + common flags | | | `--ide`, `--model`, `--reasoning-effort`, `--add-dir`, `--auto-commit`, `--dry-run` |
 

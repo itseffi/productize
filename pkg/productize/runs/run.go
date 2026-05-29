@@ -82,7 +82,6 @@ type daemonRunReader interface {
 
 type daemonInfoRecord struct {
 	SocketPath string `json:"socket_path,omitempty"`
-	HTTPPort   int    `json:"http_port,omitempty"`
 }
 
 type daemonRunPayload = apicore.Run
@@ -150,7 +149,6 @@ func newDefaultDaemonRunReader() (daemonRunReader, error) {
 func newDaemonClient(info daemonInfoRecord) (*apiclient.Client, error) {
 	return apiclient.New(apiclient.Target{
 		SocketPath: strings.TrimSpace(info.SocketPath),
-		HTTPPort:   info.HTTPPort,
 	})
 }
 

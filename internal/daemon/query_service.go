@@ -22,22 +22,15 @@ const dashboardRunLimit = 500
 const runStatusPending = "pending"
 const runStatusRetrying = "retrying"
 
-type daemonStatusReader interface {
-	Status(context.Context) (apicore.DaemonStatus, error)
-	Health(context.Context) (apicore.DaemonHealth, error)
-}
-
 // QueryServiceConfig wires the daemon read-model service.
 type QueryServiceConfig struct {
 	GlobalDB   *globaldb.GlobalDB
 	RunManager *RunManager
-	Daemon     daemonStatusReader
 }
 
 type queryService struct {
 	globalDB   *globaldb.GlobalDB
 	runManager *RunManager
-	daemon     daemonStatusReader
 	documents  *documentReader
 }
 
@@ -61,60 +54,8 @@ func NewQueryService(cfg QueryServiceConfig) QueryService {
 	return &queryService{
 		globalDB:   cfg.GlobalDB,
 		runManager: cfg.RunManager,
-		daemon:     cfg.Daemon,
 		documents:  newDocumentReader(),
 	}
-}
-
-func (s *queryService) Dashboard(ctx context.Context, workspaceRef string) (WorkspaceDashboard, error) {
-	workspace, err := s.resolveWorkspace(ctx, workspaceRef)
-	if err != nil {
-		return WorkspaceDashboard{}, err
-	}
-	if err := s.requireGlobalDB(); err != nil {
-		return WorkspaceDashboard{}, err
-	}
-
-	workflows, err := s.globalDB.ListWorkflows(ctx, globaldb.ListWorkflowsOptions{WorkspaceID: workspace.ID})
-	if err != nil {
-		return WorkspaceDashboard{}, err
-	}
-	runs, err := s.listRuns(ctx, workspace.ID, "", dashboardRunLimit)
-	if err != nil {
-		return WorkspaceDashboard{}, err
-	}
-	visibleRuns := dashboardVisibleRuns(runs)
-
-	cards := make([]WorkflowCard, 0, len(workflows))
-	pendingReviews := 0
-	for _, workflow := range workflows {
-		card, err := s.buildWorkflowCard(ctx, workflow, visibleRuns)
-		if err != nil {
-			return WorkspaceDashboard{}, err
-		}
-		if card.LatestReview != nil {
-			pendingReviews += card.LatestReview.UnresolvedCount
-		}
-		cards = append(cards, card)
-	}
-
-	status, health, err := s.readDaemonState(ctx)
-	if err != nil {
-		return WorkspaceDashboard{}, err
-	}
-
-	activeRuns := filterRuns(visibleRuns, func(run apicore.Run) bool {
-		return !isTerminalRunStatus(run.Status)
-	})
-	return WorkspaceDashboard{
-		Workspace:      transportWorkspace(workspace),
-		Daemon:         status,
-		Health:         health,
-		Queue:          summarizeRunQueue(visibleRuns),
-		Workflows:      cards,
-		ActiveRuns:     activeRuns,
-		PendingReviews: pendingReviews,
-	}, nil
 }
 
 func (s *queryService) WorkflowOverview(
@@ -624,51 +565,6 @@ func snapshotDocumentsByPrefix(
 	return docs, true, nil
 }
 
-func (s *queryService) buildWorkflowCard(
-	ctx context.Context,
-	workflow globaldb.Workflow,
-	runs []apicore.Run,
-) (WorkflowCard, error) {
-	taskRows, err := s.globalDB.ListTaskItems(ctx, workflow.ID)
-	if err != nil {
-		return WorkflowCard{}, err
-	}
-	taskCounts := summarizeTaskRows(taskRows)
-
-	var latestReview *apicore.ReviewSummary
-	rounds, err := s.globalDB.ListReviewRounds(ctx, workflow.ID)
-	if err != nil {
-		return WorkflowCard{}, err
-	}
-	if len(rounds) > 0 {
-		summary := transportReviewSummary(workflow.Slug, rounds[len(rounds)-1])
-		latestReview = &summary
-	}
-
-	activeRuns := 0
-	for i := range runs {
-		run := &runs[i]
-		if run.WorkflowSlug == workflow.Slug && !isTerminalRunStatus(run.Status) {
-			activeRuns++
-		}
-	}
-
-	summary := transportWorkflowSummaryWithTaskCounts(workflow, taskCounts)
-	if err := attachWorkflowArchiveEligibility(ctx, s.globalDB, workflow, &summary); err != nil {
-		return WorkflowCard{}, err
-	}
-
-	return WorkflowCard{
-		Workflow:         summary,
-		TaskTotal:        taskCounts.Total,
-		TaskCompleted:    taskCounts.Completed,
-		TaskPending:      taskCounts.Pending,
-		LatestReview:     latestReview,
-		ReviewRoundCount: len(rounds),
-		ActiveRuns:       activeRuns,
-	}, nil
-}
-
 func (s *queryService) taskCardsForWorkflow(
 	ctx context.Context,
 	workflowID string,
@@ -913,23 +809,6 @@ func (s *queryService) readRequiredWorkflowDocument(
 	return doc, nil
 }
 
-func (s *queryService) readDaemonState(
-	ctx context.Context,
-) (apicore.DaemonStatus, apicore.DaemonHealth, error) {
-	if s.daemon == nil {
-		return apicore.DaemonStatus{}, apicore.DaemonHealth{}, nil
-	}
-	status, err := s.daemon.Status(ctx)
-	if err != nil {
-		return apicore.DaemonStatus{}, apicore.DaemonHealth{}, err
-	}
-	health, err := s.daemon.Health(ctx)
-	if err != nil {
-		return apicore.DaemonStatus{}, apicore.DaemonHealth{}, err
-	}
-	return status, health, nil
-}
-
 func (s *queryService) requireGlobalDB() error {
 	if s == nil || s.globalDB == nil {
 		return errors.New("daemon: query service global database is required")
@@ -1142,64 +1021,6 @@ func laneTitle(status string) string {
 	default:
 		return titleCase(strings.ReplaceAll(status, "_", " "))
 	}
-}
-
-func summarizeRunQueue(runs []apicore.Run) DashboardQueueSummary {
-	summary := DashboardQueueSummary{Total: len(runs)}
-	for i := range runs {
-		run := &runs[i]
-		switch normalizeRunState(run.Status) {
-		case runStatusCompleted:
-			summary.Completed++
-		case runStatusFailed, runStatusCrashed:
-			summary.Failed++
-		case runStatusCancelled:
-			summary.Canceled++
-		default:
-			summary.Active++
-		}
-	}
-	return summary
-}
-
-func dashboardVisibleRuns(runs []apicore.Run) []apicore.Run {
-	if len(runs) == 0 {
-		return nil
-	}
-	byID := make(map[string]apicore.Run, len(runs))
-	for i := range runs {
-		run := runs[i]
-		runID := strings.TrimSpace(run.RunID)
-		if runID == "" {
-			continue
-		}
-		byID[runID] = run
-	}
-
-	visible := make([]apicore.Run, 0, len(runs))
-	for i := range runs {
-		run := runs[i]
-		if dashboardShouldHideChildRun(run, byID) {
-			continue
-		}
-		visible = append(visible, run)
-	}
-	return visible
-}
-
-func dashboardShouldHideChildRun(run apicore.Run, byID map[string]apicore.Run) bool {
-	parentRunID := strings.TrimSpace(run.ParentRunID)
-	if parentRunID == "" {
-		return false
-	}
-	parent, ok := byID[parentRunID]
-	if !ok {
-		return false
-	}
-	if !isTerminalRunStatus(parent.Status) {
-		return true
-	}
-	return isTerminalRunStatus(run.Status)
 }
 
 func filterRuns(runs []apicore.Run, keep func(apicore.Run) bool) []apicore.Run {

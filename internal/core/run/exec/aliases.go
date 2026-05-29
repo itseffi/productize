@@ -15,7 +15,6 @@ import (
 
 type config = runshared.Config
 type job = runshared.Job
-type uiSession = runshared.UISession
 type activityMonitor = runshared.ActivityMonitor
 type lineBuffer = runshared.LineBuffer
 type reusableAgentExecution = runshared.ReusableAgentExecution
@@ -35,15 +34,6 @@ func newConfig(src *model.RuntimeConfig, runArtifacts model.RunArtifacts) *confi
 
 func atLeastOne(value int) int {
 	return runshared.AtLeastOne(value)
-}
-
-func setupUI(
-	_ context.Context,
-	_ []job,
-	_ *config,
-	_ bool,
-) uiSession {
-	return nil
 }
 
 func notifyJobStart(

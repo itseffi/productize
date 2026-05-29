@@ -160,7 +160,6 @@ func (b cliDaemonBootstrap) probe(ctx context.Context, infoPath string) (daemonC
 
 	client, err := b.newClient(apiclient.Target{
 		SocketPath: strings.TrimSpace(info.SocketPath),
-		HTTPPort:   info.HTTPPort,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("build daemon client: %w", err)
@@ -204,9 +203,6 @@ func resolveLaunchCLIDaemonExecutable() (string, error) {
 func launchCLIDaemonProcessWithExecutable(paths productizeconfig.HomePaths, executable string) error {
 	if err := productizeconfig.EnsureHomeLayout(paths); err != nil {
 		return err
-	}
-	if _, err := cliDaemonHTTPPortFromEnv(); err != nil {
-		return fmt.Errorf("resolve daemon http port: %w", err)
 	}
 
 	if err := daemonlogger.ValidateDaemonFilePath(paths.LogFile); err != nil {

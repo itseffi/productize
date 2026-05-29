@@ -145,56 +145,6 @@ func transportArchiveResult(result *corepkg.ArchiveResult) apicore.ArchiveResult
 	return out
 }
 
-func transportDashboard(payload WorkspaceDashboard) apicore.DashboardPayload {
-	return apicore.DashboardPayload{
-		Workspace:      payload.Workspace,
-		Daemon:         payload.Daemon,
-		Health:         payload.Health,
-		Queue:          transportDashboardQueue(payload.Queue),
-		Workflows:      transportWorkflowCards(payload.Workflows),
-		ActiveRuns:     append([]apicore.Run(nil), payload.ActiveRuns...),
-		PendingReviews: payload.PendingReviews,
-	}
-}
-
-func transportDashboardQueue(summary DashboardQueueSummary) apicore.DashboardQueueSummary {
-	return apicore.DashboardQueueSummary{
-		Total:     summary.Total,
-		Active:    summary.Active,
-		Completed: summary.Completed,
-		Failed:    summary.Failed,
-		Canceled:  summary.Canceled,
-	}
-}
-
-func transportWorkflowCards(cards []WorkflowCard) []apicore.WorkflowCard {
-	if len(cards) == 0 {
-		return nil
-	}
-	out := make([]apicore.WorkflowCard, 0, len(cards))
-	for i := range cards {
-		out = append(out, transportWorkflowCard(cards[i]))
-	}
-	return out
-}
-
-func transportWorkflowCard(card WorkflowCard) apicore.WorkflowCard {
-	var latestReview *apicore.ReviewSummary
-	if card.LatestReview != nil {
-		copyValue := *card.LatestReview
-		latestReview = &copyValue
-	}
-	return apicore.WorkflowCard{
-		Workflow:         card.Workflow,
-		TaskTotal:        card.TaskTotal,
-		TaskCompleted:    card.TaskCompleted,
-		TaskPending:      card.TaskPending,
-		LatestReview:     latestReview,
-		ReviewRoundCount: card.ReviewRoundCount,
-		ActiveRuns:       card.ActiveRuns,
-	}
-}
-
 func transportWorkflowOverview(payload WorkflowOverviewPayload) apicore.WorkflowOverviewPayload {
 	var latestReview *apicore.ReviewSummary
 	if payload.LatestReview != nil {
@@ -529,7 +479,6 @@ func marshalTransportMetadata(metadata map[string]any) json.RawMessage {
 func resolveTransportQueryService(
 	globalDB *globaldb.GlobalDB,
 	runManager *RunManager,
-	daemon daemonStatusReader,
 	provided []QueryService,
 ) QueryService {
 	for _, candidate := range provided {
@@ -537,13 +486,12 @@ func resolveTransportQueryService(
 			return candidate
 		}
 	}
-	if globalDB == nil && runManager == nil && daemon == nil {
+	if globalDB == nil && runManager == nil {
 		return nil
 	}
 	return NewQueryService(QueryServiceConfig{
 		GlobalDB:   globalDB,
 		RunManager: runManager,
-		Daemon:     daemon,
 	})
 }
 

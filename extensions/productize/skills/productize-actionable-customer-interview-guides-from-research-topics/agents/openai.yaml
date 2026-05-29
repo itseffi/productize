@@ -1,8 +1,0 @@
-interface:
-  display_name: "Actionable customer interview guides from research topics"
-  short_description: "Actionable customer interview guides from research topics. Use when the user needs a product workflow for user..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-actionable-customer-interview-guides-from-research-topics with my product context."
-
-policy:
-  allow_implicit_invocation: true

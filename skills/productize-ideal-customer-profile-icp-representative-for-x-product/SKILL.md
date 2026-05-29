@@ -145,6 +145,6 @@ FAILURE
 - Claims are generic or not grounded in provided inputs.
 - Assumptions are used but not explicitly stated.
 
-## PM Skills Main Merge
+## Extended Reference
 
-Load `references/pm-skills-main-merge.md` when the request mentions `ideal customer profile`, `icp`, `pmf survey`, `best customers`. Use the PM source material to sharpen this existing Productize skill rather than routing to a duplicate skill.
+Load `references/extended-reference.md` when the request mentions `ideal customer profile`, `icp`, `pmf survey`, `best customers`. Use this reference material to sharpen this Productize skill.

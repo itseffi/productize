@@ -154,7 +154,7 @@ This skill. Explains Productize capabilities, CLI commands, core workflow skills
 - **Outputs:** Reference information presented to the agent.
 - **Pipeline position:** Standalone reference, not part of the pipeline.
 - **Use when:** The user asks how to use Productize, what commands are available, or how the workflow works.
-- **Do not use for:** Executing any workflow step. Use the specific `cy-` skills instead.
+- **Do not use for:** Executing any workflow step. Use the specific workflow skills (`create-prd`, `create-techspec`, `create-tasks`, `execute-task`, `review-round`, `fix-reviews`, `final-verify`, `workflow-memory`) instead.
 
 ---
 
@@ -162,7 +162,7 @@ This skill. Explains Productize capabilities, CLI commands, core workflow skills
 
 Productize skills are bundled on top of the Productize workflow skills. They keep
 their namespaced triggers so they do not replace or collide with Productize's
-`cy-*` workflow commands.
+core workflow skills.
 
 - **Router:** `/productize`
 - **0-1 build loop:** `/productize-0-1`

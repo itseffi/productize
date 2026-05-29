@@ -36,7 +36,7 @@ func newTransportReviewService(
 	return &transportReviewService{
 		globalDB:   globalDB,
 		runManager: runManager,
-		query:      resolveTransportQueryService(globalDB, runManager, nil, query),
+		query:      resolveTransportQueryService(globalDB, runManager, query),
 	}
 }
 

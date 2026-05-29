@@ -170,7 +170,7 @@ func (r *jobRunner) executeAttempt(ctx context.Context, timeout time.Duration) j
 		r.execCtx.cfg,
 		r.job,
 		r.execCtx.cwd,
-		r.execCtx.ui != nil,
+		false,
 		r.index,
 		timeout,
 		r.execCtx.journal,
@@ -193,9 +193,6 @@ func (r *jobRunner) nextTimeout(current time.Duration) time.Duration {
 }
 
 func (r *jobRunner) logRetry(attempt int, maxAttempts int, timeout time.Duration) {
-	if r.execCtx.ui != nil {
-		return
-	}
 	if !r.execCtx.cfg.HumanOutputEnabled() {
 		return
 	}

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Backend Design"
-  short_description: "Design backend architecture for implementation with API contracts, data model changes, service boundaries, security,..."
-  brand_color: "#334155"
-  default_prompt: "Use $productize-backend-design with my product context."
-
-policy:
-  allow_implicit_invocation: true

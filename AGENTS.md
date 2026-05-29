@@ -32,7 +32,7 @@ Productize is a Go module and CLI that drives the full lifecycle of AI-assisted 
 | ----------------------------- | -------------------------------------------------------------------------- |
 | `cmd/productize`                 | Standalone CLI entry point                                                 |
 | `productize.go`                  | Public Go API — `NewCommand()` embeds the CLI as a Cobra subcommand        |
-| `agents`                      | Bundled advisors agent definitions (embedded via `embed.go`)                |
+| `agents`                      | Reusable-agent bundle root (README only; advisor agents ship in the `idea-forge` extension) |
 | `internal/cli`                | Cobra flags, interactive form collection, CLI glue                         |
 | `internal/core`               | Internal facade for reusable preparation and execution                     |
 | `internal/core/agent`         | IDE command validation and process command construction                    |

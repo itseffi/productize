@@ -13,7 +13,6 @@ import (
 
 // QueryService exposes the daemon-side read-model assembly required by the web UI.
 type QueryService interface {
-	Dashboard(ctx context.Context, workspaceRef string) (WorkspaceDashboard, error)
 	WorkflowOverview(ctx context.Context, workspaceRef string, workflowSlug string) (WorkflowOverviewPayload, error)
 	TaskBoard(ctx context.Context, workspaceRef string, workflowSlug string) (TaskBoardPayload, error)
 	WorkflowSpec(ctx context.Context, workspaceRef string, workflowSlug string) (WorkflowSpecDocument, error)
@@ -33,37 +32,6 @@ type QueryService interface {
 		issueRef string,
 	) (ReviewDetailPayload, error)
 	RunDetail(ctx context.Context, runID string) (RunDetailPayload, error)
-}
-
-// WorkspaceDashboard is the daemon-side dashboard aggregate payload.
-type WorkspaceDashboard struct {
-	Workspace      apicore.Workspace
-	Daemon         apicore.DaemonStatus
-	Health         apicore.DaemonHealth
-	Queue          DashboardQueueSummary
-	Workflows      []WorkflowCard
-	ActiveRuns     []apicore.Run
-	PendingReviews int
-}
-
-// DashboardQueueSummary summarizes the workspace run queue state.
-type DashboardQueueSummary struct {
-	Total     int
-	Active    int
-	Completed int
-	Failed    int
-	Canceled  int
-}
-
-// WorkflowCard is the dashboard-friendly workflow summary.
-type WorkflowCard struct {
-	Workflow         apicore.WorkflowSummary
-	TaskTotal        int
-	TaskCompleted    int
-	TaskPending      int
-	LatestReview     *apicore.ReviewSummary
-	ReviewRoundCount int
-	ActiveRuns       int
 }
 
 // WorkflowOverviewPayload is the daemon-side workflow summary aggregate.

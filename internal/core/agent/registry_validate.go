@@ -126,11 +126,6 @@ func validateRuntimePromptSource(cfg *model.RuntimeConfig) error {
 }
 
 func validateRuntimeExecMode(cfg *model.RuntimeConfig) error {
-	format := cfg.OutputFormat
-	if format == "" {
-		format = model.OutputFormatText
-	}
-
 	if cfg.Mode != model.ExecutionModeExec {
 		switch {
 		case cfg.Persist:
@@ -138,9 +133,6 @@ func validateRuntimeExecMode(cfg *model.RuntimeConfig) error {
 		case strings.TrimSpace(cfg.RunID) != "":
 			return errors.New("run-id is only supported for exec mode")
 		}
-	}
-	if (format == model.OutputFormatJSON || format == model.OutputFormatRawJSON) && cfg.TUI {
-		return errors.New("tui mode is not supported with json or raw-json output")
 	}
 	return nil
 }

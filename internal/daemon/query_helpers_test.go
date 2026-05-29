@@ -12,27 +12,6 @@ import (
 	"github.com/itseffi/productize/internal/store/globaldb"
 )
 
-type erringDaemonStatusReader struct {
-	status    apicore.DaemonStatus
-	health    apicore.DaemonHealth
-	statusErr error
-	healthErr error
-}
-
-func (s erringDaemonStatusReader) Status(context.Context) (apicore.DaemonStatus, error) {
-	if s.statusErr != nil {
-		return apicore.DaemonStatus{}, s.statusErr
-	}
-	return s.status, nil
-}
-
-func (s erringDaemonStatusReader) Health(context.Context) (apicore.DaemonHealth, error) {
-	if s.healthErr != nil {
-		return apicore.DaemonHealth{}, s.healthErr
-	}
-	return s.health, nil
-}
-
 func TestQueryHelperErrorsAndDocumentTitles(t *testing.T) {
 	t.Parallel()
 
@@ -333,44 +312,6 @@ func TestQueryServiceReadHelpersHandleOptionalAndErrorBranches(t *testing.T) {
 			"task_missing",
 		); err != nil || ok || doc.ID != "" || doc.Kind != "" || doc.Markdown != "" {
 			t.Fatalf("readWorkflowDocument(missing) = %#v, %v, %v; want zero-like doc, false, nil", doc, ok, err)
-		}
-	})
-
-	t.Run("Should return zero daemon state when no daemon reader is configured", func(t *testing.T) {
-		t.Parallel()
-
-		_, service := newService(t)
-		status, health, err := service.readDaemonState(context.Background())
-		if err != nil {
-			t.Fatalf("readDaemonState(nil daemon) error = %v", err)
-		}
-		if status != (apicore.DaemonStatus{}) || health.Ready || health.Degraded || len(health.Details) != 0 {
-			t.Fatalf("readDaemonState(nil daemon) = %#v %#v, want zero values", status, health)
-		}
-	})
-
-	t.Run("Should propagate daemon status errors", func(t *testing.T) {
-		t.Parallel()
-
-		_, service := newService(t)
-		statusErr := errors.New("status failed")
-		service.daemon = erringDaemonStatusReader{statusErr: statusErr}
-		if _, _, err := service.readDaemonState(context.Background()); !errors.Is(err, statusErr) {
-			t.Fatalf("readDaemonState(status error) = %v, want %v", err, statusErr)
-		}
-	})
-
-	t.Run("Should propagate daemon health errors after reading status", func(t *testing.T) {
-		t.Parallel()
-
-		_, service := newService(t)
-		healthErr := errors.New("health failed")
-		service.daemon = erringDaemonStatusReader{
-			status:    apicore.DaemonStatus{PID: 7},
-			healthErr: healthErr,
-		}
-		if _, _, err := service.readDaemonState(context.Background()); !errors.Is(err, healthErr) {
-			t.Fatalf("readDaemonState(health error) = %v, want %v", err, healthErr)
 		}
 	})
 

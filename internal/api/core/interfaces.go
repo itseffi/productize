@@ -57,7 +57,6 @@ type WorkspaceEventService interface {
 
 // TaskService exposes workflow summary, rich read-model, validation, and run-start surfaces.
 type TaskService interface {
-	Dashboard(context.Context, string) (DashboardPayload, error)
 	ListWorkflows(context.Context, string) ([]WorkflowSummary, error)
 	GetWorkflow(context.Context, string, string) (WorkflowSummary, error)
 	WorkflowOverview(context.Context, string, string) (WorkflowOverviewPayload, error)
@@ -186,37 +185,6 @@ type TaskItem = contract.TaskItem
 type ValidationSuccess = contract.ValidationSuccess
 type ArchiveRequest = contract.WorkflowArchiveRequest
 type ArchiveResult = contract.ArchiveResult
-
-// DashboardPayload is the workspace-scoped dashboard aggregate for the daemon web UI.
-type DashboardPayload struct {
-	Workspace      Workspace             `json:"workspace"`
-	Daemon         DaemonStatus          `json:"daemon"`
-	Health         DaemonHealth          `json:"health"`
-	Queue          DashboardQueueSummary `json:"queue"`
-	Workflows      []WorkflowCard        `json:"workflows,omitempty"`
-	ActiveRuns     []Run                 `json:"active_runs,omitempty"`
-	PendingReviews int                   `json:"pending_reviews"`
-}
-
-// DashboardQueueSummary captures the current run queue health for one workspace.
-type DashboardQueueSummary struct {
-	Total     int `json:"total"`
-	Active    int `json:"active"`
-	Completed int `json:"completed"`
-	Failed    int `json:"failed"`
-	Canceled  int `json:"canceled"`
-}
-
-// WorkflowCard is the dashboard-friendly workflow summary card.
-type WorkflowCard struct {
-	Workflow         WorkflowSummary `json:"workflow"`
-	TaskTotal        int             `json:"task_total"`
-	TaskCompleted    int             `json:"task_completed"`
-	TaskPending      int             `json:"task_pending"`
-	LatestReview     *ReviewSummary  `json:"latest_review,omitempty"`
-	ReviewRoundCount int             `json:"review_round_count"`
-	ActiveRuns       int             `json:"active_runs"`
-}
 
 // WorkflowOverviewPayload is the richer workflow summary aggregate used by browser reads.
 type WorkflowOverviewPayload struct {

@@ -17,12 +17,6 @@ const (
 	ReadyStateStarting ReadyState = "starting"
 	ReadyStateReady    ReadyState = "ready"
 	ReadyStateStopped  ReadyState = "stopped"
-
-	// DefaultHTTPPort is the daemon's default localhost HTTP transport port.
-	DefaultHTTPPort = 2323
-	// EphemeralHTTPPort requests an OS-assigned localhost HTTP port during startup.
-	// The effective port is persisted after the listener binds.
-	EphemeralHTTPPort = -1
 )
 
 // Info is the persisted daemon discovery record written to daemon.json.
@@ -30,7 +24,6 @@ type Info struct {
 	PID        int        `json:"pid"`
 	Version    string     `json:"version,omitempty"`
 	SocketPath string     `json:"socket_path,omitempty"`
-	HTTPPort   int        `json:"http_port,omitempty"`
 	StartedAt  time.Time  `json:"started_at"`
 	State      ReadyState `json:"state"`
 }
@@ -40,8 +33,6 @@ func (i Info) Validate() error {
 	switch {
 	case i.PID <= 0:
 		return fmt.Errorf("daemon: daemon pid must be positive: %d", i.PID)
-	case i.HTTPPort < 0 || i.HTTPPort > 65535:
-		return fmt.Errorf("daemon: daemon http port must be between 0 and 65535: %d", i.HTTPPort)
 	case i.StartedAt.IsZero():
 		return errors.New("daemon: daemon start time is required")
 	case i.State == "":

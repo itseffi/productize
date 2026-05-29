@@ -64,7 +64,7 @@ func (l *jobLifecycle) startAttempt(attempt int, maxAttempts int, timeout time.D
 			},
 		)
 		notifyJobStart(
-			cfg != nil && cfg.HumanOutputEnabled() && l.execCtx.ui == nil,
+			cfg != nil && cfg.HumanOutputEnabled(),
 			l.job,
 			l.configIDE(),
 			l.configModel(),
@@ -283,7 +283,7 @@ func refreshTaskMetaOnExit(cfg *config) {
 
 	meta, err := tasks.SnapshotTaskMeta(cfg.TasksDir)
 	if err != nil {
-		runtimeLoggerFor(cfg, cfg != nil && cfg.UIEnabled()).Warn(
+		runtimeLoggerFor(cfg).Warn(
 			"failed to refresh task workflow summary at command exit",
 			"tasks_dir",
 			cfg.TasksDir,
@@ -293,7 +293,7 @@ func refreshTaskMetaOnExit(cfg *config) {
 		return
 	}
 
-	runtimeLoggerFor(cfg, cfg != nil && cfg.UIEnabled()).Info(
+	runtimeLoggerFor(cfg).Info(
 		"refreshed task workflow summary at command exit",
 		"tasks_dir",
 		cfg.TasksDir,

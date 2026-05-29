@@ -117,7 +117,6 @@ type Config struct {
 	Mode                       Mode
 	OutputFormat               OutputFormat
 	Verbose                    bool
-	TUI                        bool
 	Persist                    bool
 	EnableExecutableExtensions bool
 	RunID                      string
@@ -360,7 +359,6 @@ func (cfg Config) RuntimeConfig() *model.RuntimeConfig {
 		Mode:                       model.ExecutionMode(cfg.Mode),
 		OutputFormat:               model.OutputFormat(cfg.OutputFormat),
 		Verbose:                    cfg.Verbose,
-		TUI:                        cfg.TUI,
 		Persist:                    cfg.Persist,
 		EnableExecutableExtensions: cfg.EnableExecutableExtensions,
 		RunID:                      cfg.RunID,

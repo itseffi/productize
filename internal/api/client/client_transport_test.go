@@ -35,12 +35,9 @@ func TestTargetAndClientTransportHelpers(t *testing.T) {
 			t.Fatalf("socket target String() = %q, want unix:///tmp/productize.sock", got)
 		}
 
-		httpTarget := Target{HTTPPort: 4317}
-		if err := httpTarget.Validate(); err != nil {
-			t.Fatalf("http target Validate() error = %v", err)
-		}
-		if got := httpTarget.String(); got != "http://127.0.0.1:4317" {
-			t.Fatalf("http target String() = %q, want http://127.0.0.1:4317", got)
+		emptyTarget := Target{}
+		if err := emptyTarget.Validate(); err == nil {
+			t.Fatal("empty target Validate() = nil, want invalid-target error")
 		}
 
 		socketClient, err := New(socketTarget)
@@ -55,15 +52,8 @@ func TestTargetAndClientTransportHelpers(t *testing.T) {
 			t.Fatalf("socket client Target() = %#v, want %#v", got, socketTarget)
 		}
 
-		httpClient, err := New(httpTarget)
-		if err != nil {
-			t.Fatalf("New(http target) error = %v", err)
-		}
-		if httpClient.baseURL != "http://127.0.0.1:4317" || httpClient.httpClient == nil {
-			t.Fatalf("http client = %#v, want localhost base URL", httpClient)
-		}
-		if got := httpClient.Target(); got != httpTarget {
-			t.Fatalf("http client Target() = %#v, want %#v", got, httpTarget)
+		if _, err := New(emptyTarget); err == nil {
+			t.Fatal("New(empty target) = nil error, want invalid-target error")
 		}
 
 		var nilClient *Client
@@ -307,7 +297,6 @@ func TestClientOperatorRequestsUseCanonicalContract(t *testing.T) {
 					return jsonStructResponse(t, http.StatusOK, contract.DaemonStatusResponse{
 						Daemon: contract.DaemonStatus{
 							PID:            42,
-							HTTPPort:       4317,
 							WorkspaceCount: 1,
 							StartedAt:      now,
 						},
@@ -409,7 +398,7 @@ func TestClientOperatorRequestsUseCanonicalContract(t *testing.T) {
 	if err != nil {
 		t.Fatalf("DaemonStatus() error = %v", err)
 	}
-	if status.PID != 42 || status.HTTPPort != 4317 || status.WorkspaceCount != 1 {
+	if status.PID != 42 || status.WorkspaceCount != 1 {
 		t.Fatalf("DaemonStatus() = %#v, want canonical daemon status", status)
 	}
 

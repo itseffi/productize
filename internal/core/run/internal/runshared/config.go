@@ -29,7 +29,6 @@ type Config struct {
 	Mode                   model.ExecutionMode
 	OutputFormat           model.OutputFormat
 	Verbose                bool
-	TUI                    bool
 	Persist                bool
 	DaemonOwned            bool
 	DetachOnly             bool
@@ -87,10 +86,6 @@ func (cfg *Config) HumanOutputEnabled() bool {
 	return cfg != nil && !cfg.DaemonOwned && cfg.ResolvedOutputFormat() == model.OutputFormatText
 }
 
-func (cfg *Config) UIEnabled() bool {
-	return false
-}
-
 func (cfg *Config) EventStreamEnabled() bool {
 	if cfg == nil {
 		return false
@@ -132,7 +127,6 @@ func NewConfig(src *model.RuntimeConfig, runArtifacts model.RunArtifacts) *Confi
 		Mode:                   src.Mode,
 		OutputFormat:           src.OutputFormat,
 		Verbose:                src.Verbose,
-		TUI:                    src.TUI,
 		Persist:                src.Persist,
 		DaemonOwned:            src.DaemonOwned,
 		DetachOnly:             false,

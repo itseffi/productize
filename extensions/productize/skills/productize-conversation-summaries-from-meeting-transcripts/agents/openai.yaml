@@ -1,8 +1,0 @@
-interface:
-  display_name: "Conversation summaries from meeting transcripts"
-  short_description: "Conversation summaries from meeting transcripts. Use when the user needs a product workflow for project management..."
-  brand_color: "#7C3AED"
-  default_prompt: "Use $productize-conversation-summaries-from-meeting-transcripts with my product context."
-
-policy:
-  allow_implicit_invocation: true

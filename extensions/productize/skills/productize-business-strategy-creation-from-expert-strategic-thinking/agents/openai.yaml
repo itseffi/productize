@@ -1,8 +1,0 @@
-interface:
-  display_name: "Business strategy creation from expert strategic thinking"
-  short_description: "Business strategy creation from expert strategic thinking. Use when the user needs a product workflow for product..."
-  brand_color: "#059669"
-  default_prompt: "Use $productize-business-strategy-creation-from-expert-strategic-thinking with my product context."
-
-policy:
-  allow_implicit_invocation: true

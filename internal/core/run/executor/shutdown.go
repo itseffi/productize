@@ -53,7 +53,6 @@ func executeJobsWithGracefulShutdown(
 		total := len(jobs)
 		return 0, []failInfo{{Err: err}}, total, nil
 	}
-	defer execCtx.cleanup()
 
 	jobCtx, cancelJobs := context.WithCancelCause(ctx)
 	controller := &executorController{
@@ -63,9 +62,6 @@ func executeJobsWithGracefulShutdown(
 		cancelJobs:       cancelJobs,
 		shutdownRequests: make(chan shutdownRequest, 4),
 		onNormalDone:     onNormalDone,
-	}
-	if execCtx.ui != nil {
-		execCtx.ui.SetQuitHandler(controller.requestShutdown)
 	}
 	execCtx.launchWorkers(jobCtx)
 	controller.done = execCtx.waitChannel()
@@ -117,10 +113,6 @@ func (c *executorController) handleDone(shutdownTimer *time.Timer) (int32, []fai
 				return c.result(err)
 			}
 		}
-		if err := c.execCtx.awaitUIAfterCompletion(); err != nil {
-			c.state = executorStateTerminated
-			return c.result(err)
-		}
 		c.execCtx.reportAggregateUsage()
 		c.state = executorStateTerminated
 		return c.result(nil)
@@ -131,10 +123,6 @@ func (c *executorController) handleDone(shutdownTimer *time.Timer) (int32, []fai
 	)
 	forced := c.state == executorStateForcing
 	c.state = executorStateShutdown
-	if err := c.execCtx.shutdownUI(); err != nil {
-		c.state = executorStateTerminated
-		return c.result(err)
-	}
 	c.execCtx.reportAggregateUsage()
 	c.execCtx.emitShutdownTerminated(c.shutdownState, forced)
 	c.state = executorStateTerminated
@@ -158,18 +146,10 @@ func (c *executorController) emitShutdownFallback(format string, args ...any) {
 	if c == nil || c.execCtx == nil || c.execCtx.cfg == nil {
 		return
 	}
-	if !c.execCtx.cfg.HumanOutputEnabled() || c.execCtx.ui != nil {
+	if !c.execCtx.cfg.HumanOutputEnabled() {
 		return
 	}
 	fmt.Fprintf(os.Stderr, format, args...)
-}
-
-func (c *executorController) requestShutdown(req uiQuitRequest) {
-	force := req == uiQuitRequestForce
-	select {
-	case c.shutdownRequests <- shutdownRequest{force: force, source: shutdownSourceUI}:
-	default:
-	}
 }
 
 func (c *executorController) beginDrain(source shutdownSource) bool {

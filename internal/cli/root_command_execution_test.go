@@ -791,40 +791,6 @@ func TestExecCommandExecuteRawJSONMissingPromptEmitsFailureJSON(t *testing.T) {
 	}
 }
 
-func TestExecCommandExecuteJSONValidationFailureEmitsFailureJSON(t *testing.T) {
-	workspaceRoot := t.TempDir()
-	writeCLIWorkspaceConfig(t, workspaceRoot, "")
-	withWorkingDir(t, workspaceRoot)
-
-	stdout, stderr, err := executeDaemonBackedRootCommandCapturingProcessIO(
-		t,
-		nil,
-		"exec",
-		"--format",
-		"json",
-		"--tui",
-		"Prompt for validation failure",
-	)
-	if err == nil {
-		t.Fatalf("expected exec json validation failure\nstdout:\n%s\nstderr:\n%s", stdout, stderr)
-	}
-	if stderr != "" {
-		t.Fatalf("expected json exec validation failure to suppress stderr, got %q", stderr)
-	}
-
-	events := decodeExecJSONLEvents(t, stdout)
-	if len(events) != 1 {
-		t.Fatalf("expected one json validation failure event, got %d\nstdout:\n%s", len(events), stdout)
-	}
-	if events[0]["type"] != "run.failed" {
-		t.Fatalf("unexpected validation failure event: %#v", events[0])
-	}
-	errorMessage, _ := events[0]["error"].(string)
-	if !strings.Contains(errorMessage, "tui mode is not supported with json or raw-json output") {
-		t.Fatalf("unexpected validation error message: %#v", events[0])
-	}
-}
-
 func TestExecCommandExecuteStdinWorksEndToEnd(t *testing.T) {
 	workspaceRoot := t.TempDir()
 	writeCLIWorkspaceConfig(t, workspaceRoot, "")

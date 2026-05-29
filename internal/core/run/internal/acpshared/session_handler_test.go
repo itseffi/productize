@@ -222,8 +222,10 @@ func TestSessionUpdateHandlerMergesTranscriptAndCarriesSessionState(t *testing.T
 			Status: model.StatusRunning,
 		},
 		{
-			Kind:   model.UpdateKindAgentMessageChunk,
-			Blocks: []model.ContentBlock{mustContentBlockLoggingTest(t, model.TextBlock{Text: "Goal is fix the TUI"})},
+			Kind: model.UpdateKindAgentMessageChunk,
+			Blocks: []model.ContentBlock{
+				mustContentBlockLoggingTest(t, model.TextBlock{Text: "Goal is fix the parser"}),
+			},
 			Status: model.StatusRunning,
 		},
 		{
@@ -263,7 +265,7 @@ func TestSessionUpdateHandlerMergesTranscriptAndCarriesSessionState(t *testing.T
 	if err != nil {
 		t.Fatalf("decode merged text block: %v", err)
 	}
-	if want := "Ledger Snapshot: Goal is fix the TUI"; textBlock.Text != want {
+	if want := "Ledger Snapshot: Goal is fix the parser"; textBlock.Text != want {
 		t.Fatalf("unexpected merged transcript text: got %q want %q", textBlock.Text, want)
 	}
 	if snapshot.Plan.RunningCount != 1 {

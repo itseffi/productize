@@ -130,7 +130,6 @@ func (s *commandState) applyProjectConfig(cmd *cobra.Command, cfg workspace.Proj
 	case commandKindTasksRun:
 		applyConfig(cmd, "attach", cfg.Runs.DefaultAttachMode, func(val string) { s.attachMode = val })
 		applyConfig(cmd, "format", cfg.Tasks.Run.OutputFormat, func(val string) { s.outputFormat = val })
-		applyConfig(cmd, "tui", cfg.Tasks.Run.TUI, func(val bool) { s.tui = val })
 		s.configuredTaskRuntimeRules = model.CloneTaskRuntimeRules(
 			derefTaskRuntimeRulesConfig(cfg.Tasks.Run.TaskRuntimeRules),
 		)
@@ -142,7 +141,6 @@ func (s *commandState) applyProjectConfig(cmd *cobra.Command, cfg workspace.Proj
 		)
 	case commandKindFixReviews:
 		applyConfig(cmd, "format", cfg.FixReviews.OutputFormat, func(val string) { s.outputFormat = val })
-		applyConfig(cmd, "tui", cfg.FixReviews.TUI, func(val bool) { s.tui = val })
 		applyConfig(cmd, "concurrent", cfg.FixReviews.Concurrent, func(val int) { s.concurrent = val })
 		applyConfig(cmd, "batch-size", cfg.FixReviews.BatchSize, func(val int) { s.batchSize = val })
 		applyConfig(
@@ -163,7 +161,6 @@ func (s *commandState) applyProjectConfig(cmd *cobra.Command, cfg workspace.Proj
 		applyConfig(cmd, "model", cfg.Exec.Model, func(val string) { s.model = val })
 		applyConfig(cmd, "format", cfg.Exec.OutputFormat, func(val string) { s.outputFormat = val })
 		applyConfig(cmd, "verbose", cfg.Exec.Verbose, func(val bool) { s.verbose = val })
-		applyConfig(cmd, "tui", cfg.Exec.TUI, func(val bool) { s.tui = val })
 		applyConfig(cmd, "persist", cfg.Exec.Persist, func(val bool) { s.persist = val })
 		applyConfig(cmd, "reasoning-effort", cfg.Exec.ReasoningEffort, func(val string) {
 			s.reasoningEffort = val

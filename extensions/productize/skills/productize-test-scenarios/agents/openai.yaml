@@ -1,8 +1,0 @@
-interface:
-  display_name: "Test Scenarios"
-  short_description: "Test Scenarios. Use when creating test scenarios from user stories, feature specs, PRDs, acceptance criteria, or..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $productize-test-scenarios with my product context."
-
-policy:
-  allow_implicit_invocation: true

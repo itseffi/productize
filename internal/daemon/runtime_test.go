@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/itseffi/productize/internal/api/httpapi"
 	"github.com/itseffi/productize/internal/api/udsapi"
 	"github.com/itseffi/productize/internal/core/model"
 	"github.com/itseffi/productize/internal/core/run/journal"
@@ -42,13 +41,11 @@ func (c *capturingRunScope) Close(ctx context.Context) error {
 
 func TestCloseHostRuntimeUsesBoundedContexts(t *testing.T) {
 	originalShutdownRunManager := shutdownRunManager
-	originalShutdownHTTPServer := shutdownHTTPServer
 	originalShutdownUDSServer := shutdownUDSServer
 	originalCloseHostGlobalDB := closeHostGlobalDB
 	originalCloseDaemonHost := closeDaemonHost
 	t.Cleanup(func() {
 		shutdownRunManager = originalShutdownRunManager
-		shutdownHTTPServer = originalShutdownHTTPServer
 		shutdownUDSServer = originalShutdownUDSServer
 		closeHostGlobalDB = originalCloseHostGlobalDB
 		closeDaemonHost = originalCloseDaemonHost
@@ -60,7 +57,6 @@ func TestCloseHostRuntimeUsesBoundedContexts(t *testing.T) {
 		return nil
 	}
 	shutdownRunManager = func(ctx context.Context, _ *RunManager) error { return record(ctx) }
-	shutdownHTTPServer = func(ctx context.Context, _ *httpapi.Server) error { return record(ctx) }
 	shutdownUDSServer = func(ctx context.Context, _ *udsapi.Server) error { return record(ctx) }
 	closeHostGlobalDB = func(ctx context.Context, _ *globaldb.GlobalDB) error { return record(ctx) }
 	closeDaemonHost = func(ctx context.Context, _ *Host) error { return record(ctx) }
@@ -72,7 +68,6 @@ func TestCloseHostRuntimeUsesBoundedContexts(t *testing.T) {
 
 	runtime := hostRuntime{
 		runManager:      &RunManager{},
-		httpServer:      &httpapi.Server{},
 		udsServer:       &udsapi.Server{},
 		db:              &globaldb.GlobalDB{},
 		shutdownTimeout: 250 * time.Millisecond,
@@ -80,8 +75,8 @@ func TestCloseHostRuntimeUsesBoundedContexts(t *testing.T) {
 	if err := closeHostRuntime(parentCtx, runtime, &Host{}); err != nil {
 		t.Fatalf("closeHostRuntime() error = %v", err)
 	}
-	if got := len(captured); got != 5 {
-		t.Fatalf("captured shutdown contexts = %d, want 5", got)
+	if got := len(captured); got != 4 {
+		t.Fatalf("captured shutdown contexts = %d, want 4", got)
 	}
 
 	for index, ctx := range captured {

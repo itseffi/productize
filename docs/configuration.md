@@ -74,16 +74,16 @@ keep_max = 500
 - `[defaults]` for shared execution defaults such as `ide`, `model`,
   `reasoning_effort`, `output_format`, `access_mode`, `timeout`, `tail_lines`,
   `add_dirs`, `auto_commit`, `max_retries`, and `retry_backoff_multiplier`
-- `[exec]` for `output_format`, `verbose`, `tui`, `persist`, plus exec-specific
+- `[exec]` for `output_format`, `verbose`, `persist`, plus exec-specific
   runtime overrides such as `ide`, `model`, `reasoning_effort`, `access_mode`,
   `timeout`, `tail_lines`, `add_dirs`, `max_retries`, and
   `retry_backoff_multiplier`
 - `[tasks]` for the allowed task `type` list used by `create-tasks` and
   `productize tasks validate`
 - `[tasks.run]` for workflow-run defaults used by `productize tasks run`, such
-  as `include_completed`, `output_format`, `tui`, and `task_runtime_rules`
-- `[fix_reviews]` for `concurrent`, `batch_size`, `include_resolved`,
-  `output_format`, and `tui`
+  as `include_completed`, `output_format`, and `task_runtime_rules`
+- `[fix_reviews]` for `concurrent`, `batch_size`, `include_resolved`, and
+  `output_format`
 - `[fetch_reviews]` for `provider` and `nitpicks`
 - `[watch_reviews]` for `max_rounds`, `poll_interval`, `review_timeout`,
   `quiet_period`, `auto_push`, `until_clean`, `push_remote`, and `push_branch`
