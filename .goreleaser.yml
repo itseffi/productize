@@ -12,15 +12,10 @@ metadata:
   description: "Productize CLI"
 
 env:
-  - GO111MODULE=on
   - CGO_ENABLED=0
 
 git:
   tag_sort: -version:refname
-
-before:
-  hooks:
-    - make go-build
 
 builds:
   - id: productize
