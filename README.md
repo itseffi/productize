@@ -22,10 +22,6 @@
 
 One CLI to replace scattered prompts, manual task tracking, and copy-paste review cycles. Productize drives the full lifecycle of AI-assisted development: product ideation, technical specification, task breakdown with codebase-informed enrichment, concurrent execution across agents, and automated PR review remediation.
 
-<div align="center">
-  <img src="imgs/screenshot.png" alt="Productize Agent Loop" width="100%">
-</div>
-
 ## ✨ Highlights
 
 - **One command, 40+ agents.** Install core workflow skills into Claude Code, Codex, Cursor, Droid, OpenCode, Pi, Gemini, and 40+ other agents and editors with `productize setup`, plus any setup assets shipped by enabled extensions.
@@ -103,7 +99,7 @@ When the direct ACP command is not installed, Productize can also fall back to s
 ## 🔄 How It Works
 
 <div align="center">
-  <img src="imgs/how-it-works-flow.png" alt="Productize daemon-first workflow showing workspace artifacts, daemon runtime, and persisted run state" width="100%">
+  <img src="imgs/how-it-works-flow.svg" alt="Productize daemon-first workflow showing workspace artifacts, daemon runtime, and persisted run state" width="100%">
 </div>
 
 Workflow artifacts stay in `.productize/tasks/<name>/`. These are the PRDs, TechSpecs, ADRs, tasks, reviews, and memory files that you read and edit between steps.
