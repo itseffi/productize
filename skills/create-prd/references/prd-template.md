@@ -92,7 +92,7 @@ Do NOT include technical risks such as architectural complexity or technical deb
 ## Architecture Decision Records
 
 ADRs documenting key decisions made during brainstorming:
-- [ADR-NNN: Title](adrs/adr-NNN.md) — One-line summary of the decision
+- `ADR-NNN: Title` (`adrs/adr-NNN.md`) — One-line summary of the decision
 
 ## Open Questions
 

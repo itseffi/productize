@@ -11,7 +11,7 @@ Run the advisors as a real embedded subagent workflow, not as inline roleplay. T
   - `architect-advisor`
   - `security-advocate`
   - `product-mind`
-  - `devils-advocate`
+  - `stress-tester`
   - `the-thinker`
 - If `run_agent` is unavailable or any selected advisor cannot be resolved, stop and tell the user to run `productize setup`.
 
@@ -40,7 +40,7 @@ Select 3-5 advisors based on dilemma complexity:
 
 Selection rules:
 
-- always include `devils-advocate` when consensus forms quickly or the user explicitly wants stress-testing
+- always include `stress-tester` when consensus forms quickly or the user explicitly wants stress-testing
 - include `the-thinker` when the framing itself may be the constraint
 - prefer the smallest roster that still produces real tension
 

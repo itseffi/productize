@@ -48,7 +48,7 @@ Reference the TechSpec implementation section for code patterns and interface de
 - `path/to/dependency` — [brief reason this file is affected]
 
 ### Related ADRs
-- [ADR-NNN: Title](../adrs/adr-NNN.md) — Relevance to this task
+- `ADR-NNN: Title` (`../adrs/adr-NNN.md`) — Relevance to this task
 
 ## Deliverables
 - [Concrete output 1]

@@ -89,7 +89,7 @@ Rules:
 
 ADRs documenting key decisions made during idea creation:
 
-- [ADR-NNN: Title](adrs/adr-NNN.md) — One-line summary of the decision
+- `ADR-NNN: Title` (`adrs/adr-NNN.md`) — One-line summary of the decision
 
 ## Open Questions
 

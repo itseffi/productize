@@ -45,6 +45,6 @@ create-extension <name> [options]
 
 ## Documentation
 
-- [Getting started](../../.productize/docs/extensibility/getting-started.md)
-- [Hello world in TypeScript](../../.productize/docs/extensibility/hello-world-ts.md)
-- [Hello world in Go](../../.productize/docs/extensibility/hello-world-go.md)
+- [Getting started](../../docs/extensibility/getting-started.md)
+- [Hello world in TypeScript](../../docs/extensibility/hello-world-ts.md)
+- [Hello world in Go](../../docs/extensibility/hello-world-go.md)

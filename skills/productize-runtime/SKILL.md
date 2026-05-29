@@ -221,7 +221,7 @@ Reusable agents are standalone personas that can be invoked via `productize exec
 | `architect-advisor` | Long-term system coherence, boundaries, coupling |
 | `security-advocate` | Attack vectors, compliance, data protection |
 | `product-mind` | User impact, business value, opportunity cost |
-| `devils-advocate` | Challenges assumptions, surfaces risks, stress-tests |
+| `stress-tester` | Challenges assumptions, surfaces risks, stress-tests |
 | `the-thinker` | Cross-domain patterns, structural reframing |
 
 Install flow: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`.

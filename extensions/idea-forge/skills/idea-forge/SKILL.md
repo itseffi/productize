@@ -105,15 +105,15 @@ You MUST create a task for each phase and complete them in order:
    - This evaluation informs the idea's priority and feeds into the advisors debate.
    - Present the analysis to the user before proceeding.
 
-5. Debate trade-offs through multi-advisor advisors.
-   - Read `references/advisors.md` and run a advisors session in embedded mode to debate:
+5. Debate trade-offs through multi-advisor review.
+   - Read `references/advisors.md` and run an advisor session in embedded mode to debate:
      - **Scope:** Is the V1 scope right? Too much? Too little?
      - **Priority:** Where should this rank vs other planned features?
      - **Technical approach:** Are there simpler alternatives?
      - **Risks:** What could go wrong? What are the hidden dependencies?
      - **10x Challenge:** Is this truly high-leverage or just incremental? Is there a more ambitious version worth exploring? Could a simpler version deliver disproportionate value?
    - Follow the advisors session structure from the reference: Opening Statements, Tensions & Debate, Position Evolution, Synthesis.
-   - Use real reusable subagents through `run_agent`. Do NOT simulate the advisors inline. The canonical advisor roster is: `pragmatic-engineer`, `architect-advisor`, `security-advocate`, `product-mind`, `devils-advocate`, `the-thinker`.
+   - Use real reusable subagents through `run_agent`. Do NOT simulate the advisors inline. The canonical advisor roster is: `pragmatic-engineer`, `architect-advisor`, `security-advocate`, `product-mind`, `stress-tester`, `the-thinker`.
    - If `run_agent` is unavailable or the advisors archetypes cannot be resolved, stop with an actionable error that tells the user to run `productize setup`.
    - Select 3-5 advisors based on dilemma complexity.
    - Extract: key trade-offs, recommended approach, items for out-of-scope (V1), optional stretch goal for V2+.

@@ -107,7 +107,7 @@ func TestIdeaFactoryExtensionExistsAndUsesPortableReferences(t *testing.T) {
 		"extensions/idea-forge/skills/idea-forge/references/adr-template.md",
 		"extensions/idea-forge/skills/idea-forge/references/advisors.md",
 		"extensions/idea-forge/agents/architect-advisor/AGENT.md",
-		"extensions/idea-forge/agents/devils-advocate/AGENT.md",
+		"extensions/idea-forge/agents/stress-tester/AGENT.md",
 		"extensions/idea-forge/agents/pragmatic-engineer/AGENT.md",
 		"extensions/idea-forge/agents/product-mind/AGENT.md",
 		"extensions/idea-forge/agents/security-advocate/AGENT.md",

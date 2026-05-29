@@ -11,7 +11,7 @@ skill layer.
 
 Install first: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`
 
-Expands a raw feature idea into a structured, research-backed specification through interactive brainstorming, web research, business analysis, and multi-advisor advisor debate.
+Expands a raw feature idea into a structured, research-backed specification through interactive brainstorming, web research, business analysis, and multi-advisor debate.
 
 - **Inputs:** Feature idea or problem description. Optional existing `_idea.md` for update mode.
 - **Outputs:** `.productize/tasks/<slug>/_idea.md`, ADRs in `adrs/`.

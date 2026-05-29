@@ -113,4 +113,4 @@ Technical challenges and mitigation strategies:
 ## Architecture Decision Records
 
 ADRs documenting key decisions made during PRD brainstorming and technical design:
-- [ADR-NNN: Title](adrs/adr-NNN.md) — One-line summary of the decision
+- `ADR-NNN: Title` (`adrs/adr-NNN.md`) — One-line summary of the decision
