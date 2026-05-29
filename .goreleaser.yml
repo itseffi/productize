@@ -11,7 +11,7 @@ metadata:
   homepage: "https://github.com/itseffi/productize"
   description: "Productize CLI"
   maintainers:
-    - "Productize Team <support@productize.com>"
+    - "itseffi <itseffi@users.noreply.github.com>"
 
 env:
   - GO111MODULE=on
@@ -192,7 +192,7 @@ npms:
     bugs: https://github.com/itseffi/productize/issues
     access: public
     license: MIT
-    homepage: "https://productize.com"
+    homepage: "https://github.com/itseffi/productize"
 
 # Arch User Repository (AUR) configuration
 # Temporarily disabled until the AUR package exists and `AUR_KEY` is configured.
@@ -202,7 +202,7 @@ npms:
 #     homepage: "https://github.com/itseffi/productize"
 #     description: "Productize CLI"
 #     maintainers:
-#       - "Productize Team <support@productize.com>"
+#       - "itseffi <itseffi@users.noreply.github.com>"
 #     license: "MIT"
 #     private_key: '{{ .Env.AUR_KEY }}'
 #     git_url: 'ssh://aur@aur.archlinux.org/productize-bin.git'
