@@ -1,6 +1,6 @@
 # Council of Advisors Reference
 
-Run the council as a real embedded subagent workflow, not as inline roleplay. The facilitator remains inside `idea-factory`, but every advisor is dispatched through the host-owned `run_agent` tool using canonical reusable-agent ids.
+Run the council as a real embedded subagent workflow, not as inline roleplay. The facilitator remains inside `idea-forge`, but every advisor is dispatched through the host-owned `run_agent` tool using canonical reusable-agent ids.
 
 ## Runtime Contract
 
@@ -24,10 +24,10 @@ Run the council as a real embedded subagent workflow, not as inline roleplay. Th
 
 ## Embedded Mode
 
-`idea-factory` always runs council in embedded mode:
+`idea-forge` always runs council in embedded mode:
 
 - skip user-facing context confirmation because the parent workflow already established the dilemma
-- skip final decision capture because `idea-factory` owns the downstream draft and ADR
+- skip final decision capture because `idea-forge` owns the downstream draft and ADR
 - return synthesis material that the parent workflow can extract into scope, risks, V1 exclusions, and V2 opportunities
 
 ## Advisor Selection
@@ -144,7 +144,7 @@ Produce the final synthesis in this order:
 - ...
 ```
 
-## Extraction Guide for `idea-factory`
+## Extraction Guide for `idea-forge`
 
 After synthesis, the parent workflow should extract:
 

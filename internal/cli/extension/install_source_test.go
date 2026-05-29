@@ -51,12 +51,12 @@ func TestNormalizeInstallSourceOptions(t *testing.T) {
 			input: installSourceOptions{
 				Remote: installRemoteGitHub,
 				Ref:    "v1.2.3",
-				Subdir: "extensions/idea-factory/.",
+				Subdir: "extensions/idea-forge/.",
 			},
 			want: installSourceOptions{
 				Remote: installRemoteGitHub,
 				Ref:    "v1.2.3",
-				Subdir: "extensions/idea-factory",
+				Subdir: "extensions/idea-forge",
 			},
 		},
 		{
@@ -133,11 +133,11 @@ func TestResolveInstallSourceWithFetcherGitHub(t *testing.T) {
 			typeflag: tar.TypeSymlink,
 			linkname: "20260406-summary.md",
 		},
-		{name: "productize-v1.2.3/extensions/idea-factory/", typeflag: tar.TypeDir},
+		{name: "productize-v1.2.3/extensions/idea-forge/", typeflag: tar.TypeDir},
 		{
-			name: "productize-v1.2.3/extensions/idea-factory/extension.toml",
+			name: "productize-v1.2.3/extensions/idea-forge/extension.toml",
 			body: `[extension]
-name = "idea-factory"
+name = "idea-forge"
 version = "1.0.0"
 description = "Idea factory"
 min_productize_version = "0.0.1"
@@ -178,7 +178,7 @@ agents = ["agents/*"]
 	got, err := resolveInstallSourceWithFetcher(
 		context.Background(),
 		"itseffi/productize",
-		installSourceOptions{Remote: installRemoteGitHub, Ref: "v1.2.3", Subdir: "extensions/idea-factory"},
+		installSourceOptions{Remote: installRemoteGitHub, Ref: "v1.2.3", Subdir: "extensions/idea-forge"},
 		fetcher,
 	)
 	if err != nil {
@@ -189,7 +189,7 @@ agents = ["agents/*"]
 		t.Fatal(err)
 	default:
 	}
-	if !strings.HasSuffix(got.SourcePath, filepath.Join("extensions", "idea-factory")) {
+	if !strings.HasSuffix(got.SourcePath, filepath.Join("extensions", "idea-forge")) {
 		t.Fatalf("unexpected github source path: %s", got.SourcePath)
 	}
 	if got.InstallOrigin == nil {
@@ -202,7 +202,7 @@ agents = ["agents/*"]
 		t.Fatal("expected cleanup callback for extracted github source")
 	}
 
-	rootToRemove := strings.TrimSuffix(got.SourcePath, filepath.Join("extensions", "idea-factory"))
+	rootToRemove := strings.TrimSuffix(got.SourcePath, filepath.Join("extensions", "idea-forge"))
 	if err := got.CleanupSource(); err != nil {
 		t.Fatalf("CleanupSource() error = %v", err)
 	}
@@ -246,20 +246,20 @@ func TestExtractTarGzArchiveIgnoresSymlinkOutsideIncludedSubdir(t *testing.T) {
 			typeflag: tar.TypeSymlink,
 			linkname: "20260406-summary.md",
 		},
-		{name: "repo/extensions/idea-factory/extension.toml", body: "ok", typeflag: tar.TypeReg},
+		{name: "repo/extensions/idea-forge/extension.toml", body: "ok", typeflag: tar.TypeReg},
 	})
 
 	extractedRoot, err := extractTarGzArchive(
 		bytes.NewReader(archive),
 		destRoot,
 		1<<20,
-		"extensions/idea-factory",
+		"extensions/idea-forge",
 	)
 	if err != nil {
 		t.Fatalf("extractTarGzArchive() error = %v", err)
 	}
 
-	manifestPath := filepath.Join(extractedRoot, "extensions", "idea-factory", "extension.toml")
+	manifestPath := filepath.Join(extractedRoot, "extensions", "idea-forge", "extension.toml")
 	if _, err := os.Stat(manifestPath); err != nil {
 		t.Fatalf("expected extracted manifest at %q: %v", manifestPath, err)
 	}

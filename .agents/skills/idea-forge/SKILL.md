@@ -1,10 +1,10 @@
 ---
-name: idea-factory
+name: idea-forge
 description: Expands a raw idea into a structured, research-backed spec in .productize/tasks/<slug>/_idea.md through interactive brainstorming, web research, business analysis, and multi-advisor debate. Use when the user has a feature idea and wants to explore and structure it before creating a PRD. Do not use for PRD creation, technical specifications, task breakdown, or code implementation.
 argument-hint: [feature-idea]
 ---
 
-# Idea Factory
+# Idea Forge
 
 Expand a raw feature idea into a structured, research-backed spec that serves as the foundation for PRD creation.
 
@@ -169,7 +169,7 @@ You MUST create a task for each phase and complete them in order:
 ## Process Flow
 
 ```dot
-digraph idea_factory {
+digraph idea_forge {
     "Determine project & directory" [shape=box];
     "Ask 3-6 targeted questions (one at a time)" [shape=box];
     "Discover context (codebase + web)" [shape=box];

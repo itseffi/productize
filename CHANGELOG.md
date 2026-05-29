@@ -118,7 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ♻️  Refactoring
 
-- Rename idea-factory artifacts from issue to idea (#56)
+- Rename idea-forge artifacts from issue to idea (#56)
 ### 🎉 Features
 
 - Add GitHub Copilot CLI as ACP runtime (#57)
@@ -173,7 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🎉 Features
 
-- Add idea-factory skill and improve planning skills DX (#35)
+- Add idea-forge skill and improve planning skills DX (#35)
 ### 🐛 Bug Fixes
 
 - Failed tool call crash- Skills frontmatter

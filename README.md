@@ -77,11 +77,11 @@ productize setup --core-only
 
 `productize setup` installs Productize's full bundled skill catalog plus any setup assets shipped by enabled extensions.
 
-If you want the optional ideation workflow and council roster, install the first-party `idea-factory` extension first:
+If you want the optional ideation workflow and council roster, install the first-party `idea-forge` extension first:
 
 ```bash
-productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory
-productize ext enable idea-factory
+productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge
+productize ext enable idea-forge
 productize setup
 ```
 
@@ -351,15 +351,15 @@ Auto-detects installed agents, copies (or symlinks) core skills into their confi
 Inside your AI agent (Claude Code, Codex, Cursor, OpenCode, Pi, etc.):
 
 ```bash
-productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory
-productize ext enable idea-factory
+productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge
+productize ext enable idea-forge
 productize setup
 ```
 
 Then:
 
 ```
-/idea-factory user-auth
+/idea-forge user-auth
 ```
 
 Transforms a raw idea into a structured idea spec — asks targeted questions, researches market and codebase in parallel, runs business analysis and council debate, suggests high-leverage alternatives, and produces a research-backed idea. Skip this step if you already have a clear feature scope.
@@ -446,13 +446,13 @@ Optional first-party extension skills:
 
 | Skill             | Purpose                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------- |
-| `idea-factory` | Raw idea → structured idea spec with market research, business analysis, and council debate |
+| `idea-forge` | Raw idea → structured idea spec with market research, business analysis, and council debate |
 
 Install the optional ideation extension with:
 
 ```bash
-productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory
-productize ext enable idea-factory
+productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge
+productize ext enable idea-forge
 productize setup
 ```
 

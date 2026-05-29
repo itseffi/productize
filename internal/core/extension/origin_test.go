@@ -15,7 +15,7 @@ func TestInstallOriginRoundTrip(t *testing.T) {
 		Remote:         "github",
 		Repository:     "itseffi/productize",
 		Ref:            "v1.2.3",
-		Subdir:         "extensions/idea-factory",
+		Subdir:         "extensions/idea-forge",
 		ResolvedSource: "https://codeload.github.com/itseffi/productize/tar.gz/v1.2.3",
 		InstalledAt:    time.Date(2026, time.April, 13, 12, 34, 56, 0, time.UTC),
 	}

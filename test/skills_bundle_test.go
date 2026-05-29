@@ -102,16 +102,16 @@ func TestIdeaFactoryExtensionExistsAndUsesPortableReferences(t *testing.T) {
 
 	root := repoRoot(t)
 	requiredPaths := []string{
-		"extensions/idea-factory/extension.toml",
-		"extensions/idea-factory/skills/idea-factory/SKILL.md",
-		"extensions/idea-factory/skills/idea-factory/references/adr-template.md",
-		"extensions/idea-factory/skills/idea-factory/references/council.md",
-		"extensions/idea-factory/agents/architect-advisor/AGENT.md",
-		"extensions/idea-factory/agents/devils-advocate/AGENT.md",
-		"extensions/idea-factory/agents/pragmatic-engineer/AGENT.md",
-		"extensions/idea-factory/agents/product-mind/AGENT.md",
-		"extensions/idea-factory/agents/security-advocate/AGENT.md",
-		"extensions/idea-factory/agents/the-thinker/AGENT.md",
+		"extensions/idea-forge/extension.toml",
+		"extensions/idea-forge/skills/idea-forge/SKILL.md",
+		"extensions/idea-forge/skills/idea-forge/references/adr-template.md",
+		"extensions/idea-forge/skills/idea-forge/references/council.md",
+		"extensions/idea-forge/agents/architect-advisor/AGENT.md",
+		"extensions/idea-forge/agents/devils-advocate/AGENT.md",
+		"extensions/idea-forge/agents/pragmatic-engineer/AGENT.md",
+		"extensions/idea-forge/agents/product-mind/AGENT.md",
+		"extensions/idea-forge/agents/security-advocate/AGENT.md",
+		"extensions/idea-forge/agents/the-thinker/AGENT.md",
 	}
 
 	for _, relativePath := range requiredPaths {
@@ -125,7 +125,7 @@ func TestIdeaFactoryExtensionExistsAndUsesPortableReferences(t *testing.T) {
 		})
 	}
 
-	skillPath := filepath.Join(root, "extensions", "idea-factory", "skills", "idea-factory", "SKILL.md")
+	skillPath := filepath.Join(root, "extensions", "idea-forge", "skills", "idea-forge", "SKILL.md")
 	content, err := os.ReadFile(skillPath)
 	if err != nil {
 		t.Fatalf("read %s: %v", skillPath, err)
@@ -138,8 +138,8 @@ func TestIdeaFactoryExtensionExistsAndUsesPortableReferences(t *testing.T) {
 	if _, err := frontmatter.Parse(string(content), &metadata); err != nil {
 		t.Fatalf("parse frontmatter %s: %v", skillPath, err)
 	}
-	if metadata.Name != "idea-factory" {
-		t.Fatalf("expected extension skill name idea-factory, got %q", metadata.Name)
+	if metadata.Name != "idea-forge" {
+		t.Fatalf("expected extension skill name idea-forge, got %q", metadata.Name)
 	}
 	if metadata.Description == "" {
 		t.Fatalf("expected non-empty description in %s", skillPath)
@@ -296,7 +296,7 @@ func TestSharedReferenceFilesAreIdentical(t *testing.T) {
 		{
 			"skills/create-prd/references/adr-template.md",
 			"skills/create-techspec/references/adr-template.md",
-			"extensions/idea-factory/skills/idea-factory/references/adr-template.md",
+			"extensions/idea-forge/skills/idea-forge/references/adr-template.md",
 		},
 	}
 

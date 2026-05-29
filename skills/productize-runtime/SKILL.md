@@ -24,7 +24,7 @@ Key characteristics:
 The standard development pipeline follows these phases in order. Each phase produces artifacts consumed by the next.
 
 1. **Setup** -- `productize setup` installs core skills into target agents plus any setup assets shipped by enabled extensions.
-2. **Ideation** (optional) -- install and enable the first-party `idea-factory` extension, run `productize setup`, then use `/idea-factory` to expand a raw idea into a structured, research-backed spec at `.productize/tasks/<slug>/_idea.md`.
+2. **Ideation** (optional) -- install and enable the first-party `idea-forge` extension, run `productize setup`, then use `/idea-forge` to expand a raw idea into a structured, research-backed spec at `.productize/tasks/<slug>/_idea.md`.
 3. **Requirements** -- `/create-prd` creates a business-focused Product Requirements Document at `.productize/tasks/<slug>/_prd.md` with ADRs.
 4. **Technical Design** -- `/create-techspec` translates the PRD into a technical specification at `.productize/tasks/<slug>/_techspec.md` with ADRs.
 5. **Task Decomposition** -- `/create-tasks` breaks down the PRD and TechSpec into independently implementable task files (`task_01.md`, `task_02.md`, etc.) and a master list at `_tasks.md`.
@@ -38,7 +38,7 @@ Repeat phases 7-8 until the review is clean, then merge.
 ```dot
 digraph productize_pipeline {
     "productize setup" [shape=box];
-    "/idea-factory (optional)" [shape=box];
+    "/idea-forge (optional)" [shape=box];
     "/create-prd" [shape=box];
     "/create-techspec" [shape=box];
     "/create-tasks" [shape=box];
@@ -48,8 +48,8 @@ digraph productize_pipeline {
     "Reviews clean?" [shape=diamond];
     "productize archive" [shape=doublecircle];
 
-    "productize setup" -> "/idea-factory (optional)";
-    "/idea-factory (optional)" -> "/create-prd";
+    "productize setup" -> "/idea-forge (optional)";
+    "/idea-forge (optional)" -> "/create-prd";
     "/create-prd" -> "/create-techspec";
     "/create-techspec" -> "/create-tasks";
     "/create-tasks" -> "productize tasks run";
@@ -133,7 +133,7 @@ the job is clear.
 
 | Skill | Trigger | When To Use | Install Flow |
 | --- | --- | --- | --- |
-| `idea-factory` | `/idea-factory` | Raw feature idea needs structured exploration before a PRD | `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory` -> `productize ext enable idea-factory` -> `productize setup` |
+| `idea-forge` | `/idea-forge` | Raw feature idea needs structured exploration before a PRD | `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup` |
 
 For detailed skill descriptions and inputs/outputs, read `references/skills-reference.md`.
 
@@ -144,7 +144,7 @@ For detailed skill descriptions and inputs/outputs, read `references/skills-refe
   config.toml                          # Workspace configuration
   tasks/
     <slug>/                            # One directory per workflow
-      _idea.md                         # Idea spec (from idea-factory)
+      _idea.md                         # Idea spec (from idea-forge)
       _prd.md                          # Product Requirements Document
       _techspec.md                     # Technical Specification
       _tasks.md                        # Master task list
@@ -213,7 +213,7 @@ Reusable agents are standalone personas that can be invoked via `productize exec
 
 **Agent definition:** Each agent has an `AGENT.md` with YAML frontmatter (`title`, `description`) and optional `mcp.json` for MCP server configuration.
 
-**Council agents shipped by the optional `idea-factory` extension**:
+**Council agents shipped by the optional `idea-forge` extension**:
 
 | Agent | Perspective |
 | --- | --- |
@@ -224,9 +224,9 @@ Reusable agents are standalone personas that can be invoked via `productize exec
 | `devils-advocate` | Challenges assumptions, surfaces risks, stress-tests |
 | `the-thinker` | Cross-domain patterns, structural reframing |
 
-Install flow: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory` -> `productize ext enable idea-factory` -> `productize setup`.
+Install flow: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`.
 
-The `idea-factory` skill uses these agents in a council debate to challenge feature scope and surface risks. The `council` skill can also orchestrate multi-advisor debates on demand.
+The `idea-forge` skill uses these agents in a council debate to challenge feature scope and surface risks. The `council` skill can also orchestrate multi-advisor debates on demand.
 
 Management commands: `productize agents list`, `productize agents inspect <name>`.
 

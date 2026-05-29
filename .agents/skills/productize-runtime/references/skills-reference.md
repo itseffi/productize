@@ -4,11 +4,11 @@ Detailed catalog of all bundled Productize skills, their inputs, outputs, and pi
 
 ---
 
-## idea-factory
+## idea-forge
 
-**Trigger:** `/idea-factory [feature-idea]`
+**Trigger:** `/idea-forge [feature-idea]`
 
-Install first: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory` -> `productize ext enable idea-factory` -> `productize setup`
+Install first: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`
 
 Expands a raw feature idea into a structured, research-backed specification through interactive brainstorming, web research, business analysis, and multi-advisor council debate.
 

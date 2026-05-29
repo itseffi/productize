@@ -244,7 +244,7 @@ Install an extension from a local path or GitHub repo archive.
 
 ```bash
 productize ext install ./my-extension
-productize ext install --yes itseffi/productize --remote github --ref v1.2.3 --subdir extensions/idea-factory
+productize ext install --yes itseffi/productize --remote github --ref v1.2.3 --subdir extensions/idea-forge
 ```
 
 ### `productize ext uninstall <name>`

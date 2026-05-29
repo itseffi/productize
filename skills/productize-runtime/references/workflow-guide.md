@@ -6,18 +6,18 @@ End-to-end walkthrough of the Productize development pipeline from setup through
 
 1. **Install Productize.** Ensure the `productize` binary is available in the system PATH.
 2. **Run setup.** Execute `productize setup` to install core skills into target agents plus setup assets from enabled extensions. For a quick start: `productize setup --all`.
-3. **Install optional ideation extension when needed.** To use `/idea-factory`, run `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory`, then `productize ext enable idea-factory`, then `productize setup` again.
+3. **Install optional ideation extension when needed.** To use `/idea-forge`, run `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge`, then `productize ext enable idea-forge`, then `productize setup` again.
 4. **Configure workspace (optional).** Create `.productize/config.toml` to set default IDE, model, and other preferences. Read `config-reference.md` for all fields.
 
 ## Phase 1: Ideation (Optional)
 
-**Skill:** `/idea-factory [feature-idea]`
+**Skill:** `/idea-forge [feature-idea]`
 
 Use when a raw idea needs structured exploration before committing to a PRD.
 
-Install flow: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-factory` -> `productize ext enable idea-factory` -> `productize setup`
+Install flow: `productize ext install --yes itseffi/productize --remote github --ref <tag> --subdir extensions/idea-forge` -> `productize ext enable idea-forge` -> `productize setup`
 
-1. Invoke `/idea-factory` inside an agent session with the feature idea.
+1. Invoke `/idea-forge` inside an agent session with the feature idea.
 2. Answer 3-6 clarifying questions (one per message, multiple-choice preferred).
 3. The skill runs parallel codebase exploration and web research.
 4. A business analyst persona evaluates viability with KPIs and scoring.

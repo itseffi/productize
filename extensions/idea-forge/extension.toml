@@ -1,5 +1,5 @@
 [extension]
-name = "idea-factory"
+name = "idea-forge"
 version = "1.0.0"
 description = "Idea-factory workflow skill and council reusable agents"
 min_productize_version = "0.0.1"
