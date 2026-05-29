@@ -98,10 +98,6 @@ When the direct ACP command is not installed, Productize can also fall back to s
 
 ## 🔄 How It Works
 
-<div align="center">
-  <img src="imgs/how-it-works-flow.svg" alt="Productize daemon-first workflow showing workspace artifacts, daemon runtime, and persisted run state" width="100%">
-</div>
-
 Workflow artifacts stay in `.productize/tasks/<name>/`. These are the PRDs, TechSpecs, ADRs, tasks, reviews, and memory files that you read and edit between steps.
 
 The daemon owns runtime state under `~/.productize/`. Daemon-managed task runs, review-fix runs, and persisted exec sessions allocate `~/.productize/runs/<run-id>/`, while attach and watch clients reconnect through daemon snapshots and streams instead of reading workspace-local run files directly.

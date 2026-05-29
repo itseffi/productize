@@ -10,8 +10,8 @@ web/dist/*
 RELEASE_NOTES.md
 coverage.out
 coverage.html
-.codex/CONTINUITY*
-.codex/plans
+# Internal dev session notes, scratch, QA — never publish.
+.codex/
 .resources/
 .factory/skills
 skills/*/autoresearch-*/
@@ -20,8 +20,8 @@ skills-lock.json
 ai-docs
 **/**/node_modules
 node_modules/
-.productize/runs
-.productize/tasks/daemon-improvs/analysis/qa/logs/live-daemon-run-id.txt
+# Workspace artifacts (per-project tasks, runs, research) — never publish.
+.productize/
 .turbo/
 coverage/
 *.tsbuildinfo
