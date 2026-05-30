@@ -20,7 +20,6 @@ coverage.html
 .factory/skills
 skills/*/autoresearch-*/
 skills-lock.json
-ai-docs
 **/**/node_modules
 node_modules/
 # Workspace artifacts (per-project tasks, runs, research) — never publish.
