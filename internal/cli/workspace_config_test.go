@@ -614,7 +614,6 @@ default_attach_mode = "detach"
 	state := newCommandState(commandKindTasksRun, core.ModePRDTasks)
 	cmd := &cobra.Command{Use: "tasks run"}
 	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "attach mode")
-	cmd.Flags().Bool("ui", false, "ui mode")
 	cmd.Flags().Bool("stream", false, "stream mode")
 	cmd.Flags().Bool("detach", false, "detach mode")
 
@@ -647,21 +646,20 @@ default_attach_mode = "detach"
 	state := newCommandState(commandKindTasksRun, core.ModePRDTasks)
 	cmd := &cobra.Command{Use: "tasks run"}
 	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "attach mode")
-	cmd.Flags().Bool("ui", false, "ui mode")
 	cmd.Flags().Bool("stream", false, "stream mode")
 	cmd.Flags().Bool("detach", false, "detach mode")
 
 	chdirCLITest(t, startDir)
 
-	if err := cmd.Flags().Set("attach", "ui"); err != nil {
+	if err := cmd.Flags().Set("attach", "stream"); err != nil {
 		t.Fatalf("set attach: %v", err)
 	}
-	state.attachMode = attachModeUI
+	state.attachMode = attachModeStream
 
 	if err := state.applyWorkspaceDefaults(context.Background(), cmd); err != nil {
 		t.Fatalf("apply workspace defaults: %v", err)
 	}
-	if state.attachMode != attachModeUI {
+	if state.attachMode != attachModeStream {
 		t.Fatalf("expected explicit --attach flag to win, got %q", state.attachMode)
 	}
 }
@@ -1055,7 +1053,6 @@ func TestBuildConfigMapsEmbeddedStateGroups(t *testing.T) {
 		execConfig: execConfig{
 			outputFormat:       string(core.OutputFormatJSON),
 			verbose:            true,
-			tui:                true,
 			persist:            true,
 			runID:              "run-123",
 			promptText:         "prompt",

@@ -38,5 +38,4 @@ Flags:
       --run-id string                    Resume a previously persisted exec session by run id
       --tail-lines int                   Maximum number of log lines to retain per job in run snapshots (0 = full history)
       --timeout string                   Activity timeout duration (e.g., 5m, 30s). Job canceled if no output received within this period. (default "10m")
-      --tui                              Deprecated; exec uses headless text or event output
       --verbose                          Emit operational runtime logs to stderr during exec

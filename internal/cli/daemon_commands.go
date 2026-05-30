@@ -25,7 +25,6 @@ import (
 
 const (
 	attachModeAuto   = "auto"
-	attachModeUI     = "ui"
 	attachModeStream = "stream"
 	attachModeDetach = "detach"
 
@@ -290,7 +289,6 @@ is running, and then sends the workflow request over the daemon transport.`,
 		attachModeAuto,
 		"Attach mode: auto, stream, or detach",
 	)
-	cmd.Flags().Bool("ui", false, "Deprecated alias for --stream")
 	cmd.Flags().Bool("stream", false, "Force textual stream attach mode")
 	cmd.Flags().Bool("detach", false, "Start the run without attaching a client")
 	cmd.Flags().Var(
@@ -422,7 +420,6 @@ func (s *commandState) resolveTaskPresentationMode(cmd *cobra.Command) (string, 
 		name  string
 		value string
 	}{
-		{name: "ui", value: attachModeStream},
 		{name: "stream", value: attachModeStream},
 		{name: "detach", value: attachModeDetach},
 	} {
@@ -433,13 +430,11 @@ func (s *commandState) resolveTaskPresentationMode(cmd *cobra.Command) (string, 
 		explicitModes++
 	}
 	if explicitModes > 1 {
-		return "", errors.New("choose only one of --attach, --ui, --stream, or --detach")
+		return "", errors.New("choose only one of --attach, --stream, or --detach")
 	}
 
 	switch mode {
 	case attachModeAuto:
-		return attachModeStream, nil
-	case attachModeUI:
 		return attachModeStream, nil
 	case attachModeStream, attachModeDetach:
 		return mode, nil

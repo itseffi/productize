@@ -54,7 +54,6 @@ resumable artifacts under
 		"Output format: text, json, or raw-json",
 	)
 	cmd.Flags().BoolVar(&state.verbose, "verbose", false, "Emit operational runtime logs to stderr during exec")
-	cmd.Flags().BoolVar(&state.tui, "tui", false, "Deprecated; exec uses headless text or event output")
 	cmd.Flags().BoolVar(&state.persist, "persist", false, "Persist exec artifacts under ~/.productize/runs/<run-id>/")
 	cmd.Flags().BoolVar(&state.extensionsEnabled, "extensions", false, "Enable executable extensions for this exec run")
 	cmd.Flags().StringVar(&state.runID, "run-id", "", "Resume a previously persisted exec session by run id")

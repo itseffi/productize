@@ -63,7 +63,6 @@ type runtimeConfig struct {
 type execConfig struct {
 	outputFormat       string
 	verbose            bool
-	tui                bool
 	persist            bool
 	extensionsEnabled  bool
 	runID              string

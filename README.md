@@ -11,12 +11,6 @@ and engineering skills plus review gates, and keeps every artifact as editable
 markdown in your repo while the daemon owns execution state — runs, streams, history,
 and hooks — under `~/.productize`.
 
-**Local, BYOK, no SaaS.** Productize is a single Go binary that runs on your machine
-and drives whichever AI agent you already pay for (Claude Code, Codex, Cursor, and
-more) with your own keys — no token markup, no second subscription, no accounts, no
-telemetry. There is no Productize cloud: your code goes only where your chosen agent
-already sends it.
-
 ## What It Does
 
 - Author PRDs, TechSpecs, ADRs, tasks, reviews, and memory in `.productize/tasks/<slug>/`.

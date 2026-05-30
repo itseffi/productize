@@ -726,7 +726,6 @@ func newExecTestCommand(state *commandState) *cobra.Command {
 	cmd.Flags().StringVar(&state.promptFile, "prompt-file", "", "prompt file")
 	cmd.Flags().StringVar(&state.outputFormat, "format", string(core.OutputFormatText), "format")
 	cmd.Flags().BoolVar(&state.verbose, "verbose", false, "verbose")
-	cmd.Flags().BoolVar(&state.tui, "tui", false, "tui")
 	cmd.Flags().BoolVar(&state.persist, "persist", false, "persist")
 	cmd.Flags().StringVar(&state.runID, "run-id", "", "run id")
 	return cmd

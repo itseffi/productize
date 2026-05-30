@@ -164,12 +164,8 @@ jobs:
         uses: ./.github/actions/setup-release
         with:
           goreleaser-distribution: goreleaser
-          setup-docker: true
-          setup-docker-login: true
-          setup-qemu: true
-          docker-registry: ghcr.io
-          docker-username: ${{ github.actor }}
-          docker-token: ${{ secrets.GITHUB_TOKEN }}
+          setup-docker: false
+          setup-docker-login: false
           cosign-version: "v2.2.4"
 
       - name: Create Git Tag

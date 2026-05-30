@@ -142,8 +142,7 @@ opens the run cockpit by default; in non-TTY environments it falls back to headl
 	)
 	cmd.Flags().IntVar(&state.batchSize, "batch-size", 1, "Number of file groups to batch together (default: 1)")
 	cmd.Flags().BoolVar(&state.includeResolved, "include-resolved", false, "Include already-resolved review issues")
-	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "Attach mode: auto, ui, stream, or detach")
-	cmd.Flags().Bool("ui", false, "Deprecated alias for --stream")
+	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "Attach mode: auto, stream, or detach")
 	cmd.Flags().Bool("stream", false, "Force textual stream attach mode")
 	cmd.Flags().Bool("detach", false, "Start the run without attaching a client")
 	return cmd
@@ -185,8 +184,7 @@ through the textual run stream.`,
 		StringVar(&state.quietPeriod, "quiet-period", "", "Delay after pushing before checking provider status again")
 	cmd.Flags().IntVar(&state.batchSize, "batch-size", 1, "Number of file groups to batch together (default: 1)")
 	cmd.Flags().BoolVar(&state.includeResolved, "include-resolved", false, "Include already-resolved review issues")
-	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "Attach mode: auto, ui, stream, or detach")
-	cmd.Flags().Bool("ui", false, "Deprecated alias for --stream")
+	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "Attach mode: auto, stream, or detach")
 	cmd.Flags().Bool("stream", false, "Force textual stream attach mode")
 	cmd.Flags().Bool("detach", false, "Start the run without attaching a client")
 	return cmd
@@ -574,7 +572,6 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 		name  string
 		value string
 	}{
-		{name: "ui", value: attachModeStream},
 		{name: "stream", value: attachModeStream},
 		{name: "detach", value: attachModeDetach},
 	} {
@@ -585,10 +582,10 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 		explicitModes++
 	}
 	if explicitModes > 1 {
-		return "", errors.New("choose only one of --attach, --ui, --stream, or --detach")
+		return "", errors.New("choose only one of --attach, --stream, or --detach")
 	}
 	switch mode {
-	case attachModeAuto, attachModeUI, attachModeStream, attachModeDetach:
+	case attachModeAuto, attachModeStream, attachModeDetach:
 	default:
 		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)
 	}
@@ -598,7 +595,7 @@ func (s *commandState) resolveReviewWatchPresentationMode(cmd *cobra.Command) (s
 	switch mode {
 	case attachModeAuto, attachModeDetach:
 		return attachModeDetach, nil
-	case attachModeStream, attachModeUI:
+	case attachModeStream:
 		return attachModeStream, nil
 	default:
 		return "", fmt.Errorf("attach mode must be one of auto, stream, or detach (got %q)", mode)

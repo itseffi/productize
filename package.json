@@ -15,7 +15,7 @@
     "prepare": "husky",
     "typecheck:extension-sdks": "npm run typecheck --workspace @productize/extension-sdk --workspace @productize/create-extension"
   },
-  "version": "0.2.4",
+  "version": "0.3.0",
   "workspaces": [
     "sdk/*"
   ]

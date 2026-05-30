@@ -573,7 +573,6 @@ func releaseCLITestGlobalOverride(testName string) {
 func newTaskRunPresentationCommand(state *commandState) *cobra.Command {
 	cmd := &cobra.Command{Use: "productize tasks run"}
 	cmd.Flags().StringVar(&state.attachMode, "attach", attachModeAuto, "attach mode")
-	cmd.Flags().Bool("ui", false, "ui mode")
 	cmd.Flags().Bool("stream", false, "stream mode")
 	cmd.Flags().Bool("detach", false, "detach mode")
 	return cmd
@@ -849,18 +848,6 @@ func TestResolveTaskPresentationModeUsesInjectedInteractiveCheck(t *testing.T) {
 			name:        "auto resolves to stream on non-interactive terminals",
 			interactive: false,
 			wantMode:    attachModeStream,
-		},
-		{
-			name:        "explicit ui alias resolves to stream",
-			interactive: false,
-			wantMode:    attachModeStream,
-			configure: func(t *testing.T, state *commandState, cmd *cobra.Command) {
-				t.Helper()
-				if err := cmd.Flags().Set("attach", attachModeUI); err != nil {
-					t.Fatalf("set attach: %v", err)
-				}
-				state.attachMode = attachModeUI
-			},
 		},
 	}
 
@@ -1554,8 +1541,8 @@ func TestResolveTaskPresentationModeRejectsConflictsAndInvalidModes(t *testing.T
 		t.Fatalf("set attach: %v", err)
 	}
 	state.attachMode = attachModeStream
-	if err := cmd.Flags().Set("ui", "true"); err != nil {
-		t.Fatalf("set ui: %v", err)
+	if err := cmd.Flags().Set("detach", "true"); err != nil {
+		t.Fatalf("set detach: %v", err)
 	}
 	if _, err := state.resolveTaskPresentationMode(cmd); err == nil || !containsAll(err.Error(), "choose only one") {
 		t.Fatalf("expected conflicting attach mode error, got %v", err)
