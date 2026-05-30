@@ -1,8 +1,9 @@
 name: Auto Docs on Merge
 
 on:
-  pull_request:
-    types: [closed]
+  # Disabled: this workflow depended on the removed `releasepr` release-PR system,
+  # and docs are currently hidden. Manual-only until docs automation is rebuilt.
+  workflow_dispatch:
 
 permissions:
   contents: write
