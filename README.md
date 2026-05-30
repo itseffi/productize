@@ -1,9 +1,6 @@
 <p align="center">
   <img src="imgs/productize-banner.png" alt="Productize" width="100%">
 </p>
-
-<p align="center"><strong>Runtime for shipping products with AI agents.</strong></p>
-
 Productize drives the product development lifecycle on top of the AI coding agents you
 already use: idea, PRD, tech spec, codebase-informed task breakdown, multi-agent
 execution, and review remediation. It ships 250+ routed product, design, QA, growth,
