@@ -237,9 +237,6 @@ productize agents inspect reviewer
 productize exec --agent reviewer "Review the staged changes"
 ```
 
-See [docs/reusable-agents.md](docs/reusable-agents.md) for the full format,
-runtime precedence, MCP behavior, and examples.
-
 ## Extensions
 
 Extensions are JSON-RPC subprocess plugins. They can observe or modify runtime
@@ -252,23 +249,10 @@ productize ext enable <name>
 productize ext doctor
 ```
 
-SDKs and references:
+Extension SDKs:
 
-- [Extension author guide](docs/extensibility/index.md)
-- [Architecture overview](docs/extensibility/architecture.md)
-- [Hook reference](docs/extensibility/hook-reference.md) - 33 hooks across 6 pipeline phases
-- [Host API reference](docs/extensibility/host-api-reference.md) - 11 typed host methods
-- [Capability reference](docs/extensibility/capability-reference.md) - 20 capability grants
 - [Go SDK](sdk/extension/)
 - [TypeScript SDK](sdk/extension-sdk-ts/)
-
-## Reference
-
-- [CLI reference](docs/cli-reference.md)
-- [Configuration reference](docs/configuration.md)
-- [Reusable agents](docs/reusable-agents.md)
-- [Run reader library](docs/reader-library.md)
-- [Events reference](docs/events.md)
 
 ## Development
 
