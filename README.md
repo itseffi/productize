@@ -86,7 +86,7 @@ not required before every run.
 ## Runtime Flow
 
 <p align="center">
-  <img src="imgs/runtime-flow.png" alt="Productize runtime flow: workflow artifacts, daemon, and runs" width="100%">
+  <img src="imgs/productize-runtime-flow.png" alt="Productize runtime flow: workflow artifacts, daemon, and runs" width="100%">
 </p>
 
 ## Productize-Specific Features
