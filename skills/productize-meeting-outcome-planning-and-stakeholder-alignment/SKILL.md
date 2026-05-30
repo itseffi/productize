@@ -102,7 +102,7 @@ CONSTRAINTS
 - Produce a copy-ready meeting plan that includes:
 - TL;DR (`<=60` words).
 - Meeting Brief with objective, type mix percentages (Information/Discovery/Discussion/Decision/Alignment), decision statement/decider, stakeholder map, time-boxed agenda, key messages/proofs, objections/counters, give-get plan, artifacts, and exit checklist.
-- When a decision is required, include anti-groupthink mechanics: silent write or private input, private vote when appropriate, explicit dissent, devil's advocate, sequence control for speaker order, and a clear decision rule.
+- When a decision is required, include anti-groupthink mechanics: silent write or private input, private vote when appropriate, explicit dissent, challenger, sequence control for speaker order, and a clear decision rule.
 - Follow-up Email template with objective recap, covered points, decisions, open items, notes/links, and next checkpoint.
 - Async alternative plan when a meeting is unnecessary (with steps, owners, deadlines).
 - Apply edge-case logic: missing decider, pure info-share closure, high conflict handling, explicit assumptions.
@@ -132,7 +132,7 @@ Likely objections & counters:
 - [objection -> counter]
 Decision quality controls:
 - Private input: [yes/no + method]
-- Devil's advocate / dissent owner: [name/role]
+- Challenger / dissent owner: [name/role]
 - Speaker order / sequence control: [plan]
 - Private or public vote: [method]
 - Decision rule: [rule]

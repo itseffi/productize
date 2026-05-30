@@ -83,7 +83,7 @@ a meeting plan. Use this skill when the risk is group decision failure.
 - Group polarization can push a group toward a more extreme version of its initial leaning.
 - Conformity, authority bias, common information effect, and sequential revelation can distort
   which evidence gets heard and how strongly it is weighted.
-- Private information collection, private voting, devil's advocate roles, explicit dissent,
+- Private information collection, private voting, challenger roles, explicit dissent,
   and sequence control improve decision quality.
 - Process design should fit the goal: reduce conformity when accuracy matters, or increase
   commitment when alignment is the primary objective after a decision is made.
@@ -94,7 +94,7 @@ a meeting plan. Use this skill when the risk is group decision failure.
 2. Identify initial leaning, power dynamics, authority cues, and information asymmetry.
 3. Audit groupthink, polarization, conformity, authority, common-information, and sequence risks.
 4. Design the collection, discussion, dissent, voting, and commitment process.
-5. Specify roles: decider, facilitator, devil's advocate, evidence owner, dissent owner,
+5. Specify roles: decider, facilitator, challenger, evidence owner, dissent owner,
    and recorder.
 6. Define decision output, confidence, unresolved dissent, and follow-up review.
 
@@ -132,7 +132,7 @@ Unknowns:
 ## 4. Discussion Process
 Opening frame:
 Order of speakers:
-Devil's advocate:
+Challenger:
 Dissent mechanism:
 Conflict before consensus:
 Breaks or private reflection:
