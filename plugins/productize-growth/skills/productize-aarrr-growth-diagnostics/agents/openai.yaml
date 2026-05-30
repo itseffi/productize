@@ -1,8 +1,0 @@
-interface:
-  display_name: "AARRR Growth Diagnostics"
-  short_description: "Diagnose product or startup growth using AARRR pirate metrics, CAC, LTV, channel performance, activation, retention,..."
-  brand_color: "#C2410C"
-  default_prompt: "Use $productize-aarrr-growth-diagnostics with my product context."
-
-policy:
-  allow_implicit_invocation: true

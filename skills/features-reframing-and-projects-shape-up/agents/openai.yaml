@@ -1,8 +1,0 @@
-interface:
-  display_name: "Features reframing and projects Shape Up"
-  short_description: "Features reframing and projects Shape Up. Use when the user needs a product workflow for technical related to..."
-  brand_color: "#334155"
-  default_prompt: "Use $features-reframing-and-projects-shape-up with my product context."
-
-policy:
-  allow_implicit_invocation: true

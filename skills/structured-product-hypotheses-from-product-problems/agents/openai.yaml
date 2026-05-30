@@ -1,8 +1,0 @@
-interface:
-  display_name: "Structured product hypotheses from product problems"
-  short_description: "Structured product hypotheses from product problems. Use when the user needs a product workflow for decision making..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $structured-product-hypotheses-from-product-problems with my product context."
-
-policy:
-  allow_implicit_invocation: true

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Strategy Kernel extraction from context"
-  short_description: "Strategy Kernel extraction from context. Use when the user needs a product workflow for product strategy related to..."
-  brand_color: "#059669"
-  default_prompt: "Use $productize-strategy-kernel-extraction-from-context with my product context."
-
-policy:
-  allow_implicit_invocation: true

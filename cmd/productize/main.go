@@ -1,0 +1,166 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"io"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/itseffi/productize"
+	"github.com/itseffi/productize/internal/core/model"
+	"github.com/itseffi/productize/internal/update"
+	"github.com/itseffi/productize/internal/version"
+	"github.com/spf13/cobra"
+)
+
+const updateResultWaitTimeout = 250 * time.Millisecond
+
+var (
+	newMainCommand     = productize.NewCommand
+	startUpdateCheckFn = startUpdateCheck
+)
+
+func main() {
+	os.Exit(run(context.Background()))
+}
+
+func run(ctx context.Context) int {
+	cmd := newMainCommand()
+	cmd.Version = version.String()
+
+	updateDoneCh := make(chan struct{})
+	close(updateDoneCh)
+	var updateDone <-chan struct{} = updateDoneCh
+	var updateResult <-chan *update.ReleaseInfo
+	cancelUpdateCheck := func() {}
+	if shouldStartUpdateCheck(os.Args[1:]) {
+		updateResult, cancelUpdateCheck, updateDone = startUpdateCheckFn(ctx, version.Version)
+	}
+	executedCmd, err := cmd.ExecuteC()
+	cancelUpdateCheck()
+
+	if release := waitForUpdateResult(updateResult); release != nil && shouldWriteUpdateNotification(executedCmd) {
+		if writeErr := writeUpdateNotification(
+			cmd.ErrOrStderr(),
+			version.Version,
+			release,
+		); writeErr != nil &&
+			err == nil {
+			err = fmt.Errorf("write update notification: %w", writeErr)
+		}
+	}
+	<-updateDone
+
+	if err != nil {
+		return productize.ExitCode(err)
+	}
+	return 0
+}
+
+func shouldStartUpdateCheck(args []string) bool {
+	for _, arg := range args {
+		switch strings.TrimSpace(arg) {
+		case "-h", "--help", "--version":
+			return false
+		}
+	}
+
+	sawCommand := false
+	for _, arg := range args {
+		value := strings.TrimSpace(arg)
+		if value == "" || strings.HasPrefix(value, "-") {
+			continue
+		}
+		sawCommand = true
+		switch value {
+		case "help", "version", "completion", "__complete", "__completeNoDesc":
+			return false
+		}
+	}
+
+	return sawCommand
+}
+
+func startUpdateCheck(
+	parent context.Context,
+	currentVersion string,
+) (<-chan *update.ReleaseInfo, context.CancelFunc, <-chan struct{}) {
+	ctx, cancel := context.WithCancel(parent)
+	result := make(chan *update.ReleaseInfo, 1)
+	done := make(chan struct{})
+
+	go func() {
+		defer close(done)
+		defer close(result)
+
+		statePath, err := update.StateFilePath()
+		if err != nil {
+			return
+		}
+
+		release, err := update.CheckForUpdate(ctx, currentVersion, statePath)
+		if err != nil || release == nil {
+			return
+		}
+
+		result <- release
+	}()
+
+	return result, cancel, done
+}
+
+func waitForUpdateResult(result <-chan *update.ReleaseInfo) *update.ReleaseInfo {
+	if result == nil {
+		return nil
+	}
+	select {
+	case release, ok := <-result:
+		if !ok {
+			return nil
+		}
+		return release
+	case <-time.After(updateResultWaitTimeout):
+		return nil
+	}
+}
+
+func renderUpdateNotification(currentVersion string, release *update.ReleaseInfo) string {
+	lineOne := fmt.Sprintf(
+		"%s %s %s %s",
+		"Update available:",
+		strings.TrimSpace(currentVersion),
+		"->",
+		release.Version,
+	)
+	lineTwo := "Run 'productize upgrade' to update"
+
+	return lineOne + "\n" + lineTwo
+}
+
+func writeUpdateNotification(w io.Writer, currentVersion string, release *update.ReleaseInfo) error {
+	if release == nil {
+		return nil
+	}
+	_, err := fmt.Fprintln(w, renderUpdateNotification(currentVersion, release))
+	return err
+}
+
+func shouldWriteUpdateNotification(cmd *cobra.Command) bool {
+	if cmd == nil {
+		return true
+	}
+
+	formatFlag := cmd.Flags().Lookup("format")
+	if formatFlag == nil {
+		return true
+	}
+
+	switch strings.TrimSpace(formatFlag.Value.String()) {
+	case model.OutputFormatJSONValue, model.OutputFormatRawJSONValue:
+		return false
+	default:
+		return true
+	}
+}

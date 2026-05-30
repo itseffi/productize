@@ -1,8 +1,0 @@
-interface:
-  display_name: "Easy signal identification from product assumption"
-  short_description: "Easy signal identification from product assumption. Use when the user needs a product workflow for user research..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $easy-signal-identification-from-product-assumption with my product context."
-
-policy:
-  allow_implicit_invocation: true

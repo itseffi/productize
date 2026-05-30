@@ -1,8 +1,0 @@
-interface:
-  display_name: "Systematic Debugging"
-  short_description: "Four-phase debugging process: root cause first, then fix. Use when encountering bugs, test failures, or unexpected..."
-  brand_color: "#334155"
-  default_prompt: "Use $systematic-debugging with my product context."
-
-policy:
-  allow_implicit_invocation: true

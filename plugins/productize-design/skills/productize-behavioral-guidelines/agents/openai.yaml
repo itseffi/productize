@@ -1,8 +1,0 @@
-interface:
-  display_name: "Behavioral Guidelines"
-  short_description: "Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-behavioral-guidelines with my product context."
-
-policy:
-  allow_implicit_invocation: true

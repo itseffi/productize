@@ -1,8 +1,0 @@
-interface:
-  display_name: "Risky assumption prioritization for rapid validation"
-  short_description: "Risky assumption prioritization for rapid validation. Use when the user needs a product workflow for user research..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-risky-assumption-prioritization-for-rapid-validation with my product context."
-
-policy:
-  allow_implicit_invocation: false

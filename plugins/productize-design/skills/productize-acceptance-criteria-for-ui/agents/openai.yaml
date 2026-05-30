@@ -1,8 +1,0 @@
-interface:
-  display_name: "Acceptance criteria for UI"
-  short_description: "Acceptance criteria for UI. Use when the user needs a product workflow for technical related to acceptance criteria..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-acceptance-criteria-for-ui with my product context."
-
-policy:
-  allow_implicit_invocation: true

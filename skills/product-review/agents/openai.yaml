@@ -1,8 +1,0 @@
-interface:
-  display_name: "Product Review"
-  short_description: "Product gate for PM-quality scope, requirements, user value, acceptance criteria, priorities, metrics, and..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $product-review with my product context."
-
-policy:
-  allow_implicit_invocation: true

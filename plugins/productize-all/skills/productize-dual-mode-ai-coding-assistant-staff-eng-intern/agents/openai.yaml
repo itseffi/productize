@@ -1,8 +1,0 @@
-interface:
-  display_name: "Dual-mode AI coding assistant (Staff Eng + Intern)"
-  short_description: "Dual-mode AI coding assistant (Staff Eng + Intern). Use when the user needs a product workflow for technical related..."
-  brand_color: "#334155"
-  default_prompt: "Use $productize-dual-mode-ai-coding-assistant-staff-eng-intern with my product context."
-
-policy:
-  allow_implicit_invocation: false

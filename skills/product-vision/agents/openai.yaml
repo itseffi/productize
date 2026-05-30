@@ -1,8 +1,0 @@
-interface:
-  display_name: "Product Vision"
-  short_description: "Product Vision. Use when defining, sharpening, or stress-testing a product vision that needs to motivate teams and..."
-  brand_color: "#0891B2"
-  default_prompt: "Use $product-vision with my product context."
-
-policy:
-  allow_implicit_invocation: true

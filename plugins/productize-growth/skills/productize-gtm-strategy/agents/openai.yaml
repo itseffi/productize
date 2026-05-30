@@ -1,8 +1,0 @@
-interface:
-  display_name: "GTM Strategy"
-  short_description: "GTM Strategy. Use when creating a full go-to-market plan for a product, feature, market entry, launch, or..."
-  brand_color: "#C2410C"
-  default_prompt: "Use $productize-gtm-strategy with my product context."
-
-policy:
-  allow_implicit_invocation: true

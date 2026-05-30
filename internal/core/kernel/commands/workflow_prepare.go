@@ -1,0 +1,30 @@
+package commands
+
+import (
+	core "github.com/itseffi/productize/internal/core"
+	"github.com/itseffi/productize/internal/core/model"
+)
+
+// WorkflowPrepareCommand prepares workflow jobs without executing them.
+type WorkflowPrepareCommand struct {
+	Runtime model.RuntimeConfig
+}
+
+// WorkflowPrepareResult captures the planned jobs and run artifact identifiers.
+type WorkflowPrepareResult struct {
+	Preparation  *core.Preparation
+	RunID        string
+	ArtifactsDir string
+}
+
+// WorkflowPrepareFromConfig translates the legacy core.Config shape into a typed prepare command.
+func WorkflowPrepareFromConfig(cfg core.Config) WorkflowPrepareCommand {
+	return WorkflowPrepareCommand{
+		Runtime: runtimeConfigFromCore(cfg),
+	}
+}
+
+// RuntimeConfig converts the command into the shared runtime configuration.
+func (c WorkflowPrepareCommand) RuntimeConfig() *model.RuntimeConfig {
+	return cloneRuntimeConfig(c.Runtime)
+}

@@ -1,0 +1,608 @@
+package cli
+
+import (
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+	"testing"
+	"time"
+
+	core "github.com/itseffi/productize/internal/core"
+	"github.com/itseffi/productize/internal/core/agent"
+	"github.com/itseffi/productize/internal/core/model"
+	"github.com/itseffi/productize/internal/core/provider"
+	"github.com/itseffi/productize/internal/core/tasks"
+	"github.com/spf13/cobra"
+)
+
+func TestTasksRunFormHidesSequentialOnlyFields(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should hide sequential-only fields", func(t *testing.T) {
+		t.Parallel()
+
+		keys := formFieldKeys(
+			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
+			newCommandState(commandKindTasksRun, core.ModePRDTasks),
+		)
+
+		assertFieldKeysPresent(
+			t,
+			keys,
+			"name",
+			"ide",
+			"model",
+			"add-dir",
+			"reasoning-effort",
+			"define-task-runtime",
+			"auto-commit",
+		)
+		assertFieldKeysAbsent(
+			t,
+			keys,
+			"tasks-dir",
+			"concurrent",
+			"dry-run",
+			"include-completed",
+			"tail-lines",
+			"access-mode",
+			"timeout",
+		)
+	})
+}
+
+func TestFixReviewsFormKeepsConcurrentButHidesUnneededFields(t *testing.T) {
+	t.Parallel()
+
+	keys := formFieldKeys(
+		newReviewsFixCommandWithDefaults(defaultCommandStateDefaults()),
+		newCommandState(commandKindFixReviews, core.ModePRReview),
+	)
+
+	assertFieldKeysPresent(
+		t,
+		keys,
+		"name",
+		"round",
+		"reviews-dir",
+		"concurrent",
+		"batch-size",
+		"auto-commit",
+		"ide",
+		"model",
+		"add-dir",
+		"reasoning-effort",
+	)
+	assertFieldKeysAbsent(t, keys, "dry-run", "include-resolved", "tail-lines", "access-mode", "timeout")
+}
+
+func TestWatchReviewsFormCollectsReviewWatchInputs(t *testing.T) {
+	t.Parallel()
+
+	tmp := t.TempDir()
+	baseDir := filepath.Join(tmp, ".productize", "tasks")
+	if err := os.MkdirAll(filepath.Join(baseDir, "demo"), 0o755); err != nil {
+		t.Fatalf("create workflow dir: %v", err)
+	}
+
+	cmd := newReviewsWatchCommandWithDefaults(defaultCommandStateDefaults())
+	state := newCommandState(commandKindWatchReviews, core.ModePRReview)
+	builder := newFormBuilder(cmd, state)
+	builder.tasksBaseDir = baseDir
+
+	inputs := newFormInputs()
+	inputs.register(builder)
+
+	if !builder.nameFromDirList {
+		t.Fatal("reviews watch should use directory select when workflows exist")
+	}
+
+	keys := make(map[string]struct{}, len(builder.fields))
+	for _, field := range builder.fields {
+		key := field.key
+		if key != "" {
+			keys[key] = struct{}{}
+		}
+	}
+
+	assertFieldKeysPresent(t, keys, "name", "provider", "pr")
+}
+
+func TestTasksRunFormUsesSelectWhenTaskDirsExist(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should use select when task dirs exist", func(t *testing.T) {
+		t.Parallel()
+
+		tmp := t.TempDir()
+		baseDir := filepath.Join(tmp, ".productize", "tasks")
+		for _, name := range []string{"alpha", "beta"} {
+			if err := os.MkdirAll(filepath.Join(baseDir, name), 0o755); err != nil {
+				t.Fatalf("create test dir: %v", err)
+			}
+		}
+
+		keys := formFieldKeysWithBaseDir(
+			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
+			newCommandState(commandKindTasksRun, core.ModePRDTasks),
+			baseDir,
+		)
+
+		assertFieldKeysPresent(t, keys, "name")
+		assertFieldKeysAbsent(t, keys, "tasks-dir")
+	})
+}
+
+func TestTasksRunFormFallsBackToInputWhenNoDirs(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should fall back to input when no dirs exist", func(t *testing.T) {
+		t.Parallel()
+
+		tmp := t.TempDir()
+		baseDir := filepath.Join(tmp, ".productize", "tasks")
+
+		keys := formFieldKeysWithBaseDir(
+			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
+			newCommandState(commandKindTasksRun, core.ModePRDTasks),
+			baseDir,
+		)
+
+		assertFieldKeysPresent(t, keys, "name")
+		assertFieldKeysAbsent(t, keys, "tasks-dir")
+	})
+}
+
+func TestTasksRunFormFallsBackToInputWhenAllTaskDirsAreCompleted(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should fall back to input when all task dirs are completed", func(t *testing.T) {
+		t.Parallel()
+
+		tmp := t.TempDir()
+		baseDir := filepath.Join(tmp, ".productize", "tasks")
+		now := time.Now().UTC()
+		for _, name := range []string{"alpha", "beta"} {
+			workflowDir := filepath.Join(baseDir, name)
+			if err := os.MkdirAll(workflowDir, 0o755); err != nil {
+				t.Fatalf("create workflow dir: %v", err)
+			}
+			writeFormTaskFile(t, workflowDir, "task_01.md", "completed")
+			if err := tasks.WriteTaskMeta(workflowDir, model.TaskMeta{
+				CreatedAt: now,
+				UpdatedAt: now,
+				Total:     1,
+				Completed: 1,
+				Pending:   0,
+			}); err != nil {
+				t.Fatalf("write meta for %s: %v", name, err)
+			}
+		}
+
+		keys := formFieldKeysWithBaseDir(
+			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
+			newCommandState(commandKindTasksRun, core.ModePRDTasks),
+			baseDir,
+		)
+
+		assertFieldKeysPresent(t, keys, "name")
+		assertFieldKeysAbsent(t, keys, "tasks-dir")
+	})
+}
+
+func TestFetchReviewsUsesSelectWhenTaskDirsExist(t *testing.T) {
+	t.Parallel()
+
+	tmp := t.TempDir()
+	baseDir := filepath.Join(tmp, ".productize", "tasks")
+	if err := os.MkdirAll(filepath.Join(baseDir, "alpha"), 0o755); err != nil {
+		t.Fatalf("create test dir: %v", err)
+	}
+
+	cmd := newReviewsFetchCommandWithDefaults(defaultCommandStateDefaults())
+	state := newCommandState(commandKindFetchReviews, core.ModePRReview)
+	builder := newFormBuilder(cmd, state)
+	builder.tasksBaseDir = baseDir
+
+	inputs := newFormInputs()
+	inputs.register(builder)
+
+	if !builder.nameFromDirList {
+		t.Fatal("reviews fetch should use directory select when workflows exist")
+	}
+}
+
+func TestFetchReviewsFallsBackToInputWhenNoDirs(t *testing.T) {
+	t.Parallel()
+
+	tmp := t.TempDir()
+	baseDir := filepath.Join(tmp, ".productize", "tasks")
+
+	keys := formFieldKeysWithBaseDir(
+		newReviewsFetchCommandWithDefaults(defaultCommandStateDefaults()),
+		newCommandState(commandKindFetchReviews, core.ModePRReview),
+		baseDir,
+	)
+
+	assertFieldKeysPresent(t, keys, "name", "provider", "pr", "round")
+}
+
+func TestFetchReviewsFormOmitsNitpicksToggle(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should omit nitpicks toggle in the reviews fetch form", func(t *testing.T) {
+		t.Parallel()
+
+		keys := formFieldKeys(
+			newReviewsFetchCommandWithDefaults(defaultCommandStateDefaults()),
+			newCommandState(commandKindFetchReviews, core.ModePRReview),
+		)
+
+		assertFieldKeysPresent(t, keys, "name", "provider", "pr", "round")
+		assertFieldKeysAbsent(t, keys, "nitpicks")
+	})
+}
+
+func TestListTaskSubdirs(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns sorted directories", func(t *testing.T) {
+		t.Parallel()
+		tmp := t.TempDir()
+		for _, name := range []string{"charlie", "alpha", "beta"} {
+			if err := os.MkdirAll(filepath.Join(tmp, name), 0o755); err != nil {
+				t.Fatalf("create test dir: %v", err)
+			}
+		}
+
+		dirs := listTaskSubdirs(tmp)
+		want := []string{"alpha", "beta", "charlie"}
+		if len(dirs) != len(want) {
+			t.Fatalf("got %v, want %v", dirs, want)
+		}
+		for i, d := range dirs {
+			if d != want[i] {
+				t.Fatalf("dirs[%d] = %q, want %q", i, d, want[i])
+			}
+		}
+	})
+
+	t.Run("excludes hidden directories", func(t *testing.T) {
+		t.Parallel()
+		tmp := t.TempDir()
+		for _, name := range []string{".hidden", "visible"} {
+			if err := os.MkdirAll(filepath.Join(tmp, name), 0o755); err != nil {
+				t.Fatalf("create test dir: %v", err)
+			}
+		}
+
+		dirs := listTaskSubdirs(tmp)
+		if len(dirs) != 1 || dirs[0] != "visible" {
+			t.Fatalf("got %v, want [visible]", dirs)
+		}
+	})
+
+	t.Run("excludes archived workflows", func(t *testing.T) {
+		t.Parallel()
+		tmp := t.TempDir()
+		for _, name := range []string{"_archived", "visible"} {
+			if err := os.MkdirAll(filepath.Join(tmp, name), 0o755); err != nil {
+				t.Fatalf("create test dir: %v", err)
+			}
+		}
+
+		dirs := listTaskSubdirs(tmp)
+		if len(dirs) != 1 || dirs[0] != "visible" {
+			t.Fatalf("got %v, want [visible]", dirs)
+		}
+	})
+
+	t.Run("excludes files", func(t *testing.T) {
+		t.Parallel()
+		tmp := t.TempDir()
+		if err := os.MkdirAll(filepath.Join(tmp, "mydir"), 0o755); err != nil {
+			t.Fatalf("create test dir: %v", err)
+		}
+		if err := os.WriteFile(filepath.Join(tmp, "myfile.md"), []byte("hi"), 0o644); err != nil {
+			t.Fatalf("create test file: %v", err)
+		}
+
+		dirs := listTaskSubdirs(tmp)
+		if len(dirs) != 1 || dirs[0] != "mydir" {
+			t.Fatalf("got %v, want [mydir]", dirs)
+		}
+	})
+
+	t.Run("returns nil for missing directory", func(t *testing.T) {
+		t.Parallel()
+		dirs := listTaskSubdirs(filepath.Join(t.TempDir(), "nonexistent"))
+		if dirs != nil {
+			t.Fatalf("got %v, want nil", dirs)
+		}
+	})
+}
+
+func TestListStartTaskSubdirsFiltersCompletedWorkflows(t *testing.T) {
+	t.Parallel()
+
+	baseDir := filepath.Join(t.TempDir(), ".productize", "tasks")
+	pendingDir := filepath.Join(baseDir, "alpha")
+	completedDir := filepath.Join(baseDir, "beta")
+	emptyDir := filepath.Join(baseDir, "gamma")
+	for _, dir := range []string{pendingDir, completedDir, emptyDir} {
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatalf("mkdir %s: %v", dir, err)
+		}
+	}
+
+	writeFormTaskFile(t, pendingDir, "task_01.md", "pending")
+	writeFormTaskFile(t, completedDir, "task_01.md", "completed")
+
+	// Pre-create a legacy _meta.md fixture so ReadTaskMeta can detect the
+	// completed workflow. Daemon-backed sync no longer keeps this file current.
+	now := time.Now().UTC()
+	if err := tasks.WriteTaskMeta(completedDir, model.TaskMeta{
+		CreatedAt: now,
+		UpdatedAt: now,
+		Total:     1,
+		Completed: 1,
+		Pending:   0,
+	}); err != nil {
+		t.Fatalf("write completed meta: %v", err)
+	}
+
+	dirs := listTaskRunSubdirs(baseDir)
+	want := []string{"alpha", "gamma"}
+	if len(dirs) != len(want) {
+		t.Fatalf("got %v, want %v", dirs, want)
+	}
+	for i, dir := range dirs {
+		if dir != want[i] {
+			t.Fatalf("dirs[%d] = %q, want %q", i, dir, want[i])
+		}
+	}
+
+	// Listing must NOT create _meta.md as a side effect in workflows that
+	// did not already have one.
+	for _, dir := range []string{pendingDir, emptyDir} {
+		if _, err := os.Stat(filepath.Join(dir, "_meta.md")); err == nil {
+			t.Fatalf("listing should not bootstrap _meta.md in %s", dir)
+		}
+	}
+}
+
+func TestTaskRunRuntimeFormPreseedsConfiguredTypeRules(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should preseed configured type rules", func(t *testing.T) {
+		t.Parallel()
+
+		workspaceRoot := t.TempDir()
+		tasksDir := filepath.Join(workspaceRoot, ".productize", "tasks", "demo")
+		if err := os.MkdirAll(tasksDir, 0o755); err != nil {
+			t.Fatalf("mkdir tasks dir: %v", err)
+		}
+		writeFormTaskFile(t, tasksDir, "task_01.md", "pending")
+
+		state := newCommandState(commandKindTasksRun, core.ModePRDTasks)
+		state.workspaceRoot = workspaceRoot
+		state.name = "demo"
+		state.ide = "codex"
+		state.reasoningEffort = "medium"
+		state.configuredTaskRuntimeRules = []model.TaskRuntimeRule{{
+			Type:            stringPointer("backend"),
+			IDE:             stringPointer("claude"),
+			Model:           stringPointer("sonnet"),
+			ReasoningEffort: stringPointer("high"),
+		}}
+
+		form, err := newTaskRunRuntimeForm(state)
+		if err != nil {
+			t.Fatalf("newTaskRunRuntimeForm() error = %v", err)
+		}
+		if form == nil {
+			t.Fatal("expected task runtime form")
+		}
+		if !slices.Contains(form.selectedTypes, "backend") {
+			t.Fatalf("expected backend type to be preselected, got %#v", form.selectedTypes)
+		}
+		editor := form.typeEditors["backend"]
+		if editor == nil {
+			t.Fatal("expected backend editor to be created")
+		}
+		if editor.IDE != "claude" || editor.Model != "sonnet" || editor.ReasoningEffort != "high" {
+			t.Fatalf("unexpected preseeded editor: %#v", editor)
+		}
+	})
+}
+
+func TestClearTaskRunRuntimeRulesRemovesConfiguredAndExecutionRules(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Should remove configured and execution task runtime rules", func(t *testing.T) {
+		t.Parallel()
+
+		state := newCommandState(commandKindTasksRun, core.ModePRDTasks)
+		state.configuredTaskRuntimeRules = []model.TaskRuntimeRule{{Type: stringPointer("backend")}}
+		state.executionTaskRuntimeRules = []model.TaskRuntimeRule{{ID: stringPointer("task-1")}}
+
+		clearTaskRunRuntimeRules(state)
+
+		if rules := state.taskRuntimeRules(); len(rules) != 0 {
+			t.Fatalf("taskRuntimeRules() = %#v, want none", rules)
+		}
+		if !state.replaceConfiguredTaskRunRules {
+			t.Fatal("expected configured task runtime rules to be replaced")
+		}
+	})
+}
+
+func TestFormSelectOptionsOmitRecommendedSuffixes(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ide field", func(t *testing.T) {
+		t.Parallel()
+
+		labels := promptOptionLabels(ideCatalogOptions())
+		if !slices.Contains(labels, "Codex") {
+			t.Fatalf("expected IDE options to contain Codex, got %v", labels)
+		}
+		if slices.Contains(labels, "Codex (recommended)") {
+			t.Fatalf("expected IDE options to omit recommended suffix, got %v", labels)
+		}
+	})
+
+	t.Run("reasoning effort field", func(t *testing.T) {
+		t.Parallel()
+
+		labels := promptOptionLabels(reasoningPromptOptions(false))
+		if !slices.Contains(labels, "Medium") {
+			t.Fatalf("expected reasoning options to contain Medium, got %v", labels)
+		}
+		if slices.Contains(labels, "Medium (recommended)") {
+			t.Fatalf("expected reasoning options to omit recommended suffix, got %v", labels)
+		}
+	})
+}
+
+func TestFormSelectOptionsIncludeExtensionCatalogEntries(t *testing.T) {
+	supportsAddDirs := true
+	restoreIDE, err := agent.ActivateOverlay([]agent.OverlayEntry{{
+		Name:            "ext-adapter",
+		Command:         "mock-acp --serve",
+		DisplayName:     "Mock ACP",
+		DefaultModel:    "ext-model",
+		SetupAgentName:  "codex",
+		SupportsAddDirs: &supportsAddDirs,
+	}})
+	if err != nil {
+		t.Fatalf("activate IDE overlay: %v", err)
+	}
+	defer restoreIDE()
+
+	restoreProvider, err := provider.ActivateOverlay([]provider.OverlayEntry{{
+		Name:        "ext-review",
+		Command:     "coderabbit",
+		DisplayName: "Extension Review",
+	}})
+	if err != nil {
+		t.Fatalf("activate provider overlay: %v", err)
+	}
+	defer restoreProvider()
+
+	t.Run("ShouldRenderOverlayIDEInTheSelectField", func(t *testing.T) {
+		builder := newFormBuilder(
+			newTasksRunCommandWithDefaults(nil, defaultCommandStateDefaults()),
+			newCommandState(commandKindTasksRun, core.ModePRDTasks),
+		)
+		selected := "ext-adapter"
+		builder.addIDEField(&selected)
+		if len(builder.fields) != 1 {
+			t.Fatalf("expected IDE field to be registered, got %d fields", len(builder.fields))
+		}
+		field := builder.fields[0]
+		if got := field.key; got != "ide" {
+			t.Fatalf("field key = %q, want %q", got, "ide")
+		}
+		assertPromptOptionsContain(t, ideCatalogOptions(), "Mock ACP")
+	})
+
+	t.Run("ShouldRenderOverlayProviderInTheSelectField", func(t *testing.T) {
+		builder := newFormBuilder(
+			newReviewsFetchCommandWithDefaults(defaultCommandStateDefaults()),
+			newCommandState(commandKindFetchReviews, core.ModePRReview),
+		)
+		selected := "ext-review"
+		builder.addProviderField(&selected)
+		if len(builder.fields) != 1 {
+			t.Fatalf("expected provider field to be registered, got %d fields", len(builder.fields))
+		}
+		field := builder.fields[0]
+		if got := field.key; got != "provider" {
+			t.Fatalf("field key = %q, want %q", got, "provider")
+		}
+		assertPromptOptionsContain(t, providerCatalogOptions(), "Extension Review")
+	})
+}
+
+func assertPromptOptionsContain(t *testing.T, options []promptOption, wants ...string) {
+	t.Helper()
+
+	labels := promptOptionLabels(options)
+	for _, want := range wants {
+		if !slices.Contains(labels, want) {
+			t.Fatalf("expected options to contain %q, got %v", want, labels)
+		}
+	}
+}
+
+func promptOptionLabels(options []promptOption) []string {
+	labels := make([]string, 0, len(options))
+	for _, option := range options {
+		labels = append(labels, option.Label)
+	}
+	return labels
+}
+
+func formFieldKeys(cmd *cobra.Command, state *commandState) map[string]struct{} {
+	return formFieldKeysWithBaseDir(cmd, state, filepath.Join(os.TempDir(), "nonexistent-looper-test-dir"))
+}
+
+func formFieldKeysWithBaseDir(cmd *cobra.Command, state *commandState, baseDir string) map[string]struct{} {
+	inputs := newFormInputs()
+	builder := newFormBuilder(cmd, state)
+	builder.tasksBaseDir = baseDir
+	inputs.register(builder)
+
+	keys := make(map[string]struct{}, len(builder.fields))
+	for _, field := range builder.fields {
+		key := field.key
+		if key == "" {
+			continue
+		}
+		keys[key] = struct{}{}
+	}
+
+	return keys
+}
+
+func assertFieldKeysPresent(t *testing.T, keys map[string]struct{}, want ...string) {
+	t.Helper()
+
+	for _, key := range want {
+		if _, ok := keys[key]; !ok {
+			t.Fatalf("expected form fields to include %q, got %#v", key, keys)
+		}
+	}
+}
+
+func assertFieldKeysAbsent(t *testing.T, keys map[string]struct{}, forbidden ...string) {
+	t.Helper()
+
+	for _, key := range forbidden {
+		if _, ok := keys[key]; ok {
+			t.Fatalf("expected form fields to omit %q, got %#v", key, keys)
+		}
+	}
+}
+
+func writeFormTaskFile(t *testing.T, workflowDir, name, status string) {
+	t.Helper()
+
+	content := strings.Join([]string{
+		"---",
+		"status: " + status,
+		"title: " + name,
+		"type: backend",
+		"complexity: low",
+		"---",
+		"",
+		"# " + name,
+		"",
+	}, "\n")
+
+	if err := os.WriteFile(filepath.Join(workflowDir, name), []byte(content), 0o600); err != nil {
+		t.Fatalf("write %s: %v", name, err)
+	}
+}

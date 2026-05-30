@@ -1,8 +1,0 @@
-interface:
-  display_name: "Executive decks from Quick Dirty Test analysis"
-  short_description: "Executive decks from Quick Dirty Test analysis. Use when the user needs a product workflow for presentation &..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-executive-decks-from-quick-dirty-test-analysis with my product context."
-
-policy:
-  allow_implicit_invocation: false

@@ -1,4 +1,28 @@
 .DS_Store
+.env
+.tmp/
+.cache/
+bin/
+dist/
+RELEASE_NOTES.md
+RELEASE_BODY.md
+CLAUDE.md
+coverage.out
+coverage.html
+# Internal dev session notes, scratch, QA — never publish.
+.codex/
+.agents/
+.claude/
+.resources/
+.factory/skills
+skills/*/autoresearch-*/
+skills-lock.json
+**/**/node_modules
+node_modules/
+# Workspace artifacts (per-project tasks, runs, research) — never publish.
 .productize/
-.productize-evals/
-.tmp-productize-eval/
+coverage/
+*.tsbuildinfo
+
+# Docs hidden until reviewed/fixed — kept on disk, not shipped. Un-ignore to restore.
+docs/

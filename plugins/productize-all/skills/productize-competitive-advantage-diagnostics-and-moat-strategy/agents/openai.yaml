@@ -1,8 +1,0 @@
-interface:
-  display_name: "Competitive Advantage Diagnostics and Moat Strategy"
-  short_description: "Competitive Advantage Diagnostics and Moat Strategy. Use when the user needs a product workflow for product strategy..."
-  brand_color: "#059669"
-  default_prompt: "Use $productize-competitive-advantage-diagnostics-and-moat-strategy with my product context."
-
-policy:
-  allow_implicit_invocation: false

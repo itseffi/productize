@@ -1,8 +1,0 @@
-interface:
-  display_name: "Post-launch feedback loop"
-  short_description: "Post-launch feedback loop. Use when the user needs a product workflow for business analysis related to post-launch..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-post-launch-feedback-loop with my product context."
-
-policy:
-  allow_implicit_invocation: false

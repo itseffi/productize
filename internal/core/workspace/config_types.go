@@ -1,0 +1,94 @@
+package workspace
+
+import "github.com/itseffi/productize/internal/core/model"
+
+type Context struct {
+	Root                string
+	ProductizeDir       string
+	ConfigPath          string
+	WorkspaceConfigPath string
+	GlobalConfigPath    string
+	Config              ProjectConfig
+}
+
+type ProjectConfig struct {
+	Defaults     DefaultsConfig     `toml:"defaults"`
+	Tasks        TasksConfig        `toml:"tasks"`
+	FixReviews   FixReviewsConfig   `toml:"fix_reviews"`
+	FetchReviews FetchReviewsConfig `toml:"fetch_reviews"`
+	WatchReviews WatchReviewsConfig `toml:"watch_reviews"`
+	Exec         ExecConfig         `toml:"exec"`
+	Runs         RunsConfig         `toml:"runs"`
+	Sound        SoundConfig        `toml:"sound"`
+}
+
+type RuntimeOverrides struct {
+	IDE                    *string   `toml:"ide"`
+	Model                  *string   `toml:"model"`
+	OutputFormat           *string   `toml:"output_format"`
+	ReasoningEffort        *string   `toml:"reasoning_effort"`
+	AccessMode             *string   `toml:"access_mode"`
+	Timeout                *string   `toml:"timeout"`
+	TailLines              *int      `toml:"tail_lines"`
+	AddDirs                *[]string `toml:"add_dirs"`
+	AutoCommit             *bool     `toml:"auto_commit"`
+	MaxRetries             *int      `toml:"max_retries"`
+	RetryBackoffMultiplier *float64  `toml:"retry_backoff_multiplier"`
+}
+
+type DefaultsConfig RuntimeOverrides
+
+type TaskRunConfig struct {
+	IncludeCompleted *bool                    `toml:"include_completed"`
+	OutputFormat     *string                  `toml:"output_format"`
+	TaskRuntimeRules *[]model.TaskRuntimeRule `toml:"task_runtime_rules"`
+}
+
+type TasksConfig struct {
+	Types *[]string     `toml:"types"`
+	Run   TaskRunConfig `toml:"run"`
+}
+
+type FixReviewsConfig struct {
+	Concurrent      *int    `toml:"concurrent"`
+	BatchSize       *int    `toml:"batch_size"`
+	IncludeResolved *bool   `toml:"include_resolved"`
+	OutputFormat    *string `toml:"output_format"`
+}
+
+type FetchReviewsConfig struct {
+	Provider *string `toml:"provider"`
+	Nitpicks *bool   `toml:"nitpicks"`
+}
+
+type WatchReviewsConfig struct {
+	MaxRounds     *int    `toml:"max_rounds"`
+	PollInterval  *string `toml:"poll_interval"`
+	ReviewTimeout *string `toml:"review_timeout"`
+	QuietPeriod   *string `toml:"quiet_period"`
+	AutoPush      *bool   `toml:"auto_push"`
+	UntilClean    *bool   `toml:"until_clean"`
+	PushRemote    *string `toml:"push_remote"`
+	PushBranch    *string `toml:"push_branch"`
+}
+
+type ExecConfig struct {
+	RuntimeOverrides
+	Verbose *bool `toml:"verbose"`
+	Persist *bool `toml:"persist"`
+}
+
+type RunsConfig struct {
+	DefaultAttachMode    *string `toml:"default_attach_mode"`
+	KeepTerminalDays     *int    `toml:"keep_terminal_days"`
+	KeepMax              *int    `toml:"keep_max"`
+	ShutdownDrainTimeout *string `toml:"shutdown_drain_timeout"`
+}
+
+// SoundConfig controls optional audio notifications on run lifecycle events.
+// Disabled by default; opt-in via `[sound] enabled = true` in .productize/config.toml.
+type SoundConfig struct {
+	Enabled     *bool   `toml:"enabled"`
+	OnCompleted *string `toml:"on_completed"`
+	OnFailed    *string `toml:"on_failed"`
+}

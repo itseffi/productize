@@ -1,8 +1,0 @@
-interface:
-  display_name: "NETMBA competitor analysis"
-  short_description: "NETMBA competitor analysis. Use when the user needs a product workflow for product strategy related to netmba..."
-  brand_color: "#059669"
-  default_prompt: "Use $productize-netmba-competitor-analysis with my product context."
-
-policy:
-  allow_implicit_invocation: true

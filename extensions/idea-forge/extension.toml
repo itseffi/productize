@@ -1,0 +1,12 @@
+[extension]
+name = "idea-forge"
+version = "1.0.0"
+description = "Idea Forge workflow skill and advisor reusable agents"
+min_productize_version = "0.0.1"
+
+[security]
+capabilities = ["skills.ship", "agents.ship"]
+
+[resources]
+skills = ["skills/*"]
+agents = ["agents/*"]

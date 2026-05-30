@@ -1,8 +1,0 @@
-interface:
-  display_name: "Competitive Brief"
-  short_description: "Create a competitive analysis brief for one or more competitors or a feature area. Use when informing product..."
-  brand_color: "#EA580C"
-  default_prompt: "Use $productize-competitive-brief with my product context."
-
-policy:
-  allow_implicit_invocation: true

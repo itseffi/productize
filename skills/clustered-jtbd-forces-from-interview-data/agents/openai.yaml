@@ -1,8 +1,0 @@
-interface:
-  display_name: "Clustered JTBD forces from interview data"
-  short_description: "Clustered JTBD forces from interview data. Use when the user needs a product workflow for user research related to..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $clustered-jtbd-forces-from-interview-data with my product context."
-
-policy:
-  allow_implicit_invocation: true

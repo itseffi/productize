@@ -1,8 +1,0 @@
-interface:
-  display_name: "App design from project requirements"
-  short_description: "App design from project requirements. Use when the user needs a product workflow for design & prototyping related to..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-app-design-from-project-requirements with my product context."
-
-policy:
-  allow_implicit_invocation: true

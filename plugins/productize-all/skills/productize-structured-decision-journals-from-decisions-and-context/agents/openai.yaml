@@ -1,8 +1,0 @@
-interface:
-  display_name: "Structured decision journals from decisions and context"
-  short_description: "Structured decision journals from decisions and context. Use when the user needs a product workflow for decision..."
-  brand_color: "#7C2D12"
-  default_prompt: "Use $productize-structured-decision-journals-from-decisions-and-context with my product context."
-
-policy:
-  allow_implicit_invocation: false

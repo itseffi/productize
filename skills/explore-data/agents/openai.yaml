@@ -1,8 +1,0 @@
-interface:
-  display_name: "Explore Data"
-  short_description: "Profile and explore a dataset to understand its shape, quality, and patterns. Use when encountering a new table or..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $explore-data with my product context."
-
-policy:
-  allow_implicit_invocation: true

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Outcome Roadmap"
-  short_description: "Outcome Roadmap. Use when converting a feature roadmap into an outcome roadmap, making roadmap communication more..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $productize-outcome-roadmap with my product context."
-
-policy:
-  allow_implicit_invocation: true

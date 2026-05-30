@@ -1,8 +1,0 @@
-interface:
-  display_name: "Productize Autoplan"
-  short_description: "Productize autoplan meta-runner. Use when the user wants the relevant Productize reviewers and gates selected..."
-  brand_color: "#7C3AED"
-  default_prompt: "Use $productize-autoplan with my product context."
-
-policy:
-  allow_implicit_invocation: true

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Strategic Decision Making Quality Review"
-  short_description: "Review the quality of a strategic product, innovation, or operating decision. Use when the user needs a..."
-  brand_color: "#7C2D12"
-  default_prompt: "Use $strategic-decision-making-quality-review with my product context."
-
-policy:
-  allow_implicit_invocation: true

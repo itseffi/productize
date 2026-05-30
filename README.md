@@ -1,437 +1,267 @@
-![Productize](assets/productize.png)
+<p align="center">
+  <img src="imgs/productize-banner.png" alt="Productize" width="100%">
+</p>
 
-# Productize
+<p align="center"><strong>Runtime for shipping products with AI agents.</strong></p>
 
-**Productize is an engineered distribution and runtime system for
-building, shipping, operating, and growing AI products inside your
-coding harness.**
+Productize drives the product development lifecycle on top of the AI coding agents you
+already use: idea, PRD, tech spec, codebase-informed task breakdown, multi-agent
+execution, and review remediation. It ships 250+ routed product, design, QA, growth,
+and engineering skills plus review gates, and keeps every artifact as editable
+markdown in your repo while the daemon owns execution state — runs, streams, history,
+and hooks — under `~/.productize`.
 
-Three playbooks: **`/productize-0-1`** (raw idea → shipped product),
-**`/productize-operate`** (production, incidents, error budgets),
-**`/productize-grow`** (aha-moment → retention → PLG). Nine gates
-that gate every move. One meta-runner. 238 routed skills underneath.
-Five host adapters. One workflow runtime. MIT.
+## What It Does
 
-Your AI coding agent — Codex, Claude Code, Cursor, OpenCode, Factory,
-or the next harness you adopt — is the **harness**. It writes the code,
-runs the tools, edits the files. Productize is the **product team
-around the harness**: `thesis-review` sharpens the bet,
-`product-review` locks the spec, `design-review` kills the slop,
-`eng-review` challenges the architecture, `qa` runs the evals,
-`release` owns the ship gate, `docs` catches drift, `dx-review`
-protects developer experience, and `comms-review` writes the narrative.
+- Author PRDs, TechSpecs, ADRs, tasks, reviews, and memory in `.productize/tasks/<slug>/`.
+- Sync authored markdown into the daemon catalog at `~/.productize/db/global.db`.
+- Run ACP-capable agents through daemon-owned runs under `~/.productize/runs/<run-id>/`.
+- Reattach to live or completed work with snapshot-plus-stream observation.
+- Route work through product skills, reusable agents, review gates, and extension hooks.
 
-Without a harness, Productize is inert. Without Productize, the
-harness is undirected. It will write any code you ask, beautifully,
-for the wrong product.
+## Why It Exists
 
-## Quick start
+A coding prompt gets you a diff. Shipping a product needs the work to hold together
+across many runs and many agents:
 
-Install Productize into the harness you use:
+- context survives between runs instead of restarting from scratch
+- long-running work can be supervised, reconnected, and replayed
+- review feedback becomes a tracked fix loop, not a copy-paste chore
+- task files, run logs, transcripts, and status stay in sync
+- product, design, QA, DX, metrics, release, and growth gates apply judgment — not just coding prompts
 
-```sh
-npm install -g @productize/agent-skills
-productize --host auto
+Productize handles this: it runs the agents, persists run state, routes work to the
+right skill, and keeps the artifacts in your repo.
+
+## Core Model
+
+| Layer | Lives In | Owns |
+| ----- | -------- | ---- |
+| `WORKFLOW` | `.productize/tasks/<slug>/` | PRDs, TechSpecs, ADRs, task files, review issues, memory |
+| `RUNTIME` | Productize daemon | workspace registry, validation, run scheduling, streams, hooks |
+| `RUNS` | `~/.productize/runs/<run-id>/` | events, transcript projections, job state, token usage, integrity, terminal status |
+
+Snapshots are rebuilt from persisted run data. Workspace markdown remains the
+authoring surface; the daemon owns execution state.
+
+## Quick Start
+
+Install Productize:
+
+```bash
+brew install --cask itseffi/productize/productize
+# or
+npm install -g @productize/cli
+# or
+go install github.com/itseffi/productize/cmd/productize@latest
 ```
 
-Or install from source:
+Install Productize skills and reusable agents into your local AI tools:
 
-```sh
-git clone --single-branch --depth 1 https://github.com/itseffi/productize.git productize
-cd productize
-./setup --host auto
+```bash
+productize setup
 ```
 
-Then ask your harness to build a product:
+Run a workflow:
+
+```bash
+productize sync --name user-auth
+productize daemon start
+productize daemon status
+productize tasks validate --name user-auth
+productize tasks run user-auth --ide claude
+productize runs attach <run-id>
+productize runs watch <run-id>
+```
+
+Close a review loop:
+
+```bash
+productize reviews fetch user-auth --provider coderabbit --pr 42
+productize reviews fix user-auth --ide claude --concurrent 2 --batch-size 3
+productize reviews watch user-auth
+```
+
+`productize tasks run` syncs the workflow before starting the daemon-owned run,
+so explicit `productize sync` is useful for inspection and reconciliation but is
+not required before every run.
+
+## Runtime Flow
+
+<p align="center">
+  <img src="imgs/runtime-flow.png" alt="Productize runtime flow: workflow artifacts, daemon, and runs" width="100%">
+</p>
 
 ```text
-/productize-0-1
-Build a Twitter clone. Make it secure. Have real AI agents use it.
+markdown workflow -> daemon sync -> supervised run -> attach/watch -> review/fix -> archive
 ```
 
-Productize routes the request, fires the right gate at every
-move, produces the artifacts, edits the code through the harness,
-runs the evals, applies the fixes, and tells you what to decide next.
+## Productize-Specific Features
 
-## See it work
+- **Daemon-owned run state.** The daemon owns workspace registration, run lifecycle, run databases, health, metrics, and attach/watch streams under `~/.productize`.
+- **Snapshot plus stream reconnect.** `runs attach` and `runs watch` reconnect from persisted state, then continue through the live run stream.
+- **Markdown-authored workflows.** Product work remains diffable and editable in `.productize/tasks/<slug>/`; the daemon stores indexes and run state.
+- **Routed skill catalog.** `productize setup` installs the bundled skill catalog plus extension-provided skills into supported agents and editors.
+- **Reusable agents.** Package prompts, runtime defaults, and optional agent-local MCP servers under `.productize/agents/<name>/` or `~/.productize/agents/<name>/`.
+- **Review normalization.** CodeRabbit and extension-backed providers normalize feedback into markdown issue files that `reviews fix` can triage and resolve.
+- **Review/fix/watch loops.** `reviews watch` waits for provider feedback, imports actionable rounds, starts child fix runs, and can optionally push committed fixes.
+- **Extension hooks.** Executable extensions can observe lifecycle events, mutate prompts, inject plan sources, modify agent sessions, gate retries, ship skills or reusable agents, and register review providers.
 
-```
-You:    /productize-0-1
-        Build a Twitter clone. Make it secure. Have real AI agents use it.
+## Skills And Gates
 
-Agent:  Before I write anything, I'm tightening the ask.
-        A Twitter clone is the implementation shape, not the product.
-        The product is an agent-native social arena: humans and AI
-        agents can post, reply, follow, report, coordinate, spam,
-        hit rate limits, and expose the trust and moderation
-        problems that only appear when autonomous users are active.
+Productize routes product jobs to skills instead of asking every agent to
+improvise the process.
 
-        [Move 1 — Scope capability + curate data]
-        [thesis-review + product-review fire — rate the premise, find
-        three risky assumptions, ask one blocking question about the
-        wedge]
+Core workflow skills include:
 
-        Beachhead: builders testing real agent behavior in social
-        products. Wedge: a small social graph where agent accounts are
-        first-class users and adversarial QA from day one. First
-        capability: human accounts, agent accounts, posts, replies,
-        follows, reports, rate limits, audit logs, seeded agents, and
-        evals that score whether agents can use the product without
-        breaking trust or safety.
+| Skill | Owns |
+| ----- | ---- |
+| `create-prd` | product requirements with ADRs |
+| `create-techspec` | technical design and architecture exploration |
+| `create-tasks` | codebase-informed task decomposition |
+| `execute-task` | implementation, validation, status, and handoff |
+| `workflow-memory` | cross-run context and task-local memory |
+| `review-round` | structured code review issues |
+| `fix-reviews` | issue triage, fixes, verification, and provider resolution |
+| `final-verify` | evidence gate before completion claims |
 
-You:    Approve. Continue.
+Product gates include engineering, design, QA, DX, docs, release, metrics,
+communications, and growth review skills. The broader Productize catalog covers
+strategy, research, design, analytics, finance, operations, experimentation,
+go-to-market, and AI product execution.
 
-Agent:  [Move 2a — Design]   design-review fires on the feed, composer,
-                                profile, notifications, reports, and
-                                moderation queue.
-        [Move 2b — Architect] eng-review fires on auth, permissions,
-                                agent identity, event logs, prompt
-                                injection boundaries, content provenance,
-                                rate limits, and abuse controls.
-        [Move 2c — Spec]     product-review fires on acceptance criteria.
-        [Move 2d — Build]    writes the first slice: accounts, agent
-                                accounts, feed, posting, replies, follows,
-                                reports, seeded agent scripts, and
-                                browser-driven evals.
+Optional first-party ideation lives in the `idea-forge` extension:
 
-You:    /productize-autoplan
-
-Agent:  [Runs thesis-review, product-review, design-review, eng-review,
-        qa, release, docs, dx-review, and comms-review. Auto-applies
-        safe decisions. Surfaces two product/security calls. You decide.
-        It proceeds.]
-
-You:    Move 3 — design the evals.
-
-Agent:  [Move 3 — qa + product-review fire. Eval users defined:
-        normal poster, reply farmer, spammer, brigader, reporter,
-        lurker, and moderator. Ship gates cover signup, posting,
-        following, reporting, moderation, rate limits, and abuse paths.]
-
-        [Deploy gate — release fires. One block: no kill switch for
-        seeded agents. Add it before running live evals.]
-
-        [Move 4 — qa runs the evals in a browser. One failure:
-        agent-generated text leaks unsafe instructions into notifications.]
-
-        [Move 5 — eng-review analyzes the trace and finds the boundary:
-        feed content is escaped, notification previews are not.]
-
-        [Move 6 — design-review + qa apply and verify the fix: sanitize
-        previews, add regression coverage, rerun the abuse-path evals.]
-
-You:    Ship.
-
-Agent:  [Move 7 — release + docs + comms-review fire together.
-        Launch checklist, security notes, moderation runbook, seeded
-        agent scenarios, public narrative, first-week operate loop,
-        next-lap learning plan.]
+```bash
+productize ext install --yes itseffi/productize --remote github --ref main --subdir extensions/idea-forge
+productize ext enable idea-forge
+productize setup
 ```
 
-You said "build a Twitter clone." Productize turned it into the
-smallest real social platform where AI agents are users, adversaries,
-testers, and the first source of product evidence. One builder gets the
-thesis pressure, product spec, architecture review, security posture,
-QA, release, docs, and launch narrative of a full product team.
+## Supported Agents
 
-## The loop
+Productize executes through ACP-capable runtimes:
 
-Productize is a process, not a catalog. One playbook drives the work
-from raw idea to shipped product:
+| Runtime | `--ide` |
+| ------- | ------- |
+| Claude Code | `claude` |
+| Codex | `codex` |
+| GitHub Copilot | `copilot` |
+| Cursor | `cursor-agent` |
+| Droid | `droid` |
+| OpenCode | `opencode` |
+| Pi | `pi` |
+| Gemini | `gemini` |
 
-**Scope → Design → Architect → Spec → Build → Evals → Deploy → Run →
-Analyze → Fix → Ship → Learn**
+`productize setup` can install skills into 44 agents and editors, including
+Claude Code, Codex, Cursor, Droid, OpenCode, Pi, Gemini CLI, GitHub Copilot,
+Windsurf, Amp, Continue, Goose, Roo Code, Augment, Kiro CLI, Cline, and more.
 
-Then back to Scope with new evidence. Same moves, every lap. First
-lap is sparse data and wild evals. Hundredth lap is dense data and
-tight evals. Same shape.
+Execution runtimes are separate from skill installation. To run `productize
+exec`, `productize tasks run`, or `productize reviews fix`, install the
+ACP-capable runtime or adapter for the `--ide` you choose.
 
-| Move | Gate | What it does |
-|---|---|---|
-| 1. Scope capability + curate data | `thesis-review` + `product-review` | Sharpen who, win, why now, why us. Kill the request that isn't the real job. Surface risky assumptions before code. |
-| 2a. Design | `design-review` | Hierarchy, friction, AI slop detection. Rate each dimension 0-10. Edit the plan to ship a 10. |
-| 2b. Architect | `eng-review` | Data flow, agent shape, edge cases, build risk. Force hidden assumptions into the open. |
-| 2c. Spec | `product-review` | Requirements, acceptance criteria, dependency risk, scope cuts. |
-| 2d. Build | `eng-review` + `qa` | The harness writes the code. Productize checks build risk, test shape, and verification coverage. |
-| 3. Design evals | `qa` + `product-review` | Golden examples, adversarial inputs, behavioral traces, ship gates — defined *before* you measure. |
-| Deploy gate | `release` | Check launch readiness, rollback path, kill switch, and release blockers before live evals or production exposure. |
-| 4. Run evals | `qa` | Real traffic. Pass/fail. Trace evidence. |
-| 5. Analyze | `eng-review` | Error clusters, root cause, prompt failure modes, UX friction. |
-| 6. Apply fixes | `design-review` + `qa` | Atomic fixes. Before/after evidence. Re-review until clean. |
-| 7. Ship + Learn | `release` + `docs` + `comms-review` | Launch readiness, kill switch, comms plan, board narrative, doc drift caught, next-lap learning plan. |
+## Authoring Details
 
-For developer-facing products, `dx-review` fires at Move 2 and Move 7:
-onboarding, API ergonomics, TTHW, error messages.
+Each artifact type carries its own YAML frontmatter: task files, review issues,
+skills (`SKILL.md`), reusable agents (`AGENT.md`), and ADRs all have distinct fields.
+Task files use:
 
-## Access surface
-
-Three playbooks. Nine gates. One meta-runner. 238 routed skills underneath.
-
-| Layer | Entry points |
-|---|---|
-| **Playbooks** | `/productize-0-1` (build loop), `/productize-operate` (production), `/productize-grow` (PMF → scale) |
-| **Gates** | `thesis-review`, `product-review`, `design-review`, `eng-review`, `qa`, `release`, `docs`, `dx-review`, `comms-review` |
-| **Meta** | `/productize-autoplan` — runs every relevant gate in parallel, auto-applies safe decisions, surfaces only taste calls |
-| **Routed skills** | 238 skills called internally by the playbooks and gates |
-
-You almost never call a routed skill directly. You enter at a playbook.
-The playbook walks the moves. The gates fire at decision points. The routed
-skills do the tactical work. You only see the decisions that matter.
-
-## HTML artifacts and implementation notes
-
-Productize treats HTML as an **artifact format**, not as a separate
-playbook. Route by the product job first, then choose the format:
-
-- use Markdown for short notes, repo-native docs, changelog fragments,
-  and artifacts where clean diffs matter
-- use self-contained HTML for long reviews, visual plans, diagrams,
-  dashboards, PR explainers, shareable reports, and interactive tuning
-  artifacts
-
-HTML artifacts must be portable by default: one file, embedded CSS/JS,
-no remote dependencies unless requested, readable without a dev server,
-responsive, accessible, and organized for fast human review.
-
-The Build With AI lifecycle also includes **`implementation-notes`**.
-When a user asks the harness to implement a spec and maintain
-`implementation-notes.md` or `implementation-notes.html`, Productize
-records:
-
-- design decisions where the spec was ambiguous
-- intentional deviations from the spec and why
-- tradeoffs considered and accepted
-- open questions for user confirmation
-- verification evidence and remaining gaps
-
-This lets the harness make reasonable implementation decisions without
-hiding the interpretation work from the user.
-
-## Routing map
-
-| Need | Productize routes to |
-|---|---|
-| "I have an idea" | `/productize-0-1` Move 1 — `thesis-review` + `product-review`, thesis framing, beachhead, risky assumptions |
-| "Messy transcript → PRD" | `/productize-0-1` Move 2c — `product-review` + JTBD synthesis, requirements, acceptance criteria |
-| "Design the UX" | `/productize-0-1` Move 2a — `design-review` + flows, hierarchy, edge cases |
-| "Architect the agent" | `/productize-0-1` Move 2b — `eng-review` + agent shape, retrieval, edge cases |
-| "Evals before shipping" | `/productize-0-1` Move 3 — `qa` + `product-review`, golden/adversarial examples, ship gates |
-| "Production is broken" | `/productize-operate` — incident response, root cause, comms |
-| "Activation is flat" | `/productize-grow` — aha-moment, PLG diagnostics, lifecycle triggers |
-| "Board narrative" | `comms-review` + executive update, decision logic, tradeoffs |
-| "Deal math" | Routed skills: DCF, WACC, CAPM, cap tables, VC modeling |
-| "DX audit" | `dx-review` — onboarding, API ergonomics, error messages |
-
-## Guardrails
-
-Every generated skill receives the shared Productize preamble. The
-preamble forces the harness to classify:
-
-- **persona** — founder, product leader, AI PM, AI builder, stakeholder, or unknown
-- **product stage** — idea, validation, PMF search, growth, scale, pivot, or unknown
-- **artifact mode** — strategy memo, PRD, research plan, positioning, experiment, deck, roadmap, execution brief, diagnostic, decision record
-- **artifact format** — Markdown for short/diff-sensitive work; HTML for long, visual, shareable, interactive, or explicitly requested artifacts
-- **evidence state** — known facts, assumptions, missing inputs, risky leaps
-- **decision mode** — recommend, ask for a blocking input, or proceed with explicit assumptions
-
-Rules that matter:
-
-1. No generic strategy filler.
-2. Tie recommendations to evidence, stage, and decision pressure.
-3. Ask only for inputs that materially change the output.
-4. Produce the artifact, not a description of the method.
-5. End with a concrete owner, validation step, metric, or handoff.
-
-## Install
-
-Productize generates and installs skills for multiple harnesses:
-
-```sh
-./setup
-./setup --host auto
-./setup --host codex
-./setup --host claude
-./setup --host cursor
-./setup --host opencode
-./setup --host factory
-./setup --host all
+```md
+---
+status: pending
+title: Add task validation preflight to tasks run
+type: backend
+complexity: medium
+dependencies:
+  - task_02
+---
 ```
 
-Setup regenerates skills, validates outputs, installs or symlinks
-host skills, creates runtime sidecars, checks dependencies, detects
-installed harnesses for `--host auto`, saves prefix preference, uses
-restrictive file permissions for local state, and falls back to copy
-mode on Windows unless symlinks are explicitly allowed.
+`type` must come from `[tasks].types` in `.productize/config.toml` or the built-in
+defaults: `frontend`, `backend`, `docs`, `test`, `infra`, `refactor`, `chore`,
+and `bugfix`.
 
-Prefix options:
+Validate task files at any time:
 
-```sh
-./setup --prefix
-./setup --no-prefix
+```bash
+productize tasks validate --name user-auth
 ```
 
-Team mode:
+If you have older XML-tagged artifacts, run:
 
-```sh
-./setup --team
-bin/productize-team-init required
+```bash
+productize migrate
 ```
 
-Use `optional` instead of `required` when teammates should be nudged
-but not blocked.
+## Ad Hoc Exec
 
-## Runtime tools
+Use `productize exec` for one prompt through the same ACP-backed execution stack
+without creating a full workflow first.
 
-Productize ships local sidecars for routing, state, context, artifacts,
-completion, and upgrade workflows:
+```bash
+productize exec "Summarize the current repository changes"
+productize exec --prompt-file prompt.md
+cat prompt.md | productize exec --format json
+productize exec --persist "Review the latest changes"
+```
 
-| Command | Purpose |
-|---|---|
-| `productize-workflow` | Start and complete durable product workflows with routing, context, session, artifact, and completion logs |
-| `productize-skill-router` | Resolve a product request to the best skill or skill sequence |
-| `productize-registry-search` | Search the generated skill registry |
-| `productize-session-log` | Record workflow decisions |
-| `productize-artifact-log` | Record produced artifacts |
-| `productize-context-save` | Save durable context |
-| `productize-context-restore` | Restore previous context before restarting work |
-| `productize-config` | Read and write local or team preferences |
-| `productize-update-check` | Check generated distribution freshness and update state |
-| `productize-completion-status` | Log completion, blocked, deferred, or needs-review state |
-| `productize-upgrade` | Upgrade installed Productize skills and runtime sidecars |
-| `productize-team-init` | Bootstrap shared repo-local Productize instructions |
-
-## Architecture
-
-Canonical source stays separate from generated distribution output:
+Persisted exec runs store resumable state under `~/.productize/runs/<run-id>/`:
 
 ```text
-SKILL.md.tmpl            root router template
-SKILL.md                 generated root router skill
-skills/                  canonical one-level skill directories
-skills/*/SKILL.md.tmpl   skill template source
-skills/*/SKILL.md        generated canonical skill with shared preamble
-skills/*/productize.json explicit metadata and routing fields
-hosts/                   host adapters (one per harness)
-.agents/skills/          generated Codex skills
-.claude/skills/          generated Claude skills
-.cursor/skills/          generated Cursor skills
-.opencode/skills/        generated OpenCode skills
-.factory/skills/         generated Factory skills
-plugins/                 generated plugin bundles
-registry/                generated skill, lifecycle, category, plugin, and site indexes
-bin/                     runtime utilities
-test/                    parser, generator, registry, setup, release, runtime, routing, and eval tests
+~/.productize/runs/<run-id>/run.db
+~/.productize/runs/<run-id>/run.json
+~/.productize/runs/<run-id>/events.jsonl
+~/.productize/runs/<run-id>/turns/0001/prompt.md
+~/.productize/runs/<run-id>/turns/0001/result.json
 ```
 
-Host adapters control frontmatter, description limits, generated
-output paths, metadata behavior, path rewrites, skipped skills, and
-runtime sidecars per harness.
-
-## Build and validate
-
-```sh
-npm run build
-npm run skill:check
-npm run test:free
-```
-
-The build normalizes metadata, generates canonical and host skills,
-audits skills, builds registries, builds plugin bundles, builds the
-site index, and runs `skill:check`.
-
-Validation checks:
-
-- frontmatter and metadata
-- lifecycle and category values
-- reference paths
-- generated host output freshness
-- Codex description limits
-- plugin manifests
-- registry files
-- sample router resolution
-- metadata quality and artifact specificity
-- generated distribution boundaries
-
-## Evals and CI
-
-Productize has separate CI lanes for freshness, evals, periodic evals,
-and version gates:
+`productize exec` uses the same config merge rule as the rest of the CLI:
 
 ```text
-.github/workflows/ci.yml
-.github/workflows/skill-docs.yml
-.github/workflows/evals.yml
-.github/workflows/evals-periodic.yml
-.github/workflows/version-gate.yml
+flags > workspace [exec] > workspace [defaults] > global [exec] > global [defaults] > built-in defaults
 ```
 
-Useful commands:
+## Reusable Agents
 
-```sh
-npm run eval
-npm run eval:router
-npm run eval:e2e
-npm run eval:llm:offline
-npm run eval:report
-npm run install:smoke
-npm run release:check
-npm run upgrade:check
+Reusable agents are filesystem bundles discovered from two scopes:
+
+- workspace: `.productize/agents/<name>/`
+- global: `~/.productize/agents/<name>/`
+
+Each agent contains a required `AGENT.md` and optional `mcp.json`. Run them with:
+
+```bash
+productize agents list
+productize agents inspect reviewer
+productize exec --agent reviewer "Review the staged changes"
 ```
 
-Offline evals do not require paid model calls. External LLM evals are
-opt-in only when a command is configured by the runner.
+## Extensions
 
-## Release and upgrade
+Extensions are JSON-RPC subprocess plugins. They can observe or modify runtime
+behavior without rebuilding Productize.
 
-Release metadata lives in:
-
-```text
-VERSION
-CHANGELOG.md
-RELEASE.md
-UPGRADE.md
+```bash
+productize ext list
+productize ext install <source>
+productize ext enable <name>
+productize ext doctor
 ```
 
-Release commands:
+Extension SDKs:
 
-```sh
-npm run release:check
-npm run release:dry-run
-npm run release
-productize-upgrade --host all --force
-```
+- [Go SDK](sdk/extension/)
+- [TypeScript SDK](sdk/extension-sdk-ts/)
 
-`release:check` is the non-mutating gate. `release:dry-run` must not
-mutate files.
+## Development
 
-## Contributing a skill
-
-Each skill should have:
-
-```text
-skills/<skill-name>/
-  SKILL.md.tmpl
-  SKILL.md
-  productize.json
-  references/       optional
-  examples/         optional
-  evals/            optional
-```
-
-The metadata must state:
-
-- when to use the skill
-- when not to use it
-- the expected artifact
-- framework fit, when relevant
-- failure modes
-- routing signals
-- examples or eval cases
-
-Run before proposing changes:
-
-```sh
-npm run build
-npm run test:free
-npm run eval
+```bash
+make verify    # Full pipeline: fmt, lint, test, build
+make fmt       # Format code
+make lint      # Lint with zero tolerance
+make test      # Tests with race detector
+make build     # Compile binary
+make deps      # Install development dependencies
+make tidy      # Tidy Go modules
 ```

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Creative solution generation from De Bono's lateral thinking methods"
-  short_description: "Creative solution generation from De Bono's lateral thinking methods. Use when the user needs a product workflow for..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $creative-solution-generation-from-de-bono-s-lateral-thinking with my product context."
-
-policy:
-  allow_implicit_invocation: true

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Onboarding flow optimization from product data to user success"
-  short_description: "Onboarding flow optimization from product data to user success. Use when the user needs a product workflow for..."
-  brand_color: "#C2410C"
-  default_prompt: "Use $onboarding-flow-optimization-from-product-data-to-user-success with my product context."
-
-policy:
-  allow_implicit_invocation: true

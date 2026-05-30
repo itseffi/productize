@@ -1,8 +1,0 @@
-interface:
-  display_name: "Market opportunities from Jobs-to-be-Done market canvas"
-  short_description: "Market opportunities from Jobs-to-be-Done market canvas. Use when the user needs a product workflow for product..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $productize-market-opportunities-from-jobs-to-be-done-market-canvas with my product context."
-
-policy:
-  allow_implicit_invocation: true

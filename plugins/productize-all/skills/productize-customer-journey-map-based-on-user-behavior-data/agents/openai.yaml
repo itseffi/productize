@@ -1,8 +1,0 @@
-interface:
-  display_name: "Customer journey map based on user behavior data"
-  short_description: "Customer journey map based on user behavior data. Use when the user needs a product workflow for business analysis..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $productize-customer-journey-map-based-on-user-behavior-data with my product context."
-
-policy:
-  allow_implicit_invocation: false

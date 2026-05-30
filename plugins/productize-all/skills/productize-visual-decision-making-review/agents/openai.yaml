@@ -1,8 +1,0 @@
-interface:
-  display_name: "Visual Decision Making Review"
-  short_description: "Review how visuals, charts, diagrams, canvases, dashboards, or slides may shape a product decision. Use when the..."
-  brand_color: "#7C2D12"
-  default_prompt: "Use $productize-visual-decision-making-review with my product context."
-
-policy:
-  allow_implicit_invocation: false

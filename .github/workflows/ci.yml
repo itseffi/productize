@@ -1,25 +1,92 @@
-name: Productize Validation
+name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CGO_ENABLED: 0
+  GO_VERSION: "1.26.1"
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
-  test-matrix:
+  changes:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        lane:
-          - unit
-          - finance
-          - setup-host
+    outputs:
+      verify: ${{ steps.filter.outputs.verify }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
         with:
-          node-version: "22"
-      - run: npm run repo:hygiene
-      - run: npm run build
-      - run: npm run test:${{ matrix.lane }}
+          fetch-depth: 0
+
+      - name: Filter paths
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            verify:
+              - '**/*.go'
+              - 'go.mod'
+              - 'go.sum'
+              - 'Makefile'
+              - 'package.json'
+              - 'npm/**'
+              - 'openapi/**'
+              - 'scripts/**'
+              - 'tsconfig.base.json'
+              - '.goreleaser.yml'
+              - '.github/actions/setup-go/**'
+              - '.github/actions/setup-release/**'
+              - '.github/workflows/ci.yml'
+              - '.github/workflows/release.yml'
+              - 'sdk/**'
+              - 'cmd/**'
+              - 'command/**'
+              - 'internal/**'
+              - 'skills/**'
+
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: changes
+    if: needs.changes.outputs.verify == 'true'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Go with caching
+        uses: ./.github/actions/setup-go
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          install-tools: "true"
+
+      - name: Run verification pipeline
+        run: make verify
+        continue-on-error: false
+        env:
+          CGO_ENABLED: 1
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: verify-results-go-${{ env.GO_VERSION }}
+          path: |
+            coverage.out
+            test-results.xml
+            .tmp/playwright/**
+          if-no-files-found: ignore
+          retention-days: 7

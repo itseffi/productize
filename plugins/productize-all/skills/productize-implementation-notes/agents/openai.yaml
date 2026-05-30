@@ -1,8 +1,0 @@
-interface:
-  display_name: "Implementation Notes"
-  short_description: "Running implementation-notes protocol for spec-driven builds. Use when the user asks the agent to maintain..."
-  brand_color: "#334155"
-  default_prompt: "Use $productize-implementation-notes with my product context."
-
-policy:
-  allow_implicit_invocation: false

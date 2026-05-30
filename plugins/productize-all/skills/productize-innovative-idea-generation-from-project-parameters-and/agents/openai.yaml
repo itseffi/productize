@@ -1,8 +1,0 @@
-interface:
-  display_name: "Innovative idea generation from project parameters and constraints"
-  short_description: "Innovative idea generation from project parameters and constraints. Use when the user needs a product workflow for..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-innovative-idea-generation-from-project-parameters-and with my product context."
-
-policy:
-  allow_implicit_invocation: false

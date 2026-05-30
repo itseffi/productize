@@ -1,8 +1,0 @@
-interface:
-  display_name: "Engineering Problem Solving and Solution Structuring"
-  short_description: "Engineering Problem Solving and Solution Structuring. Use when the user needs a product workflow for technical..."
-  brand_color: "#334155"
-  default_prompt: "Use $productize-engineering-problem-solving-and-solution-structuring with my product context."
-
-policy:
-  allow_implicit_invocation: false

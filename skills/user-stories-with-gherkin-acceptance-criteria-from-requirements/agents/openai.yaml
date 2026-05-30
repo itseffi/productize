@@ -1,8 +1,0 @@
-interface:
-  display_name: "User stories with Gherkin acceptance criteria from requirements"
-  short_description: "User stories with Gherkin acceptance criteria from requirements. Use when the user needs a product workflow for..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $user-stories-with-gherkin-acceptance-criteria-from-requirements with my product context."
-
-policy:
-  allow_implicit_invocation: true

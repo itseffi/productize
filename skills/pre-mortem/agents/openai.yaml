@@ -1,8 +1,0 @@
-interface:
-  display_name: "Pre-Mortem"
-  short_description: "Pre-Mortem. Use when stress-testing a PRD, launch plan, product bet, or feature before execution or release."
-  brand_color: "#7C2D12"
-  default_prompt: "Use $pre-mortem with my product context."
-
-policy:
-  allow_implicit_invocation: true

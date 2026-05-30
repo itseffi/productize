@@ -1,8 +1,0 @@
-interface:
-  display_name: "Metric drops diagnosis with rigorous stepwise decomposition"
-  short_description: "Metric drops diagnosis with rigorous stepwise decomposition. Use when the user needs a product workflow for business..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $metric-drops-diagnosis-with-rigorous-stepwise-decomposition with my product context."
-
-policy:
-  allow_implicit_invocation: true

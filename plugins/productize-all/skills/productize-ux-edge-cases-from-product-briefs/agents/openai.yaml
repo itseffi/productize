@@ -1,8 +1,0 @@
-interface:
-  display_name: "UX edge cases from product briefs"
-  short_description: "UX edge cases from product briefs. Use when the user needs a product workflow for business analysis related to ux..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-ux-edge-cases-from-product-briefs with my product context."
-
-policy:
-  allow_implicit_invocation: false

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Brand Archetype Strategy"
-  short_description: "Define brand narrative, voice, imagery, symbols, and channel storytelling using brand archetypes. Use for brand..."
-  brand_color: "#EA580C"
-  default_prompt: "Use $productize-brand-archetype-strategy with my product context."
-
-policy:
-  allow_implicit_invocation: true

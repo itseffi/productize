@@ -1,8 +1,0 @@
-interface:
-  display_name: "Lean Canvas"
-  short_description: "Lean Canvas. Use when turning a startup idea or early product concept into a Lean Canvas with hypotheses and..."
-  brand_color: "#9333EA"
-  default_prompt: "Use $lean-canvas with my product context."
-
-policy:
-  allow_implicit_invocation: true

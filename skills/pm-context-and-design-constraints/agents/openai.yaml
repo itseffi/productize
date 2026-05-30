@@ -1,8 +1,0 @@
-interface:
-  display_name: "PM context and design constraints"
-  short_description: "PM context and design constraints. Use when the user needs a product workflow for stakeholder management related to..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $pm-context-and-design-constraints with my product context."
-
-policy:
-  allow_implicit_invocation: true

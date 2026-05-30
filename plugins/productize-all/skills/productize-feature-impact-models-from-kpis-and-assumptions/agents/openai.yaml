@@ -1,8 +1,0 @@
-interface:
-  display_name: "Feature impact models from KPIs and assumptions"
-  short_description: "Feature impact models from KPIs and assumptions. Use when the user needs a product workflow for business analysis..."
-  brand_color: "#0D9488"
-  default_prompt: "Use $productize-feature-impact-models-from-kpis-and-assumptions with my product context."
-
-policy:
-  allow_implicit_invocation: false

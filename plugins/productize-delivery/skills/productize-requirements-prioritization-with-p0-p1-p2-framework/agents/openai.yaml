@@ -1,8 +1,0 @@
-interface:
-  display_name: "Requirements prioritization with P0-P1-P2 framework"
-  short_description: "Requirements prioritization with P0-P1-P2 framework. Use when the user needs a product workflow for project..."
-  brand_color: "#4F46E5"
-  default_prompt: "Use $productize-requirements-prioritization-with-p0-p1-p2-framework with my product context."
-
-policy:
-  allow_implicit_invocation: true

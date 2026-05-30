@@ -1,8 +1,0 @@
-interface:
-  display_name: "North Star Metric"
-  short_description: "North Star Metric. Use when choosing or revising a North Star Metric, defining input metrics, aligning teams around..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $north-star-metric with my product context."
-
-policy:
-  allow_implicit_invocation: true

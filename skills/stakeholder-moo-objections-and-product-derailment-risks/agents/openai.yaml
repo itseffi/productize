@@ -1,8 +1,0 @@
-interface:
-  display_name: "Stakeholder MOO objections and product derailment risks"
-  short_description: "Stakeholder MOO objections and product derailment risks. Use when the user needs a product workflow for stakeholder..."
-  brand_color: "#0891B2"
-  default_prompt: "Use $stakeholder-moo-objections-and-product-derailment-risks with my product context."
-
-policy:
-  allow_implicit_invocation: true

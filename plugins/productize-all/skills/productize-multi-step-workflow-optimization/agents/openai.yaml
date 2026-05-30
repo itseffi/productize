@@ -1,8 +1,0 @@
-interface:
-  display_name: "Multi-step workflow optimization"
-  short_description: "Multi-step workflow optimization. Use when the user needs a product workflow for design & prototyping related to..."
-  brand_color: "#DB2777"
-  default_prompt: "Use $productize-multi-step-workflow-optimization with my product context."
-
-policy:
-  allow_implicit_invocation: false

@@ -1,8 +1,0 @@
-interface:
-  display_name: "Metrics Review"
-  short_description: "Review and analyze product metrics with trend analysis and actionable insights. Use when running a weekly, monthly,..."
-  brand_color: "#0F766E"
-  default_prompt: "Use $productize-metrics-review with my product context."
-
-policy:
-  allow_implicit_invocation: true
