@@ -139,7 +139,7 @@ func TestResolveInstallSourceWithFetcherGitHub(t *testing.T) {
 			body: `[extension]
 name = "idea-forge"
 version = "1.0.0"
-description = "Idea factory"
+description = "Idea Forge"
 min_productize_version = "0.0.1"
 
 [security]

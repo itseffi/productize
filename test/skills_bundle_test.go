@@ -97,7 +97,7 @@ func TestBundledSkillFrontmatterParses(t *testing.T) {
 	}
 }
 
-func TestIdeaFactoryExtensionExistsAndUsesPortableReferences(t *testing.T) {
+func TestIdeaForgeExtensionExistsAndUsesPortableReferences(t *testing.T) {
 	t.Parallel()
 
 	root := repoRoot(t)
