@@ -32,3 +32,6 @@ coverage/
 
 # TanStack Router generated tree — regenerated at build/dev time.
 web/src/routeTree.gen.ts
+
+# Docs hidden until reviewed/fixed — kept on disk, not shipped. Un-ignore to restore.
+docs/
