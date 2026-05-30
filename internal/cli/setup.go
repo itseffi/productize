@@ -32,7 +32,6 @@ type setupCommandState struct {
 	previewReusableAgents func(setup.ReusableAgentInstallConfig) ([]setup.ReusableAgentPreviewItem, error)
 	installSkills         setupSkillInstallFunc
 	installReusableAgents setupReusableAgentInstallFunc
-	cleanupLegacyAssets   func(setup.LegacyAssetCleanupConfig) (setup.LegacyAssetCleanupResult, error)
 	isInteractive         func() bool
 }
 
@@ -105,7 +104,6 @@ func newSetupCommandState() *setupCommandState {
 		previewReusableAgents: setup.PreviewReusableAgentInstall,
 		installSkills:         setup.InstallSelectedSkills,
 		installReusableAgents: setup.InstallReusableAgents,
-		cleanupLegacyAssets:   setup.CleanupLegacyTransferredAssets,
 		isInteractive:         isInteractiveTerminal,
 	}
 }
@@ -292,15 +290,6 @@ func (s *setupCommandState) executeInstall(cmd *cobra.Command, plan setupInstall
 }
 
 func (s *setupCommandState) installPlan(plan setupInstallPlan) (*setup.Result, error) {
-	if s.cleanupLegacyAssets != nil {
-		if _, err := s.cleanupLegacyAssets(setup.LegacyAssetCleanupConfig{
-			ResolverOptions: plan.Config.ResolverOptions,
-			Global:          plan.Config.Global,
-		}); err != nil {
-			return nil, fmt.Errorf("cleanup legacy setup assets: %w", err)
-		}
-	}
-
 	successful, failed, err := s.installSkills(
 		plan.Config.ResolverOptions,
 		plan.Skills,

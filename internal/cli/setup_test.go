@@ -372,13 +372,6 @@ func TestSetupRunYesCleansLegacyTransferredAssetsBeforeInstall(t *testing.T) {
 		}, nil
 	}
 	callOrder := make([]string, 0, 3)
-	state.cleanupLegacyAssets = func(cfg setup.LegacyAssetCleanupConfig) (setup.LegacyAssetCleanupResult, error) {
-		if cfg.Global {
-			t.Fatal("expected cleanup to run in project scope")
-		}
-		callOrder = append(callOrder, "cleanup")
-		return setup.LegacyAssetCleanupResult{}, nil
-	}
 	state.installSkills = func(
 		_ setup.ResolverOptions,
 		skills []setup.Skill,
