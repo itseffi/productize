@@ -92,10 +92,6 @@ not required before every run.
   <img src="imgs/runtime-flow.png" alt="Productize runtime flow: workflow artifacts, daemon, and runs" width="100%">
 </p>
 
-```text
-markdown workflow -> daemon sync -> supervised run -> attach/watch -> review/fix -> archive
-```
-
 ## Productize-Specific Features
 
 - **Daemon-owned run state.** The daemon owns workspace registration, run lifecycle, run databases, health, metrics, and attach/watch streams under `~/.productize`.
